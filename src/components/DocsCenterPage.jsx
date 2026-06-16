@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { ALL_DOC_LANGS, buildDocsStaticMetaMap, createDocsPathKey } from '../data/docsCenterMeta'
+import DocDetailOverlayMain from './DocDetailOverlayMain'
+import { buildDocsStaticMetaMap, createDocsPathKey } from '../data/docsCenterMeta'
 
 const siteLocaleToDocLangMap = {
   'zh-cn': 'zh-cn',
@@ -302,7 +303,6 @@ export default function DocsCenterPage({
   navigateTo,
   getLocaleDocsPath,
   docsUiText,
-  jumpCards,
   infoPanels,
   sectionSlugMap,
   activeSection,
@@ -406,22 +406,17 @@ export default function DocsCenterPage({
     Boolean(currentDocMeta?.helpContent)
     && Boolean(displayedDocLanguage)
     && displayedDocLanguage !== currentDocLanguage
-  const currentDocHtml = currentDocMeta
-    ? (() => {
-        const noticeText = docsUiText.translationFallbackNotice.replace('{language}', displayedDocLanguageLabel)
-        const notice = currentDocNeedsFallbackNotice
-          ? `<div class="docs-center-lang-notice">${escapeHtml(noticeText)}</div>`
-          : ''
-        return `${notice}${markdownToHtml(currentDocContent, docsUiText.emptyDocContent)}`
-      })()
-    : ''
+  const currentDocFallbackNoticeHtml =
+    currentDocMeta && currentDocNeedsFallbackNotice
+      ? `<div class="docs-center-lang-notice">${escapeHtml(
+          docsUiText.translationFallbackNotice.replace('{language}', displayedDocLanguageLabel),
+        )}</div>`
+      : ''
 
   const currentDocSectionLabel = currentDocDisplayParts?.[0] ?? activeSection
   const currentDocSectionSlug =
     sectionSlugMap[currentDocSectionLabel] ?? fallbackSlug(currentDocSectionLabel, sectionSlugMap)
-  const currentDocUrlPath = currentDocMeta
-    ? `wps.ai/${currentLocale}/docs/${currentDocSectionSlug}/${currentDocMeta.routeSlug}/`
-    : ''
+  const isZhContent = `${currentLocale}`.toLowerCase().startsWith('zh')
   const activeBlockTitle = currentDocDisplayParts?.length === 3 ? currentDocDisplayParts[1] : ''
   const [scrollLinkedTarget, setScrollLinkedTarget] = useState(null)
   const sidebarRef = useRef(null)
@@ -690,6 +685,16 @@ export default function DocsCenterPage({
     navigatePreservingScroll(getLocaleDocsPath(currentLocale, sectionSlug, meta.routeSlug))
   }
 
+  const handleBreadcrumbRootClick = () => {
+    const sectionTitle = currentDocDisplayParts?.[0]
+    if (!sectionTitle) {
+      return
+    }
+    const sectionSlug = sectionSlugMap[sectionTitle] ?? fallbackSlug(sectionTitle, sectionSlugMap)
+    navigatePreservingScroll(getLocaleDocsPath(currentLocale, sectionSlug))
+    handleScrollToSection(sectionTitle)
+  }
+
   return (
     <div className="docs-center-page">
       <section className="docs-center-hero">
@@ -713,28 +718,6 @@ export default function DocsCenterPage({
             <button type="button" className="docs-center-search-btn" onClick={handleHeroSearch}>
               {docsUiText.heroSearchButton}
             </button>
-          </div>
-          <div className="docs-center-jump-grid">
-            {jumpCards.map((card) => (
-              <button
-                key={`docs-jump-${card.title}`}
-                type="button"
-                className="docs-center-jump-card"
-                onClick={() => {
-                  if (card.href) {
-                    navigateTo(card.href)
-                    return
-                  }
-                  const sectionSlug =
-                    sectionSlugMap[card.section] ?? fallbackSlug(card.section, sectionSlugMap)
-                  navigatePreservingScroll(getLocaleDocsPath(currentLocale, sectionSlug))
-                  handleScrollToSection(card.section)
-                }}
-              >
-                <div className="title">{card.title}</div>
-                <div className="sub">{card.sub}</div>
-              </button>
-            ))}
           </div>
         </div>
       </section>
@@ -929,43 +912,38 @@ export default function DocsCenterPage({
           >
             {docsUiText.overlayBackLabel}
           </button>
-          <div className="docs-center-overlay-breadcrumb">
-            {(currentDocDisplayParts ?? []).map((part, index) => (
-              <span key={`bc-${part}-${index}`}>
-                {index === (currentDocDisplayParts?.length ?? 0) - 1 ? (
-                  <span className="docs-center-bc-current">{part}</span>
-                ) : (
-                  <span>{part} / </span>
-                )}
+          {currentDocAvailableLangs.length > 1 ? (
+            <label className="docs-center-overlay-lang-select">
+              <span className="docs-center-overlay-lang-select-label">
+                {isZhContent ? '语言' : 'Language'}
               </span>
-            ))}
-          </div>
-          <div className="docs-center-overlay-lang-tabs">
-            {ALL_DOC_LANGS.map((langCode) => {
-              const isAvailable = currentDocAvailableLangs.includes(langCode)
-              return (
-                <button
-                  key={`lang-${langCode}`}
-                  type="button"
-                  title={langCode}
-                  className={`docs-center-lang-tab${displayedDocLanguage === langCode ? ' active' : ''}${
-                    isAvailable ? '' : ' unavailable'
-                  }`}
-                  disabled={!isAvailable}
-                  onClick={() => setCurrentDocLanguage(langCode)}
-                >
-                  {getDocLanguageLabel(langCode)}
-                </button>
-              )
-            })}
-          </div>
-          <div className="docs-center-overlay-url">{currentDocUrlPath}</div>
+              <select
+                value={displayedDocLanguage}
+                onChange={(event) => setCurrentDocLanguage(event.target.value)}
+              >
+                {currentDocAvailableLangs.map((langCode) => (
+                  <option key={`lang-${langCode}`} value={langCode}>
+                    {getDocLanguageLabel(langCode)}
+                  </option>
+                ))}
+              </select>
+            </label>
+          ) : null}
         </div>
         {currentDocMeta ? (
           currentDocAvailableLangs.length ? (
-            <div
-              className="docs-center-overlay-body docs-center-md"
-              dangerouslySetInnerHTML={{ __html: currentDocHtml }}
+            <DocDetailOverlayMain
+              key={currentDocMeta.pathKey}
+              routeSlug={currentDocMeta.routeSlug}
+              docContent={currentDocContent}
+              docLanguage={displayedDocLanguage}
+              isZhContent={isZhContent}
+              sidebarTitle={docsUiText.docDetailTocSidebarTitle}
+              articleBreadcrumbAriaLabel={docsUiText.articleBreadcrumbAriaLabel}
+              emptyDocContentText={docsUiText.emptyDocContent}
+              fallbackNoticeHtml={currentDocFallbackNoticeHtml}
+              docDisplayParts={currentDocDisplayParts ?? []}
+              onBreadcrumbRootClick={handleBreadcrumbRootClick}
             />
           ) : (
             <div className="docs-center-overlay-body">

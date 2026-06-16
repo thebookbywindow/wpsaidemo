@@ -547,7 +547,7 @@ const docsCatalogSections = [
     blocks: [
       {
         title: '',
-        items: ['文档', 'PPT', '表格', '编辑转化', '智能文档', '智能表格', '智能表单', '多维表格', 'AI slides', '简历'],
+        items: ['WPS 文字', 'WPS 表格', 'WPS 演示', 'WPS PDF', 'WPS 云服务', 'PPT', '表格', '编辑转化', '智能文档', '智能表格', '智能表单', '多维表格', 'AI slides', '简历'],
       },
     ],
   },
@@ -2365,10 +2365,6 @@ function App() {
     if (isZhCnContent) {
       return {
         quickTabs: docsQuickTabs,
-        jumpCards: docsJumpCards.map((card) => ({
-          ...card,
-          href: getDocsJumpCardPath(currentLocale, card.linkKey),
-        })),
         sectionSlugMap: docsSectionSlugMap,
         catalogSections: docsCatalogSections,
         faqItems: docsFaqItems,
@@ -2382,14 +2378,6 @@ function App() {
 
     return {
       quickTabs: docsEnglishContent.quickTabs.map((section) => sectionLabelMap[section]),
-      jumpCards: docsEnglishContent.jumpCards.map((card, index) => ({
-        ...card,
-        linkKey: docsJumpCards[index]?.linkKey ?? '',
-        href: getDocsJumpCardPath(currentLocale, docsJumpCards[index]?.linkKey ?? ''),
-        title: localizeString(card.title),
-        sub: localizeString(card.sub),
-        section: sectionLabelMap[card.section] ?? localizeString(card.section),
-      })),
       sectionSlugMap: Object.fromEntries(
         Object.entries(docsEnglishContent.sectionSlugMap).map(([section, slug]) => [
           sectionLabelMap[section] ?? localizeString(section),
@@ -2419,7 +2407,6 @@ function App() {
     }
   }, [currentLocale, isZhCnContent, localizeString])
   const localizedDocsQuickTabs = localizedDocsContent.quickTabs
-  const localizedDocsJumpCards = localizedDocsContent.jumpCards
   const localizedDocsSectionSlugMap = localizedDocsContent.sectionSlugMap
   const localizedDocsCatalogSections = localizedDocsContent.catalogSections
   const localizedDocsFaqItems = localizedDocsContent.faqItems
@@ -4171,7 +4158,6 @@ function App() {
             navigateTo={navigateTo}
             getLocaleDocsPath={getLocaleDocsPath}
             docsUiText={docsUiText}
-            jumpCards={localizedDocsJumpCards}
             infoPanels={localizedDocsFaqItems}
             sectionSlugMap={localizedDocsSectionSlugMap}
             activeSection={activeDocsSection}
