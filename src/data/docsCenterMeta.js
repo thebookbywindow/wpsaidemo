@@ -63,10 +63,18 @@ function createZhOnlyHelpContent(config) {
   }
 }
 
-function createInternalDocEntry(pathParts, routeSlug, helpContent, publishedLangs = zhOnlyPublishedLangs) {
+function createInternalDocEntry(
+  pathParts,
+  routeSlug,
+  helpContent,
+  publishedLangs = zhOnlyPublishedLangs,
+  options = {},
+) {
   return {
     pathParts,
     routeSlug,
+    docRouteSlug: options.docRouteSlug ?? '',
+    sectionRouteSlug: options.sectionRouteSlug ?? '',
     helpContent,
     publishedLangs: [...publishedLangs],
   }
@@ -607,7 +615,13 @@ const aiPdfHelpContent = createZhOnlyHelpContent({
 })
 
 const staticMetaEntries = [
-  createInternalDocEntry(['新手入门', 'WPS 文字'], 'writer', writerHelpContent, ALL_DOC_LANGS),
+  createInternalDocEntry(
+    ['新手入门', 'WPS 文字'],
+    'create-document',
+    writerHelpContent,
+    ALL_DOC_LANGS,
+    { docRouteSlug: 'wps-writer' },
+  ),
 ]
 
 export function buildDocsStaticMetaMap() {

@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import DocDetailOverlayMain from './DocDetailOverlayMain'
 import { buildDocsStaticMetaMap, createDocsPathKey } from '../data/docsCenterMeta'
+import { getLocaleDocsPath, parseDocsRoute, resolveDocRouteSlug, resolveDocSectionSlug } from '../utils/docsRoute'
 
 const siteLocaleToDocLangMap = {
   'zh-cn': 'zh-cn',
@@ -82,16 +83,8 @@ function safeIdSegment(value) {
   return parts.join('-') || 'doc'
 }
 
-function parseDocsRoute(pathname) {
-  const segments = `${pathname ?? ''}`.split('/').filter(Boolean)
-  const docsIndex = segments.indexOf('docs')
-  if (docsIndex < 0) {
-    return { sectionSlug: '', itemSlug: '' }
-  }
-  return {
-    sectionSlug: segments[docsIndex + 1] ?? '',
-    itemSlug: segments[docsIndex + 2] ?? '',
-  }
+function parseDocsRouteFromPathname(pathname) {
+  return parseDocsRoute(pathname)
 }
 
 function escapeHtml(text) {
@@ -301,7 +294,6 @@ export default function DocsCenterPage({
   currentLocale,
   currentPathname,
   navigateTo,
-  getLocaleDocsPath,
   docsUiText,
   infoPanels,
   sectionSlugMap,
@@ -372,11 +364,6 @@ export default function DocsCenterPage({
     [sectionModels, tocSearchKeyword],
   )
 
-  const { sectionSlug: routeSectionSlug, itemSlug: routeItemSlug } = useMemo(
-    () => parseDocsRoute(currentPathname),
-    [currentPathname],
-  )
-
   const helpDocRouteMap = useMemo(() => {
     const nextMap = new Map()
     Object.values(staticMetaMap).forEach((meta) => {
@@ -384,14 +371,64 @@ export default function DocsCenterPage({
         return
       }
       const displayParts = displayPathBySourceKey.get(meta.pathKey) ?? meta.pathParts
-      const sectionLabel = displayParts[0] ?? meta.pathParts[0]
-      const sectionSlug = sectionSlugMap[sectionLabel] ?? fallbackSlug(sectionLabel, sectionSlugMap)
+      if (meta.docRouteSlug) {
+        nextMap.set(meta.docRouteSlug, meta)
+        return
+      }
+      const sectionSlug = resolveDocSectionSlug(meta, sectionSlugMap, displayParts, fallbackSlug)
       nextMap.set(`${sectionSlug}/${meta.routeSlug}`, meta)
     })
     return nextMap
   }, [displayPathBySourceKey, sectionSlugMap, staticMetaMap])
 
-  const currentDocMeta = helpDocRouteMap.get(`${routeSectionSlug}/${routeItemSlug}`) ?? null
+  const {
+    sectionSlug: routeSectionSlug,
+    itemSlug: routeItemSlug,
+    docRouteSlug: routeDocSlug,
+    platformId: routePlatformId,
+    detailSectionId: routeDetailSectionId,
+  } = useMemo(() => {
+    const parsed = parseDocsRouteFromPathname(currentPathname)
+
+    if (parsed.docRouteSlug) {
+      return parsed
+    }
+
+    if (
+      parsed.sectionSlug
+      && !parsed.itemSlug
+      && helpDocRouteMap.has(parsed.sectionSlug)
+    ) {
+      return {
+        sectionSlug: '',
+        itemSlug: '',
+        docRouteSlug: parsed.sectionSlug,
+        platformId: '',
+        detailSectionId: '',
+      }
+    }
+
+    return parsed
+  }, [currentPathname, helpDocRouteMap])
+
+  const docSectionRouteReverseMap = useMemo(() => {
+    const nextMap = new Map()
+    Object.values(staticMetaMap).forEach((meta) => {
+      const routeSlug = meta.docRouteSlug || meta.sectionRouteSlug
+      if (!routeSlug) {
+        return
+      }
+      const displayParts = displayPathBySourceKey.get(meta.pathKey) ?? meta.pathParts
+      const sectionLabel = displayParts[0] ?? meta.pathParts[0]
+      nextMap.set(routeSlug, sectionLabel)
+    })
+    return nextMap
+  }, [displayPathBySourceKey, staticMetaMap])
+
+  const currentDocMeta =
+    (routeDocSlug ? helpDocRouteMap.get(routeDocSlug) : null)
+    ?? helpDocRouteMap.get(`${routeSectionSlug}/${routeItemSlug}`)
+    ?? null
   const currentDocDisplayParts = currentDocMeta
     ? displayPathBySourceKey.get(currentDocMeta.pathKey) ?? currentDocMeta.pathParts
     : null
@@ -416,6 +453,14 @@ export default function DocsCenterPage({
   const currentDocSectionLabel = currentDocDisplayParts?.[0] ?? activeSection
   const currentDocSectionSlug =
     sectionSlugMap[currentDocSectionLabel] ?? fallbackSlug(currentDocSectionLabel, sectionSlugMap)
+  const currentDocRouteSlug = currentDocMeta
+    ? resolveDocRouteSlug(
+        currentDocMeta,
+        sectionSlugMap,
+        currentDocDisplayParts ?? currentDocMeta.pathParts,
+        fallbackSlug,
+      )
+    : ''
   const isZhContent = `${currentLocale}`.toLowerCase().startsWith('zh')
   const activeBlockTitle = currentDocDisplayParts?.length === 3 ? currentDocDisplayParts[1] : ''
   const [scrollLinkedTarget, setScrollLinkedTarget] = useState(null)
@@ -612,9 +657,9 @@ export default function DocsCenterPage({
     setAppliedSearchKeyword(heroInputValue)
   }
 
-  const navigatePreservingScroll = (targetPath) => {
+  const navigatePreservingScroll = useCallback((targetPath) => {
     navigateTo(targetPath, { scrollToTop: false })
-  }
+  }, [navigateTo])
 
   const handleScrollToSection = (sectionTitle, blockTitle = '') => {
     const targetId = blockTitle
@@ -657,11 +702,13 @@ export default function DocsCenterPage({
   }
 
   useEffect(() => {
-    if (!routeSectionSlug || routeItemSlug || currentDocMeta) {
+    if (!routeSectionSlug || routeItemSlug || routeDocSlug || currentDocMeta) {
       return
     }
 
-    const sectionTitle = Object.entries(sectionSlugMap).find(([, slug]) => slug === routeSectionSlug)?.[0]
+    const sectionTitle =
+      Object.entries(sectionSlugMap).find(([, slug]) => slug === routeSectionSlug)?.[0]
+      ?? docSectionRouteReverseMap.get(routeSectionSlug)
     if (!sectionTitle) {
       return
     }
@@ -672,7 +719,22 @@ export default function DocsCenterPage({
     }
 
     handleScrollToSection(sectionTitle)
-  }, [routeSectionSlug, routeItemSlug, currentDocMeta, sectionSlugMap, sectionModels])
+  }, [routeSectionSlug, routeItemSlug, routeDocSlug, currentDocMeta, sectionSlugMap, sectionModels, docSectionRouteReverseMap])
+
+  const handleDocDetailRouteChange = useCallback(({ platformId = '', detailSectionId = '' } = {}) => {
+    if (!currentDocRouteSlug) {
+      return
+    }
+
+    navigatePreservingScroll(
+      getLocaleDocsPath(
+        currentLocale,
+        currentDocRouteSlug,
+        platformId,
+        detailSectionId,
+      ),
+    )
+  }, [currentDocRouteSlug, currentLocale, navigatePreservingScroll])
 
   const handleNodeClick = (sourcePathParts) => {
     const meta = staticMetaMap[createDocsPathKey(sourcePathParts)]
@@ -680,18 +742,16 @@ export default function DocsCenterPage({
       return
     }
     const displayParts = displayPathBySourceKey.get(meta.pathKey) ?? meta.pathParts
-    const sectionLabel = displayParts[0] ?? meta.pathParts[0]
-    const sectionSlug = sectionSlugMap[sectionLabel] ?? fallbackSlug(sectionLabel, sectionSlugMap)
-    navigatePreservingScroll(getLocaleDocsPath(currentLocale, sectionSlug, meta.routeSlug))
+    const docPathSlug = resolveDocRouteSlug(meta, sectionSlugMap, displayParts, fallbackSlug)
+    navigatePreservingScroll(getLocaleDocsPath(currentLocale, docPathSlug))
   }
 
   const handleBreadcrumbRootClick = () => {
     const sectionTitle = currentDocDisplayParts?.[0]
-    if (!sectionTitle) {
+    if (!sectionTitle || !currentDocSectionSlug) {
       return
     }
-    const sectionSlug = sectionSlugMap[sectionTitle] ?? fallbackSlug(sectionTitle, sectionSlugMap)
-    navigatePreservingScroll(getLocaleDocsPath(currentLocale, sectionSlug))
+    navigatePreservingScroll(getLocaleDocsPath(currentLocale, currentDocSectionSlug))
     handleScrollToSection(sectionTitle)
   }
 
@@ -908,7 +968,7 @@ export default function DocsCenterPage({
           <button
             type="button"
             className="docs-center-overlay-back"
-            onClick={() => navigatePreservingScroll(getLocaleDocsPath(currentLocale, currentDocSectionSlug))}
+            onClick={() => navigatePreservingScroll(getLocaleDocsPath(currentLocale, currentDocRouteSlug))}
           >
             {docsUiText.overlayBackLabel}
           </button>
@@ -944,6 +1004,9 @@ export default function DocsCenterPage({
               fallbackNoticeHtml={currentDocFallbackNoticeHtml}
               docDisplayParts={currentDocDisplayParts ?? []}
               onBreadcrumbRootClick={handleBreadcrumbRootClick}
+              routePlatformId={routePlatformId}
+              routeDetailSectionId={routeDetailSectionId}
+              onDocRouteChange={handleDocDetailRouteChange}
             />
           ) : (
             <div className="docs-center-overlay-body">

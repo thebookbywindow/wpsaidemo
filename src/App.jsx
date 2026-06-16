@@ -26,6 +26,8 @@ import {
 import { translateOfflinePhrase } from './data/offlinePhraseTranslations'
 import { uiTextByLanguage } from './data/uiText'
 import { resolveWorldwideText } from './data/worldwideText'
+import { getLocaleDocsPath } from './utils/docsRoute'
+import { normalizeLocaleCode, toUrlLocale } from './utils/localeUrl'
 
 const products = [
   { name: 'PDF Tools', desc: 'Convert, edit, compress PDFs', color: '#e74c3c', iconKey: 'pdf' },
@@ -1409,7 +1411,7 @@ const localeOptions = supportedLocales.map((item) => ({
 
 const worldwideLocales = supportedLocales.map((item) => ({
   bcp47: item.bcp47,
-  urlLocale: item.code,
+  urlLocale: item.bcp47,
   shortCode: item.short,
   nativeLabel: item.label,
 }))
@@ -1528,10 +1530,6 @@ const toolRootSet = new Set(
 const templateLibraryRootSet = new Set(['resume-templates', 'presentation-templates'])
 
 const localeSet = new Set(supportedLocales.map((item) => item.code))
-const localeAliasMap = {
-  en: 'en-us',
-  zh: 'zh-cn',
-}
 const rootPageSet = new Set(['search', 'sitemap.xml'])
 const contentRootSet = new Set([
   'docs',
@@ -1552,8 +1550,7 @@ const contentRootSet = new Set([
 ])
 
 function normalizeLocaleSegment(segment) {
-  const normalized = segment.toLowerCase().replace(/_/g, '-')
-  return localeAliasMap[normalized] ?? normalized
+  return normalizeLocaleCode(segment)
 }
 
 function splitPath(pathname) {
@@ -1579,22 +1576,23 @@ function toPathWithTrailingSlash(segments) {
 function getCanonicalLocalizedPath(pathname, fallbackLocale = 'en-us') {
   const segments = pathname.split('/').filter(Boolean)
   if (segments.length === 0) {
-    return `/${fallbackLocale}/`
+    return `/${toUrlLocale(fallbackLocale)}/`
   }
 
   const maybeLocale = normalizeLocaleSegment(segments[0])
   if (localeSet.has(maybeLocale)) {
+    const urlLocale = toUrlLocale(maybeLocale)
     if (segments.length === 1) {
-      return `/${maybeLocale}/`
+      return `/${urlLocale}/`
     }
     const innerSegments = segments.slice(1)
     if (!innerSegments.length) {
-      return `/${maybeLocale}/`
+      return `/${urlLocale}/`
     }
     if (rootPageSet.has(innerSegments[0])) {
       return `/${innerSegments.join('/')}`
     }
-    return toPathWithTrailingSlash([maybeLocale, ...innerSegments])
+    return toPathWithTrailingSlash([urlLocale, ...innerSegments])
   }
 
   if (rootPageSet.has(segments[0])) {
@@ -1662,15 +1660,15 @@ function resolveTemplateTargetPath(path, locale) {
     .join('/')
 
   if (normalizedPath === 'ai-writing/cover-letter') {
-    return `/${locale}/resume-templates/`
+    return `/${toUrlLocale(locale)}/resume-templates/`
   }
   if (normalizedPath === 'ai-slides/theme') {
-    return `/${locale}/presentation-templates/`
+    return `/${toUrlLocale(locale)}/presentation-templates/`
   }
   if (!normalizedPath) {
-    return `/${locale}/all-templates/`
+    return `/${toUrlLocale(locale)}/all-templates/`
   }
-  return `/${locale}/${normalizedPath}/`
+  return `/${toUrlLocale(locale)}/${normalizedPath}/`
 }
 
 function buildLocalizedPath(targetLocale, sourcePathname = window.location.pathname) {
@@ -1678,7 +1676,7 @@ function buildLocalizedPath(targetLocale, sourcePathname = window.location.pathn
   const { normalizedSegments } = splitPath(sourcePathname)
 
   if (normalizedSegments.length === 0) {
-    return `/${targetLocale}/`
+    return `/${toUrlLocale(targetLocale)}/`
   }
 
   if (rootPageSet.has(normalizedSegments[0])) {
@@ -1687,11 +1685,11 @@ function buildLocalizedPath(targetLocale, sourcePathname = window.location.pathn
   }
 
   if (contentRootSet.has(normalizedSegments[0]) || toolRootSet.has(normalizedSegments[0])) {
-    const localizedPath = `/${targetLocale}/${normalizedSegments.join('/')}/`
+    const localizedPath = `/${toUrlLocale(targetLocale)}/${normalizedSegments.join('/')}/`
     return `${localizedPath}${search}${hash}`
   }
 
-  return `/${targetLocale}/${search}${hash}`
+  return `/${toUrlLocale(targetLocale)}/${search}${hash}`
 }
 
 function getPageType(pathname) {
@@ -1751,44 +1749,34 @@ function getPageType(pathname) {
 }
 
 function getLocaleHomePath(locale) {
-  return `/${locale}/`
+  return `/${toUrlLocale(locale)}/`
 }
 
 function getLocaleDownloadPath(locale) {
-  return `/${locale}/download/`
+  return `/${toUrlLocale(locale)}/download/`
 }
 
 function getLocalePricingPath(locale) {
-  return `/${locale}/pricing/`
-}
-
-function getLocaleDocsPath(locale, sectionSlug = '', itemSlug = '') {
-  if (sectionSlug && itemSlug) {
-    return `/${locale}/docs/${sectionSlug}/${itemSlug}/`
-  }
-  if (sectionSlug) {
-    return `/${locale}/docs/${sectionSlug}/`
-  }
-  return `/${locale}/docs/`
+  return `/${toUrlLocale(locale)}/pricing/`
 }
 
 function getLocaleBlogPath(locale) {
-  return `/${locale}/blog/`
+  return `/${toUrlLocale(locale)}/blog/`
 }
 
 function getLocaleEncyclopediaPath(locale) {
-  return `/${locale}/encyclopedia/`
+  return `/${toUrlLocale(locale)}/encyclopedia/`
 }
 
 function getLocaleAnswersPath(locale) {
-  return `/${locale}/answers/`
+  return `/${toUrlLocale(locale)}/answers/`
 }
 
 function getLocaleAnswersForumPath(locale, topicSlug = '') {
   if (topicSlug) {
-    return `/${locale}/answers/forum/${topicSlug}/`
+    return `/${toUrlLocale(locale)}/answers/forum/${topicSlug}/`
   }
-  return `/${locale}/answers/forum/`
+  return `/${toUrlLocale(locale)}/answers/forum/`
 }
 
 function toTopicSlug(value) {
@@ -1800,19 +1788,19 @@ function toTopicSlug(value) {
 }
 
 function getLocaleAllProductsPath(locale) {
-  return `/${locale}/all-products/`
+  return `/${toUrlLocale(locale)}/all-products/`
 }
 
 function getLocaleAllTemplatesPath(locale) {
-  return `/${locale}/all-templates/`
+  return `/${toUrlLocale(locale)}/all-templates/`
 }
 
 function getLocaleWorldwidePath(locale) {
-  return `/${locale}/worldwide/`
+  return `/${toUrlLocale(locale)}/worldwide/`
 }
 
 function getLocaleGuidesPath(locale) {
-  return `/${locale}/guides/`
+  return `/${toUrlLocale(locale)}/guides/`
 }
 
 function getDocsJumpCardPath(locale, linkKey = '') {
@@ -2046,6 +2034,7 @@ function App() {
     const nextLocale = resolveLocaleFromPath(window.location.pathname)
     return getCanonicalLocalizedPath(window.location.pathname, nextLocale) ?? window.location.pathname
   })
+  const currentUrlLocale = useMemo(() => toUrlLocale(currentLocale), [currentLocale])
   const langMenuRef = useRef(null)
   const mobileMenuButtonRef = useRef(null)
   const mobileMenuPanelRef = useRef(null)
@@ -2566,7 +2555,7 @@ function App() {
         return {
           ...productItem,
           targetPath: firstToolPath
-            ? `/${currentLocale}/${firstToolPath}`
+            ? `/${currentUrlLocale}/${firstToolPath}`
             : getLocaleAllProductsPath(currentLocale),
         }
       })
@@ -3523,7 +3512,7 @@ function App() {
                       </div>
                       <div className="mt-2.5 flex flex-col gap-1">
                         {section.items.slice(0, 6).map((sectionItem) => {
-                          const targetPath = `/${currentLocale}/${sectionItem.path}`
+                          const targetPath = `/${currentUrlLocale}/${sectionItem.path}`
                           return (
                             <a
                               key={sectionItem.name}
@@ -4156,7 +4145,6 @@ function App() {
             currentLocale={currentLocale}
             currentPathname={currentPathname}
             navigateTo={navigateTo}
-            getLocaleDocsPath={getLocaleDocsPath}
             docsUiText={docsUiText}
             infoPanels={localizedDocsFaqItems}
             sectionSlugMap={localizedDocsSectionSlugMap}
@@ -4231,7 +4219,7 @@ function App() {
                         <article
                           key={`primary-${post.slug}`}
                           className="blog-card blog-card--primary"
-                          onClick={() => navigateTo(`/${currentLocale}/blog/${post.slug}/`)}
+                          onClick={() => navigateTo(`/${currentUrlLocale}/blog/${post.slug}/`)}
                         >
                           <div
                             className={`blog-card-accent ${blogCategoryAccentClassMap[post.category] ?? blogCategoryAccentClassMap.ai}`}
@@ -4269,11 +4257,11 @@ function App() {
                             </p>
                             <h3 className="blog-card-title">
                               <a
-                                href={`/${currentLocale}/blog/${post.slug}/`}
+                                href={`/${currentUrlLocale}/blog/${post.slug}/`}
                                 onClick={(event) => {
                                   event.preventDefault()
                                   event.stopPropagation()
-                                  navigateTo(`/${currentLocale}/blog/${post.slug}/`)
+                                  navigateTo(`/${currentUrlLocale}/blog/${post.slug}/`)
                                 }}
                               >
                                 {post.title}
@@ -4294,7 +4282,7 @@ function App() {
                           <article
                             key={`secondary-${post.slug}`}
                             className="blog-card blog-card--secondary"
-                            onClick={() => navigateTo(`/${currentLocale}/blog/${post.slug}/`)}
+                            onClick={() => navigateTo(`/${currentUrlLocale}/blog/${post.slug}/`)}
                           >
                             {post.image ? (
                               <div className="blog-card-thumb">
@@ -4328,11 +4316,11 @@ function App() {
                               </p>
                               <h3 className="blog-card-title">
                                 <a
-                                  href={`/${currentLocale}/blog/${post.slug}/`}
+                                  href={`/${currentUrlLocale}/blog/${post.slug}/`}
                                   onClick={(event) => {
                                     event.preventDefault()
                                     event.stopPropagation()
-                                    navigateTo(`/${currentLocale}/blog/${post.slug}/`)
+                                    navigateTo(`/${currentUrlLocale}/blog/${post.slug}/`)
                                   }}
                                 >
                                   {post.title}
@@ -4443,11 +4431,11 @@ function App() {
                         {blogOverlayRelatedPosts.map((post) => (
                           <a
                             key={`blog-related-${post.slug}`}
-                            href={`/${currentLocale}/blog/${post.slug}/`}
+                            href={`/${currentUrlLocale}/blog/${post.slug}/`}
                             className="blog-related-item"
                             onClick={(event) => {
                               event.preventDefault()
-                              navigateTo(`/${currentLocale}/blog/${post.slug}/`)
+                              navigateTo(`/${currentUrlLocale}/blog/${post.slug}/`)
                             }}
                           >
                             <span className="blog-related-date">
@@ -4898,11 +4886,11 @@ function App() {
                       <div className="mt-auto flex items-center justify-between border-t border-[#edeff4] bg-[#f4f2ed] px-4 py-3">
                         <span className="text-[11px] text-[#9aa3b3]">{guide.readTime}</span>
                         <a
-                          href={`/${currentLocale}/guides/${guide.slug}`}
+                          href={`/${currentUrlLocale}/guides/${guide.slug}`}
                           className="text-[12px] font-semibold text-[#5a51c9] transition hover:text-[#3f38a6]"
                           onClick={(event) => {
                             event.preventDefault()
-                            navigateTo(`/${currentLocale}/guides/${guide.slug}`)
+                            navigateTo(`/${currentUrlLocale}/guides/${guide.slug}`)
                           }}
                         >
                           {uiText.guides.readGuide} →
@@ -5203,8 +5191,8 @@ function App() {
                     onClick={() => {
                       if (!currentTemplateRoute?.key) return
                       const targetPath = currentTemplateRoute.key === 'excel'
-                        ? `/${currentLocale}/ai-sheets/excel-templates/${card.slug}/`
-                        : `/${currentLocale}/${currentTemplateRoute.key === 'resume' ? 'resume-templates' : 'presentation-templates'}/${card.slug}/`
+                        ? `/${currentUrlLocale}/ai-sheets/excel-templates/${card.slug}/`
+                        : `/${currentUrlLocale}/${currentTemplateRoute.key === 'resume' ? 'resume-templates' : 'presentation-templates'}/${card.slug}/`
                       navigateTo(targetPath)
                     }}
                   >
@@ -5496,7 +5484,7 @@ function App() {
                               </h2>
                               <div className="mt-3 grid gap-2 sm:grid-cols-2">
                                 {section.items.map((item) => {
-                                  const targetPath = `/${currentLocale}/${item.path}`
+                                  const targetPath = `/${currentUrlLocale}/${item.path}`
                                   return (
                                     <a
                                       key={item.name}
@@ -5528,7 +5516,7 @@ function App() {
                               </h2>
                               <div className="mt-3 grid gap-2">
                                 {group.items.map((item) => {
-                                  const targetPath = `/${currentLocale}/${item.path}`
+                                  const targetPath = `/${currentUrlLocale}/${item.path}`
                                   return (
                                     <a
                                       key={item.name}

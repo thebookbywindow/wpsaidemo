@@ -8,22 +8,45 @@ export const DOC_DETAIL_TOC_PLATFORMS = [
 ]
 
 export const DOC_DETAIL_TOC_SECTIONS_ZH = [
-  { id: 'summary', label: '功能摘要' },
-  { id: 'description', label: '功能说明' },
-  { id: 'steps', label: '操作步骤' },
-  { id: 'faq', label: '常见问题' },
-  { id: 'related', label: '关联问题' },
-  { id: 'notes', label: '注意事项' },
+  { id: 'summary', label: '功能摘要', urlSlug: 'feature-summary' },
+  { id: 'description', label: '功能说明', urlSlug: 'feature-description' },
+  { id: 'steps', label: '操作步骤', urlSlug: 'steps' },
+  { id: 'faq', label: '常见问题', urlSlug: 'faq' },
+  { id: 'related', label: '关联问题', urlSlug: 'related-questions' },
+  { id: 'notes', label: '注意事项', urlSlug: 'notes' },
 ]
 
 export const DOC_DETAIL_TOC_SECTIONS_EN = [
-  { id: 'summary', label: 'Feature Summary' },
-  { id: 'description', label: 'Feature Description' },
-  { id: 'steps', label: 'Steps' },
-  { id: 'faq', label: 'FAQ' },
-  { id: 'related', label: 'Related Questions' },
-  { id: 'notes', label: 'Notes' },
+  { id: 'summary', label: 'Feature Summary', urlSlug: 'feature-summary' },
+  { id: 'description', label: 'Feature Description', urlSlug: 'feature-description' },
+  { id: 'steps', label: 'Steps', urlSlug: 'steps' },
+  { id: 'faq', label: 'FAQ', urlSlug: 'faq' },
+  { id: 'related', label: 'Related Questions', urlSlug: 'related-questions' },
+  { id: 'notes', label: 'Notes', urlSlug: 'notes' },
 ]
+
+const DOC_DETAIL_SECTION_URL_SLUG_TO_ID = Object.fromEntries(
+  DOC_DETAIL_TOC_SECTIONS_EN.map((section) => [section.urlSlug, section.id]),
+)
+
+export const DOC_DETAIL_SECTION_IDS = new Set(DOC_DETAIL_TOC_SECTIONS_EN.map((section) => section.id))
+
+export function isValidDocDetailSectionId(sectionId) {
+  return DOC_DETAIL_SECTION_IDS.has(sectionId)
+}
+
+export function getDocDetailSectionUrlSlug(sectionId) {
+  const section = DOC_DETAIL_TOC_SECTIONS_EN.find((item) => item.id === sectionId)
+  return section?.urlSlug ?? sectionId
+}
+
+export function resolveDocDetailSectionIdFromUrlSlug(urlSlug) {
+  return DOC_DETAIL_SECTION_URL_SLUG_TO_ID[urlSlug] ?? ''
+}
+
+export function isValidDocDetailSectionUrlSlug(urlSlug) {
+  return Boolean(DOC_DETAIL_SECTION_URL_SLUG_TO_ID[urlSlug])
+}
 
 export function getDocDetailTocSections(isZhContent) {
   return isZhContent ? DOC_DETAIL_TOC_SECTIONS_ZH : DOC_DETAIL_TOC_SECTIONS_EN

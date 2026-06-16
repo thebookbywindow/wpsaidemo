@@ -83,6 +83,9 @@ export default function DocDetailOverlayMain({
   docDisplayParts = [],
   articleBreadcrumbAriaLabel = 'Article breadcrumb',
   onBreadcrumbRootClick,
+  routePlatformId = '',
+  routeDetailSectionId = '',
+  onDocRouteChange,
 }) {
   const {
     expandedPlatformId,
@@ -93,7 +96,11 @@ export default function DocDetailOverlayMain({
     handleSectionClick,
     handleBreadcrumbPlatformClick,
     handleBreadcrumbDocClick,
-  } = useDocDetailToc()
+  } = useDocDetailToc({
+    routePlatformId,
+    routeDetailSectionId,
+    onRouteChange: onDocRouteChange,
+  })
 
   const platformLabel =
     DOC_DETAIL_TOC_PLATFORMS.find((platform) => platform.id === activePlatformId)?.label ?? ''

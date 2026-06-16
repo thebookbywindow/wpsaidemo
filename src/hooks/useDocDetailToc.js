@@ -1,12 +1,37 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 const DEFAULT_SECTION_ID = 'summary'
 
-export function useDocDetailToc() {
-  const [expandedPlatformId, setExpandedPlatformId] = useState('')
-  const [activePlatformId, setActivePlatformId] = useState('')
-  const [activeSectionId, setActiveSectionId] = useState(DEFAULT_SECTION_ID)
-  const [contentViewMode, setContentViewMode] = useState('doc-catalog-index')
+function deriveContentViewMode(platformId, detailSectionId) {
+  if (!platformId) {
+    return 'doc-catalog-index'
+  }
+  if (!detailSectionId) {
+    return 'platform-index'
+  }
+  return 'section-detail'
+}
+
+export function useDocDetailToc({
+  routePlatformId = '',
+  routeDetailSectionId = '',
+  onRouteChange,
+} = {}) {
+  const [expandedPlatformId, setExpandedPlatformId] = useState(routePlatformId)
+
+  useEffect(() => {
+    if (routePlatformId) {
+      setExpandedPlatformId(routePlatformId)
+    }
+  }, [routePlatformId])
+
+  const contentViewMode = useMemo(
+    () => deriveContentViewMode(routePlatformId, routeDetailSectionId),
+    [routePlatformId, routeDetailSectionId],
+  )
+
+  const activePlatformId = routePlatformId
+  const activeSectionId = routeDetailSectionId || DEFAULT_SECTION_ID
 
   const handleSidebarPlatformToggle = useCallback((platformId) => {
     setExpandedPlatformId((currentPlatformId) =>
@@ -16,22 +41,18 @@ export function useDocDetailToc() {
 
   const handleSectionClick = useCallback((platformId, sectionId) => {
     setExpandedPlatformId(platformId)
-    setActivePlatformId(platformId)
-    setActiveSectionId(sectionId)
-    setContentViewMode('section-detail')
-  }, [])
+    onRouteChange?.({ platformId, detailSectionId: sectionId })
+  }, [onRouteChange])
 
   const handleBreadcrumbPlatformClick = useCallback((platformId) => {
     setExpandedPlatformId(platformId)
-    setActivePlatformId(platformId)
-    setContentViewMode('platform-index')
-  }, [])
+    onRouteChange?.({ platformId, detailSectionId: '' })
+  }, [onRouteChange])
 
   const handleBreadcrumbDocClick = useCallback(() => {
     setExpandedPlatformId('')
-    setActivePlatformId('')
-    setContentViewMode('doc-catalog-index')
-  }, [])
+    onRouteChange?.({ platformId: '', detailSectionId: '' })
+  }, [onRouteChange])
 
   return {
     expandedPlatformId,
