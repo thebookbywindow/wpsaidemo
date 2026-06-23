@@ -5,6 +5,7 @@ import {
   resolveDocDetailSectionIdFromUrlSlug,
 } from '../data/docDetailTocData'
 import { toUrlLocale } from './localeUrl'
+import { joinPath } from './pathUrl'
 
 const DOC_DETAIL_PLATFORM_IDS = new Set(DOC_DETAIL_TOC_PLATFORMS.map((platform) => platform.id))
 
@@ -58,28 +59,27 @@ export function getLocaleDocsPath(
   platformOrItemSlug = '',
   detailSectionId = '',
 ) {
-  if (!slug) {
-    return `/${toUrlLocale(locale)}/docs/`
-  }
-
   const urlLocale = toUrlLocale(locale)
 
+  if (!slug) {
+    return joinPath(urlLocale, 'docs')
+  }
+
   if (isValidDocDetailPlatformId(platformOrItemSlug)) {
-    let path = `/${urlLocale}/docs/${slug}/${platformOrItemSlug}/`
     const detailSectionUrlSlug = detailSectionId
       ? getDocDetailSectionUrlSlug(detailSectionId)
       : ''
     if (detailSectionUrlSlug && isValidDocDetailSectionUrlSlug(detailSectionUrlSlug)) {
-      path += `${detailSectionUrlSlug}/`
+      return joinPath(urlLocale, 'docs', slug, platformOrItemSlug, detailSectionUrlSlug)
     }
-    return path
+    return joinPath(urlLocale, 'docs', slug, platformOrItemSlug)
   }
 
   if (platformOrItemSlug) {
-    return `/${urlLocale}/docs/${slug}/${platformOrItemSlug}/`
+    return joinPath(urlLocale, 'docs', slug, platformOrItemSlug)
   }
 
-  return `/${urlLocale}/docs/${slug}/`
+  return joinPath(urlLocale, 'docs', slug)
 }
 
 export function resolveDocRouteSlug(meta, sectionSlugMap, displayParts, fallbackSlugFn) {

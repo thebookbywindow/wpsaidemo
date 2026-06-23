@@ -27,6 +27,7 @@ import { translateOfflinePhrase } from './data/offlinePhraseTranslations'
 import { uiTextByLanguage } from './data/uiText'
 import { resolveWorldwideText } from './data/worldwideText'
 import { getLocaleDocsPath } from './utils/docsRoute'
+import { joinPath } from './utils/pathUrl'
 import { normalizeLocaleCode, toUrlLocale } from './utils/localeUrl'
 
 const products = [
@@ -1566,41 +1567,34 @@ function splitPath(pathname) {
   return { locale: 'en-us', normalizedSegments: segments }
 }
 
-function toPathWithTrailingSlash(segments) {
-  if (!segments.length) {
-    return '/'
-  }
-  return `/${segments.join('/')}/`
-}
-
 function getCanonicalLocalizedPath(pathname, fallbackLocale = 'en-us') {
   const segments = pathname.split('/').filter(Boolean)
   if (segments.length === 0) {
-    return `/${toUrlLocale(fallbackLocale)}/`
+    return joinPath(toUrlLocale(fallbackLocale))
   }
 
   const maybeLocale = normalizeLocaleSegment(segments[0])
   if (localeSet.has(maybeLocale)) {
     const urlLocale = toUrlLocale(maybeLocale)
     if (segments.length === 1) {
-      return `/${urlLocale}/`
+      return joinPath(urlLocale)
     }
     const innerSegments = segments.slice(1)
     if (!innerSegments.length) {
-      return `/${urlLocale}/`
+      return joinPath(urlLocale)
     }
     if (rootPageSet.has(innerSegments[0])) {
-      return `/${innerSegments.join('/')}`
+      return joinPath(...innerSegments)
     }
-    return toPathWithTrailingSlash([urlLocale, ...innerSegments])
+    return joinPath(urlLocale, ...innerSegments)
   }
 
   if (rootPageSet.has(segments[0])) {
-    return `/${segments.join('/')}`
+    return joinPath(...segments)
   }
 
   if (contentRootSet.has(segments[0]) || toolRootSet.has(segments[0])) {
-    return toPathWithTrailingSlash([fallbackLocale, ...segments])
+    return joinPath(toUrlLocale(fallbackLocale), ...segments)
   }
 
   return null
@@ -1660,15 +1654,15 @@ function resolveTemplateTargetPath(path, locale) {
     .join('/')
 
   if (normalizedPath === 'ai-writing/cover-letter') {
-    return `/${toUrlLocale(locale)}/resume-templates/`
+    return joinPath(toUrlLocale(locale), 'resume-templates')
   }
   if (normalizedPath === 'ai-slides/theme') {
-    return `/${toUrlLocale(locale)}/presentation-templates/`
+    return joinPath(toUrlLocale(locale), 'presentation-templates')
   }
   if (!normalizedPath) {
-    return `/${toUrlLocale(locale)}/all-templates/`
+    return joinPath(toUrlLocale(locale), 'all-templates')
   }
-  return `/${toUrlLocale(locale)}/${normalizedPath}/`
+  return joinPath(toUrlLocale(locale), normalizedPath)
 }
 
 function buildLocalizedPath(targetLocale, sourcePathname = window.location.pathname) {
@@ -1676,20 +1670,20 @@ function buildLocalizedPath(targetLocale, sourcePathname = window.location.pathn
   const { normalizedSegments } = splitPath(sourcePathname)
 
   if (normalizedSegments.length === 0) {
-    return `/${toUrlLocale(targetLocale)}/`
+    return joinPath(toUrlLocale(targetLocale))
   }
 
   if (rootPageSet.has(normalizedSegments[0])) {
-    const rootPath = `/${normalizedSegments.join('/')}`
+    const rootPath = joinPath(...normalizedSegments)
     return `${rootPath}${search}${hash}`
   }
 
   if (contentRootSet.has(normalizedSegments[0]) || toolRootSet.has(normalizedSegments[0])) {
-    const localizedPath = `/${toUrlLocale(targetLocale)}/${normalizedSegments.join('/')}/`
+    const localizedPath = joinPath(toUrlLocale(targetLocale), ...normalizedSegments)
     return `${localizedPath}${search}${hash}`
   }
 
-  return `/${toUrlLocale(targetLocale)}/${search}${hash}`
+  return `${joinPath(toUrlLocale(targetLocale))}${search}${hash}`
 }
 
 function getPageType(pathname) {
@@ -1749,34 +1743,34 @@ function getPageType(pathname) {
 }
 
 function getLocaleHomePath(locale) {
-  return `/${toUrlLocale(locale)}/`
+  return joinPath(toUrlLocale(locale))
 }
 
 function getLocaleDownloadPath(locale) {
-  return `/${toUrlLocale(locale)}/download/`
+  return joinPath(toUrlLocale(locale), 'download')
 }
 
 function getLocalePricingPath(locale) {
-  return `/${toUrlLocale(locale)}/pricing/`
+  return joinPath(toUrlLocale(locale), 'pricing')
 }
 
 function getLocaleBlogPath(locale) {
-  return `/${toUrlLocale(locale)}/blog/`
+  return joinPath(toUrlLocale(locale), 'blog')
 }
 
 function getLocaleEncyclopediaPath(locale) {
-  return `/${toUrlLocale(locale)}/encyclopedia/`
+  return joinPath(toUrlLocale(locale), 'encyclopedia')
 }
 
 function getLocaleAnswersPath(locale) {
-  return `/${toUrlLocale(locale)}/answers/`
+  return joinPath(toUrlLocale(locale), 'answers')
 }
 
 function getLocaleAnswersForumPath(locale, topicSlug = '') {
   if (topicSlug) {
-    return `/${toUrlLocale(locale)}/answers/forum/${topicSlug}/`
+    return joinPath(toUrlLocale(locale), 'answers', 'forum', topicSlug)
   }
-  return `/${toUrlLocale(locale)}/answers/forum/`
+  return joinPath(toUrlLocale(locale), 'answers', 'forum')
 }
 
 function toTopicSlug(value) {
@@ -1788,19 +1782,19 @@ function toTopicSlug(value) {
 }
 
 function getLocaleAllProductsPath(locale) {
-  return `/${toUrlLocale(locale)}/all-products/`
+  return joinPath(toUrlLocale(locale), 'all-products')
 }
 
 function getLocaleAllTemplatesPath(locale) {
-  return `/${toUrlLocale(locale)}/all-templates/`
+  return joinPath(toUrlLocale(locale), 'all-templates')
 }
 
 function getLocaleWorldwidePath(locale) {
-  return `/${toUrlLocale(locale)}/worldwide/`
+  return joinPath(toUrlLocale(locale), 'worldwide')
 }
 
 function getLocaleGuidesPath(locale) {
-  return `/${toUrlLocale(locale)}/guides/`
+  return joinPath(toUrlLocale(locale), 'guides')
 }
 
 function getDocsJumpCardPath(locale, linkKey = '') {
@@ -2555,7 +2549,7 @@ function App() {
         return {
           ...productItem,
           targetPath: firstToolPath
-            ? `/${currentUrlLocale}/${firstToolPath}`
+            ? joinPath(currentUrlLocale, firstToolPath)
             : getLocaleAllProductsPath(currentLocale),
         }
       })
@@ -2575,7 +2569,7 @@ function App() {
     const map = new Map()
     localizedAllProductsSections.forEach((section) => {
       section.items.forEach((item) => {
-        const normalized = `${item.path.split('/').filter(Boolean).join('/')}/`
+        const normalized = item.path.split('/').filter(Boolean).join('/')
         map.set(normalized, {
           ...item,
           sectionTitle: section.title,
@@ -2596,7 +2590,7 @@ function App() {
     if (normalizedSegments.length < 2) {
       return null
     }
-    const normalizedPath = `${normalizedSegments[0]}/${normalizedSegments[1]}/`
+    const normalizedPath = `${normalizedSegments[0]}/${normalizedSegments[1]}`
     return toolDemoByPath.get(normalizedPath) ?? null
   }, [currentPathname, toolDemoByPath])
 
@@ -3227,7 +3221,7 @@ function App() {
     () =>
       resolveEncyclopediaEntriesForLocale(encyclopediaLocale, localizeString).map((entry) => {
         const category = encyclopediaCategoryBySlug[entry.slug] ?? 'overview'
-        const docsPath = entry.docsSlug ? `${localeDocsPath}${entry.docsSlug}/` : localeDocsPath
+        const docsPath = entry.docsSlug ? joinPath(localeDocsPath, entry.docsSlug) : localeDocsPath
         return {
           ...entry,
           category,
@@ -3512,7 +3506,7 @@ function App() {
                       </div>
                       <div className="mt-2.5 flex flex-col gap-1">
                         {section.items.slice(0, 6).map((sectionItem) => {
-                          const targetPath = `/${currentUrlLocale}/${sectionItem.path}`
+                          const targetPath = joinPath(currentUrlLocale, sectionItem.path)
                           return (
                             <a
                               key={sectionItem.name}
@@ -4219,7 +4213,7 @@ function App() {
                         <article
                           key={`primary-${post.slug}`}
                           className="blog-card blog-card--primary"
-                          onClick={() => navigateTo(`/${currentUrlLocale}/blog/${post.slug}/`)}
+                          onClick={() => navigateTo(joinPath(currentUrlLocale, 'blog', post.slug))}
                         >
                           <div
                             className={`blog-card-accent ${blogCategoryAccentClassMap[post.category] ?? blogCategoryAccentClassMap.ai}`}
@@ -4257,11 +4251,11 @@ function App() {
                             </p>
                             <h3 className="blog-card-title">
                               <a
-                                href={`/${currentUrlLocale}/blog/${post.slug}/`}
+                                href={joinPath(currentUrlLocale, 'blog', post.slug)}
                                 onClick={(event) => {
                                   event.preventDefault()
                                   event.stopPropagation()
-                                  navigateTo(`/${currentUrlLocale}/blog/${post.slug}/`)
+                                  navigateTo(joinPath(currentUrlLocale, 'blog', post.slug))
                                 }}
                               >
                                 {post.title}
@@ -4282,7 +4276,7 @@ function App() {
                           <article
                             key={`secondary-${post.slug}`}
                             className="blog-card blog-card--secondary"
-                            onClick={() => navigateTo(`/${currentUrlLocale}/blog/${post.slug}/`)}
+                            onClick={() => navigateTo(joinPath(currentUrlLocale, 'blog', post.slug))}
                           >
                             {post.image ? (
                               <div className="blog-card-thumb">
@@ -4316,11 +4310,11 @@ function App() {
                               </p>
                               <h3 className="blog-card-title">
                                 <a
-                                  href={`/${currentUrlLocale}/blog/${post.slug}/`}
+                                  href={joinPath(currentUrlLocale, 'blog', post.slug)}
                                   onClick={(event) => {
                                     event.preventDefault()
                                     event.stopPropagation()
-                                    navigateTo(`/${currentUrlLocale}/blog/${post.slug}/`)
+                                    navigateTo(joinPath(currentUrlLocale, 'blog', post.slug))
                                   }}
                                 >
                                   {post.title}
@@ -4431,11 +4425,11 @@ function App() {
                         {blogOverlayRelatedPosts.map((post) => (
                           <a
                             key={`blog-related-${post.slug}`}
-                            href={`/${currentUrlLocale}/blog/${post.slug}/`}
+                            href={joinPath(currentUrlLocale, 'blog', post.slug)}
                             className="blog-related-item"
                             onClick={(event) => {
                               event.preventDefault()
-                              navigateTo(`/${currentUrlLocale}/blog/${post.slug}/`)
+                                    navigateTo(joinPath(currentUrlLocale, 'blog', post.slug))
                             }}
                           >
                             <span className="blog-related-date">
@@ -4533,7 +4527,7 @@ function App() {
                               <article
                                 key={`ency-featured-${entry.slug}`}
                                 className="ency-topic-card ency-topic-card--featured"
-                                onClick={() => navigateTo(`${localeEncyclopediaPath}${entry.slug}/`)}
+                                onClick={() => navigateTo(joinPath(localeEncyclopediaPath, entry.slug))}
                               >
                                 <div className="ency-topic-media">
                                   <img src={entry.image} alt={entry.title} loading="lazy" />
@@ -4561,7 +4555,7 @@ function App() {
                             <article
                               key={`ency-topic-${entry.slug}`}
                               className="ency-topic-card"
-                              onClick={() => navigateTo(`${localeEncyclopediaPath}${entry.slug}/`)}
+                              onClick={() => navigateTo(joinPath(localeEncyclopediaPath, entry.slug))}
                             >
                               <div className="ency-topic-body">
                                 <div className="ency-topic-meta">
@@ -4680,11 +4674,11 @@ function App() {
                           currentEncyclopediaRelatedEntries.map((entry) => (
                             <li key={`related-${entry.slug}`}>
                               <a
-                                href={`${localeEncyclopediaPath}${entry.slug}/`}
+                                href={joinPath(localeEncyclopediaPath, entry.slug)}
                                 className="ency-related-link"
                                 onClick={(event) => {
                                   event.preventDefault()
-                                  navigateTo(`${localeEncyclopediaPath}${entry.slug}/`)
+                                  navigateTo(joinPath(localeEncyclopediaPath, entry.slug))
                                 }}
                               >
                                 {entry.title}
@@ -5191,8 +5185,12 @@ function App() {
                     onClick={() => {
                       if (!currentTemplateRoute?.key) return
                       const targetPath = currentTemplateRoute.key === 'excel'
-                        ? `/${currentUrlLocale}/ai-sheets/excel-templates/${card.slug}/`
-                        : `/${currentUrlLocale}/${currentTemplateRoute.key === 'resume' ? 'resume-templates' : 'presentation-templates'}/${card.slug}/`
+                        ? joinPath(currentUrlLocale, 'ai-sheets', 'excel-templates', card.slug)
+                        : joinPath(
+                          currentUrlLocale,
+                          currentTemplateRoute.key === 'resume' ? 'resume-templates' : 'presentation-templates',
+                          card.slug,
+                        )
                       navigateTo(targetPath)
                     }}
                   >
@@ -5484,7 +5482,7 @@ function App() {
                               </h2>
                               <div className="mt-3 grid gap-2 sm:grid-cols-2">
                                 {section.items.map((item) => {
-                                  const targetPath = `/${currentUrlLocale}/${item.path}`
+                                  const targetPath = joinPath(currentUrlLocale, item.path)
                                   return (
                                     <a
                                       key={item.name}
@@ -5516,7 +5514,7 @@ function App() {
                               </h2>
                               <div className="mt-3 grid gap-2">
                                 {group.items.map((item) => {
-                                  const targetPath = `/${currentUrlLocale}/${item.path}`
+                                  const targetPath = joinPath(currentUrlLocale, item.path)
                                   return (
                                     <a
                                       key={item.name}
@@ -5831,7 +5829,7 @@ function App() {
                 <h2 className="text-[15px] font-semibold text-[#1f2432]">{group.displayTitle ?? group.title}</h2>
                 <div className="mt-3 flex flex-col gap-1">
                   {group.items.map((item) => {
-                    const targetPath = `/${item.urlLocale}/`
+                    const targetPath = joinPath(item.urlLocale)
                     return (
                       <a
                         key={item.bcp47}
@@ -5861,7 +5859,7 @@ function App() {
             <h2 className="text-[15px] font-semibold text-[#1f2432]">{worldwideText.allLanguages}</h2>
             <div className="mt-3 grid gap-x-10 gap-y-1 sm:grid-cols-2 lg:grid-cols-4">
               {worldwideLocales.map((item) => {
-                const targetPath = `/${item.urlLocale}/`
+                const targetPath = joinPath(item.urlLocale)
                 return (
                   <a
                     key={item.bcp47}
