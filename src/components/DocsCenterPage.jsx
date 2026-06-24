@@ -2,6 +2,11 @@ import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import DocDetailOverlayMain from './DocDetailOverlayMain'
 import DocsDetailCatalogSidebar from './DocsDetailCatalogSidebar'
 import { buildDocsStaticMetaMap, createDocsPathKey } from '../data/docsCenterMeta'
+import helpCenterCatalogEntries from '../data/helpCenterCatalogEntries.json'
+import {
+  buildHelpCenterMetaMap,
+  buildHelpCenterSectionModels,
+} from '../utils/helpCenterCatalog'
 import { getLocaleDocsPath, parseDocsRoute, normalizeDocsRoute, buildCanonicalDocPath, resolveDocRouteSlug, resolveDocSectionSlug } from '../utils/docsRoute'
 
 const siteLocaleToDocLangMap = {
@@ -21,6 +26,11 @@ const DOC_LANGUAGE_LABELS = {
   'ja-jp': '日本語',
   'ko-kr': '한국어',
   'es-mx': 'Español',
+}
+
+const HELP_CENTER_SECTION_SLUG_MAP = {
+  WPS文字: 'wps-docs',
+  WPS表格: 'wps-sheets',
 }
 
 function getDocLanguageFromLocale(locale) {
@@ -207,28 +217,9 @@ function getDocsScrollOffset() {
   return navHeight + 18
 }
 
-function buildSectionModels(catalogSections, sourceCatalogSections, sectionMarkersMap, sourceSectionMarkersMap, getSectionBlocks) {
-  return catalogSections.map((section, sectionIndex) => {
-    const sourceSection = sourceCatalogSections[sectionIndex] ?? section
-    const displayBlocks = getSectionBlocks(section, sectionMarkersMap)
-    const sourceBlocks = getSectionBlocks(sourceSection, sourceSectionMarkersMap)
-
-    return {
-      title: section.title,
-      sourceTitle: sourceSection.title,
-      blocks: displayBlocks.map((block, blockIndex) => {
-        const sourceBlock = sourceBlocks[blockIndex] ?? { title: block.title, items: block.items }
-        return {
-          title: block.title,
-          sourceTitle: sourceBlock.title,
-          items: block.items.map((item, itemIndex) => ({
-            label: item,
-            sourceLabel: sourceBlock.items?.[itemIndex] ?? item,
-          })),
-        }
-      }),
-    }
-  })
+function isCatalogLeafClickable(pathKey, staticMetaMap) {
+  const meta = staticMetaMap[pathKey]
+  return Boolean(meta?.helpContent && meta?.routeSlug)
 }
 
 function filterSectionsForKeyword(sectionModels, keyword) {
@@ -274,13 +265,13 @@ export default function DocsCenterPage({
   navigateTo,
   docsUiText,
   infoPanels,
-  sectionSlugMap,
   activeSection,
-  catalogSections,
-  sourceCatalogSections,
-  sectionMarkersMap,
-  sourceSectionMarkersMap,
-  getSectionBlocks,
+  sectionSlugMap: _sectionSlugMap,
+  catalogSections: _catalogSections,
+  sourceCatalogSections: _sourceCatalogSections,
+  sectionMarkersMap: _sectionMarkersMap,
+  sourceSectionMarkersMap: _sourceSectionMarkersMap,
+  getSectionBlocks: _getSectionBlocks,
 }) {
   const [heroInputValue, setHeroInputValue] = useState('')
   const [appliedSearchKeyword, setAppliedSearchKeyword] = useState('')
@@ -289,22 +280,17 @@ export default function DocsCenterPage({
   const staticMetaMap = useMemo(() => buildDocsStaticMetaMap(), [])
 
   const sectionModels = useMemo(
-    () =>
-      buildSectionModels(
-        catalogSections,
-        sourceCatalogSections,
-        sectionMarkersMap,
-        sourceSectionMarkersMap,
-        getSectionBlocks,
-      ),
-    [
-      catalogSections,
-      sourceCatalogSections,
-      sectionMarkersMap,
-      sourceSectionMarkersMap,
-      getSectionBlocks,
-    ],
+    () => buildHelpCenterSectionModels(helpCenterCatalogEntries, currentLocale),
+    [currentLocale],
   )
+
+  const helpCenterMetaMap = useMemo(
+    () => buildHelpCenterMetaMap(helpCenterCatalogEntries),
+    [],
+  )
+
+  const catalogSectionSlugMap = HELP_CENTER_SECTION_SLUG_MAP
+  const defaultCatalogSection = sectionModels[0]?.title ?? ''
 
   const displayPathBySourceKey = useMemo(() => {
     const nextMap = new Map()
@@ -342,11 +328,11 @@ export default function DocsCenterPage({
         return
       }
       const displayParts = displayPathBySourceKey.get(meta.pathKey) ?? meta.pathParts
-      const sectionSlug = resolveDocSectionSlug(meta, sectionSlugMap, displayParts, fallbackSlug)
+      const sectionSlug = resolveDocSectionSlug(meta, catalogSectionSlugMap, meta.pathParts, fallbackSlug)
       nextMap.set(`${sectionSlug}/${meta.routeSlug}`, meta)
     })
     return nextMap
-  }, [displayPathBySourceKey, sectionSlugMap, staticMetaMap])
+  }, [displayPathBySourceKey, staticMetaMap])
 
   const parsedRoute = useMemo(() => parseDocsRouteFromPathname(currentPathname), [currentPathname])
 
@@ -421,14 +407,19 @@ export default function DocsCenterPage({
         )}</div>`
       : ''
 
-  const currentDocSectionLabel = currentDocDisplayParts?.[0] ?? activeSection
-  const currentDocSectionSlug =
-    sectionSlugMap[currentDocSectionLabel] ?? fallbackSlug(currentDocSectionLabel, sectionSlugMap)
+  const currentDocSectionSlug = currentDocMeta
+    ? resolveDocSectionSlug(
+        currentDocMeta,
+        catalogSectionSlugMap,
+        currentDocMeta.pathParts,
+        fallbackSlug,
+      )
+    : ''
   const currentDocRouteSlug = currentDocMeta
     ? resolveDocRouteSlug(
         currentDocMeta,
-        sectionSlugMap,
-        currentDocDisplayParts ?? currentDocMeta.pathParts,
+        catalogSectionSlugMap,
+        currentDocMeta.pathParts,
         fallbackSlug,
       )
     : ''
@@ -441,7 +432,11 @@ export default function DocsCenterPage({
   const scrollSpyUnlockTimeoutRef = useRef(0)
   const requestScrollSpyUpdateRef = useRef(() => {})
   const scrollToSectionTimeoutRef = useRef(0)
-  const resolvedActiveSection = scrollLinkedTarget?.sectionTitle ?? activeSection
+  const resolvedActiveSection =
+    scrollLinkedTarget?.sectionTitle
+    ?? (sectionModels.some((section) => section.title === activeSection)
+      ? activeSection
+      : defaultCatalogSection)
   const resolvedActiveBlockTitle = scrollLinkedTarget?.blockTitle ?? activeBlockTitle
 
   const scrollSpyTargets = useMemo(
@@ -481,10 +476,10 @@ export default function DocsCenterPage({
       return
     }
     setScrollLinkedTarget({
-      sectionTitle: activeSection,
+      sectionTitle: resolvedActiveSection,
       blockTitle: activeBlockTitle,
     })
-  }, [activeBlockTitle, activeSection])
+  }, [activeBlockTitle, resolvedActiveSection])
 
   const detailOverlayWasOpenRef = useRef(false)
 
@@ -678,15 +673,19 @@ export default function DocsCenterPage({
   }
 
   const handleCatalogSectionNavigate = (sectionTitle) => {
+    const section = sectionModels.find((item) => item.title === sectionTitle)
+    const sourceTitle = section?.sourceTitle ?? sectionTitle
     const sectionSlug =
-      sectionSlugMap[sectionTitle] ?? fallbackSlug(sectionTitle, sectionSlugMap)
+      catalogSectionSlugMap[sourceTitle] ?? fallbackSlug(sourceTitle, catalogSectionSlugMap)
     navigatePreservingScroll(getLocaleDocsPath(currentLocale, sectionSlug))
     handleScrollToSection(sectionTitle)
   }
 
   const handleCatalogBlockNavigate = (sectionTitle, blockTitle) => {
+    const section = sectionModels.find((item) => item.title === sectionTitle)
+    const sourceTitle = section?.sourceTitle ?? sectionTitle
     const sectionSlug =
-      sectionSlugMap[sectionTitle] ?? fallbackSlug(sectionTitle, sectionSlugMap)
+      catalogSectionSlugMap[sourceTitle] ?? fallbackSlug(sourceTitle, catalogSectionSlugMap)
     navigatePreservingScroll(getLocaleDocsPath(currentLocale, sectionSlug))
     handleScrollToSection(sectionTitle, blockTitle)
   }
@@ -696,8 +695,12 @@ export default function DocsCenterPage({
       return
     }
 
+    const sourceSectionTitle = Object.entries(catalogSectionSlugMap).find(
+      ([, slug]) => slug === routeSectionSlug,
+    )?.[0]
     const sectionTitle =
-      Object.entries(sectionSlugMap).find(([, slug]) => slug === routeSectionSlug)?.[0]
+      sectionModels.find((section) => section.sourceTitle === sourceSectionTitle)?.title
+      ?? sourceSectionTitle
       ?? docSectionRouteReverseMap.get(routeSectionSlug)
     if (!sectionTitle) {
       return
@@ -709,7 +712,7 @@ export default function DocsCenterPage({
     }
 
     handleScrollToSection(sectionTitle)
-  }, [routeSectionSlug, routeItemSlug, currentDocMeta, sectionSlugMap, sectionModels, docSectionRouteReverseMap])
+  }, [routeSectionSlug, routeItemSlug, currentDocMeta, sectionModels, docSectionRouteReverseMap])
 
   const handleDocDetailRouteChange = useCallback(({ platformId = '', detailSectionId = '' } = {}) => {
     if (!currentDocRouteSlug) {
@@ -727,12 +730,15 @@ export default function DocsCenterPage({
   }, [currentDocRouteSlug, currentLocale, navigatePreservingScroll])
 
   const handleNodeClick = (sourcePathParts) => {
-    const meta = staticMetaMap[createDocsPathKey(sourcePathParts)]
-    if (!meta?.helpContent || !meta.routeSlug) {
+    const pathKey = createDocsPathKey(sourcePathParts)
+    const meta = staticMetaMap[pathKey]
+
+    if (!meta?.helpContent || !meta?.routeSlug) {
       return
     }
+
     const displayParts = displayPathBySourceKey.get(meta.pathKey) ?? meta.pathParts
-    const docPathSlug = resolveDocRouteSlug(meta, sectionSlugMap, displayParts, fallbackSlug)
+    const docPathSlug = resolveDocRouteSlug(meta, catalogSectionSlugMap, meta.pathParts, fallbackSlug)
     navigatePreservingScroll(getLocaleDocsPath(currentLocale, docPathSlug))
   }
 
@@ -772,6 +778,7 @@ export default function DocsCenterPage({
           ref={sidebarRef}
           sectionModels={sectionModels}
           staticMetaMap={staticMetaMap}
+          helpCenterMetaMap={helpCenterMetaMap}
           activeSectionTitle={resolvedActiveSection}
           activeBlockKey={
             resolvedActiveBlockTitle
@@ -822,8 +829,8 @@ export default function DocsCenterPage({
                             <div className="docs-center-items">
                               {block.items.map((item) => {
                                 const sourcePathParts = [section.sourceTitle, block.sourceTitle, item.sourceLabel]
-                                const meta = staticMetaMap[createDocsPathKey(sourcePathParts)]
-                                const isClickable = Boolean(meta?.helpContent && meta?.routeSlug)
+                                const pathKey = createDocsPathKey(sourcePathParts)
+                                const isClickable = isCatalogLeafClickable(pathKey, staticMetaMap)
                                 return isClickable ? (
                                   <button
                                     key={`${section.title}-${block.title}-${item.label}`}
@@ -848,8 +855,8 @@ export default function DocsCenterPage({
                           <div className={wrapperClassName}>
                             {block.items.map((item) => {
                               const sourcePathParts = [section.sourceTitle, item.sourceLabel]
-                              const meta = staticMetaMap[createDocsPathKey(sourcePathParts)]
-                              const isClickable = Boolean(meta?.helpContent && meta?.routeSlug)
+                              const pathKey = createDocsPathKey(sourcePathParts)
+                              const isClickable = isCatalogLeafClickable(pathKey, staticMetaMap)
                               return isClickable ? (
                                 <button
                                   key={`${section.title}-${item.label}`}
@@ -926,6 +933,7 @@ export default function DocsCenterPage({
               onDocRouteChange={handleDocDetailRouteChange}
               sectionModels={sectionModels}
               staticMetaMap={staticMetaMap}
+              helpCenterMetaMap={helpCenterMetaMap}
               activeDocPathKey={currentDocMeta.pathKey}
               catalogDirectoryTitle={docsUiText.directoryTitle}
               catalogSearchPlaceholder={docsUiText.sidebarSearchPlaceholder}

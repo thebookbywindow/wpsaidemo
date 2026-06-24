@@ -1,0 +1,3002 @@
+[
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "新建文档",
+    "platform": "win",
+    "ID": 0,
+    "path": "wps-docs/create-document/win",
+    "documents": [
+      {
+        "name": "如何新建WPS文字文档",
+        "link_url": "https://www.kdocs.cn/l/cv07RI5fsfqA",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "新建文档",
+    "platform": "mac",
+    "ID": 1,
+    "path": "wps-docs/create-document/mac",
+    "documents": [
+      {
+        "name": "mac端如何新建WPS文字文档",
+        "link_url": "https://www.kdocs.cn/l/cfaa1VuAjCb4",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "AI朗读",
+    "platform": "ios",
+    "ID": 2,
+    "path": "wps-docs/ai-read-aloud/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字AI朗读功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cvPWQKTQTc6v",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "AI朗读",
+    "platform": "android",
+    "ID": 3,
+    "path": "wps-docs/ai-read-aloud/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字AI朗读功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cgCgDkJyeeR6",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "压缩后分享",
+    "platform": "ios",
+    "ID": 4,
+    "path": "wps-docs/share-after-compression/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字压缩后分享功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cc9jaX8zOiqV",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "压缩后分享",
+    "platform": "android",
+    "ID": 5,
+    "path": "wps-docs/share-after-compression/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字压缩后分享功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cmaT2net8eaM",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "以文件分享",
+    "platform": "ios",
+    "ID": 6,
+    "path": "wps-docs/share-as-file/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字以文件分享功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/clOhRfghPx7X",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "文档瘦身",
+    "platform": "ios",
+    "ID": 7,
+    "path": "wps-docs/reduce-file-size/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字文档瘦身功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cjKN6oimHNB9",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "文档瘦身",
+    "platform": "android",
+    "ID": 8,
+    "path": "wps-docs/reduce-file-size/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字文档瘦身功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cvnL71SRjjfU",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "合并文档",
+    "platform": "ios",
+    "ID": 9,
+    "path": "wps-docs/merge-documents/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字合并文档功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cqh4hPGkC0Tg",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "合并文档",
+    "platform": "android",
+    "ID": 10,
+    "path": "wps-docs/merge-documents/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字合并文档功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cuV56jTbhl7b",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "打印",
+    "platform": "win",
+    "ID": 11,
+    "path": "wps-docs/print/win",
+    "documents": [
+      {
+        "name": "WPS文字打印功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/ck0hqwwve0He",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "打印",
+    "platform": "mac",
+    "ID": 12,
+    "path": "wps-docs/print/mac",
+    "documents": [
+      {
+        "name": "mac端WPS文字打印功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cqs8tOOK4wlz",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "打印",
+    "platform": "ios",
+    "ID": 13,
+    "path": "wps-docs/print/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字打印功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cvs8S5WRpywr",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "打印",
+    "platform": "android",
+    "ID": 14,
+    "path": "wps-docs/print/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字打印功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cebz0FCMiznB",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "保存与另存为",
+    "platform": "win",
+    "ID": 15,
+    "path": "wps-docs/save-and-save-as/win",
+    "documents": [
+      {
+        "name": "WPS文字保存与另存为功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cfjEliKERRS8",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "保存与另存为",
+    "platform": "mac",
+    "ID": 16,
+    "path": "wps-docs/save-and-save-as/mac",
+    "documents": [
+      {
+        "name": "mac端WPS文字保存与另存为功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/coZYFSpy3mRc",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "输出为PPT",
+    "platform": "win",
+    "ID": 17,
+    "path": "wps-docs/export-as-ppt/win",
+    "documents": [
+      {
+        "name": "WPS文字输出为PPT功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/ceFdxhHaXxHN",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "输出为PPT",
+    "platform": "ios",
+    "ID": 18,
+    "path": "wps-docs/export-as-ppt/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字输出为PPT功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/ccZjhRV0izsf",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "输出为PPT",
+    "platform": "android",
+    "ID": 19,
+    "path": "wps-docs/export-as-ppt/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字输出为PPT功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cbQAzfqa5cWY",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "输出为PDF",
+    "platform": "win",
+    "ID": 20,
+    "path": "wps-docs/export-as-pdf/win",
+    "documents": [
+      {
+        "name": "WPS文字输出为PDF功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/clKEXsmbBI9a",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "输出为PDF",
+    "platform": "mac",
+    "ID": 21,
+    "path": "wps-docs/export-as-pdf/mac",
+    "documents": [
+      {
+        "name": "mac端WPS文字输出为PDF功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/ca6U8gGTZLh2",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "输出为PDF",
+    "platform": "ios",
+    "ID": 22,
+    "path": "wps-docs/export-as-pdf/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字输出为PDF功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cesiRxsRD2SR",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "输出为PDF",
+    "platform": "android",
+    "ID": 23,
+    "path": "wps-docs/export-as-pdf/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字输出为PDF功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cpP7KLW134Ji",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "输出为图片",
+    "platform": "win",
+    "ID": 24,
+    "path": "wps-docs/export-as-image/win",
+    "documents": [
+      {
+        "name": "WPS文字输出为图片功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/chaqXecCd6BN",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "输出为图片",
+    "platform": "mac",
+    "ID": 25,
+    "path": "wps-docs/export-as-image/mac",
+    "documents": [
+      {
+        "name": "mac端WPS文字输出为图片功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cjus4wVyYiEX",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "输出为图片",
+    "platform": "ios",
+    "ID": 26,
+    "path": "wps-docs/export-as-image/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字输出为图片功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cbMe7qUrrXys",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "输出为图片",
+    "platform": "android",
+    "ID": 27,
+    "path": "wps-docs/export-as-image/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字输出为图片功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/csQi2scufM5U",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "快速入门",
+    "platform": "win",
+    "ID": 28,
+    "path": "wps-docs/quick-start/win",
+    "documents": [
+      {
+        "name": "WPS文字快速入门",
+        "link_url": "https://www.kdocs.cn/l/cd03M6tkYCe2",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "快速入门",
+    "platform": "mac",
+    "ID": 29,
+    "path": "wps-docs/quick-start/mac",
+    "documents": [
+      {
+        "name": "mac端WPS文字快速入门",
+        "link_url": "https://www.kdocs.cn/l/cakGktNXgiKg",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "快速入门",
+    "platform": "ios",
+    "ID": 30,
+    "path": "wps-docs/quick-start/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字快速入门",
+        "link_url": "https://www.kdocs.cn/l/cjWe865WaRt4",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "快速入门",
+    "platform": "android",
+    "ID": 31,
+    "path": "wps-docs/quick-start/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字快速入门",
+        "link_url": "https://www.kdocs.cn/l/cjag7YUMEll3",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "部分页面分享",
+    "platform": "ios",
+    "ID": 32,
+    "path": "wps-docs/share-partial-pages/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字部分页面分享功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cmxCv5IhbzTn",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "部分页面分享",
+    "platform": "android",
+    "ID": 33,
+    "path": "wps-docs/share-partial-pages/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字部分页面分享功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/csIytls0xeGp",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "用其他应用打开",
+    "platform": "ios",
+    "ID": 34,
+    "path": "wps-docs/open-with-other-app/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字用其他应用打开功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cf35zi7tB7x5",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "用其他应用打开",
+    "platform": "android",
+    "ID": 35,
+    "path": "wps-docs/open-with-other-app/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字用其他应用打开功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/coOLBJlmF5K7",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "批量提取图片",
+    "platform": "ios",
+    "ID": 36,
+    "path": "wps-docs/batch-extract-images/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字批量提取图片功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cl8zBM05RHrc",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "批量提取图片",
+    "platform": "android",
+    "ID": 37,
+    "path": "wps-docs/batch-extract-images/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字批量提取图片功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cnTXk8E29yvC",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "发送至电脑",
+    "platform": "ios",
+    "ID": 38,
+    "path": "wps-docs/send-to-computer/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字发送至电脑功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/ceA9LCR23l9u",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "发送至电脑",
+    "platform": "android",
+    "ID": 39,
+    "path": "wps-docs/send-to-computer/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字发送至电脑功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cbX41mmfhFwj",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "保存与另存",
+    "platform": "ios",
+    "ID": 40,
+    "path": "wps-docs/save-and-save-as/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字保存与另存功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/chrWtsfbECfr",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "保存与另存",
+    "platform": "android",
+    "ID": 41,
+    "path": "wps-docs/save-and-save-as/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字保存与另存功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/ciWDRZBCGwJw",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "新建文档",
+    "platform": "ios",
+    "ID": 42,
+    "path": "wps-docs/create-document/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字新建文档功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/celUagnbpOvP",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "新建文档",
+    "platform": "android",
+    "ID": 43,
+    "path": "wps-docs/create-document/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字新建文档功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/clDjIQqpxwOp",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "输出纯图文档",
+    "platform": "android",
+    "ID": 44,
+    "path": "wps-docs/export-image-only-document/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字输出纯图文档功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/chZdqBOipGfa",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "快速入门",
+    "feature": "以文件发送",
+    "platform": "android",
+    "ID": 45,
+    "path": "wps-docs/send-as-file/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字以文件发送功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cvKWUgVU3DPB",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "文档加密",
+    "platform": "ios",
+    "ID": 46,
+    "path": "wps-docs/encrypt-document/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字文档加密功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/crXb0ppO8JzR",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "画笔",
+    "platform": "win",
+    "ID": 47,
+    "path": "wps-docs/pen/win",
+    "documents": [
+      {
+        "name": "WPS文字画笔功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cckUrNmFWcxp",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "画笔",
+    "platform": "mac",
+    "ID": 48,
+    "path": "wps-docs/pen/mac",
+    "documents": [
+      {
+        "name": "mac端WPS文字画笔功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cjHoSISDM3la",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "画笔",
+    "platform": "ios",
+    "ID": 49,
+    "path": "wps-docs/pen/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字画笔功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/coaLaBQL1JZ8",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "画笔",
+    "platform": "android",
+    "ID": 50,
+    "path": "wps-docs/pen/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字画笔功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cg8Jifr1bEN5",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "限制编辑",
+    "platform": "win",
+    "ID": 51,
+    "path": "wps-docs/restrict-editing/win",
+    "documents": [
+      {
+        "name": "WPS文字限制编辑功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cnzZRewt7XIT",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "限制编辑",
+    "platform": "mac",
+    "ID": 52,
+    "path": "wps-docs/restrict-editing/mac",
+    "documents": [
+      {
+        "name": "mac端WPS文字限制编辑功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cgch3xGlLNjG",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "接受拒绝修订",
+    "platform": "win",
+    "ID": 53,
+    "path": "wps-docs/accept-or-reject-revisions/win",
+    "documents": [
+      {
+        "name": "WPS文字接受拒绝修订功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/ceqFs8ketyAg",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "接受拒绝修订",
+    "platform": "mac",
+    "ID": 54,
+    "path": "wps-docs/accept-or-reject-revisions/mac",
+    "documents": [
+      {
+        "name": "mac端WPS文字接受拒绝修订功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cr2ME2YdZ7M2",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "修订",
+    "platform": "win",
+    "ID": 55,
+    "path": "wps-docs/track-changes/win",
+    "documents": [
+      {
+        "name": "WPS文字修订功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cflsoAGTOZUT",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "修订",
+    "platform": "mac",
+    "ID": 56,
+    "path": "wps-docs/track-changes/mac",
+    "documents": [
+      {
+        "name": "mac端WPS文字修订功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/chiCNoSSGwiY",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "修订",
+    "platform": "ios",
+    "ID": 57,
+    "path": "wps-docs/track-changes/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字修订功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/caTmYy7fo50Z",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "修订",
+    "platform": "android",
+    "ID": 58,
+    "path": "wps-docs/track-changes/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字修订功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/ci5saul5HOpY",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "接受或拒绝修订",
+    "platform": "ios",
+    "ID": 59,
+    "path": "wps-docs/accept-or-reject-revisions/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字接受或拒绝修订功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cbTVc5IOKtBT",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "接受-拒绝修订",
+    "platform": "android",
+    "ID": 60,
+    "path": "wps-docs/accept-and-reject-revisions/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字接受-拒绝修订功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cpnnNWhimayd",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "文档定稿",
+    "platform": "ios",
+    "ID": 61,
+    "path": "wps-docs/finalize-document/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字文档定稿功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/csasI6ZZFKOu",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "简繁转换",
+    "platform": "win",
+    "ID": 62,
+    "path": "wps-docs/simplified-and-traditional-chinese-conversion/win",
+    "documents": [
+      {
+        "name": "WPS文字简繁转换功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/chSTKvzjP9Jh",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "简繁转换",
+    "platform": "mac",
+    "ID": 63,
+    "path": "wps-docs/simplified-and-traditional-chinese-conversion/mac",
+    "documents": [
+      {
+        "name": "mac端WPS文字简繁转换功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/clkMxtignrsu",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "简繁转换",
+    "platform": "ios",
+    "ID": 64,
+    "path": "wps-docs/simplified-and-traditional-chinese-conversion/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字简繁转换功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/ctsSOS9na8MN",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "简繁转换",
+    "platform": "android",
+    "ID": 65,
+    "path": "wps-docs/simplified-and-traditional-chinese-conversion/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字简繁转换功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cfy3tG1RgE36",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "对照翻译",
+    "platform": "win",
+    "ID": 66,
+    "path": "wps-docs/parallel-translate/win",
+    "documents": [
+      {
+        "name": "WPS文字对照翻译功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cqp1W1iIbNsR",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "对照翻译",
+    "platform": "mac",
+    "ID": 67,
+    "path": "wps-docs/parallel-translate/mac",
+    "documents": [
+      {
+        "name": "mac端WPS文字对照翻译功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cgpay0KamCbh",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "划词翻译",
+    "platform": "win",
+    "ID": 68,
+    "path": "wps-docs/select-and-translate/win",
+    "documents": [
+      {
+        "name": "WPS文字划词翻译功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cpmKBk0ByEaj",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "划词翻译",
+    "platform": "mac",
+    "ID": 69,
+    "path": "wps-docs/select-and-translate/mac",
+    "documents": [
+      {
+        "name": "mac端WPS文字划词翻译功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cp4uEskkX6YP",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "划词翻译",
+    "platform": "ios",
+    "ID": 70,
+    "path": "wps-docs/select-and-translate/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字划词翻译功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cg4Q6PR5hQG2",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "划词翻译",
+    "platform": "android",
+    "ID": 71,
+    "path": "wps-docs/select-and-translate/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字划词翻译功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cfaPhiqbo5pt",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "审阅",
+    "platform": "win",
+    "ID": 72,
+    "path": "wps-docs/review/win",
+    "documents": [
+      {
+        "name": "WPS文字审阅功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cp9NL8w23A7w",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "审阅",
+    "platform": "mac",
+    "ID": 73,
+    "path": "wps-docs/review/mac",
+    "documents": [
+      {
+        "name": "mac端WPS文字审阅功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/ccRIQgVNNten",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "显示标记",
+    "platform": "win",
+    "ID": 74,
+    "path": "wps-docs/show-marks/win",
+    "documents": [
+      {
+        "name": "WPS文字显示标记功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/ccRfAj9vey2t",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "显示标记",
+    "platform": "mac",
+    "ID": 75,
+    "path": "wps-docs/show-marks/mac",
+    "documents": [
+      {
+        "name": "mac端WPS文字显示标记功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/csjT65qsWB9y",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "批注",
+    "platform": "win",
+    "ID": 76,
+    "path": "wps-docs/comments/win",
+    "documents": [
+      {
+        "name": "WPS文字批注功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/crP4D0EnzsMz",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "批注",
+    "platform": "mac",
+    "ID": 77,
+    "path": "wps-docs/comments/mac",
+    "documents": [
+      {
+        "name": "mac端WPS文字批注功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cj1WVOjZJNqb",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "字数统计",
+    "platform": "win",
+    "ID": 78,
+    "path": "wps-docs/word-count/win",
+    "documents": [
+      {
+        "name": "WPS文字字数统计功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cmr6nZmZV4GC",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "字数统计",
+    "platform": "mac",
+    "ID": 79,
+    "path": "wps-docs/word-count/mac",
+    "documents": [
+      {
+        "name": "mac端WPS文字字数统计功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cgtr93tbh2zF",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "字数统计",
+    "platform": "ios",
+    "ID": 80,
+    "path": "wps-docs/word-count/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字字数统计功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cckCZ07zySfI",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "字数统计",
+    "platform": "android",
+    "ID": 81,
+    "path": "wps-docs/word-count/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字字数统计功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cppeKkfN1iWd",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "文档比较",
+    "platform": "win",
+    "ID": 82,
+    "path": "wps-docs/compare-documents/win",
+    "documents": [
+      {
+        "name": "WPS文字文档比较功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/caA4H8wB6mzr",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "文档比较",
+    "platform": "mac",
+    "ID": 83,
+    "path": "wps-docs/compare-documents/mac",
+    "documents": [
+      {
+        "name": "mac端WPS文字文档比较功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cj55cFp3Xc2V",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "AI拼写检查",
+    "platform": "win",
+    "ID": 84,
+    "path": "wps-docs/ai-spell-check/win",
+    "documents": [
+      {
+        "name": "WPS文字AI拼写检查功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cr8j1TEK9s8R",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "AI拼写检查",
+    "platform": "mac",
+    "ID": 85,
+    "path": "wps-docs/ai-spell-check/mac",
+    "documents": [
+      {
+        "name": "mac端WPS文字AI拼写检查功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/ctI83sV9UwCs",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "插入删除批注",
+    "platform": "ios",
+    "ID": 86,
+    "path": "wps-docs/insert-and-delete-comments/ios",
+    "documents": [
+      {
+        "name": "IOS端WPS文字插入删除批注功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cpHJRQP6Jhzp",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "审阅与批注",
+    "feature": "-删除批注",
+    "platform": "android",
+    "ID": 87,
+    "path": "wps-docs/delete-comments/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字插入-删除批注功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/ce4ByIUPu6X6",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "文档协作",
+    "feature": "对齐方式",
+    "platform": null,
+    "ID": 88,
+    "path": "wps-docs/alignment",
+    "documents": [
+      {
+        "name": "WPS文字协作模式对齐方式功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cj8yCl3KHi39",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "文档协作",
+    "feature": "行间距及段前段后间距",
+    "platform": null,
+    "ID": 89,
+    "path": "wps-docs/line-spacing-and-paragraph-spacing",
+    "documents": [
+      {
+        "name": "WPS文字协作模式行间距及段前段后间距功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cbU1jCsr6Wt3",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "文档协作",
+    "feature": "缩进",
+    "platform": null,
+    "ID": 90,
+    "path": "wps-docs/indent",
+    "documents": [
+      {
+        "name": "WPS文字协作模式缩进功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/caQWe5GMuQbM",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "文档协作",
+    "feature": "任务列表",
+    "platform": null,
+    "ID": 91,
+    "path": "wps-docs/task-list",
+    "documents": [
+      {
+        "name": "WPS文字协作模式任务列表功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cvGqLQJjguy3",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "文档协作",
+    "feature": "项目符号",
+    "platform": null,
+    "ID": 92,
+    "path": "wps-docs/bullets",
+    "documents": [
+      {
+        "name": "WPS文字协作模式项目符号功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cd4rKt9buSPU",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "文档协作",
+    "feature": "编号",
+    "platform": null,
+    "ID": 93,
+    "path": "wps-docs/numbering",
+    "documents": [
+      {
+        "name": "WPS文字协作模式编号功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/csETIkPvoP9c",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "文档协作",
+    "feature": "文字排版",
+    "platform": null,
+    "ID": 94,
+    "path": "wps-docs/text-layout",
+    "documents": [
+      {
+        "name": "WPS文字协作模式文字排版功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cpZN43UMVNjo",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "文档协作",
+    "feature": "查找替换",
+    "platform": null,
+    "ID": 95,
+    "path": "wps-docs/find-and-replace",
+    "documents": [
+      {
+        "name": "WPS文字协作模式查找替换功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cgBOp8VLeOd9",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "文档协作",
+    "feature": "样式",
+    "platform": null,
+    "ID": 96,
+    "path": "wps-docs/styles",
+    "documents": [
+      {
+        "name": "WPS文字协作模式样式功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cdbEeI5SijIn",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "文档协作",
+    "feature": "撤销恢复",
+    "platform": "win",
+    "ID": 97,
+    "path": "wps-docs/undo-and-redo/win",
+    "documents": [
+      {
+        "name": "WPS文字协作模式撤销恢复功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/ck6XrCkFdPbC",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "文档协作",
+    "feature": "撤销恢复",
+    "platform": "android",
+    "ID": 98,
+    "path": "wps-docs/undo-and-redo/android",
+    "documents": [
+      {
+        "name": "安卓端WPS文字协作模式撤销恢复功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cqWr8mGti7hs",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS文字",
+    "l2": "文档协作",
+    "feature": "复制粘贴",
+    "platform": null,
+    "ID": 99,
+    "path": "wps-docs/copy-and-paste",
+    "documents": [
+      {
+        "name": "WPS文字协作模式复制粘贴功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cv8UFbrgXJdG",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "输出为PDF",
+    "platform": "win",
+    "ID": 620,
+    "path": "wps-sheets/export-as-pdf/win",
+    "documents": [
+      {
+        "name": "WPS表格输出为PDF功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cguGadCIOFCO",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "输出为PDF",
+    "platform": "mac",
+    "ID": 621,
+    "path": "wps-sheets/export-as-pdf/mac",
+    "documents": [
+      {
+        "name": "mac端WPS表格输出为PDF功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cchBKTC9f3Mm",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "输出为PDF",
+    "platform": "ios",
+    "ID": 622,
+    "path": "wps-sheets/export-as-pdf/ios",
+    "documents": [
+      {
+        "name": "ios端WPS表格输出为PDF功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/chK1Lj9cYiCS",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "输出为PDF",
+    "platform": "android",
+    "ID": 623,
+    "path": "wps-sheets/export-as-pdf/android",
+    "documents": [
+      {
+        "name": "安卓端WPS表格输出为PDF功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/ckWO8eFltgjN",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "以长图分享",
+    "platform": "ios",
+    "ID": 624,
+    "path": "wps-sheets/share-as-long-image/ios",
+    "documents": [
+      {
+        "name": "ios端WPS表格以长图分享功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cpQaeP6l8uAx",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "以长图分享",
+    "platform": "android",
+    "ID": 625,
+    "path": "wps-sheets/share-as-long-image/android",
+    "documents": [
+      {
+        "name": "安卓端WPS表格以长图分享功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/crnfjbI2RGPE",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "新建表格",
+    "platform": "ios",
+    "ID": 626,
+    "path": "wps-sheets/create-sheet/ios",
+    "documents": [
+      {
+        "name": "ios端WPS表格新建表格功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/ccnHLGr41X0o",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "新建表格",
+    "platform": "android",
+    "ID": 627,
+    "path": "wps-sheets/create-sheet/android",
+    "documents": [
+      {
+        "name": "安卓端WPS表格新建表格功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cmrQvBewND8x",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "输出纯数值表格",
+    "platform": "android",
+    "ID": 628,
+    "path": "wps-sheets/export-values-only-sheet/android",
+    "documents": [
+      {
+        "name": "安卓端WPS表格输出纯数值表格功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/csP6e8xq8U1t",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "适应手机",
+    "platform": "android",
+    "ID": 629,
+    "path": "wps-sheets/fit-to-mobile/android",
+    "documents": [
+      {
+        "name": "安卓端WPS表格适应手机功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cm8xDOrnhhxc",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "合并工作簿",
+    "platform": "ios",
+    "ID": 630,
+    "path": "wps-sheets/merge-workbooks/ios",
+    "documents": [
+      {
+        "name": "ios端WPS表格合并工作簿功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cpg50cW0Q7mx",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "合并工作簿",
+    "platform": "android",
+    "ID": 631,
+    "path": "wps-sheets/merge-workbooks/android",
+    "documents": [
+      {
+        "name": "安卓端WPS表格合并工作簿功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cnMD0d0t36LV",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "压缩后分享",
+    "platform": "ios",
+    "ID": 632,
+    "path": "wps-sheets/share-after-compression/ios",
+    "documents": [
+      {
+        "name": "ios端WPS表格压缩后分享功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cm7SCEsbO7f4",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "压缩后分享",
+    "platform": "android",
+    "ID": 633,
+    "path": "wps-sheets/share-after-compression/android",
+    "documents": [
+      {
+        "name": "安卓端WPS表格压缩后分享功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/caq7C7aL4Ctb",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "分享部分工作表",
+    "platform": "ios",
+    "ID": 634,
+    "path": "wps-sheets/share-partial-worksheet/ios",
+    "documents": [
+      {
+        "name": "ios端WPS表格分享部分工作表功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cbKV9Ts9GBD1",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "分享部分工作表",
+    "platform": "android",
+    "ID": 635,
+    "path": "wps-sheets/share-partial-worksheet/android",
+    "documents": [
+      {
+        "name": "安卓端WPS表格分享部分工作表功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cgxQyjEZd3sd",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "以文件分享",
+    "platform": "ios",
+    "ID": 636,
+    "path": "wps-sheets/share-as-file/ios",
+    "documents": [
+      {
+        "name": "ios端WPS表格以文件分享功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cb5fUqJMsLtI",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "以文件分享",
+    "platform": "android",
+    "ID": 637,
+    "path": "wps-sheets/share-as-file/android",
+    "documents": [
+      {
+        "name": "安卓端WPS表格以文件分享功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cspNI67RVhOJ",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "文档瘦身",
+    "platform": "ios",
+    "ID": 638,
+    "path": "wps-sheets/reduce-file-size/ios",
+    "documents": [
+      {
+        "name": "ios端WPS表格文档瘦身功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/ckwvkWwZKhWX",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "文档瘦身",
+    "platform": "android",
+    "ID": 639,
+    "path": "wps-sheets/reduce-file-size/android",
+    "documents": [
+      {
+        "name": "安卓端WPS表格文档瘦身功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/ceHemQtFsEy6",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "旋转屏幕",
+    "platform": "android",
+    "ID": 640,
+    "path": "wps-sheets/rotate-screen/android",
+    "documents": [
+      {
+        "name": "安卓端WPS表格旋转屏幕功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cf2Zx4PIHHYx",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "批量提取图片",
+    "platform": "ios",
+    "ID": 641,
+    "path": "wps-sheets/batch-extract-images/ios",
+    "documents": [
+      {
+        "name": "ios端WPS表格批量提取图片功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cpAz3njQi7vz",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "批量提取图片",
+    "platform": "android",
+    "ID": 642,
+    "path": "wps-sheets/batch-extract-images/android",
+    "documents": [
+      {
+        "name": "安卓端WPS表格批量提取图片功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/clPGnljeXyAi",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "用其他应用打开",
+    "platform": "ios",
+    "ID": 643,
+    "path": "wps-sheets/open-with-other-app/ios",
+    "documents": [
+      {
+        "name": "ios端WPS表格用其他应用打开功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cqkytsHMCTAz",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "用其他应用打开",
+    "platform": "android",
+    "ID": 644,
+    "path": "wps-sheets/open-with-other-app/android",
+    "documents": [
+      {
+        "name": "安卓端WPS表格用其他应用打开功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cgqjtUaEf5Vj",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "横屏查看",
+    "platform": "ios",
+    "ID": 645,
+    "path": "wps-sheets/landscape-view/ios",
+    "documents": [
+      {
+        "name": "ios端WPS表格横屏查看功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/ckFnwBIfLmXS",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "输出为图片",
+    "platform": "win",
+    "ID": 646,
+    "path": "wps-sheets/export-as-image/win",
+    "documents": [
+      {
+        "name": "WPS表格输出为图片功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/ceekHmKzuA2t",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "输出为图片",
+    "platform": "mac",
+    "ID": 647,
+    "path": "wps-sheets/export-as-image/mac",
+    "documents": [
+      {
+        "name": "mac端WPS表格输出为图片功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/coXGyzLSOsiq",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "输出为图片",
+    "platform": "ios",
+    "ID": 648,
+    "path": "wps-sheets/export-as-image/ios",
+    "documents": [
+      {
+        "name": "ios端WPS表格输出为图片功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/coP99Z9zZhnB",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "输出为图片",
+    "platform": "android",
+    "ID": 649,
+    "path": "wps-sheets/export-as-image/android",
+    "documents": [
+      {
+        "name": "安卓端WPS表格输出为图片功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cswYRQ9GGeAx",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "快速入门",
+    "platform": "win",
+    "ID": 650,
+    "path": "wps-sheets/quick-start/win",
+    "documents": [
+      {
+        "name": "WPS表格快速入门",
+        "link_url": "https://www.kdocs.cn/l/cn7pYwR9gx3e",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "快速入门",
+    "platform": "mac",
+    "ID": 651,
+    "path": "wps-sheets/quick-start/mac",
+    "documents": [
+      {
+        "name": "mac端WPS表格快速入门",
+        "link_url": "https://www.kdocs.cn/l/ctgE3k1WByiP",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "快速入门",
+    "platform": "ios",
+    "ID": 652,
+    "path": "wps-sheets/quick-start/ios",
+    "documents": [
+      {
+        "name": "ios端WPS表格快速入门",
+        "link_url": "https://www.kdocs.cn/l/cmwaBklGik9C",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "快速入门",
+    "platform": "android",
+    "ID": 653,
+    "path": "wps-sheets/quick-start/android",
+    "documents": [
+      {
+        "name": "安卓端WPS表格快速入门",
+        "link_url": "https://www.kdocs.cn/l/ckmx66Uo59zq",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "保存与另存",
+    "platform": "win",
+    "ID": 654,
+    "path": "wps-sheets/save-and-save-as/win",
+    "documents": [
+      {
+        "name": "WPS表格保存与另存功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cmO037IqpsaQ",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "保存与另存",
+    "platform": "mac",
+    "ID": 655,
+    "path": "wps-sheets/save-and-save-as/mac",
+    "documents": [
+      {
+        "name": "mac端WPS表格保存与另存功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cqNKBNjTP0p0",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "保存与另存",
+    "platform": "ios",
+    "ID": 656,
+    "path": "wps-sheets/save-and-save-as/ios",
+    "documents": [
+      {
+        "name": "ios端WPS表格保存与另存功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/crWX8tTwhkMK",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "保存与另存",
+    "platform": "android",
+    "ID": 657,
+    "path": "wps-sheets/save-and-save-as/android",
+    "documents": [
+      {
+        "name": "安卓端WPS表格保存与另存功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/clKk4H6Kdyxd",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "新建文档",
+    "platform": "win",
+    "ID": 658,
+    "path": "wps-sheets/create-document/win",
+    "documents": [
+      {
+        "name": "WPS表格新建文档功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/ccX8MfgUnjY0",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "新建文档",
+    "platform": "mac",
+    "ID": 659,
+    "path": "wps-sheets/create-document/mac",
+    "documents": [
+      {
+        "name": "mac端WPS表格新建文档功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/crUujxFc5SWI",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "快速访问工具栏",
+    "platform": "win",
+    "ID": 660,
+    "path": "wps-sheets/quick-access-toolbar/win",
+    "documents": [
+      {
+        "name": "WPS表格快速访问工具栏功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/clA6BQ56mUSl",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "快速入门",
+    "feature": "快速访问工具栏",
+    "platform": "mac",
+    "ID": 661,
+    "path": "wps-sheets/quick-access-toolbar/mac",
+    "documents": [
+      {
+        "name": "mac端WPS表格快速访问工具栏功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cfFCc0qWOsAx",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "REPT",
+    "platform": null,
+    "ID": 662,
+    "path": "wps-sheets/rept",
+    "documents": [
+      {
+        "name": "PC端WPS表格REPT函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/ch0BjAfhOk6z",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "SINH",
+    "platform": null,
+    "ID": 663,
+    "path": "wps-sheets/sinh",
+    "documents": [
+      {
+        "name": "PC端WPS表格SINH函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/ckSr2JgzfGmt",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "IRR",
+    "platform": null,
+    "ID": 664,
+    "path": "wps-sheets/irr",
+    "documents": [
+      {
+        "name": "PC端WPS表格IRR函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/ccfEErVqwfP6",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "NPV",
+    "platform": null,
+    "ID": 665,
+    "path": "wps-sheets/npv",
+    "documents": [
+      {
+        "name": "PC端WPS表格NPV函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cs1b0QIA8PW6",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "MEDIAN",
+    "platform": null,
+    "ID": 666,
+    "path": "wps-sheets/median",
+    "documents": [
+      {
+        "name": "PC端WPS表格MEDIAN函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cqc1BKyZpwNg",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "STEYX",
+    "platform": null,
+    "ID": 667,
+    "path": "wps-sheets/steyx",
+    "documents": [
+      {
+        "name": "PC端WPS表格STEYX函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/csSl2D5aGOCm",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "VARA",
+    "platform": null,
+    "ID": 668,
+    "path": "wps-sheets/vara",
+    "documents": [
+      {
+        "name": "PC端WPS表格VARA函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cgWZeRPoUILH",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "NORMSDIST",
+    "platform": null,
+    "ID": 669,
+    "path": "wps-sheets/normsdist",
+    "documents": [
+      {
+        "name": "PC端WPS表格NORMSDIST函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cmfdIoMKFfBU",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "ISTEXT",
+    "platform": null,
+    "ID": 670,
+    "path": "wps-sheets/istext",
+    "documents": [
+      {
+        "name": "PC端WPS表格ISTEXT函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/ceA0Vh4UiP3J",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "INDIRECT",
+    "platform": null,
+    "ID": 671,
+    "path": "wps-sheets/indirect",
+    "documents": [
+      {
+        "name": "PC端WPS表格INDIRECT函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/ckokdfSPsmIw",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "ROUND",
+    "platform": null,
+    "ID": 672,
+    "path": "wps-sheets/round",
+    "documents": [
+      {
+        "name": "PC端WPS表格ROUND函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/citeNozQI1tE",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "STDEV.P",
+    "platform": null,
+    "ID": 673,
+    "path": "wps-sheets/stdevp",
+    "documents": [
+      {
+        "name": "PC端WPS表格STDEV.P函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cduJxLjsOfST",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "ISOMITTED",
+    "platform": null,
+    "ID": 674,
+    "path": "wps-sheets/isomitted",
+    "documents": [
+      {
+        "name": "PC端WPS表格ISOMITTED函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cahXjjPrLOrf",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "IMPOWER",
+    "platform": null,
+    "ID": 675,
+    "path": "wps-sheets/impower",
+    "documents": [
+      {
+        "name": "PC端WPS表格IMPOWER函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cuKky43aSo88",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "ISREF",
+    "platform": null,
+    "ID": 676,
+    "path": "wps-sheets/isref",
+    "documents": [
+      {
+        "name": "PC端WPS表格ISREF函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cvEqtAtjb9oj",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "IMABS",
+    "platform": null,
+    "ID": 677,
+    "path": "wps-sheets/imabs",
+    "documents": [
+      {
+        "name": "PC端WPS表格IMABS函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/crCwyrEKpXw7",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "MINA",
+    "platform": null,
+    "ID": 678,
+    "path": "wps-sheets/mina",
+    "documents": [
+      {
+        "name": "PC端WPS表格MINA函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cgdYoxhta5GA",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "NORM.S.DIST",
+    "platform": null,
+    "ID": 679,
+    "path": "wps-sheets/normsdist",
+    "documents": [
+      {
+        "name": "PC端WPS表格NORM.S.DIST函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cqf4nozPv8Pk",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "TYPE",
+    "platform": null,
+    "ID": 680,
+    "path": "wps-sheets/type",
+    "documents": [
+      {
+        "name": "PC端WPS表格TYPE函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/caKpNxAO4LGV",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "TEXTAFTER",
+    "platform": null,
+    "ID": 681,
+    "path": "wps-sheets/textafter",
+    "documents": [
+      {
+        "name": "PC端WPS表格TEXTAFTER函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cjJLSAD5utqg",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "PEARSON",
+    "platform": null,
+    "ID": 682,
+    "path": "wps-sheets/pearson",
+    "documents": [
+      {
+        "name": "PC端WPS表格PEARSON函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/csTN2vNtJItE",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "ISERR",
+    "platform": null,
+    "ID": 683,
+    "path": "wps-sheets/iserr",
+    "documents": [
+      {
+        "name": "PC端WPS表格ISERR函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cjbrjKL5YjGe",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "LN",
+    "platform": null,
+    "ID": 684,
+    "path": "wps-sheets/ln",
+    "documents": [
+      {
+        "name": "PC端WPS表格LN函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/chFJR1gIZZIx",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "ISODD",
+    "platform": null,
+    "ID": 685,
+    "path": "wps-sheets/isodd",
+    "documents": [
+      {
+        "name": "PC端WPS表格ISODD函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cbXInKu4b5dh",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "ROUNDUP",
+    "platform": null,
+    "ID": 686,
+    "path": "wps-sheets/roundup",
+    "documents": [
+      {
+        "name": "PC端WPS表格ROUNDUP函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cb8HxmRDF5H8",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "IMCSC",
+    "platform": null,
+    "ID": 687,
+    "path": "wps-sheets/imcsc",
+    "documents": [
+      {
+        "name": "PC端WPS表格IMCSC函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cbT162wJAJMZ",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "MROUD",
+    "platform": null,
+    "ID": 688,
+    "path": "wps-sheets/mroud",
+    "documents": [
+      {
+        "name": "PC端WPS表格MROUD函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cpL5YD0jeJyY",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "STDEVP",
+    "platform": null,
+    "ID": 689,
+    "path": "wps-sheets/stdevp",
+    "documents": [
+      {
+        "name": "PC端WPS表格STDEVP函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/ckPqBdDj0Ria",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "LOOKUP",
+    "platform": null,
+    "ID": 690,
+    "path": "wps-sheets/lookup",
+    "documents": [
+      {
+        "name": "PC端WPS表格LOOKUP函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/ciEPyG4SLRJF",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "MODE",
+    "platform": null,
+    "ID": 691,
+    "path": "wps-sheets/mode",
+    "documents": [
+      {
+        "name": "PC端WPS表格MODE函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cmbiFbiOqkp1",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "SUBSTITUTES",
+    "platform": null,
+    "ID": 692,
+    "path": "wps-sheets/substitutes",
+    "documents": [
+      {
+        "name": "PC端WPS表格SUBSTITUTES函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/ckKiddNXCvTD",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "SUMSQ",
+    "platform": null,
+    "ID": 693,
+    "path": "wps-sheets/sumsq",
+    "documents": [
+      {
+        "name": "PC端WPS表格SUMSQ函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/ckrfLpEV6QLk",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "SUMX2MY2",
+    "platform": null,
+    "ID": 694,
+    "path": "wps-sheets/sumx2my2",
+    "documents": [
+      {
+        "name": "PC端WPS表格SUMX2MY2函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/ckFkdX9nNSWL",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "ROW",
+    "platform": null,
+    "ID": 695,
+    "path": "wps-sheets/row",
+    "documents": [
+      {
+        "name": "PC端WPS表格ROW函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cmR1WtEWRVUp",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "STDEVA",
+    "platform": null,
+    "ID": 696,
+    "path": "wps-sheets/stdeva",
+    "documents": [
+      {
+        "name": "PC端WPS表格STDEVA函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cmoKHBhG0qMg",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "HEX2DEC",
+    "platform": null,
+    "ID": 697,
+    "path": "wps-sheets/hex2dec",
+    "documents": [
+      {
+        "name": "PC端WPS表格HEX2DEC函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/ciJNeslSo1fv",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "REPLACEB",
+    "platform": null,
+    "ID": 698,
+    "path": "wps-sheets/replaceb",
+    "documents": [
+      {
+        "name": "PC端WPS表格REPLACEB函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/coY38mXheXZE",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "MAP",
+    "platform": null,
+    "ID": 699,
+    "path": "wps-sheets/map",
+    "documents": [
+      {
+        "name": "PC端WPS表格MAP函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cp673I6CwN9u",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "LET",
+    "platform": null,
+    "ID": 700,
+    "path": "wps-sheets/let",
+    "documents": [
+      {
+        "name": "PC端WPS表格LET函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cvOvVqoZMH55",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "REPTARRAY",
+    "platform": null,
+    "ID": 701,
+    "path": "wps-sheets/reptarray",
+    "documents": [
+      {
+        "name": "PC端WPS表格REPTARRAY函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cdyihXPv0TGV",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "POWER",
+    "platform": null,
+    "ID": 702,
+    "path": "wps-sheets/power",
+    "documents": [
+      {
+        "name": "PC端WPS表格POWER函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/clN83jo8ymCw",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "RSQ",
+    "platform": null,
+    "ID": 703,
+    "path": "wps-sheets/rsq",
+    "documents": [
+      {
+        "name": "PC端WPS表格RSQ函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cpAiXqPTnsjC",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "SIN",
+    "platform": null,
+    "ID": 704,
+    "path": "wps-sheets/sin",
+    "documents": [
+      {
+        "name": "PC端WPS表格SIN函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cfxqGDvJut1F",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "LCM",
+    "platform": null,
+    "ID": 705,
+    "path": "wps-sheets/lcm",
+    "documents": [
+      {
+        "name": "PC端WPS表格LCM函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cm6rGvAVZW9i",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "SERCHB",
+    "platform": null,
+    "ID": 706,
+    "path": "wps-sheets/serchb",
+    "documents": [
+      {
+        "name": "PC端WPS表格SERCHB函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/capWKJceS0WO",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "REDUCE",
+    "platform": null,
+    "ID": 707,
+    "path": "wps-sheets/reduce",
+    "documents": [
+      {
+        "name": "PC端WPS表格REDUCE函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/comm6vO4P3Q8",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "PPMT",
+    "platform": null,
+    "ID": 708,
+    "path": "wps-sheets/ppmt",
+    "documents": [
+      {
+        "name": "PC端WPS表格PPMT函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cndi6MDSSuOh",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "MIRR",
+    "platform": null,
+    "ID": 709,
+    "path": "wps-sheets/mirr",
+    "documents": [
+      {
+        "name": "PC端WPS表格MIRR函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/ctZuzlynFlz0",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "IMAGINARY",
+    "platform": null,
+    "ID": 710,
+    "path": "wps-sheets/imaginary",
+    "documents": [
+      {
+        "name": "PC端WPS表格IMAGINARY函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cmMjagV2Yscd",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "公式与函数",
+    "feature": "TAKE",
+    "platform": null,
+    "ID": 711,
+    "path": "wps-sheets/take",
+    "documents": [
+      {
+        "name": "PC端WPS表格TAKE函数使用指南",
+        "link_url": "https://www.kdocs.cn/l/cmoumguzMVT1",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "协作模式",
+    "feature": "高亮行列",
+    "platform": "ios",
+    "ID": 712,
+    "path": "wps-sheets/highlight-row-and-column/ios",
+    "documents": [
+      {
+        "name": "ios端WPS表格协作模式高亮行列功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/chPyJ5J47LpQ",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "协作模式",
+    "feature": "历史版本",
+    "platform": "ios",
+    "ID": 713,
+    "path": "wps-sheets/version-history/ios",
+    "documents": [
+      {
+        "name": "ios端WPS表格协作模式历史版本功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cl1wLPPEM0tB",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "协作模式",
+    "feature": "内容自动隐藏",
+    "platform": "mac",
+    "ID": 714,
+    "path": "wps-sheets/auto-hide-content/mac",
+    "documents": [
+      {
+        "name": "mac端WPS表格协作模式内容自动隐藏功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/chjMwBtVxSZB",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "协作模式",
+    "feature": "计算选项",
+    "platform": "ios",
+    "ID": 715,
+    "path": "wps-sheets/calculation-options/ios",
+    "documents": [
+      {
+        "name": "ios端WPS表格协作模式计算选项功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/caNyD3Udhcpl",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "协作模式",
+    "feature": "超链接",
+    "platform": "ios",
+    "ID": 716,
+    "path": "wps-sheets/hyperlink/ios",
+    "documents": [
+      {
+        "name": "ios端WPS表格协作模式超链接功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cdi6BiEEcCjS",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "协作模式",
+    "feature": "列宽",
+    "platform": "ios",
+    "ID": 717,
+    "path": "wps-sheets/column-width/ios",
+    "documents": [
+      {
+        "name": "ios端WPS表格协作模式列宽功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/chE5Ol72czGI",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "协作模式",
+    "feature": "列宽",
+    "platform": "android",
+    "ID": 718,
+    "path": "wps-sheets/column-width/android",
+    "documents": [
+      {
+        "name": "安卓端协作模式WPS表格列宽功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cjhZs0184js4",
+        "source_type": "help_center"
+      }
+    ]
+  },
+  {
+    "l1": "WPS表格",
+    "l2": "协作模式",
+    "feature": "隐藏行列",
+    "platform": "ios",
+    "ID": 719,
+    "path": "wps-sheets/hide-rows-and-columns/ios",
+    "documents": [
+      {
+        "name": "ios端WPS表格协作模式隐藏行列功能使用指南",
+        "link_url": "https://www.kdocs.cn/l/cdMwF8OZZT6q",
+        "source_type": "help_center"
+      }
+    ]
+  }
+]

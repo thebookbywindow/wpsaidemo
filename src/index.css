@@ -1369,7 +1369,7 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--text-muted);
-  margin: 8px 4px 10px;
+  margin: 2px 4px 8px;
 }
 
 .docs-center-toc-parent + .docs-center-toc-parent {
@@ -1758,8 +1758,26 @@ body {
 }
 
 .docs-detail-catalog-sidebar h3 {
-  font-size: 11px;
-  margin: 6px 4px 8px;
+  font-size: 13px;
+  margin: 2px 4px 8px;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--text);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.docs-detail-catalog-sidebar .docs-center-toc-children--scoped-root {
+  margin: 0;
+  padding-left: 0;
+  border-left: 0;
+}
+
+.docs-detail-catalog-sidebar .docs-center-toc-leaves--scoped-flat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0;
 }
 
 .docs-detail-catalog-sidebar .docs-center-toc-parent-btn {

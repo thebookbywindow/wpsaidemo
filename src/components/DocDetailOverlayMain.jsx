@@ -101,6 +101,7 @@ export default function DocDetailOverlayMain({
   onDocRouteChange,
   sectionModels = [],
   staticMetaMap = {},
+  helpCenterMetaMap = {},
   activeDocPathKey = '',
   catalogDirectoryTitle = 'Directory',
   catalogSearchPlaceholder = 'Search directory',
@@ -227,9 +228,11 @@ export default function DocDetailOverlayMain({
       <DocsDetailCatalogSidebar
         sectionModels={sectionModels}
         staticMetaMap={staticMetaMap}
+        helpCenterMetaMap={helpCenterMetaMap}
         activeDocPathKey={activeDocPathKey}
         directoryTitle={catalogDirectoryTitle}
         searchPlaceholder={catalogSearchPlaceholder}
+        limitToActiveSection
         onLeafClick={onCatalogLeafClick}
       />
       <div className="docs-center-overlay-body docs-center-md">

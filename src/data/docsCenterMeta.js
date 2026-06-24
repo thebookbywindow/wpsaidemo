@@ -1,5 +1,9 @@
 import { writerHelpContent } from './writerHelpContent.js'
 import { installSetupHelpContent } from './installSetupHelpContent.js'
+import {
+  aiReadAloudHelpContent,
+  createDocumentHelpContent,
+} from './wpsWriterQuickStartHelpContent.js'
 
 export const ALL_DOC_LANGS = ['zh-cn', 'zh-tw', 'en-us', 'ja-jp', 'ko-kr', 'es-mx']
 
@@ -626,6 +630,18 @@ const staticMetaEntries = [
     ['新手入门', 'WPS 文字'],
     'wps-writer',
     writerHelpContent,
+    ALL_DOC_LANGS,
+  ),
+  createInternalDocEntry(
+    ['WPS文字', '快速入门', '新建文档'],
+    'create-document',
+    createDocumentHelpContent,
+    ALL_DOC_LANGS,
+  ),
+  createInternalDocEntry(
+    ['WPS文字', '快速入门', 'AI朗读'],
+    'ai-read-aloud',
+    aiReadAloudHelpContent,
     ALL_DOC_LANGS,
   ),
 ]

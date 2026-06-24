@@ -9,6 +9,8 @@ export const DOC_DETAIL_TOC_PLATFORMS = [
 
 export const DOC_DETAIL_PLATFORM_IDS_BY_ROUTE_SLUG = {
   'install-sign-in': ['windows', 'mac'],
+  'create-document': ['windows', 'mac', 'ios', 'android'],
+  'ai-read-aloud': ['ios', 'android'],
 }
 
 export function getDocDetailPlatforms(routeSlug = '') {

@@ -105,7 +105,7 @@ function filterDetailCatalogTree(sectionModels, keyword) {
 
 function findActiveLocation(sectionModels, activeDocPathKey) {
   if (!activeDocPathKey) {
-    return { sectionTitle: '', blockKey: '' }
+    return { sectionTitle: '', blockTitle: '', blockKey: '' }
   }
 
   for (const section of sectionModels) {
@@ -118,14 +118,24 @@ function findActiveLocation(sectionModels, activeDocPathKey) {
         if (createDocsPathKey(sourcePathParts) === activeDocPathKey) {
           return {
             sectionTitle: section.title,
-            blockKey: block.title ? `${section.title}::${block.title}` : '',
+            blockTitle: block.title,
+            blockKey: block.title ? buildBlockKey(section.title, block.title) : '',
           }
         }
       }
     }
   }
 
-  return { sectionTitle: '', blockKey: '' }
+  return { sectionTitle: '', blockTitle: '', blockKey: '' }
+}
+
+function getBlockTitleFromBlockKey(blockKey) {
+  const separatorIndex = `${blockKey ?? ''}`.indexOf('::')
+  if (separatorIndex < 0) {
+    return ''
+  }
+
+  return blockKey.slice(separatorIndex + 2)
 }
 
 function resolveSidebarActiveLocation({
@@ -140,6 +150,7 @@ function resolveSidebarActiveLocation({
 
   return {
     sectionTitle: activeSectionTitle,
+    blockTitle: getBlockTitleFromBlockKey(activeBlockKey),
     blockKey: activeBlockKey,
   }
 }
@@ -195,10 +206,42 @@ function mergeExpandedBlock(previous, blockKey) {
   return next
 }
 
+function scopeSectionModelsToActiveSection(sectionModels, sectionTitle) {
+  if (!sectionTitle) {
+    return sectionModels
+  }
+
+  return sectionModels.filter((section) => section.title === sectionTitle)
+}
+
+function scopeSectionModelsToActiveBlock(sectionModels, blockKey) {
+  if (!blockKey) {
+    return sectionModels
+  }
+
+  return sectionModels
+    .map((section) => {
+      const nextBlocks = section.blocks.filter(
+        (block) => block.title && buildBlockKey(section.title, block.title) === blockKey,
+      )
+
+      if (!nextBlocks.length) {
+        return null
+      }
+
+      return {
+        ...section,
+        blocks: nextBlocks,
+      }
+    })
+    .filter(Boolean)
+}
+
 const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
   {
     sectionModels,
     staticMetaMap,
+    helpCenterMetaMap = {},
     activeDocPathKey = '',
     activeSectionTitle = '',
     activeBlockKey = '',
@@ -206,6 +249,7 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
     searchPlaceholder,
     sidebarClassName = 'docs-center-sidebar docs-detail-catalog-sidebar',
     showLeafNodes = true,
+    limitToActiveSection = false,
     onLeafClick,
     onSectionNavigate,
     onBlockNavigate,
@@ -216,14 +260,6 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
   const keyword = searchKeyword.trim().toLowerCase()
   const hasSearchKeyword = Boolean(keyword)
 
-  const filteredSections = useMemo(
-    () =>
-      showLeafNodes
-        ? filterDetailCatalogTree(sectionModels, keyword)
-        : filterHomeCatalogTree(sectionModels, keyword),
-    [keyword, sectionModels, showLeafNodes],
-  )
-
   const activeLocation = useMemo(
     () =>
       resolveSidebarActiveLocation({
@@ -233,6 +269,31 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
         activeBlockKey,
       }),
     [activeBlockKey, activeDocPathKey, activeSectionTitle, sectionModels],
+  )
+
+  const scopedSectionModels = useMemo(() => {
+    if (!limitToActiveSection) {
+      return sectionModels
+    }
+
+    const sectionScoped = scopeSectionModelsToActiveSection(
+      sectionModels,
+      activeLocation.sectionTitle,
+    )
+
+    if (activeLocation.blockKey) {
+      return scopeSectionModelsToActiveBlock(sectionScoped, activeLocation.blockKey)
+    }
+
+    return sectionScoped
+  }, [activeLocation.blockKey, activeLocation.sectionTitle, limitToActiveSection, sectionModels])
+
+  const filteredSections = useMemo(
+    () =>
+      showLeafNodes
+        ? filterDetailCatalogTree(scopedSectionModels, keyword)
+        : filterHomeCatalogTree(scopedSectionModels, keyword),
+    [keyword, scopedSectionModels, showLeafNodes],
   )
 
   const [expandedSections, setExpandedSections] = useState(() => {
@@ -312,7 +373,9 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
   }
 
   const handleSectionClick = (sectionTitle) => {
-    toggleSection(sectionTitle)
+    if (!limitToActiveSection) {
+      toggleSection(sectionTitle)
+    }
     onSectionNavigate?.(sectionTitle)
   }
 
@@ -363,8 +426,99 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
     )
   }
 
+  const scopedBlockTitle =
+    activeLocation.blockTitle || getBlockTitleFromBlockKey(activeLocation.blockKey)
+
+  const sidebarHeading = (() => {
+    if (!limitToActiveSection) {
+      return directoryTitle
+    }
+
+    if (activeLocation.sectionTitle && scopedBlockTitle) {
+      return `${activeLocation.sectionTitle} > ${scopedBlockTitle}`
+    }
+
+    return scopedBlockTitle || activeLocation.sectionTitle || directoryTitle
+  })()
+
+  const renderScopedLeafNodes = (section) => (
+    <div className="docs-center-toc-leaves docs-center-toc-leaves--scoped-flat">
+      {section.blocks.flatMap((block) => block.items.map((item) => renderLeaf(section, block, item)))}
+    </div>
+  )
+
+  const renderSectionContent = (section) => {
+    if (showLeafNodes) {
+      return section.blocks.map((block, blockIndex) => {
+        if (block.title) {
+          const blockKey = buildBlockKey(section.title, block.title)
+          const isBlockExpanded = hasSearchKeyword || expandedBlocks.has(blockKey)
+
+          return (
+            <div
+              key={blockKey}
+              className={`docs-center-toc-block${isBlockExpanded ? ' is-expanded' : ''}`}
+            >
+              <button
+                type="button"
+                className={`docs-center-toc-child docs-center-toc-block-btn docs-center-toc-expand-btn${
+                  activeLocation.blockKey === blockKey ? ' active' : ''
+                }${isBlockExpanded ? ' is-expanded' : ''}`}
+                aria-expanded={isBlockExpanded}
+                onClick={() => handleBlockClick(section, block)}
+              >
+                <span className="docs-center-toc-expand-label">
+                  {renderHighlightedText(block.title, keyword)}
+                </span>
+                {block.items.length > 0 ? (
+                  <ChevronRight
+                    size={12}
+                    className="docs-center-toc-expand-chevron"
+                    aria-hidden="true"
+                  />
+                ) : null}
+              </button>
+              {isBlockExpanded ? (
+                <div className="docs-center-toc-leaves">
+                  {block.items.map((item) => renderLeaf(section, block, item))}
+                </div>
+              ) : null}
+            </div>
+          )
+        }
+
+        return (
+          <div
+            key={`detail-catalog-flat-${section.title}-${blockIndex}`}
+            className="docs-center-toc-leaves docs-center-toc-leaves--flat"
+          >
+            {block.items.map((item) => renderLeaf(section, block, item))}
+          </div>
+        )
+      })
+    }
+
+    return getVisibleTitledBlocks(section).map((block) => {
+      const blockKey = buildBlockKey(section.title, block.title)
+
+      return (
+        <button
+          key={blockKey}
+          type="button"
+          className={`docs-center-toc-child${
+            activeLocation.blockKey === blockKey ? ' active' : ''
+          }`}
+          onClick={() => onBlockNavigate?.(section.title, block.title)}
+        >
+          {renderHighlightedText(block.title, keyword)}
+        </button>
+      )
+    })
+  }
+
   return (
-    <aside ref={ref} className={sidebarClassName} aria-label={directoryTitle}>
+    <aside ref={ref} className={sidebarClassName} aria-label={sidebarHeading}>
+      <h3>{sidebarHeading}</h3>
       <label className="docs-center-sidebar-search">
         <span aria-hidden="true">⌕</span>
         <input
@@ -374,110 +528,51 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
           onChange={(event) => setSearchKeyword(event.target.value)}
         />
       </label>
-      <h3>{directoryTitle}</h3>
       <div>
-        {filteredSections.map((section) => {
-          const isSectionExpanded =
-            hasSearchKeyword || expandedSections.has(section.title)
-
-          return (
+        {limitToActiveSection ? (
+          filteredSections.map((section) => (
             <div
-              key={`detail-catalog-${section.title}`}
-              className={`docs-center-toc-parent${isSectionExpanded ? ' is-expanded' : ''}`}
+              key={`detail-catalog-scoped-${section.title}-${activeLocation.blockKey}`}
+              className="docs-center-toc-children docs-center-toc-children--scoped-root"
             >
-              <button
-                type="button"
-                className={`docs-center-toc-parent-btn docs-center-toc-expand-btn${
-                  activeLocation.sectionTitle === section.title ? ' active' : ''
-                }${isSectionExpanded ? ' is-expanded' : ''}`}
-                aria-expanded={isSectionExpanded}
-                onClick={() => handleSectionClick(section.title)}
-              >
-                <span className="docs-center-toc-expand-label">
-                  {renderHighlightedText(section.title, keyword)}
-                </span>
-                {sectionHasExpandableChildren(section, showLeafNodes) ? (
-                  <ChevronRight
-                    size={13}
-                    className="docs-center-toc-expand-chevron"
-                    aria-hidden="true"
-                  />
-                ) : null}
-              </button>
-              {isSectionExpanded ? (
-                <div className="docs-center-toc-children">
-                  {showLeafNodes ? (
-                    section.blocks.map((block, blockIndex) => {
-                      if (block.title) {
-                        const blockKey = buildBlockKey(section.title, block.title)
-                        const isBlockExpanded =
-                          hasSearchKeyword || expandedBlocks.has(blockKey)
-
-                        return (
-                          <div
-                            key={blockKey}
-                            className={`docs-center-toc-block${isBlockExpanded ? ' is-expanded' : ''}`}
-                          >
-                            <button
-                              type="button"
-                              className={`docs-center-toc-child docs-center-toc-block-btn docs-center-toc-expand-btn${
-                                activeLocation.blockKey === blockKey ? ' active' : ''
-                              }${isBlockExpanded ? ' is-expanded' : ''}`}
-                              aria-expanded={isBlockExpanded}
-                              onClick={() => handleBlockClick(section, block)}
-                            >
-                              <span className="docs-center-toc-expand-label">
-                                {renderHighlightedText(block.title, keyword)}
-                              </span>
-                              {block.items.length > 0 ? (
-                                <ChevronRight
-                                  size={12}
-                                  className="docs-center-toc-expand-chevron"
-                                  aria-hidden="true"
-                                />
-                              ) : null}
-                            </button>
-                            {isBlockExpanded ? (
-                              <div className="docs-center-toc-leaves">
-                                {block.items.map((item) => renderLeaf(section, block, item))}
-                              </div>
-                            ) : null}
-                          </div>
-                        )
-                      }
-
-                      return (
-                        <div
-                          key={`detail-catalog-flat-${section.title}-${blockIndex}`}
-                          className="docs-center-toc-leaves docs-center-toc-leaves--flat"
-                        >
-                          {block.items.map((item) => renderLeaf(section, block, item))}
-                        </div>
-                      )
-                    })
-                  ) : (
-                    getVisibleTitledBlocks(section).map((block) => {
-                      const blockKey = buildBlockKey(section.title, block.title)
-
-                      return (
-                        <button
-                          key={blockKey}
-                          type="button"
-                          className={`docs-center-toc-child${
-                            activeLocation.blockKey === blockKey ? ' active' : ''
-                          }`}
-                          onClick={() => onBlockNavigate?.(section.title, block.title)}
-                        >
-                          {renderHighlightedText(block.title, keyword)}
-                        </button>
-                      )
-                    })
-                  )}
-                </div>
-              ) : null}
+              {renderScopedLeafNodes(section)}
             </div>
-          )
-        })}
+          ))
+        ) : (
+          filteredSections.map((section) => {
+            const isSectionExpanded = hasSearchKeyword || expandedSections.has(section.title)
+
+            return (
+              <div
+                key={`detail-catalog-${section.title}`}
+                className={`docs-center-toc-parent${isSectionExpanded ? ' is-expanded' : ''}`}
+              >
+                <button
+                  type="button"
+                  className={`docs-center-toc-parent-btn docs-center-toc-expand-btn${
+                    activeLocation.sectionTitle === section.title ? ' active' : ''
+                  }${isSectionExpanded ? ' is-expanded' : ''}`}
+                  aria-expanded={isSectionExpanded}
+                  onClick={() => handleSectionClick(section.title)}
+                >
+                  <span className="docs-center-toc-expand-label">
+                    {renderHighlightedText(section.title, keyword)}
+                  </span>
+                  {sectionHasExpandableChildren(section, showLeafNodes) ? (
+                    <ChevronRight
+                      size={13}
+                      className="docs-center-toc-expand-chevron"
+                      aria-hidden="true"
+                    />
+                  ) : null}
+                </button>
+                {isSectionExpanded ? (
+                  <div className="docs-center-toc-children">{renderSectionContent(section)}</div>
+                ) : null}
+              </div>
+            )
+          })
+        )}
       </div>
     </aside>
   )
