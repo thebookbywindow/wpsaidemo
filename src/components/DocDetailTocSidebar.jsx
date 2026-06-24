@@ -1,17 +1,9 @@
-import { ChevronRight, Globe, Laptop, Monitor, Smartphone, Terminal } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 import {
-  DOC_DETAIL_TOC_PLATFORMS,
+  getDocDetailPlatforms,
   getDocDetailTocSections,
 } from '../data/docDetailTocData'
-
-const PLATFORM_ICON_MAP = {
-  windows: Monitor,
-  mac: Laptop,
-  linux: Terminal,
-  web: Globe,
-  android: Smartphone,
-  ios: Smartphone,
-}
+import { getDocDetailPlatformIcon } from '../utils/docDetailPlatformIcons'
 
 export default function DocDetailTocSidebar({
   sidebarTitle,
@@ -22,6 +14,7 @@ export default function DocDetailTocSidebar({
   contentViewMode,
   onPlatformClick,
   onSectionClick,
+  platforms = getDocDetailPlatforms(),
 }) {
   const sections = getDocDetailTocSections(isZhContent)
 
@@ -31,12 +24,12 @@ export default function DocDetailTocSidebar({
         <h3>{sidebarTitle}</h3>
       </div>
       <nav className="docs-detail-sidebar-nav">
-        {DOC_DETAIL_TOC_PLATFORMS.map((platform) => {
+        {platforms.map((platform) => {
           const isExpanded =
             Boolean(expandedPlatformId) && expandedPlatformId === platform.id
           const isPlatformActive =
             activePlatformId === platform.id && contentViewMode !== 'doc-catalog-index'
-          const PlatformIcon = PLATFORM_ICON_MAP[platform.id] ?? Monitor
+          const PlatformIcon = getDocDetailPlatformIcon(platform.id)
 
           return (
             <div
@@ -51,12 +44,12 @@ export default function DocDetailTocSidebar({
               >
                 <span className="docs-detail-sidebar-platform-main">
                   <span className="docs-detail-sidebar-platform-icon" aria-hidden="true">
-                    <PlatformIcon size={15} strokeWidth={1.85} />
+                    <PlatformIcon size={13} strokeWidth={1.85} />
                   </span>
                   <span>{platform.label}</span>
                 </span>
                 <ChevronRight
-                  size={15}
+                  size={13}
                   className="docs-detail-sidebar-platform-chevron"
                   aria-hidden="true"
                 />

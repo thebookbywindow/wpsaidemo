@@ -114,6 +114,10 @@ const docsCatalogSectionsEn = [
     title: 'Getting Started',
     blocks: [
       {
+        title: 'Quick Setup',
+        items: ['Install & Sign In'],
+      },
+      {
         title: '',
         items: ['WPS Writer', 'WPS Spreadsheet', 'WPS Presentation', 'WPS PDF', 'WPS Cloud', 'PPT', 'Spreadsheet', 'Edit & Convert', 'Smart Docs', 'Smart Sheets', 'Smart Forms', 'Multidim Tables', 'AI Slides', 'Resume'],
       },
@@ -414,7 +418,7 @@ const docsCatalogSectionsEn = [
 
 export const docsEnglishContent = {
   ui: {
-    heroTitle: 'WPS Docs Center',
+    heroTitle: 'Docs Center',
     searchSrOnly: 'Search documentation',
     heroSearchPlaceholder: 'Search docs by keyword',
     heroSearchButton: 'Search',
@@ -469,7 +473,7 @@ export const docsEnglishContent = {
 export const docsUiByLanguage = withContentLanguageAliases({
   en: docsEnglishContent.ui,
   zh: {
-    heroTitle: 'WPS 文档中心',
+    heroTitle: '文档中心',
     searchSrOnly: '文档搜索',
     heroSearchPlaceholder: '请输入关键词搜索产品文档',
     heroSearchButton: '搜索',
@@ -488,7 +492,7 @@ export const docsUiByLanguage = withContentLanguageAliases({
 })
 
 docsUiByLanguage['zh-tw'] = {
-  heroTitle: 'WPS 文件中心',
+  heroTitle: '文件中心',
   searchSrOnly: '文件搜尋',
   heroSearchPlaceholder: '請輸入關鍵字搜尋產品文件',
   heroSearchButton: '搜尋',

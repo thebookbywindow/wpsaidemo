@@ -1,4 +1,5 @@
 import { writerHelpContent } from './writerHelpContent.js'
+import { installSetupHelpContent } from './installSetupHelpContent.js'
 
 export const ALL_DOC_LANGS = ['zh-cn', 'zh-tw', 'en-us', 'ja-jp', 'ko-kr', 'es-mx']
 
@@ -615,6 +616,12 @@ const aiPdfHelpContent = createZhOnlyHelpContent({
 })
 
 const staticMetaEntries = [
+  createInternalDocEntry(
+    ['新手入门', '快速上手', '安装与登录'],
+    'install-sign-in',
+    installSetupHelpContent,
+    ALL_DOC_LANGS,
+  ),
   createInternalDocEntry(
     ['新手入门', 'WPS 文字'],
     'wps-writer',

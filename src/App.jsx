@@ -549,6 +549,10 @@ const docsCatalogSections = [
     title: '新手入门',
     blocks: [
       {
+        title: '快速上手',
+        items: ['安装与登录'],
+      },
+      {
         title: '',
         items: ['WPS 文字', 'WPS 表格', 'WPS 演示', 'WPS PDF', 'WPS 云服务', 'PPT', '表格', '编辑转化', '智能文档', '智能表格', '智能表单', '多维表格', 'AI slides', '简历'],
       },

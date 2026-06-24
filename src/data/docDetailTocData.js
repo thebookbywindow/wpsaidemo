@@ -7,6 +7,33 @@ export const DOC_DETAIL_TOC_PLATFORMS = [
   { id: 'ios', label: 'iOS' },
 ]
 
+export const DOC_DETAIL_PLATFORM_IDS_BY_ROUTE_SLUG = {
+  'install-sign-in': ['windows', 'mac'],
+}
+
+export function getDocDetailPlatforms(routeSlug = '') {
+  const allowedIds = DOC_DETAIL_PLATFORM_IDS_BY_ROUTE_SLUG[routeSlug]
+  if (!allowedIds?.length) {
+    return DOC_DETAIL_TOC_PLATFORMS
+  }
+
+  const allowedSet = new Set(allowedIds)
+  return DOC_DETAIL_TOC_PLATFORMS.filter((platform) => allowedSet.has(platform.id))
+}
+
+export function isDocDetailPlatformAllowed(routeSlug, platformId) {
+  if (!platformId) {
+    return true
+  }
+
+  const allowedIds = DOC_DETAIL_PLATFORM_IDS_BY_ROUTE_SLUG[routeSlug]
+  if (!allowedIds?.length) {
+    return true
+  }
+
+  return allowedIds.includes(platformId)
+}
+
 export const DOC_DETAIL_TOC_SECTIONS_ZH = [
   { id: 'summary', label: '功能摘要', urlSlug: 'feature-summary' },
   { id: 'description', label: '功能说明', urlSlug: 'feature-description' },

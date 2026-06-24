@@ -1,8 +1,17 @@
 import { ChevronRight } from 'lucide-react'
-import { DOC_DETAIL_TOC_PLATFORMS, getDocDetailTocSections } from '../data/docDetailTocData'
+import { getDocDetailTocSections } from '../data/docDetailTocData'
 import { getDocDetailSectionLabel } from '../utils/docDetailSectionContent'
+import { getDocDetailPlatformIcon } from '../utils/docDetailPlatformIcons'
 
-export function DocDetailDocCatalogIndex({ isZhContent, onSectionClick }) {
+function getBreadcrumbDocParts(docDisplayParts = []) {
+  if (docDisplayParts.length >= 3) {
+    return [docDisplayParts[docDisplayParts.length - 1]]
+  }
+
+  return docDisplayParts.slice(1)
+}
+
+export function DocDetailDocCatalogIndex({ isZhContent, onSectionClick, platforms }) {
   const sections = getDocDetailTocSections(isZhContent)
   const title = isZhContent ? '全部端与内容板块' : 'All platforms and sections'
   const hint = isZhContent
@@ -15,13 +24,17 @@ export function DocDetailDocCatalogIndex({ isZhContent, onSectionClick }) {
         <h2>{title}</h2>
         <p>{hint}</p>
       </header>
-      <div className="docs-detail-catalog-grid">
-        {DOC_DETAIL_TOC_PLATFORMS.map((platform) => (
-          <section key={`doc-catalog-${platform.id}`} className="docs-detail-catalog-card">
-            <div className="docs-detail-catalog-card-head">
-              <span className="docs-detail-platform-chip">{platform.label}</span>
-            </div>
-            <div className="docs-detail-catalog-sections">
+      <div className="docs-detail-catalog-platform-rows">
+        {platforms.map((platform) => {
+          const PlatformIcon = getDocDetailPlatformIcon(platform.id)
+
+          return (
+          <section key={`doc-catalog-${platform.id}`} className="docs-detail-catalog-platform-row">
+            <span className="docs-detail-catalog-platform-icon" aria-hidden="true">
+              <PlatformIcon size={14} strokeWidth={1.85} />
+            </span>
+            <h3 className="docs-detail-catalog-platform-name">{platform.label}</h3>
+            <div className="docs-detail-catalog-sections-grid">
               {sections.map((section) => (
                 <button
                   key={`doc-catalog-${platform.id}-${section.id}`}
@@ -34,7 +47,8 @@ export function DocDetailDocCatalogIndex({ isZhContent, onSectionClick }) {
               ))}
             </div>
           </section>
-        ))}
+          )
+        })}
       </div>
     </div>
   )
@@ -42,6 +56,7 @@ export function DocDetailDocCatalogIndex({ isZhContent, onSectionClick }) {
 
 export default function DocDetailArticleBreadcrumb({
   docDisplayParts,
+  rootLabel = '',
   platformLabel,
   activeSectionId,
   docLanguage,
@@ -51,14 +66,32 @@ export default function DocDetailArticleBreadcrumb({
   onDocClick,
   ariaLabel,
 }) {
-  const items = docDisplayParts.map((label, index) => ({
-    key: `doc-${label}-${index}`,
-    label,
-    clickable:
-      (index === 0 && Boolean(onRootClick))
-      || (index === 1 && Boolean(onDocClick) && contentViewMode !== 'doc-catalog-index'),
-    onClick: index === 0 ? onRootClick : onDocClick,
-  }))
+  const items = []
+
+  if (rootLabel) {
+    items.push({
+      key: 'docs-center-root',
+      label: rootLabel,
+      clickable: Boolean(onRootClick),
+      onClick: onRootClick,
+    })
+  }
+
+  const breadcrumbDocParts = getBreadcrumbDocParts(docDisplayParts)
+
+  breadcrumbDocParts.forEach((label, trailIndex) => {
+    const isLastDocPart = trailIndex === breadcrumbDocParts.length - 1
+
+    items.push({
+      key: `doc-${label}-${trailIndex}`,
+      label,
+      clickable:
+        isLastDocPart
+        && Boolean(onDocClick)
+        && contentViewMode !== 'doc-catalog-index',
+      onClick: onDocClick,
+    })
+  })
 
   if (platformLabel && contentViewMode !== 'doc-catalog-index') {
     items.push({
@@ -114,7 +147,6 @@ export function DocDetailPlatformSectionIndex({
   return (
     <div className="docs-detail-index-page">
       <header className="docs-detail-index-header">
-        <span className="docs-detail-platform-chip docs-detail-platform-chip--large">{platformLabel}</span>
         <h2>{indexTitle}</h2>
         <p>{indexHint}</p>
       </header>

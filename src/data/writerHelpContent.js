@@ -1,4 +1,4 @@
-function buildWriterStructuredArticle({
+export function buildWriterStructuredArticle({
   title,
   metaLine,
   summary,

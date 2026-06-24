@@ -9,6 +9,7 @@ export default function DocDetailTocPanel({
   contentViewMode,
   onPlatformClick,
   onSectionClick,
+  platforms,
 }) {
   return (
     <DocDetailTocSidebar
@@ -20,6 +21,7 @@ export default function DocDetailTocPanel({
       contentViewMode={contentViewMode}
       onPlatformClick={onPlatformClick}
       onSectionClick={onSectionClick}
+      platforms={platforms}
     />
   )
 }

@@ -1,10 +1,14 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import DocDetailArticleBreadcrumb, {
   DocDetailDocCatalogIndex,
   DocDetailPlatformSectionIndex,
 } from './DocDetailArticleBreadcrumb'
 import DocDetailTocPanel from './DocDetailTocPanel'
-import { DOC_DETAIL_TOC_PLATFORMS } from '../data/docDetailTocData'
+import DocsDetailCatalogSidebar from './DocsDetailCatalogSidebar'
+import {
+  getDocDetailPlatforms,
+  isDocDetailPlatformAllowed,
+} from '../data/docDetailTocData'
 import { useDocDetailToc } from '../hooks/useDocDetailToc'
 import {
   buildDocDetailSectionMarkdown,
@@ -82,10 +86,17 @@ export default function DocDetailOverlayMain({
   fallbackNoticeHtml = '',
   docDisplayParts = [],
   articleBreadcrumbAriaLabel = 'Article breadcrumb',
+  breadcrumbRootLabel = '',
   onBreadcrumbRootClick,
   routePlatformId = '',
   routeDetailSectionId = '',
   onDocRouteChange,
+  sectionModels = [],
+  staticMetaMap = {},
+  activeDocPathKey = '',
+  catalogDirectoryTitle = 'Directory',
+  catalogSearchPlaceholder = 'Search directory',
+  onCatalogLeafClick,
 }) {
   const {
     expandedPlatformId,
@@ -102,8 +113,21 @@ export default function DocDetailOverlayMain({
     onRouteChange: onDocRouteChange,
   })
 
+  const docDetailPlatforms = useMemo(
+    () => getDocDetailPlatforms(routeSlug),
+    [routeSlug],
+  )
+
+  useEffect(() => {
+    if (!routePlatformId || isDocDetailPlatformAllowed(routeSlug, routePlatformId)) {
+      return
+    }
+
+    onDocRouteChange?.({ platformId: '', detailSectionId: '' })
+  }, [onDocRouteChange, routePlatformId, routeSlug])
+
   const platformLabel =
-    DOC_DETAIL_TOC_PLATFORMS.find((platform) => platform.id === activePlatformId)?.label ?? ''
+    docDetailPlatforms.find((platform) => platform.id === activePlatformId)?.label ?? ''
 
   const usesStructuredSections = supportsStructuredDocSections(routeSlug, docContent, docLanguage)
 
@@ -142,23 +166,20 @@ export default function DocDetailOverlayMain({
         usesStructuredSections ? '' : ' docs-center-overlay-main--single'
       }`}
     >
-      {usesStructuredSections ? (
-        <DocDetailTocPanel
-          sidebarTitle={sidebarTitle}
-          isZhContent={isZhContent}
-          expandedPlatformId={expandedPlatformId}
-          activePlatformId={activePlatformId}
-          activeSectionId={activeSectionId}
-          contentViewMode={contentViewMode}
-          onPlatformClick={handleSidebarPlatformToggle}
-          onSectionClick={handleSectionClick}
-        />
-      ) : null}
+      <DocsDetailCatalogSidebar
+        sectionModels={sectionModels}
+        staticMetaMap={staticMetaMap}
+        activeDocPathKey={activeDocPathKey}
+        directoryTitle={catalogDirectoryTitle}
+        searchPlaceholder={catalogSearchPlaceholder}
+        onLeafClick={onCatalogLeafClick}
+      />
       <div className="docs-center-overlay-body docs-center-md">
         <div className="docs-detail-article-panel">
           {usesStructuredSections ? (
             <DocDetailArticleBreadcrumb
               docDisplayParts={docDisplayParts}
+              rootLabel={breadcrumbRootLabel}
               platformLabel={platformLabel}
               activeSectionId={activeSectionId}
               docLanguage={docLanguage}
@@ -174,6 +195,7 @@ export default function DocDetailOverlayMain({
               <DocDetailDocCatalogIndex
                 isZhContent={isZhContent}
                 onSectionClick={handleSectionClick}
+                platforms={docDetailPlatforms}
               />
             ) : usesStructuredSections && contentViewMode === 'platform-index' ? (
               <DocDetailPlatformSectionIndex
@@ -187,6 +209,19 @@ export default function DocDetailOverlayMain({
           </div>
         </div>
       </div>
+      {usesStructuredSections ? (
+        <DocDetailTocPanel
+          sidebarTitle={sidebarTitle}
+          isZhContent={isZhContent}
+          expandedPlatformId={expandedPlatformId}
+          activePlatformId={activePlatformId}
+          activeSectionId={activeSectionId}
+          contentViewMode={contentViewMode}
+          onPlatformClick={handleSidebarPlatformToggle}
+          onSectionClick={handleSectionClick}
+          platforms={docDetailPlatforms}
+        />
+      ) : null}
     </div>
   )
 }

@@ -20,9 +20,7 @@ export function useDocDetailToc({
   const [expandedPlatformId, setExpandedPlatformId] = useState(routePlatformId)
 
   useEffect(() => {
-    if (routePlatformId) {
-      setExpandedPlatformId(routePlatformId)
-    }
+    setExpandedPlatformId(routePlatformId)
   }, [routePlatformId])
 
   const contentViewMode = useMemo(

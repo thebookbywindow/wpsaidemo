@@ -1,6 +1,6 @@
 import { DOC_DETAIL_TOC_SECTIONS_EN, DOC_DETAIL_TOC_SECTIONS_ZH } from '../data/docDetailTocData'
 
-export const STRUCTURED_DOC_ROUTE_SLUGS = new Set(['wps-writer'])
+export const STRUCTURED_DOC_ROUTE_SLUGS = new Set(['wps-writer', 'install-sign-in'])
 
 const DOC_DETAIL_SECTION_HEADINGS = {
   'zh-cn': Object.fromEntries(DOC_DETAIL_TOC_SECTIONS_ZH.map((item) => [item.id, item.label])),

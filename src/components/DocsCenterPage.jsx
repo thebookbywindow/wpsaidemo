@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import DocDetailOverlayMain from './DocDetailOverlayMain'
+import DocsDetailCatalogSidebar from './DocsDetailCatalogSidebar'
 import { buildDocsStaticMetaMap, createDocsPathKey } from '../data/docsCenterMeta'
 import { getLocaleDocsPath, parseDocsRoute, normalizeDocsRoute, buildCanonicalDocPath, resolveDocRouteSlug, resolveDocSectionSlug } from '../utils/docsRoute'
 
@@ -267,29 +268,6 @@ function filterSectionsForKeyword(sectionModels, keyword) {
     .filter(Boolean)
 }
 
-function filterTocSections(sectionModels, keyword) {
-  if (!keyword) {
-    return sectionModels
-  }
-
-  return sectionModels
-    .map((section) => {
-      const sectionMatches = includesKeyword(section.title, keyword)
-      const titledBlocks = section.blocks.filter((block) => block.title)
-      const nextBlocks = titledBlocks.filter((block) => includesKeyword(block.title, keyword))
-
-      if (!sectionMatches && !nextBlocks.length) {
-        return null
-      }
-
-      return {
-        ...section,
-        blocks: sectionMatches ? titledBlocks : nextBlocks,
-      }
-    })
-    .filter(Boolean)
-}
-
 export default function DocsCenterPage({
   currentLocale,
   currentPathname,
@@ -306,9 +284,7 @@ export default function DocsCenterPage({
 }) {
   const [heroInputValue, setHeroInputValue] = useState('')
   const [appliedSearchKeyword, setAppliedSearchKeyword] = useState('')
-  const [tocSearchKeyword, setTocSearchKeyword] = useState('')
-  const [currentDocLanguage, setCurrentDocLanguage] = useState(getDocLanguageFromLocale(currentLocale))
-  const hasTocSearchKeyword = Boolean(tocSearchKeyword.trim())
+  const preferredDocLanguage = getDocLanguageFromLocale(currentLocale)
 
   const staticMetaMap = useMemo(() => buildDocsStaticMetaMap(), [])
 
@@ -357,11 +333,6 @@ export default function DocsCenterPage({
   const visibleSections = useMemo(
     () => filterSectionsForKeyword(sectionModels, appliedSearchKeyword.trim().toLowerCase()),
     [sectionModels, appliedSearchKeyword],
-  )
-
-  const tocSections = useMemo(
-    () => filterTocSections(sectionModels, tocSearchKeyword.trim().toLowerCase()),
-    [sectionModels, tocSearchKeyword],
   )
 
   const helpDocRouteMap = useMemo(() => {
@@ -433,7 +404,7 @@ export default function DocsCenterPage({
     ? displayPathBySourceKey.get(currentDocMeta.pathKey) ?? currentDocMeta.pathParts
     : null
   const currentDocAvailableLangs = currentDocMeta?.publishedLangs ?? []
-  const displayedDocLanguage = resolveAvailableDocLanguage(currentDocMeta?.helpContent, currentDocLanguage)
+  const displayedDocLanguage = resolveAvailableDocLanguage(currentDocMeta?.helpContent, preferredDocLanguage)
   const displayedDocLanguageLabel = displayedDocLanguage
     ? getDocLanguageLabel(displayedDocLanguage)
     : ''
@@ -442,7 +413,7 @@ export default function DocsCenterPage({
   const currentDocNeedsFallbackNotice =
     Boolean(currentDocMeta?.helpContent)
     && Boolean(displayedDocLanguage)
-    && displayedDocLanguage !== currentDocLanguage
+    && displayedDocLanguage !== preferredDocLanguage
   const currentDocFallbackNoticeHtml =
     currentDocMeta && currentDocNeedsFallbackNotice
       ? `<div class="docs-center-lang-notice">${escapeHtml(
@@ -493,10 +464,6 @@ export default function DocsCenterPage({
   )
 
   useEffect(() => {
-    setCurrentDocLanguage(getDocLanguageFromLocale(currentLocale))
-  }, [currentLocale, currentDocMeta?.pathKey])
-
-  useEffect(() => {
     return () => {
       if (scrollSpyUnlockTimeoutRef.current) {
         window.clearTimeout(scrollSpyUnlockTimeoutRef.current)
@@ -519,12 +486,21 @@ export default function DocsCenterPage({
     })
   }, [activeBlockTitle, activeSection])
 
+  const detailOverlayWasOpenRef = useRef(false)
+
   useEffect(() => {
-    document.body.style.overflow = currentDocMeta ? 'hidden' : ''
-    return () => {
-      document.body.style.overflow = ''
+    if (!currentDocMeta) {
+      detailOverlayWasOpenRef.current = false
+      return undefined
     }
-  }, [currentDocMeta])
+
+    if (!detailOverlayWasOpenRef.current) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+      detailOverlayWasOpenRef.current = true
+    }
+
+    return undefined
+  }, [currentDocMeta?.pathKey, currentDocMeta])
 
   useEffect(() => {
     requestScrollSpyUpdateRef.current = () => {}
@@ -651,7 +627,7 @@ export default function DocsCenterPage({
     } else if (activeRect.bottom > sidebarRect.bottom - buffer) {
       sidebarElement.scrollTop += activeRect.bottom - (sidebarRect.bottom - buffer)
     }
-  }, [resolvedActiveBlockTitle, resolvedActiveSection, tocSections])
+  }, [resolvedActiveBlockTitle, resolvedActiveSection, sectionModels])
 
   const handleHeroSearch = () => {
     setAppliedSearchKeyword(heroInputValue)
@@ -701,6 +677,20 @@ export default function DocsCenterPage({
     }, 40)
   }
 
+  const handleCatalogSectionNavigate = (sectionTitle) => {
+    const sectionSlug =
+      sectionSlugMap[sectionTitle] ?? fallbackSlug(sectionTitle, sectionSlugMap)
+    navigatePreservingScroll(getLocaleDocsPath(currentLocale, sectionSlug))
+    handleScrollToSection(sectionTitle)
+  }
+
+  const handleCatalogBlockNavigate = (sectionTitle, blockTitle) => {
+    const sectionSlug =
+      sectionSlugMap[sectionTitle] ?? fallbackSlug(sectionTitle, sectionSlugMap)
+    navigatePreservingScroll(getLocaleDocsPath(currentLocale, sectionSlug))
+    handleScrollToSection(sectionTitle, blockTitle)
+  }
+
   useEffect(() => {
     if (!routeSectionSlug || routeItemSlug || currentDocMeta) {
       return
@@ -747,16 +737,11 @@ export default function DocsCenterPage({
   }
 
   const handleBreadcrumbRootClick = () => {
-    const sectionTitle = currentDocDisplayParts?.[0]
-    if (!sectionTitle || !currentDocSectionSlug) {
-      return
-    }
-    navigatePreservingScroll(getLocaleDocsPath(currentLocale, currentDocSectionSlug))
-    handleScrollToSection(sectionTitle)
+    navigateTo(getLocaleDocsPath(currentLocale))
   }
 
   return (
-    <div className="docs-center-page">
+    <div className={`docs-center-page${currentDocMeta ? ' docs-center-page--detail-open' : ''}`}>
       <section className="docs-center-hero">
         <div className="docs-center-container docs-center-hero-inner">
           <h1>{docsUiText.heroTitle}</h1>
@@ -783,65 +768,23 @@ export default function DocsCenterPage({
       </section>
 
       <main className="docs-center-layout docs-center-container">
-        <aside ref={sidebarRef} className="docs-center-sidebar">
-          <label className="docs-center-sidebar-search">
-            <span aria-hidden="true">⌕</span>
-            <input
-              type="text"
-              placeholder={docsUiText.sidebarSearchPlaceholder}
-              value={tocSearchKeyword}
-              onChange={(event) => setTocSearchKeyword(event.target.value)}
-            />
-          </label>
-          <h3>{docsUiText.directoryTitle}</h3>
-          <div>
-            {tocSections.map((section) => {
-              const titledBlocks = section.blocks.filter((block) => block.title)
-              const shouldShowChildren = Boolean(titledBlocks.length)
-                && (hasTocSearchKeyword || resolvedActiveSection === section.title)
-
-              return (
-                <div key={`toc-${section.title}`} className="docs-center-toc-parent">
-                  <button
-                    type="button"
-                    className={`docs-center-toc-parent-btn${resolvedActiveSection === section.title ? ' active' : ''}`}
-                    onClick={() => {
-                      const sectionSlug =
-                        sectionSlugMap[section.title] ?? fallbackSlug(section.title, sectionSlugMap)
-                      navigatePreservingScroll(getLocaleDocsPath(currentLocale, sectionSlug))
-                      handleScrollToSection(section.title)
-                    }}
-                  >
-                    {renderHighlightedText(section.title, tocSearchKeyword.trim().toLowerCase())}
-                  </button>
-                  {shouldShowChildren ? (
-                    <div className="docs-center-toc-children">
-                      {titledBlocks.map((block) => (
-                        <button
-                          key={`toc-child-${section.title}-${block.title}`}
-                          type="button"
-                          className={`docs-center-toc-child${
-                            resolvedActiveSection === section.title && resolvedActiveBlockTitle === block.title
-                              ? ' active'
-                              : ''
-                          }`}
-                          onClick={() => {
-                            const sectionSlug =
-                              sectionSlugMap[section.title] ?? fallbackSlug(section.title, sectionSlugMap)
-                            navigatePreservingScroll(getLocaleDocsPath(currentLocale, sectionSlug))
-                            handleScrollToSection(section.title, block.title)
-                          }}
-                        >
-                          {renderHighlightedText(block.title, tocSearchKeyword.trim().toLowerCase())}
-                        </button>
-                      ))}
-                    </div>
-                  ) : null}
-                </div>
-              )
-            })}
-          </div>
-        </aside>
+        <DocsDetailCatalogSidebar
+          ref={sidebarRef}
+          sectionModels={sectionModels}
+          staticMetaMap={staticMetaMap}
+          activeSectionTitle={resolvedActiveSection}
+          activeBlockKey={
+            resolvedActiveBlockTitle
+              ? `${resolvedActiveSection}::${resolvedActiveBlockTitle}`
+              : ''
+          }
+          directoryTitle={docsUiText.directoryTitle}
+          searchPlaceholder={docsUiText.sidebarSearchPlaceholder}
+          sidebarClassName="docs-center-sidebar"
+          showLeafNodes={false}
+          onSectionNavigate={handleCatalogSectionNavigate}
+          onBlockNavigate={handleCatalogBlockNavigate}
+        />
 
         <section className="docs-center-content">
           {visibleSections.length ? (
@@ -964,36 +907,9 @@ export default function DocsCenterPage({
       </div>
 
       <div className={`docs-center-overlay${currentDocMeta ? ' open' : ''}`}>
-        <div className="docs-center-overlay-topbar">
-          <button
-            type="button"
-            className="docs-center-overlay-back"
-            onClick={() => navigatePreservingScroll(getLocaleDocsPath(currentLocale, currentDocRouteSlug))}
-          >
-            {docsUiText.overlayBackLabel}
-          </button>
-          {currentDocAvailableLangs.length > 1 ? (
-            <label className="docs-center-overlay-lang-select">
-              <span className="docs-center-overlay-lang-select-label">
-                {isZhContent ? '语言' : 'Language'}
-              </span>
-              <select
-                value={displayedDocLanguage}
-                onChange={(event) => setCurrentDocLanguage(event.target.value)}
-              >
-                {currentDocAvailableLangs.map((langCode) => (
-                  <option key={`lang-${langCode}`} value={langCode}>
-                    {getDocLanguageLabel(langCode)}
-                  </option>
-                ))}
-              </select>
-            </label>
-          ) : null}
-        </div>
         {currentDocMeta ? (
           currentDocAvailableLangs.length ? (
             <DocDetailOverlayMain
-              key={currentDocMeta.pathKey}
               routeSlug={currentDocMeta.routeSlug}
               docContent={currentDocContent}
               docLanguage={displayedDocLanguage}
@@ -1003,10 +919,17 @@ export default function DocsCenterPage({
               emptyDocContentText={docsUiText.emptyDocContent}
               fallbackNoticeHtml={currentDocFallbackNoticeHtml}
               docDisplayParts={currentDocDisplayParts ?? []}
+              breadcrumbRootLabel={docsUiText.heroTitle}
               onBreadcrumbRootClick={handleBreadcrumbRootClick}
               routePlatformId={routePlatformId}
               routeDetailSectionId={routeDetailSectionId}
               onDocRouteChange={handleDocDetailRouteChange}
+              sectionModels={sectionModels}
+              staticMetaMap={staticMetaMap}
+              activeDocPathKey={currentDocMeta.pathKey}
+              catalogDirectoryTitle={docsUiText.directoryTitle}
+              catalogSearchPlaceholder={docsUiText.sidebarSearchPlaceholder}
+              onCatalogLeafClick={handleNodeClick}
             />
           ) : (
             <div className="docs-center-overlay-body">
