@@ -2,6 +2,7 @@ import { ChevronRight } from 'lucide-react'
 import { getDocDetailTocSections } from '../data/docDetailTocData'
 import { getDocDetailSectionLabel } from '../utils/docDetailSectionContent'
 import { getDocDetailPlatformIcon } from '../utils/docDetailPlatformIcons'
+import DocDetailIndexVideoPlaceholder from './DocDetailIndexVideoPlaceholder'
 
 function getBreadcrumbDocParts(docDisplayParts = []) {
   if (docDisplayParts.length >= 3) {
@@ -11,18 +12,26 @@ function getBreadcrumbDocParts(docDisplayParts = []) {
   return docDisplayParts.slice(1)
 }
 
-export function DocDetailDocCatalogIndex({ isZhContent, onSectionClick, platforms }) {
+export function getDocDetailDisplayTitle(docDisplayParts = []) {
+  const breadcrumbParts = getBreadcrumbDocParts(docDisplayParts)
+  if (breadcrumbParts.length > 0) {
+    return breadcrumbParts[breadcrumbParts.length - 1]
+  }
+
+  return docDisplayParts[docDisplayParts.length - 1] ?? ''
+}
+
+export function DocDetailDocCatalogIndex({ docTitle = '', docSummary = '', isZhContent, onSectionClick, platforms }) {
   const sections = getDocDetailTocSections(isZhContent)
-  const title = isZhContent ? '全部端与内容板块' : 'All platforms and sections'
-  const hint = isZhContent
-    ? '选择端和板块，查看对应的文档内容'
-    : 'Choose a platform and section to view the corresponding content'
 
   return (
     <div className="docs-detail-index-page">
       <header className="docs-detail-index-header">
-        <h2>{title}</h2>
-        <p>{hint}</p>
+        <h2>{docTitle}</h2>
+        <div className="docs-detail-index-header-body">
+          {docSummary ? <p>{docSummary}</p> : null}
+          <DocDetailIndexVideoPlaceholder isZhContent={isZhContent} title={docTitle} />
+        </div>
       </header>
       <div className="docs-detail-catalog-platform-rows">
         {platforms.map((platform) => {
@@ -142,13 +151,11 @@ export function DocDetailPlatformSectionIndex({
 }) {
   const sections = getDocDetailTocSections(isZhContent)
   const indexTitle = isZhContent ? `${platformLabel} 文档目录` : `${platformLabel} documentation`
-  const indexHint = isZhContent ? '请选择要查看的内容板块' : 'Choose a section to view'
 
   return (
     <div className="docs-detail-index-page">
       <header className="docs-detail-index-header">
         <h2>{indexTitle}</h2>
-        <p>{indexHint}</p>
       </header>
       <ul className="docs-detail-section-list">
         {sections.map((section) => (

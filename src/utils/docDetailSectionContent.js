@@ -95,6 +95,30 @@ export function getDocDetailSectionLabel(sectionId, docLang) {
   return headings[sectionId] ?? sectionId
 }
 
+export function extractDocFeatureSummaryIntro(markdown, docLang) {
+  const summaryBody = extractDocDetailSection(markdown, 'summary', docLang)
+  if (!summaryBody) {
+    return ''
+  }
+
+  const introLines = []
+  for (const line of summaryBody.split('\n')) {
+    const trimmed = line.trim()
+    if (!trimmed) {
+      if (introLines.length > 0) {
+        break
+      }
+      continue
+    }
+    if (trimmed.startsWith('-')) {
+      break
+    }
+    introLines.push(trimmed)
+  }
+
+  return introLines.join(' ').trim()
+}
+
 export function buildDocDetailSectionMarkdown({
   markdown,
   sectionId,
@@ -109,4 +133,38 @@ export function buildDocDetailSectionMarkdown({
   const sectionTitle = headings[sectionId] ?? sectionId
 
   return `## ${sectionTitle}\n\n${sectionBody}`
+}
+
+const DOC_DETAIL_UPDATED_PATTERNS = [
+  /更新日期[：:]\s*([^|]+)/,
+  /Last Updated:\s*([^|]+)/i,
+  /更新日[：:]\s*([^|]+)/,
+  /업데이트:\s*([^|]+)/,
+  /Actualizado:\s*([^|]+)/i,
+]
+
+export function extractDocDetailUpdatedAt(markdown) {
+  if (!markdown) {
+    return ''
+  }
+
+  const blockquoteMatch = markdown.match(/^>\s*(.+)$/m)
+  if (!blockquoteMatch) {
+    return ''
+  }
+
+  const metaLine = blockquoteMatch[1]
+
+  for (const pattern of DOC_DETAIL_UPDATED_PATTERNS) {
+    const match = metaLine.match(pattern)
+    if (match) {
+      return match[1].trim()
+    }
+  }
+
+  return ''
+}
+
+export function getDocDetailUpdatedLabel(isZhContent) {
+  return isZhContent ? '最近更新：' : 'Last updated: '
 }
