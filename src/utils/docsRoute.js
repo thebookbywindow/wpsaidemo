@@ -9,8 +9,24 @@ import { joinPath } from './pathUrl'
 
 const DOC_DETAIL_PLATFORM_IDS = new Set(DOC_DETAIL_TOC_PLATFORMS.map((platform) => platform.id))
 
+export const LEGACY_FLAT_DOC_ROUTE_MAP = {
+  'wps-writer': { sectionSlug: 'getting-started', itemSlug: 'wps-writer' },
+}
+
 export function isValidDocDetailPlatformId(platformId) {
   return DOC_DETAIL_PLATFORM_IDS.has(platformId)
+}
+
+export function isLegacyFlatDocRouteSlug(slug) {
+  return Boolean(LEGACY_FLAT_DOC_ROUTE_MAP[slug])
+}
+
+export function resolveLegacyFlatDocRoute(slug) {
+  return LEGACY_FLAT_DOC_ROUTE_MAP[slug] ?? null
+}
+
+function splitDocSlug(slug) {
+  return `${slug ?? ''}`.split('/').filter(Boolean)
 }
 
 export function parseDocsRoute(pathname) {
@@ -23,12 +39,27 @@ export function parseDocsRoute(pathname) {
       docRouteSlug: '',
       platformId: '',
       detailSectionId: '',
+      isLegacyFlatRoute: false,
     }
   }
 
-  const first = segments[docsIndex + 1] ?? ''
-  const second = segments[docsIndex + 2] ?? ''
-  const third = segments[docsIndex + 3] ?? ''
+  const routeSegments = segments.slice(docsIndex + 1)
+  const [first = '', second = '', third = '', fourth = ''] = routeSegments
+
+  if (isValidDocDetailPlatformId(third)) {
+    const detailSectionId = isValidDocDetailSectionUrlSlug(fourth)
+      ? resolveDocDetailSectionIdFromUrlSlug(fourth)
+      : ''
+
+    return {
+      sectionSlug: first,
+      itemSlug: second,
+      docRouteSlug: '',
+      platformId: third,
+      detailSectionId,
+      isLegacyFlatRoute: false,
+    }
+  }
 
   if (isValidDocDetailPlatformId(second)) {
     const detailSectionId = isValidDocDetailSectionUrlSlug(third)
@@ -41,6 +72,18 @@ export function parseDocsRoute(pathname) {
       docRouteSlug: first,
       platformId: second,
       detailSectionId,
+      isLegacyFlatRoute: isLegacyFlatDocRouteSlug(first),
+    }
+  }
+
+  if (!second && isLegacyFlatDocRouteSlug(first)) {
+    return {
+      sectionSlug: '',
+      itemSlug: '',
+      docRouteSlug: first,
+      platformId: '',
+      detailSectionId: '',
+      isLegacyFlatRoute: true,
     }
   }
 
@@ -50,6 +93,27 @@ export function parseDocsRoute(pathname) {
     docRouteSlug: '',
     platformId: '',
     detailSectionId: '',
+    isLegacyFlatRoute: false,
+  }
+}
+
+export function normalizeDocsRoute(parsed) {
+  if (!parsed?.isLegacyFlatRoute) {
+    return parsed
+  }
+
+  const legacy = resolveLegacyFlatDocRoute(parsed.docRouteSlug)
+  if (!legacy) {
+    return parsed
+  }
+
+  return {
+    sectionSlug: legacy.sectionSlug,
+    itemSlug: legacy.itemSlug,
+    docRouteSlug: '',
+    platformId: parsed.platformId,
+    detailSectionId: parsed.detailSectionId,
+    isLegacyFlatRoute: true,
   }
 }
 
@@ -60,8 +124,9 @@ export function getLocaleDocsPath(
   detailSectionId = '',
 ) {
   const urlLocale = toUrlLocale(locale)
+  const slugParts = splitDocSlug(slug)
 
-  if (!slug) {
+  if (!slugParts.length) {
     return joinPath(urlLocale, 'docs')
   }
 
@@ -70,23 +135,27 @@ export function getLocaleDocsPath(
       ? getDocDetailSectionUrlSlug(detailSectionId)
       : ''
     if (detailSectionUrlSlug && isValidDocDetailSectionUrlSlug(detailSectionUrlSlug)) {
-      return joinPath(urlLocale, 'docs', slug, platformOrItemSlug, detailSectionUrlSlug)
+      return joinPath(urlLocale, 'docs', ...slugParts, platformOrItemSlug, detailSectionUrlSlug)
     }
-    return joinPath(urlLocale, 'docs', slug, platformOrItemSlug)
+    return joinPath(urlLocale, 'docs', ...slugParts, platformOrItemSlug)
   }
 
   if (platformOrItemSlug) {
-    return joinPath(urlLocale, 'docs', slug, platformOrItemSlug)
+    return joinPath(urlLocale, 'docs', ...slugParts, platformOrItemSlug)
   }
 
-  return joinPath(urlLocale, 'docs', slug)
+  return joinPath(urlLocale, 'docs', ...slugParts)
+}
+
+export function buildCanonicalDocPath(
+  locale,
+  { sectionSlug = '', itemSlug = '', platformId = '', detailSectionId = '' } = {},
+) {
+  const docSlug = sectionSlug && itemSlug ? `${sectionSlug}/${itemSlug}` : sectionSlug
+  return getLocaleDocsPath(locale, docSlug, platformId, detailSectionId)
 }
 
 export function resolveDocRouteSlug(meta, sectionSlugMap, displayParts, fallbackSlugFn) {
-  if (meta?.docRouteSlug) {
-    return meta.docRouteSlug
-  }
-
   const sectionLabel = displayParts?.[0] ?? meta?.pathParts?.[0] ?? ''
   const sectionSlug = sectionSlugMap[sectionLabel]
     ?? fallbackSlugFn?.(sectionLabel, sectionSlugMap)
@@ -96,10 +165,6 @@ export function resolveDocRouteSlug(meta, sectionSlugMap, displayParts, fallback
 }
 
 export function resolveDocSectionSlug(meta, sectionSlugMap, displayParts, fallbackSlugFn) {
-  if (meta?.docRouteSlug) {
-    return meta.docRouteSlug
-  }
-
   if (meta?.sectionRouteSlug) {
     return meta.sectionRouteSlug
   }

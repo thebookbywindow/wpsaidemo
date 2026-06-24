@@ -617,10 +617,9 @@ const aiPdfHelpContent = createZhOnlyHelpContent({
 const staticMetaEntries = [
   createInternalDocEntry(
     ['新手入门', 'WPS 文字'],
-    'create-document',
+    'wps-writer',
     writerHelpContent,
     ALL_DOC_LANGS,
-    { docRouteSlug: 'wps-writer' },
   ),
 ]
 

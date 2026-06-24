@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import DocDetailOverlayMain from './DocDetailOverlayMain'
 import { buildDocsStaticMetaMap, createDocsPathKey } from '../data/docsCenterMeta'
-import { getLocaleDocsPath, parseDocsRoute, resolveDocRouteSlug, resolveDocSectionSlug } from '../utils/docsRoute'
+import { getLocaleDocsPath, parseDocsRoute, normalizeDocsRoute, buildCanonicalDocPath, resolveDocRouteSlug, resolveDocSectionSlug } from '../utils/docsRoute'
 
 const siteLocaleToDocLangMap = {
   'zh-cn': 'zh-cn',
@@ -371,63 +371,63 @@ export default function DocsCenterPage({
         return
       }
       const displayParts = displayPathBySourceKey.get(meta.pathKey) ?? meta.pathParts
-      if (meta.docRouteSlug) {
-        nextMap.set(meta.docRouteSlug, meta)
-        return
-      }
       const sectionSlug = resolveDocSectionSlug(meta, sectionSlugMap, displayParts, fallbackSlug)
       nextMap.set(`${sectionSlug}/${meta.routeSlug}`, meta)
     })
     return nextMap
   }, [displayPathBySourceKey, sectionSlugMap, staticMetaMap])
 
+  const parsedRoute = useMemo(() => parseDocsRouteFromPathname(currentPathname), [currentPathname])
+
   const {
     sectionSlug: routeSectionSlug,
     itemSlug: routeItemSlug,
-    docRouteSlug: routeDocSlug,
     platformId: routePlatformId,
     detailSectionId: routeDetailSectionId,
-  } = useMemo(() => {
-    const parsed = parseDocsRouteFromPathname(currentPathname)
+    isLegacyFlatRoute,
+  } = useMemo(() => normalizeDocsRoute(parsedRoute), [parsedRoute])
 
-    if (parsed.docRouteSlug) {
-      return parsed
+  useEffect(() => {
+    if (!isLegacyFlatRoute) {
+      return
     }
 
-    if (
-      parsed.sectionSlug
-      && !parsed.itemSlug
-      && helpDocRouteMap.has(parsed.sectionSlug)
-    ) {
-      return {
-        sectionSlug: '',
-        itemSlug: '',
-        docRouteSlug: parsed.sectionSlug,
-        platformId: '',
-        detailSectionId: '',
-      }
-    }
+    const canonicalPath = buildCanonicalDocPath(currentLocale, {
+      sectionSlug: routeSectionSlug,
+      itemSlug: routeItemSlug,
+      platformId: routePlatformId,
+      detailSectionId: routeDetailSectionId,
+    })
 
-    return parsed
-  }, [currentPathname, helpDocRouteMap])
+    if (canonicalPath !== currentPathname) {
+      navigateTo(canonicalPath, { scrollToTop: false })
+    }
+  }, [
+    currentLocale,
+    currentPathname,
+    isLegacyFlatRoute,
+    navigateTo,
+    routeDetailSectionId,
+    routeItemSlug,
+    routePlatformId,
+    routeSectionSlug,
+  ])
 
   const docSectionRouteReverseMap = useMemo(() => {
     const nextMap = new Map()
     Object.values(staticMetaMap).forEach((meta) => {
-      const routeSlug = meta.docRouteSlug || meta.sectionRouteSlug
-      if (!routeSlug) {
+      if (!meta.sectionRouteSlug) {
         return
       }
       const displayParts = displayPathBySourceKey.get(meta.pathKey) ?? meta.pathParts
       const sectionLabel = displayParts[0] ?? meta.pathParts[0]
-      nextMap.set(routeSlug, sectionLabel)
+      nextMap.set(meta.sectionRouteSlug, sectionLabel)
     })
     return nextMap
   }, [displayPathBySourceKey, staticMetaMap])
 
   const currentDocMeta =
-    (routeDocSlug ? helpDocRouteMap.get(routeDocSlug) : null)
-    ?? helpDocRouteMap.get(`${routeSectionSlug}/${routeItemSlug}`)
+    (routeSectionSlug && routeItemSlug ? helpDocRouteMap.get(`${routeSectionSlug}/${routeItemSlug}`) : null)
     ?? null
   const currentDocDisplayParts = currentDocMeta
     ? displayPathBySourceKey.get(currentDocMeta.pathKey) ?? currentDocMeta.pathParts
@@ -702,7 +702,7 @@ export default function DocsCenterPage({
   }
 
   useEffect(() => {
-    if (!routeSectionSlug || routeItemSlug || routeDocSlug || currentDocMeta) {
+    if (!routeSectionSlug || routeItemSlug || currentDocMeta) {
       return
     }
 
@@ -719,7 +719,7 @@ export default function DocsCenterPage({
     }
 
     handleScrollToSection(sectionTitle)
-  }, [routeSectionSlug, routeItemSlug, routeDocSlug, currentDocMeta, sectionSlugMap, sectionModels, docSectionRouteReverseMap])
+  }, [routeSectionSlug, routeItemSlug, currentDocMeta, sectionSlugMap, sectionModels, docSectionRouteReverseMap])
 
   const handleDocDetailRouteChange = useCallback(({ platformId = '', detailSectionId = '' } = {}) => {
     if (!currentDocRouteSlug) {
