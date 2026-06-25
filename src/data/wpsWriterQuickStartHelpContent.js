@@ -340,3 +340,152 @@ export const aiReadAloudHelpContent = buildMultilingualHelpContent(
     ...aiReadAloudSharedEn,
   },
 )
+
+const shareAfterCompressionSharedZh = {
+  summary: {
+    intro:
+      '压缩后分享可在发送文档前先减小文件体积，适合邮件附件、即时通讯和链接分享等场景，避免因文件过大导致发送失败或加载缓慢。',
+    capabilities: [
+      '分享前自动压缩文档体积，减少传输等待时间',
+      '支持按场景选择压缩强度，在清晰度与体积之间平衡',
+      '压缩完成后可直接生成分享链接或发送到目标应用',
+      '适用于图片较多、附件较大或需要快速转发的文档',
+    ],
+  },
+  description: {
+    dimensions: [
+      {
+        title: '适用场景',
+        body: '邮件发送大附件、微信/企业 IM 转发文档、生成云分享链接前需要控制体积时使用。',
+      },
+      {
+        title: '压缩策略',
+        body: '通常可按「标准压缩」「高压缩」等档位选择；图片、嵌入对象较多的文档压缩效果更明显。',
+      },
+      {
+        title: '分享方式',
+        body: '压缩完成后可继续走链接分享、以文件发送或保存到云文档，具体入口因客户端版本略有差异。',
+      },
+    ],
+    membershipTitle: '会员说明',
+    membership: '基础压缩分享能力通常免费开放；部分高级压缩档位或批量处理可能需要会员。',
+    versionTitle: '版本说明',
+    version: '建议使用较新版本客户端，以获得完整的压缩预览与分享能力。',
+  },
+  steps: {
+    intro: '常见操作流程如下：',
+    items: [
+      '打开需要分享的 WPS 文字文档',
+      '点击右上角或工具栏中的「分享」入口',
+      '在分享面板中选择「压缩后分享」或类似选项',
+      '选择压缩档位并预览压缩后大小',
+      '确认后发送链接、保存到云文档或分享到目标应用',
+    ],
+    screenshots: [
+      '【截图占位】分享入口位置',
+      '【截图占位】压缩后分享选项与档位选择',
+      '【截图占位】压缩完成后的分享面板',
+    ],
+  },
+  faq: [
+    {
+      q: '压缩后会影响文档内容吗？',
+      a: '压缩主要影响图片和嵌入资源体积，正文内容通常不变；发送前建议预览关键页面。',
+    },
+    {
+      q: '为什么压缩后仍然无法发送？',
+      a: '可能是目标渠道仍有大小限制，可尝试更高压缩档位或改为云链接分享。',
+    },
+    {
+      q: '可以取消压缩直接分享吗？',
+      a: '可以，在分享面板中选择普通分享即可跳过压缩步骤。',
+    },
+  ],
+  related: ['分享', '减小文档体积', '输出为 PDF'],
+  notes: [
+    '涉及高清图片或扫描页时，压缩前后请核对清晰度是否满足阅读需求。',
+    '对外分享前请确认文档权限与敏感信息已处理。',
+    '若压缩失败，可先保存文档并检查网络连接后重试。',
+  ],
+}
+
+const shareAfterCompressionSharedEn = {
+  summary: {
+    intro:
+      'Share After Compression reduces file size before you send a document—ideal for email attachments, chat apps, and link sharing when the original file is too large.',
+    capabilities: [
+      'Shrink file size before sharing to speed up delivery',
+      'Choose compression levels to balance size and clarity',
+      'Continue with a share link or hand off to another app after compression',
+      'Works well for image-heavy or attachment-rich documents',
+    ],
+  },
+  description: {
+    dimensions: [
+      {
+        title: 'When to use',
+        body: 'Before emailing large attachments, forwarding in chat apps, or creating a cloud share link with a smaller payload.',
+      },
+      {
+        title: 'Compression options',
+        body: 'Pick standard or high compression; documents with many images or embedded objects benefit most.',
+      },
+      {
+        title: 'After compression',
+        body: 'Share via link, send as a file, or save to the cloud—exact options depend on your client version.',
+      },
+    ],
+    membershipTitle: 'Membership',
+    membership: 'Basic compress-and-share is usually free; premium levels or batch flows may require membership.',
+    versionTitle: 'Version notes',
+    version: 'Use a recent client build for full compression preview and share support.',
+  },
+  steps: {
+    intro: 'Typical workflow:',
+    items: [
+      'Open the WPS Writer document you want to share',
+      'Tap Share in the toolbar or overflow menu',
+      'Choose Share After Compression or a similar option',
+      'Select a compression level and review the estimated size',
+      'Confirm, then share via link, cloud, or another app',
+    ],
+    screenshots: [
+      '[Screenshot] Share entry in the toolbar',
+      '[Screenshot] Compression level picker',
+      '[Screenshot] Share panel after compression completes',
+    ],
+  },
+  faq: [
+    {
+      q: 'Will compression change my document content?',
+      a: 'Compression mainly affects images and embedded assets; review key pages before sending.',
+    },
+    {
+      q: 'Why is the file still too large to send?',
+      a: 'The destination may have its own limit—try a higher compression level or share a cloud link instead.',
+    },
+    {
+      q: 'Can I share without compressing?',
+      a: 'Yes. Choose regular share in the panel to skip compression.',
+    },
+  ],
+  related: ['Share', 'Reduce File Size', 'Export as PDF'],
+  notes: [
+    'For scans or HD images, verify readability after compression.',
+    'Check permissions and sensitive content before external sharing.',
+    'If compression fails, save the file and retry with a stable network connection.',
+  ],
+}
+
+export const shareAfterCompressionHelpContent = buildMultilingualHelpContent(
+  {
+    title: 'WPS 文字 压缩后分享',
+    metaLine: '适用平台：通用 | 更新日期：2026 年 6 月 24 日',
+    ...shareAfterCompressionSharedZh,
+  },
+  {
+    title: 'WPS Writer Share After Compression',
+    metaLine: 'Supported Platforms: All platforms | Last Updated: June 24, 2026',
+    ...shareAfterCompressionSharedEn,
+  },
+)

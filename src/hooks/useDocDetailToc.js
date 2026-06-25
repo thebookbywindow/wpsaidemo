@@ -1,65 +1,107 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { scrollDocDetailPanelToTop } from '../utils/docDetailSectionContent'
 
-const DEFAULT_SECTION_ID = 'summary'
+function deriveContentViewMode(platformId, hasPlatforms = true) {
+  if (!hasPlatforms) {
+    return 'article-detail'
+  }
 
-function deriveContentViewMode(platformId, detailSectionId) {
   if (!platformId) {
     return 'doc-catalog-index'
   }
-  if (!detailSectionId) {
-    return 'platform-index'
-  }
-  return 'section-detail'
+
+  return 'platform-detail'
 }
 
 export function useDocDetailToc({
   routePlatformId = '',
   routeDetailSectionId = '',
   onRouteChange,
+  hasPlatforms = true,
 } = {}) {
-  const [expandedPlatformId, setExpandedPlatformId] = useState(routePlatformId)
+  const [scrollLinkedSectionId, setScrollLinkedSectionId] = useState('')
+  const pendingScrollSectionIdRef = useRef('')
+  const shouldScrollToSectionRef = useRef('')
 
   useEffect(() => {
-    setExpandedPlatformId(routePlatformId)
-  }, [routePlatformId])
+    if (routeDetailSectionId) {
+      setScrollLinkedSectionId(routeDetailSectionId)
+      return
+    }
+
+    setScrollLinkedSectionId('')
+  }, [routePlatformId, routeDetailSectionId])
 
   const contentViewMode = useMemo(
-    () => deriveContentViewMode(routePlatformId, routeDetailSectionId),
-    [routePlatformId, routeDetailSectionId],
+    () => deriveContentViewMode(routePlatformId, hasPlatforms),
+    [hasPlatforms, routePlatformId],
   )
 
+  const expandedPlatformId = routePlatformId
   const activePlatformId = routePlatformId
-  const activeSectionId = routeDetailSectionId || DEFAULT_SECTION_ID
+  const activeSectionId = scrollLinkedSectionId
 
-  const handleSidebarPlatformToggle = useCallback((platformId) => {
-    setExpandedPlatformId((currentPlatformId) =>
-      currentPlatformId === platformId ? '' : platformId,
-    )
-  }, [])
+  const handlePlatformNavigate = useCallback((platformId) => {
+    if (!hasPlatforms) {
+      return
+    }
 
-  const handleSectionClick = useCallback((platformId, sectionId) => {
-    setExpandedPlatformId(platformId)
-    onRouteChange?.({ platformId, detailSectionId: sectionId })
-  }, [onRouteChange])
+    if (routePlatformId === platformId && deriveContentViewMode(routePlatformId, hasPlatforms) === 'platform-detail') {
+      setScrollLinkedSectionId('')
+      window.requestAnimationFrame(() => {
+        scrollDocDetailPanelToTop()
+      })
+      return
+    }
 
-  const handleBreadcrumbPlatformClick = useCallback((platformId) => {
-    setExpandedPlatformId(platformId)
+    setScrollLinkedSectionId('')
     onRouteChange?.({ platformId, detailSectionId: '' })
-  }, [onRouteChange])
+  }, [hasPlatforms, onRouteChange, routePlatformId])
+
+  const handleSectionAnchorClick = useCallback((platformId, sectionId) => {
+    setScrollLinkedSectionId(sectionId)
+
+    if (!hasPlatforms) {
+      shouldScrollToSectionRef.current = sectionId
+      return
+    }
+
+    if (routePlatformId !== platformId) {
+      pendingScrollSectionIdRef.current = sectionId
+      onRouteChange?.({ platformId, detailSectionId: '' })
+      return
+    }
+
+    shouldScrollToSectionRef.current = sectionId
+  }, [hasPlatforms, onRouteChange, routePlatformId])
 
   const handleBreadcrumbDocClick = useCallback(() => {
-    setExpandedPlatformId('')
+    setScrollLinkedSectionId('')
     onRouteChange?.({ platformId: '', detailSectionId: '' })
   }, [onRouteChange])
+
+  const consumePendingScrollSectionId = useCallback(() => {
+    const sectionId = pendingScrollSectionIdRef.current
+    pendingScrollSectionIdRef.current = ''
+    return sectionId
+  }, [])
+
+  const consumeShouldScrollSectionId = useCallback(() => {
+    const sectionId = shouldScrollToSectionRef.current
+    shouldScrollToSectionRef.current = ''
+    return sectionId
+  }, [])
 
   return {
     expandedPlatformId,
     activePlatformId,
     activeSectionId,
     contentViewMode,
-    handleSidebarPlatformToggle,
-    handleSectionClick,
-    handleBreadcrumbPlatformClick,
+    handlePlatformNavigate,
+    handleSectionAnchorClick,
     handleBreadcrumbDocClick,
+    consumePendingScrollSectionId,
+    consumeShouldScrollSectionId,
+    setScrollLinkedSectionId,
   }
 }

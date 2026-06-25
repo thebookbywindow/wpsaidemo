@@ -1,107 +1,8 @@
 import { forwardRef, useEffect, useMemo, useState } from 'react'
 import { ChevronRight } from 'lucide-react'
 import { createDocsPathKey } from '../data/docsCenterMeta'
-
-function includesKeyword(text, keyword) {
-  return `${text ?? ''}`.toLowerCase().includes(keyword)
-}
-
-function renderHighlightedText(text, keyword) {
-  if (!keyword) {
-    return text
-  }
-
-  const source = `${text ?? ''}`
-  const lowerSource = source.toLowerCase()
-  const lowerKeyword = keyword.toLowerCase()
-  const parts = []
-  let cursor = 0
-  let matchIndex = lowerSource.indexOf(lowerKeyword)
-
-  while (matchIndex !== -1) {
-    if (matchIndex > cursor) {
-      parts.push(source.slice(cursor, matchIndex))
-    }
-    const match = source.slice(matchIndex, matchIndex + keyword.length)
-    parts.push(
-      <span key={`${match}-${matchIndex}`} className="docs-center-highlight">
-        {match}
-      </span>,
-    )
-    cursor = matchIndex + keyword.length
-    matchIndex = lowerSource.indexOf(lowerKeyword, cursor)
-  }
-
-  if (cursor < source.length) {
-    parts.push(source.slice(cursor))
-  }
-
-  return parts
-}
-
-function filterHomeCatalogTree(sectionModels, keyword) {
-  if (!keyword) {
-    return sectionModels
-  }
-
-  return sectionModels
-    .map((section) => {
-      const sectionMatches = includesKeyword(section.title, keyword)
-      const titledBlocks = section.blocks.filter((block) => block.title)
-      const nextBlocks = sectionMatches
-        ? titledBlocks
-        : titledBlocks.filter((block) => includesKeyword(block.title, keyword))
-
-      if (!nextBlocks.length) {
-        return null
-      }
-
-      return {
-        ...section,
-        blocks: nextBlocks,
-      }
-    })
-    .filter(Boolean)
-}
-
-function filterDetailCatalogTree(sectionModels, keyword) {
-  if (!keyword) {
-    return sectionModels
-  }
-
-  return sectionModels
-    .map((section) => {
-      const sectionMatches = includesKeyword(section.title, keyword)
-      const nextBlocks = section.blocks
-        .map((block) => {
-          const blockMatches = includesKeyword(block.title, keyword)
-          const nextItems =
-            sectionMatches || blockMatches
-              ? block.items
-              : block.items.filter((item) => includesKeyword(item.label, keyword))
-
-          if (!nextItems.length) {
-            return null
-          }
-
-          return {
-            ...block,
-            items: nextItems,
-          }
-        })
-        .filter(Boolean)
-
-      if (!nextBlocks.length) {
-        return null
-      }
-
-      return {
-        ...section,
-        blocks: nextBlocks,
-      }
-    })
-    .filter(Boolean)
-}
+import { useDocsCatalogSidebarSearch } from '../hooks/useDocsCatalogSidebarSearch'
+import DocsCatalogSidebarSearch from './DocsCatalogSidebarSearch'
 
 function findActiveLocation(sectionModels, activeDocPathKey) {
   if (!activeDocPathKey) {
@@ -247,6 +148,7 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
     activeBlockKey = '',
     directoryTitle,
     searchPlaceholder,
+    searchEmptyText = 'No matching items',
     sidebarClassName = 'docs-center-sidebar docs-detail-catalog-sidebar',
     showLeafNodes = true,
     limitToActiveSection = false,
@@ -256,10 +158,6 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
   },
   ref,
 ) {
-  const [searchKeyword, setSearchKeyword] = useState('')
-  const keyword = searchKeyword.trim().toLowerCase()
-  const hasSearchKeyword = Boolean(keyword)
-
   const activeLocation = useMemo(
     () =>
       resolveSidebarActiveLocation({
@@ -287,14 +185,6 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
 
     return sectionScoped
   }, [activeLocation.blockKey, activeLocation.sectionTitle, limitToActiveSection, sectionModels])
-
-  const filteredSections = useMemo(
-    () =>
-      showLeafNodes
-        ? filterDetailCatalogTree(scopedSectionModels, keyword)
-        : filterHomeCatalogTree(scopedSectionModels, keyword),
-    [keyword, scopedSectionModels, showLeafNodes],
-  )
 
   const [expandedSections, setExpandedSections] = useState(() => {
     if (!showLeafNodes) {
@@ -325,8 +215,37 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
     ).blocks
   })
 
+  const handleLeafClick = (section, block, sourcePathParts) => {
+    setExpandedSections((previous) => mergeExpandedSection(previous, section.title))
+
+    if (block.title) {
+      setExpandedBlocks((previous) =>
+        mergeExpandedBlock(previous, buildBlockKey(section.title, block.title)),
+      )
+    }
+
+    onLeafClick?.(sourcePathParts)
+  }
+
+  const {
+    comboboxRef,
+    searchKeyword,
+    setSearchKeyword,
+    isDropdownOpen,
+    setIsDropdownOpen,
+    keyword,
+    results,
+    handleSelectResult,
+  } = useDocsCatalogSidebarSearch({
+    sectionModels: scopedSectionModels,
+    staticMetaMap,
+    showLeafNodes,
+    onLeafSelect: handleLeafClick,
+    onBlockSelect: onBlockNavigate,
+  })
+
   useEffect(() => {
-    if (hasSearchKeyword || activeDocPathKey) {
+    if (activeDocPathKey) {
       return
     }
 
@@ -346,7 +265,7 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
     if (activeBlockKey) {
       setExpandedBlocks((previous) => mergeExpandedBlock(previous, activeBlockKey))
     }
-  }, [activeBlockKey, activeDocPathKey, activeSectionTitle, hasSearchKeyword, showLeafNodes])
+  }, [activeBlockKey, activeDocPathKey, activeSectionTitle, showLeafNodes])
 
   const toggleSection = (sectionTitle) => {
     setExpandedSections((previous) => {
@@ -385,18 +304,6 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
     onBlockNavigate?.(section.title, block.title)
   }
 
-  const handleLeafClick = (section, block, sourcePathParts) => {
-    setExpandedSections((previous) => mergeExpandedSection(previous, section.title))
-
-    if (block.title) {
-      setExpandedBlocks((previous) =>
-        mergeExpandedBlock(previous, buildBlockKey(section.title, block.title)),
-      )
-    }
-
-    onLeafClick?.(sourcePathParts)
-  }
-
   const renderLeaf = (section, block, item) => {
     const sourcePathParts = block.sourceTitle
       ? [section.sourceTitle, block.sourceTitle, item.sourceLabel]
@@ -414,14 +321,14 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
           className={`docs-center-toc-leaf has-doc${isActive ? ' active' : ''}`}
           onClick={() => handleLeafClick(section, block, sourcePathParts)}
         >
-          {renderHighlightedText(item.label, keyword)}
+          {item.label}
         </button>
       )
     }
 
     return (
       <span key={pathKey} className="docs-center-toc-leaf">
-        {renderHighlightedText(item.label, keyword)}
+        {item.label}
       </span>
     )
   }
@@ -452,7 +359,7 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
       return section.blocks.map((block, blockIndex) => {
         if (block.title) {
           const blockKey = buildBlockKey(section.title, block.title)
-          const isBlockExpanded = hasSearchKeyword || expandedBlocks.has(blockKey)
+          const isBlockExpanded = expandedBlocks.has(blockKey)
 
           return (
             <div
@@ -467,9 +374,7 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
                 aria-expanded={isBlockExpanded}
                 onClick={() => handleBlockClick(section, block)}
               >
-                <span className="docs-center-toc-expand-label">
-                  {renderHighlightedText(block.title, keyword)}
-                </span>
+                <span className="docs-center-toc-expand-label">{block.title}</span>
                 {block.items.length > 0 ? (
                   <ChevronRight
                     size={12}
@@ -510,7 +415,7 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
           }`}
           onClick={() => onBlockNavigate?.(section.title, block.title)}
         >
-          {renderHighlightedText(block.title, keyword)}
+          {block.title}
         </button>
       )
     })
@@ -519,18 +424,21 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
   return (
     <aside ref={ref} className={sidebarClassName} aria-label={sidebarHeading}>
       <h3>{sidebarHeading}</h3>
-      <label className="docs-center-sidebar-search">
-        <span aria-hidden="true">⌕</span>
-        <input
-          type="text"
-          placeholder={searchPlaceholder}
-          value={searchKeyword}
-          onChange={(event) => setSearchKeyword(event.target.value)}
-        />
-      </label>
+      <DocsCatalogSidebarSearch
+        comboboxRef={comboboxRef}
+        searchKeyword={searchKeyword}
+        onSearchKeywordChange={setSearchKeyword}
+        isDropdownOpen={isDropdownOpen}
+        onDropdownOpenChange={setIsDropdownOpen}
+        searchPlaceholder={searchPlaceholder}
+        emptyResultsText={searchEmptyText}
+        keyword={keyword}
+        results={results}
+        onSelectResult={handleSelectResult}
+      />
       <div>
         {limitToActiveSection ? (
-          filteredSections.map((section) => (
+          scopedSectionModels.map((section) => (
             <div
               key={`detail-catalog-scoped-${section.title}-${activeLocation.blockKey}`}
               className="docs-center-toc-children docs-center-toc-children--scoped-root"
@@ -539,8 +447,8 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
             </div>
           ))
         ) : (
-          filteredSections.map((section) => {
-            const isSectionExpanded = hasSearchKeyword || expandedSections.has(section.title)
+          scopedSectionModels.map((section) => {
+            const isSectionExpanded = expandedSections.has(section.title)
 
             return (
               <div
@@ -555,9 +463,7 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
                   aria-expanded={isSectionExpanded}
                   onClick={() => handleSectionClick(section.title)}
                 >
-                  <span className="docs-center-toc-expand-label">
-                    {renderHighlightedText(section.title, keyword)}
-                  </span>
+                  <span className="docs-center-toc-expand-label">{section.title}</span>
                   {sectionHasExpandableChildren(section, showLeafNodes) ? (
                     <ChevronRight
                       size={13}

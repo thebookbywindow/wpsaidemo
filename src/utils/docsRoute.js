@@ -13,6 +13,19 @@ export const LEGACY_FLAT_DOC_ROUTE_MAP = {
   'wps-writer': { sectionSlug: 'getting-started', itemSlug: 'wps-writer' },
 }
 
+function createEmptyDocsRoute() {
+  return {
+    sectionSlug: '',
+    blockSlug: '',
+    itemSlug: '',
+    docRouteSlug: '',
+    platformId: '',
+    detailSectionId: '',
+    isLegacyFlatRoute: false,
+    isLegacyMissingBlock: false,
+  }
+}
+
 export function isValidDocDetailPlatformId(platformId) {
   return DOC_DETAIL_PLATFORM_IDS.has(platformId)
 }
@@ -29,72 +42,105 @@ function splitDocSlug(slug) {
   return `${slug ?? ''}`.split('/').filter(Boolean)
 }
 
+function buildDocSlug({ sectionSlug = '', blockSlug = '', itemSlug = '' } = {}) {
+  return [sectionSlug, blockSlug, itemSlug].filter(Boolean).join('/')
+}
+
 export function parseDocsRoute(pathname) {
   const segments = `${pathname ?? ''}`.split('/').filter(Boolean)
   const docsIndex = segments.indexOf('docs')
   if (docsIndex < 0) {
-    return {
-      sectionSlug: '',
-      itemSlug: '',
-      docRouteSlug: '',
-      platformId: '',
-      detailSectionId: '',
-      isLegacyFlatRoute: false,
-    }
+    return createEmptyDocsRoute()
   }
 
   const routeSegments = segments.slice(docsIndex + 1)
-  const [first = '', second = '', third = '', fourth = ''] = routeSegments
+  if (!routeSegments.length) {
+    return createEmptyDocsRoute()
+  }
 
-  if (isValidDocDetailPlatformId(third)) {
-    const detailSectionId = isValidDocDetailSectionUrlSlug(fourth)
-      ? resolveDocDetailSectionIdFromUrlSlug(fourth)
-      : ''
+  const lastSegment = routeSegments[routeSegments.length - 1]
+  const hasPlatform = isValidDocDetailPlatformId(lastSegment)
+  const platformId = hasPlatform ? lastSegment : ''
+  let contentSegments = hasPlatform ? routeSegments.slice(0, -1) : routeSegments
+
+  let detailSectionId = ''
+  if (
+    hasPlatform
+    && contentSegments.length > 0
+    && isValidDocDetailSectionUrlSlug(contentSegments[contentSegments.length - 1])
+  ) {
+    detailSectionId = resolveDocDetailSectionIdFromUrlSlug(contentSegments[contentSegments.length - 1])
+    contentSegments = contentSegments.slice(0, -1)
+  }
+
+  const [first = '', second = '', third = ''] = contentSegments
+
+  if (contentSegments.length >= 3) {
+    return {
+      sectionSlug: first,
+      blockSlug: second,
+      itemSlug: third,
+      docRouteSlug: '',
+      platformId,
+      detailSectionId,
+      isLegacyFlatRoute: false,
+      isLegacyMissingBlock: false,
+    }
+  }
+
+  if (contentSegments.length === 2) {
+    if (isLegacyFlatDocRouteSlug(first)) {
+      return {
+        sectionSlug: '',
+        blockSlug: '',
+        itemSlug: '',
+        docRouteSlug: first,
+        platformId,
+        detailSectionId,
+        isLegacyFlatRoute: true,
+        isLegacyMissingBlock: false,
+      }
+    }
 
     return {
       sectionSlug: first,
+      blockSlug: '',
       itemSlug: second,
       docRouteSlug: '',
-      platformId: third,
+      platformId,
       detailSectionId,
       isLegacyFlatRoute: false,
+      isLegacyMissingBlock: true,
     }
   }
 
-  if (isValidDocDetailPlatformId(second)) {
-    const detailSectionId = isValidDocDetailSectionUrlSlug(third)
-      ? resolveDocDetailSectionIdFromUrlSlug(third)
-      : ''
+  if (contentSegments.length === 1) {
+    if (isLegacyFlatDocRouteSlug(first)) {
+      return {
+        sectionSlug: '',
+        blockSlug: '',
+        itemSlug: '',
+        docRouteSlug: first,
+        platformId,
+        detailSectionId,
+        isLegacyFlatRoute: true,
+        isLegacyMissingBlock: false,
+      }
+    }
 
     return {
-      sectionSlug: '',
+      sectionSlug: first,
+      blockSlug: '',
       itemSlug: '',
-      docRouteSlug: first,
-      platformId: second,
+      docRouteSlug: '',
+      platformId,
       detailSectionId,
-      isLegacyFlatRoute: isLegacyFlatDocRouteSlug(first),
+      isLegacyFlatRoute: false,
+      isLegacyMissingBlock: false,
     }
   }
 
-  if (!second && isLegacyFlatDocRouteSlug(first)) {
-    return {
-      sectionSlug: '',
-      itemSlug: '',
-      docRouteSlug: first,
-      platformId: '',
-      detailSectionId: '',
-      isLegacyFlatRoute: true,
-    }
-  }
-
-  return {
-    sectionSlug: first,
-    itemSlug: second,
-    docRouteSlug: '',
-    platformId: '',
-    detailSectionId: '',
-    isLegacyFlatRoute: false,
-  }
+  return createEmptyDocsRoute()
 }
 
 export function normalizeDocsRoute(parsed) {
@@ -108,12 +154,13 @@ export function normalizeDocsRoute(parsed) {
   }
 
   return {
+    ...parsed,
     sectionSlug: legacy.sectionSlug,
+    blockSlug: '',
     itemSlug: legacy.itemSlug,
     docRouteSlug: '',
-    platformId: parsed.platformId,
-    detailSectionId: parsed.detailSectionId,
     isLegacyFlatRoute: true,
+    isLegacyMissingBlock: true,
   }
 }
 
@@ -149,19 +196,10 @@ export function getLocaleDocsPath(
 
 export function buildCanonicalDocPath(
   locale,
-  { sectionSlug = '', itemSlug = '', platformId = '', detailSectionId = '' } = {},
+  { sectionSlug = '', blockSlug = '', itemSlug = '', platformId = '', detailSectionId = '' } = {},
 ) {
-  const docSlug = sectionSlug && itemSlug ? `${sectionSlug}/${itemSlug}` : sectionSlug
+  const docSlug = buildDocSlug({ sectionSlug, blockSlug, itemSlug })
   return getLocaleDocsPath(locale, docSlug, platformId, detailSectionId)
-}
-
-export function resolveDocRouteSlug(meta, sectionSlugMap, displayParts, fallbackSlugFn) {
-  const sectionLabel = displayParts?.[0] ?? meta?.pathParts?.[0] ?? ''
-  const sectionSlug = sectionSlugMap[sectionLabel]
-    ?? fallbackSlugFn?.(sectionLabel, sectionSlugMap)
-    ?? sectionLabel
-
-  return `${sectionSlug}/${meta?.routeSlug ?? ''}`.replace(/\/$/, '')
 }
 
 export function resolveDocSectionSlug(meta, sectionSlugMap, displayParts, fallbackSlugFn) {
@@ -175,4 +213,45 @@ export function resolveDocSectionSlug(meta, sectionSlugMap, displayParts, fallba
   }
 
   return fallbackSlugFn?.(sectionLabel, sectionSlugMap) ?? sectionLabel
+}
+
+export function resolveDocBlockSlug(meta, blockSlugMap, fallbackSlugFn) {
+  if (meta?.blockRouteSlug) {
+    return meta.blockRouteSlug
+  }
+
+  if ((meta?.pathParts?.length ?? 0) < 3) {
+    return ''
+  }
+
+  const blockLabel = meta.pathParts[1] ?? ''
+  if (blockSlugMap?.[blockLabel]) {
+    return blockSlugMap[blockLabel]
+  }
+
+  return fallbackSlugFn?.(blockLabel, blockSlugMap) ?? blockLabel
+}
+
+export function resolveDocRouteSlug(meta, sectionSlugMap, displayParts, fallbackSlugFn, blockSlugMap) {
+  const sectionSlug = resolveDocSectionSlug(meta, sectionSlugMap, displayParts, fallbackSlugFn)
+  const blockSlug = resolveDocBlockSlug(meta, blockSlugMap, fallbackSlugFn)
+  const featureSlug = meta?.routeSlug ?? ''
+
+  if (blockSlug) {
+    return `${sectionSlug}/${blockSlug}/${featureSlug}`.replace(/\/$/, '')
+  }
+
+  return `${sectionSlug}/${featureSlug}`.replace(/\/$/, '')
+}
+
+export function buildHelpDocRouteLookupKey(sectionSlug, blockSlug, itemSlug) {
+  if (sectionSlug && blockSlug && itemSlug) {
+    return `${sectionSlug}/${blockSlug}/${itemSlug}`
+  }
+
+  if (sectionSlug && itemSlug) {
+    return `${sectionSlug}/${itemSlug}`
+  }
+
+  return ''
 }

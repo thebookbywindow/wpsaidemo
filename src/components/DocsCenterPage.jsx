@@ -7,7 +7,7 @@ import {
   buildHelpCenterMetaMap,
   buildHelpCenterSectionModels,
 } from '../utils/helpCenterCatalog'
-import { getLocaleDocsPath, parseDocsRoute, normalizeDocsRoute, buildCanonicalDocPath, resolveDocRouteSlug, resolveDocSectionSlug } from '../utils/docsRoute'
+import { getLocaleDocsPath, parseDocsRoute, normalizeDocsRoute, buildCanonicalDocPath, resolveDocRouteSlug, resolveDocSectionSlug, resolveDocBlockSlug, buildHelpDocRouteLookupKey } from '../utils/docsRoute'
 
 const siteLocaleToDocLangMap = {
   'zh-cn': 'zh-cn',
@@ -31,6 +31,11 @@ const DOC_LANGUAGE_LABELS = {
 const HELP_CENTER_SECTION_SLUG_MAP = {
   WPS文字: 'wps-docs',
   WPS表格: 'wps-sheets',
+}
+
+const HELP_CENTER_BLOCK_SLUG_MAP = {
+  快速入门: 'quick-start',
+  快速上手: 'quick-start',
 }
 
 function getDocLanguageFromLocale(locale) {
@@ -290,6 +295,7 @@ export default function DocsCenterPage({
   )
 
   const catalogSectionSlugMap = HELP_CENTER_SECTION_SLUG_MAP
+  const catalogBlockSlugMap = HELP_CENTER_BLOCK_SLUG_MAP
   const defaultCatalogSection = sectionModels[0]?.title ?? ''
 
   const displayPathBySourceKey = useMemo(() => {
@@ -329,46 +335,27 @@ export default function DocsCenterPage({
       }
       const displayParts = displayPathBySourceKey.get(meta.pathKey) ?? meta.pathParts
       const sectionSlug = resolveDocSectionSlug(meta, catalogSectionSlugMap, meta.pathParts, fallbackSlug)
+      const blockSlug = resolveDocBlockSlug(meta, catalogBlockSlugMap, fallbackSlug)
+      const routeKey = buildHelpDocRouteLookupKey(sectionSlug, blockSlug, meta.routeSlug)
+      if (routeKey) {
+        nextMap.set(routeKey, meta)
+      }
       nextMap.set(`${sectionSlug}/${meta.routeSlug}`, meta)
     })
     return nextMap
-  }, [displayPathBySourceKey, staticMetaMap])
+  }, [catalogBlockSlugMap, displayPathBySourceKey, staticMetaMap])
 
   const parsedRoute = useMemo(() => parseDocsRouteFromPathname(currentPathname), [currentPathname])
 
   const {
     sectionSlug: routeSectionSlug,
+    blockSlug: routeBlockSlug,
     itemSlug: routeItemSlug,
     platformId: routePlatformId,
     detailSectionId: routeDetailSectionId,
     isLegacyFlatRoute,
+    isLegacyMissingBlock,
   } = useMemo(() => normalizeDocsRoute(parsedRoute), [parsedRoute])
-
-  useEffect(() => {
-    if (!isLegacyFlatRoute) {
-      return
-    }
-
-    const canonicalPath = buildCanonicalDocPath(currentLocale, {
-      sectionSlug: routeSectionSlug,
-      itemSlug: routeItemSlug,
-      platformId: routePlatformId,
-      detailSectionId: routeDetailSectionId,
-    })
-
-    if (canonicalPath !== currentPathname) {
-      navigateTo(canonicalPath, { scrollToTop: false })
-    }
-  }, [
-    currentLocale,
-    currentPathname,
-    isLegacyFlatRoute,
-    navigateTo,
-    routeDetailSectionId,
-    routeItemSlug,
-    routePlatformId,
-    routeSectionSlug,
-  ])
 
   const docSectionRouteReverseMap = useMemo(() => {
     const nextMap = new Map()
@@ -384,8 +371,49 @@ export default function DocsCenterPage({
   }, [displayPathBySourceKey, staticMetaMap])
 
   const currentDocMeta =
-    (routeSectionSlug && routeItemSlug ? helpDocRouteMap.get(`${routeSectionSlug}/${routeItemSlug}`) : null)
+    (routeSectionSlug && routeItemSlug
+      ? helpDocRouteMap.get(buildHelpDocRouteLookupKey(routeSectionSlug, routeBlockSlug, routeItemSlug))
+        ?? helpDocRouteMap.get(`${routeSectionSlug}/${routeItemSlug}`)
+      : null)
     ?? null
+
+  useEffect(() => {
+    if (!isLegacyFlatRoute && !isLegacyMissingBlock) {
+      return
+    }
+
+    if (isLegacyMissingBlock && !currentDocMeta) {
+      return
+    }
+
+    const canonicalPath = buildCanonicalDocPath(currentLocale, {
+      sectionSlug: routeSectionSlug,
+      blockSlug: currentDocMeta
+        ? resolveDocBlockSlug(currentDocMeta, catalogBlockSlugMap, fallbackSlug)
+        : routeBlockSlug,
+      itemSlug: routeItemSlug,
+      platformId: routePlatformId,
+      detailSectionId: routeDetailSectionId,
+    })
+
+    if (canonicalPath !== currentPathname) {
+      navigateTo(canonicalPath, { scrollToTop: false })
+    }
+  }, [
+    catalogBlockSlugMap,
+    currentDocMeta,
+    currentLocale,
+    currentPathname,
+    isLegacyFlatRoute,
+    isLegacyMissingBlock,
+    navigateTo,
+    routeBlockSlug,
+    routeDetailSectionId,
+    routeItemSlug,
+    routePlatformId,
+    routeSectionSlug,
+  ])
+
   const currentDocDisplayParts = currentDocMeta
     ? displayPathBySourceKey.get(currentDocMeta.pathKey) ?? currentDocMeta.pathParts
     : null
@@ -421,6 +449,7 @@ export default function DocsCenterPage({
         catalogSectionSlugMap,
         currentDocMeta.pathParts,
         fallbackSlug,
+        catalogBlockSlugMap,
       )
     : ''
   const isZhContent = `${currentLocale}`.toLowerCase().startsWith('zh')
@@ -714,7 +743,7 @@ export default function DocsCenterPage({
     handleScrollToSection(sectionTitle)
   }, [routeSectionSlug, routeItemSlug, currentDocMeta, sectionModels, docSectionRouteReverseMap])
 
-  const handleDocDetailRouteChange = useCallback(({ platformId = '', detailSectionId = '' } = {}) => {
+  const handleDocDetailRouteChange = useCallback(({ platformId = '' } = {}) => {
     if (!currentDocRouteSlug) {
       return
     }
@@ -724,7 +753,6 @@ export default function DocsCenterPage({
         currentLocale,
         currentDocRouteSlug,
         platformId,
-        detailSectionId,
       ),
     )
   }, [currentDocRouteSlug, currentLocale, navigatePreservingScroll])
@@ -738,7 +766,7 @@ export default function DocsCenterPage({
     }
 
     const displayParts = displayPathBySourceKey.get(meta.pathKey) ?? meta.pathParts
-    const docPathSlug = resolveDocRouteSlug(meta, catalogSectionSlugMap, meta.pathParts, fallbackSlug)
+    const docPathSlug = resolveDocRouteSlug(meta, catalogSectionSlugMap, meta.pathParts, fallbackSlug, catalogBlockSlugMap)
     navigatePreservingScroll(getLocaleDocsPath(currentLocale, docPathSlug))
   }
 
@@ -787,6 +815,7 @@ export default function DocsCenterPage({
           }
           directoryTitle={docsUiText.directoryTitle}
           searchPlaceholder={docsUiText.sidebarSearchPlaceholder}
+          searchEmptyText={docsUiText.noResults}
           sidebarClassName="docs-center-sidebar"
           showLeafNodes={false}
           onSectionNavigate={handleCatalogSectionNavigate}
@@ -833,7 +862,7 @@ export default function DocsCenterPage({
                                 const isClickable = isCatalogLeafClickable(pathKey, staticMetaMap)
                                 return isClickable ? (
                                   <button
-                                    key={`${section.title}-${block.title}-${item.label}`}
+                                    key={pathKey}
                                     type="button"
                                     className="docs-center-item has-doc"
                                     onClick={() => handleNodeClick(sourcePathParts)}
@@ -842,7 +871,7 @@ export default function DocsCenterPage({
                                   </button>
                                 ) : (
                                   <span
-                                    key={`${section.title}-${block.title}-${item.label}`}
+                                    key={pathKey}
                                     className="docs-center-item"
                                   >
                                     {renderHighlightedText(item.label, appliedSearchKeyword.trim().toLowerCase())}
@@ -859,7 +888,7 @@ export default function DocsCenterPage({
                               const isClickable = isCatalogLeafClickable(pathKey, staticMetaMap)
                               return isClickable ? (
                                 <button
-                                  key={`${section.title}-${item.label}`}
+                                  key={pathKey}
                                   type="button"
                                   className="docs-center-item has-doc"
                                   onClick={() => handleNodeClick(sourcePathParts)}
@@ -867,7 +896,7 @@ export default function DocsCenterPage({
                                   {renderHighlightedText(item.label, appliedSearchKeyword.trim().toLowerCase())}
                                 </button>
                               ) : (
-                                <span key={`${section.title}-${item.label}`} className="docs-center-item">
+                                <span key={pathKey} className="docs-center-item">
                                   {renderHighlightedText(item.label, appliedSearchKeyword.trim().toLowerCase())}
                                 </span>
                               )
@@ -937,6 +966,7 @@ export default function DocsCenterPage({
               activeDocPathKey={currentDocMeta.pathKey}
               catalogDirectoryTitle={docsUiText.directoryTitle}
               catalogSearchPlaceholder={docsUiText.sidebarSearchPlaceholder}
+              catalogSearchEmptyText={docsUiText.noResults}
               onCatalogLeafClick={handleNodeClick}
             />
           ) : (

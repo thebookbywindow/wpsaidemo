@@ -7,9 +7,11 @@ export default function DocDetailTocPanel({
   activePlatformId,
   activeSectionId,
   contentViewMode,
-  onPlatformClick,
-  onSectionClick,
+  onPlatformNavigate,
+  onSectionAnchorClick,
+  onFeatureTitleClick,
   platforms,
+  embedded = false,
 }) {
   return (
     <DocDetailTocSidebar
@@ -19,9 +21,11 @@ export default function DocDetailTocPanel({
       activePlatformId={activePlatformId}
       activeSectionId={activeSectionId}
       contentViewMode={contentViewMode}
-      onPlatformClick={onPlatformClick}
-      onSectionClick={onSectionClick}
+      onPlatformNavigate={onPlatformNavigate}
+      onSectionAnchorClick={onSectionAnchorClick}
+      onFeatureTitleClick={onFeatureTitleClick}
       platforms={platforms}
+      embedded={embedded}
     />
   )
 }

@@ -5,6 +5,7 @@ export const STRUCTURED_DOC_ROUTE_SLUGS = new Set([
   'install-sign-in',
   'create-document',
   'ai-read-aloud',
+  'share-after-compression',
 ])
 
 const DOC_DETAIL_SECTION_HEADINGS = {
@@ -172,4 +173,249 @@ export function extractDocDetailUpdatedAt(markdown) {
 
 export function getDocDetailUpdatedLabel(isZhContent) {
   return isZhContent ? '最近更新：' : 'Last updated: '
+}
+
+export function getDocDetailSectionElementId(sectionId) {
+  return `doc-detail-section-${sectionId}`
+}
+
+function escapeRegExp(text) {
+  return `${text ?? ''}`.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+export function injectDocDetailSectionAnchors(html, docLang) {
+  if (!html) {
+    return html
+  }
+
+  const headings = getSectionHeadings(docLang)
+  let result = html
+
+  Object.entries(headings).forEach(([sectionId, title]) => {
+    const anchorId = getDocDetailSectionElementId(sectionId)
+    result = result.replace(
+      new RegExp(`<h2>${escapeRegExp(title)}</h2>`, 'g'),
+      `<h2 id="${anchorId}" class="docs-detail-platform-section-heading" data-doc-section="${sectionId}">${title}</h2>`,
+    )
+  })
+
+  return result
+}
+
+export function getDocDetailScrollOffset() {
+  if (typeof window === 'undefined') {
+    return 72
+  }
+
+  const rootStyles = window.getComputedStyle(document.documentElement)
+  const navHeight = Number.parseFloat(rootStyles.getPropertyValue('--nav-height')) || 60
+
+  return navHeight + 12
+}
+
+export function syncDocDetailScrollOffsetVar() {
+  const offset = getDocDetailScrollOffset()
+
+  if (typeof document !== 'undefined') {
+    document.documentElement.style.setProperty('--docs-detail-scroll-offset', `${offset}px`)
+  }
+
+  return offset
+}
+
+export function scrollToDocDetailSection(sectionId, attempt = 0) {
+  syncDocDetailScrollOffsetVar()
+
+  const elementId = getDocDetailSectionElementId(sectionId)
+  const element =
+    document.getElementById(elementId)
+    ?? document.querySelector(`[data-doc-section="${sectionId}"]`)
+
+  if (!element) {
+    if (attempt < 8) {
+      window.requestAnimationFrame(() => scrollToDocDetailSection(sectionId, attempt + 1))
+    }
+    return
+  }
+
+  element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
+export function scrollDocDetailPanelToTop(attempt = 0) {
+  const panel = document.querySelector('.docs-detail-article-panel')
+  const catalogSidebar = document.querySelector('.docs-detail-catalog-sidebar')
+
+  if (!panel) {
+    if (attempt < 10) {
+      window.requestAnimationFrame(() => scrollDocDetailPanelToTop(attempt + 1))
+    }
+    return
+  }
+
+  const panelTop = panel.getBoundingClientRect().top
+  const alignTop = catalogSidebar
+    ? catalogSidebar.getBoundingClientRect().top
+    : panelTop
+  const delta = panelTop - alignTop
+
+  if (Math.abs(delta) > 1) {
+    window.scrollTo({ top: Math.max(0, window.scrollY + delta), behavior: 'auto' })
+  }
+
+  if (attempt >= 10) {
+    return
+  }
+
+  window.requestAnimationFrame(() => {
+    const panelAfter = document.querySelector('.docs-detail-article-panel')
+    const sidebarAfter = document.querySelector('.docs-detail-catalog-sidebar')
+    if (!panelAfter) {
+      return
+    }
+
+    const nextPanelTop = panelAfter.getBoundingClientRect().top
+    const nextAlignTop = sidebarAfter
+      ? sidebarAfter.getBoundingClientRect().top
+      : nextPanelTop
+
+    if (Math.abs(nextPanelTop - nextAlignTop) > 2) {
+      scrollDocDetailPanelToTop(attempt + 1)
+    }
+  })
+}
+
+const PLATFORM_MATCH_ALIASES = {
+  windows: ['windows', 'win'],
+  mac: ['mac', 'macos'],
+  linux: ['linux'],
+  web: ['web'],
+  android: ['android'],
+  ios: ['ios'],
+}
+
+const DESKTOP_PLATFORM_IDS = new Set(['windows', 'mac', 'linux', 'web'])
+const MOBILE_PLATFORM_IDS = new Set(['ios', 'android'])
+
+function collectMentionedPlatformIds(text) {
+  const trimmed = `${text ?? ''}`.trim()
+  const normalized = trimmed.toLowerCase()
+  const mentioned = new Set()
+
+  Object.entries(PLATFORM_MATCH_ALIASES).forEach(([platformId, aliases]) => {
+    aliases.forEach((alias) => {
+      const prefixPattern = new RegExp(`^${escapeRegExp(alias)}\\s*[：:]`, 'i')
+      if (prefixPattern.test(trimmed) || normalized.includes(alias)) {
+        mentioned.add(platformId)
+      }
+    })
+  })
+
+  if (/桌面端|desktop/i.test(trimmed)) {
+    DESKTOP_PLATFORM_IDS.forEach((platformId) => mentioned.add(platformId))
+  }
+  if (/移动端|mobile/i.test(trimmed)) {
+    MOBILE_PLATFORM_IDS.forEach((platformId) => mentioned.add(platformId))
+  }
+
+  return mentioned
+}
+
+function lineMatchesPlatform(text, platformId) {
+  const trimmed = `${text ?? ''}`.trim()
+  if (!trimmed) {
+    return false
+  }
+
+  const clauses = trimmed.split(/[；;]/).map((segment) => segment.trim()).filter(Boolean)
+  if (clauses.length > 1) {
+    return clauses.some((clause) => lineMatchesPlatform(clause, platformId))
+  }
+
+  const mentioned = collectMentionedPlatformIds(trimmed)
+  if (mentioned.size === 0) {
+    return true
+  }
+
+  const mentionsAllDesktop = [...DESKTOP_PLATFORM_IDS].every((id) => mentioned.has(id))
+  const mentionsAllMobile = [...MOBILE_PLATFORM_IDS].every((id) => mentioned.has(id))
+  if (mentionsAllDesktop && mentionsAllMobile) {
+    return true
+  }
+
+  return mentioned.has(platformId)
+}
+
+export function extractStructuredDocTitle(markdown) {
+  const match = `${markdown ?? ''}`.match(/^# (.+)$/m)
+  if (!match) {
+    return ''
+  }
+
+  return match[1].replace(/\*\*.*?\*\*/g, '').trim()
+}
+
+export function stripStructuredDocLead(markdown) {
+  const output = []
+  let skippedTitle = false
+  const lines = `${markdown ?? ''}`.split('\n')
+
+  lines.forEach((line) => {
+    if (!skippedTitle && /^# /.test(line)) {
+      skippedTitle = true
+      return
+    }
+
+    if (line.startsWith('> ') || line.trim() === '---') {
+      return
+    }
+
+    output.push(line)
+  })
+
+  return output.join('\n').trimStart()
+}
+
+export function adaptStructuredDocMarkdownForPlatform(markdown, platformId, docLang) {
+  if (!markdown || !platformId) {
+    return markdown ?? ''
+  }
+
+  const headings = getSectionHeadings(docLang)
+  const stepsTitle = headings.steps
+  let inStepsSection = false
+  let stepCounter = 0
+  const output = []
+
+  markdown.split('\n').forEach((line) => {
+    const headingMatch = line.match(/^## (.+)$/)
+    if (headingMatch) {
+      inStepsSection = headingMatch[1].trim() === stepsTitle
+      stepCounter = 0
+      output.push(line)
+      return
+    }
+
+    if (line.startsWith('> ') || line.trim() === '---') {
+      return
+    }
+
+    const isListLine = /^[-*•] /.test(line)
+    const isOrderedLine = /^\d+\. /.test(line)
+
+    if (isListLine || isOrderedLine) {
+      if (!lineMatchesPlatform(line, platformId)) {
+        return
+      }
+
+      if (inStepsSection && isOrderedLine) {
+        stepCounter += 1
+        output.push(line.replace(/^\d+\./, `${stepCounter}.`))
+        return
+      }
+    }
+
+    output.push(line)
+  })
+
+  return output.join('\n')
 }

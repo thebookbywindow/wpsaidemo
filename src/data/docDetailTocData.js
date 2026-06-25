@@ -4,19 +4,29 @@ export const DOC_DETAIL_TOC_PLATFORMS = [
   { id: 'linux', label: 'Linux' },
   { id: 'web', label: 'Web' },
   { id: 'android', label: 'Android' },
-  { id: 'ios', label: 'iOS' },
+  { id: 'ios', label: 'IOS' },
 ]
 
 export const DOC_DETAIL_PLATFORM_IDS_BY_ROUTE_SLUG = {
   'install-sign-in': ['windows', 'mac'],
   'create-document': ['windows', 'mac', 'ios', 'android'],
   'ai-read-aloud': ['ios', 'android'],
+  'share-after-compression': [],
+}
+
+export function isDocDetailPlatformLess(routeSlug = '') {
+  const allowedIds = DOC_DETAIL_PLATFORM_IDS_BY_ROUTE_SLUG[routeSlug]
+  return Array.isArray(allowedIds) && allowedIds.length === 0
 }
 
 export function getDocDetailPlatforms(routeSlug = '') {
-  const allowedIds = DOC_DETAIL_PLATFORM_IDS_BY_ROUTE_SLUG[routeSlug]
-  if (!allowedIds?.length) {
+  if (!Object.prototype.hasOwnProperty.call(DOC_DETAIL_PLATFORM_IDS_BY_ROUTE_SLUG, routeSlug)) {
     return DOC_DETAIL_TOC_PLATFORMS
+  }
+
+  const allowedIds = DOC_DETAIL_PLATFORM_IDS_BY_ROUTE_SLUG[routeSlug]
+  if (!allowedIds.length) {
+    return []
   }
 
   const allowedSet = new Set(allowedIds)
@@ -26,6 +36,10 @@ export function getDocDetailPlatforms(routeSlug = '') {
 export function isDocDetailPlatformAllowed(routeSlug, platformId) {
   if (!platformId) {
     return true
+  }
+
+  if (isDocDetailPlatformLess(routeSlug)) {
+    return false
   }
 
   const allowedIds = DOC_DETAIL_PLATFORM_IDS_BY_ROUTE_SLUG[routeSlug]

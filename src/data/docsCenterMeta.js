@@ -3,6 +3,7 @@ import { installSetupHelpContent } from './installSetupHelpContent.js'
 import {
   aiReadAloudHelpContent,
   createDocumentHelpContent,
+  shareAfterCompressionHelpContent,
 } from './wpsWriterQuickStartHelpContent.js'
 
 export const ALL_DOC_LANGS = ['zh-cn', 'zh-tw', 'en-us', 'ja-jp', 'ko-kr', 'es-mx']
@@ -80,6 +81,7 @@ function createInternalDocEntry(
     routeSlug,
     docRouteSlug: options.docRouteSlug ?? '',
     sectionRouteSlug: options.sectionRouteSlug ?? '',
+    blockRouteSlug: options.blockRouteSlug ?? '',
     helpContent,
     publishedLangs: [...publishedLangs],
   }
@@ -637,12 +639,21 @@ const staticMetaEntries = [
     'create-document',
     createDocumentHelpContent,
     ALL_DOC_LANGS,
+    { blockRouteSlug: 'quick-start' },
   ),
   createInternalDocEntry(
     ['WPS文字', '快速入门', 'AI朗读'],
     'ai-read-aloud',
     aiReadAloudHelpContent,
     ALL_DOC_LANGS,
+    { blockRouteSlug: 'quick-start' },
+  ),
+  createInternalDocEntry(
+    ['WPS文字', '快速入门', '压缩后分享'],
+    'share-after-compression',
+    shareAfterCompressionHelpContent,
+    ALL_DOC_LANGS,
+    { blockRouteSlug: 'quick-start' },
   ),
 ]
 

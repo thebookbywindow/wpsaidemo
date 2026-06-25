@@ -1,6 +1,4 @@
 import { ChevronRight } from 'lucide-react'
-import { getDocDetailTocSections } from '../data/docDetailTocData'
-import { getDocDetailSectionLabel } from '../utils/docDetailSectionContent'
 import { getDocDetailPlatformIcon } from '../utils/docDetailPlatformIcons'
 import DocDetailIndexVideoPlaceholder from './DocDetailIndexVideoPlaceholder'
 
@@ -21,9 +19,13 @@ export function getDocDetailDisplayTitle(docDisplayParts = []) {
   return docDisplayParts[docDisplayParts.length - 1] ?? ''
 }
 
-export function DocDetailDocCatalogIndex({ docTitle = '', docSummary = '', isZhContent, onSectionClick, platforms }) {
-  const sections = getDocDetailTocSections(isZhContent)
-
+export function DocDetailDocCatalogIndex({
+  docTitle = '',
+  docSummary = '',
+  isZhContent,
+  onPlatformClick,
+  platforms,
+}) {
   return (
     <div className="docs-detail-index-page">
       <header className="docs-detail-index-header">
@@ -33,32 +35,38 @@ export function DocDetailDocCatalogIndex({ docTitle = '', docSummary = '', isZhC
           <DocDetailIndexVideoPlaceholder isZhContent={isZhContent} title={docTitle} />
         </div>
       </header>
-      <div className="docs-detail-catalog-platform-rows">
-        {platforms.map((platform) => {
-          const PlatformIcon = getDocDetailPlatformIcon(platform.id)
+      <section className="docs-detail-catalog-platform-section" aria-labelledby="docs-detail-platform-picker-title">
+        <h3 id="docs-detail-platform-picker-title" className="docs-detail-catalog-platform-heading">
+          {isZhContent ? '选择平台' : 'Select platform'}
+        </h3>
+        <ul className="docs-detail-catalog-platform-grid" role="list">
+          {platforms.map((platform) => {
+            const PlatformIcon = getDocDetailPlatformIcon(platform.id)
 
-          return (
-          <section key={`doc-catalog-${platform.id}`} className="docs-detail-catalog-platform-row">
-            <span className="docs-detail-catalog-platform-icon" aria-hidden="true">
-              <PlatformIcon size={14} strokeWidth={1.85} />
-            </span>
-            <h3 className="docs-detail-catalog-platform-name">{platform.label}</h3>
-            <div className="docs-detail-catalog-sections-grid">
-              {sections.map((section) => (
-                <button
-                  key={`doc-catalog-${platform.id}-${section.id}`}
-                  type="button"
-                  className="docs-detail-section-link"
-                  onClick={() => onSectionClick(platform.id, section.id)}
+            return (
+              <li key={`doc-catalog-${platform.id}`} className="docs-detail-catalog-platform-item">
+                <div
+                  role="link"
+                  tabIndex={0}
+                  className="docs-detail-catalog-platform-tile"
+                  onClick={() => onPlatformClick(platform.id)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault()
+                      onPlatformClick(platform.id)
+                    }
+                  }}
                 >
-                  {section.label}
-                </button>
-              ))}
-            </div>
-          </section>
-          )
-        })}
-      </div>
+                  <span className="docs-detail-catalog-platform-icon" aria-hidden="true">
+                    <PlatformIcon size={18} strokeWidth={1.85} />
+                  </span>
+                  <span className="docs-detail-catalog-platform-name">{platform.label}</span>
+                </div>
+              </li>
+            )
+          })}
+        </ul>
+      </section>
     </div>
   )
 }
@@ -67,10 +75,7 @@ export default function DocDetailArticleBreadcrumb({
   docDisplayParts,
   rootLabel = '',
   platformLabel,
-  activeSectionId,
-  docLanguage,
   contentViewMode,
-  onPlatformClick,
   onRootClick,
   onDocClick,
   ariaLabel,
@@ -97,29 +102,17 @@ export default function DocDetailArticleBreadcrumb({
       clickable:
         isLastDocPart
         && Boolean(onDocClick)
-        && contentViewMode !== 'doc-catalog-index',
+        && contentViewMode === 'platform-detail',
       onClick: onDocClick,
     })
   })
 
-  if (platformLabel && contentViewMode !== 'doc-catalog-index') {
+  if (platformLabel && contentViewMode === 'platform-detail') {
     items.push({
       key: `platform-${platformLabel}`,
       label: platformLabel,
-      clickable: contentViewMode === 'section-detail',
-      onClick: onPlatformClick,
+      clickable: false,
     })
-  }
-
-  if (contentViewMode === 'section-detail') {
-    const sectionLabel = getDocDetailSectionLabel(activeSectionId, docLanguage)
-    if (sectionLabel) {
-      items.push({
-        key: `section-${activeSectionId}`,
-        label: sectionLabel,
-        clickable: false,
-      })
-    }
   }
 
   return (
@@ -144,32 +137,3 @@ export default function DocDetailArticleBreadcrumb({
   )
 }
 
-export function DocDetailPlatformSectionIndex({
-  platformLabel,
-  isZhContent,
-  onSectionClick,
-}) {
-  const sections = getDocDetailTocSections(isZhContent)
-  const indexTitle = isZhContent ? `${platformLabel} 文档目录` : `${platformLabel} documentation`
-
-  return (
-    <div className="docs-detail-index-page">
-      <header className="docs-detail-index-header">
-        <h2>{indexTitle}</h2>
-      </header>
-      <ul className="docs-detail-section-list">
-        {sections.map((section) => (
-          <li key={`platform-index-${section.id}`}>
-            <button
-              type="button"
-              className="docs-detail-section-link"
-              onClick={() => onSectionClick(section.id)}
-            >
-              {section.label}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
-}
