@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import DocDetailArticleBreadcrumb, {
-  DocDetailDocCatalogIndex,
   getDocDetailDisplayTitle,
 } from './DocDetailArticleBreadcrumb'
 import DocDetailPlatformArticle from './DocDetailPlatformArticle'
@@ -15,7 +14,6 @@ import { useDocDetailSectionScrollSpy } from '../hooks/useDocDetailSectionScroll
 import {
   adaptStructuredDocMarkdownForPlatform,
   extractDocDetailUpdatedAt,
-  extractDocFeatureSummaryIntro,
   injectDocDetailSectionAnchors,
   scrollDocDetailPanelToTop,
   scrollToDocDetailSection,
@@ -114,6 +112,7 @@ export default function DocDetailOverlayMain({
     [routeSlug],
   )
   const hasDocPlatforms = docDetailPlatforms.length > 0
+  const usesStructuredSections = supportsStructuredDocSections(routeSlug, docContent, docLanguage)
 
   const {
     expandedPlatformId,
@@ -122,7 +121,6 @@ export default function DocDetailOverlayMain({
     contentViewMode,
     handlePlatformNavigate,
     handleSectionAnchorClick,
-    handleBreadcrumbDocClick,
     consumePendingScrollSectionId,
     consumeShouldScrollSectionId,
     setScrollLinkedSectionId,
@@ -141,16 +139,34 @@ export default function DocDetailOverlayMain({
       return
     }
 
-    onDocRouteChange?.({ platformId: '', detailSectionId: '' })
-  }, [onDocRouteChange, routePlatformId, routeSlug])
+    const fallbackPlatformId = docDetailPlatforms[0]?.id ?? ''
+    onDocRouteChange?.({ platformId: fallbackPlatformId, detailSectionId: '' })
+  }, [docDetailPlatforms, onDocRouteChange, routePlatformId, routeSlug])
+
+  useEffect(() => {
+    if (!usesStructuredSections || !hasDocPlatforms || routePlatformId) {
+      return
+    }
+
+    const defaultPlatformId = docDetailPlatforms[0]?.id
+    if (!defaultPlatformId) {
+      return
+    }
+
+    onDocRouteChange?.({ platformId: defaultPlatformId, detailSectionId: '' })
+  }, [
+    docDetailPlatforms,
+    hasDocPlatforms,
+    onDocRouteChange,
+    routePlatformId,
+    usesStructuredSections,
+  ])
 
   const previousPlatformIdRef = useRef('')
   const previousDocRouteRef = useRef({ routeSlug: '', routePlatformId: '' })
 
   const platformLabel =
     docDetailPlatforms.find((platform) => platform.id === activePlatformId)?.label ?? ''
-
-  const usesStructuredSections = supportsStructuredDocSections(routeSlug, docContent, docLanguage)
 
   useEffect(() => {
     if (contentViewMode !== 'platform-detail' || !routePlatformId) {
@@ -177,13 +193,8 @@ export default function DocDetailOverlayMain({
 
     const previousRoute = previousDocRouteRef.current
     const docChanged = previousRoute.routeSlug !== routeSlug
-    const returnedToCatalogIndex =
-      hasDocPlatforms
-      && !routePlatformId
-      && Boolean(previousRoute.routePlatformId)
-      && previousRoute.routeSlug === routeSlug
 
-    if (docChanged || returnedToCatalogIndex) {
+    if (docChanged) {
       window.requestAnimationFrame(() => {
         window.requestAnimationFrame(() => {
           scrollDocDetailPanelToTop()
@@ -192,21 +203,14 @@ export default function DocDetailOverlayMain({
     }
 
     previousDocRouteRef.current = { routeSlug, routePlatformId }
-  }, [hasDocPlatforms, routePlatformId, routeSlug, usesStructuredSections])
+  }, [routePlatformId, routeSlug, usesStructuredSections])
 
   const docTitle = useMemo(() => getDocDetailDisplayTitle(docDisplayParts), [docDisplayParts])
 
-  const docFeatureSummary = useMemo(
-    () => extractDocFeatureSummaryIntro(docContent, docLanguage),
-    [docContent, docLanguage],
+  const docHtml = useMemo(
+    () => `${fallbackNoticeHtml}${markdownToHtml(docContent, emptyDocContentText)}`,
+    [docContent, emptyDocContentText, fallbackNoticeHtml],
   )
-
-  const docHtml = useMemo(() => {
-    if (contentViewMode === 'doc-catalog-index') {
-      return fallbackNoticeHtml
-    }
-    return `${fallbackNoticeHtml}${markdownToHtml(docContent, emptyDocContentText)}`
-  }, [contentViewMode, docContent, emptyDocContentText, fallbackNoticeHtml])
 
   const platformArticleContent = useMemo(() => {
     if (!usesStructuredSections || !showStructuredArticle) {
@@ -337,7 +341,6 @@ export default function DocDetailOverlayMain({
               platformLabel={platformLabel}
               contentViewMode={contentViewMode}
               onRootClick={onBreadcrumbRootClick}
-              onDocClick={handleBreadcrumbDocClick}
               ariaLabel={articleBreadcrumbAriaLabel}
             />
           ) : null}
@@ -351,15 +354,7 @@ export default function DocDetailOverlayMain({
                 showStructuredArticle ? ' docs-detail-article-content--platform-detail' : ''
               }`}
             >
-              {usesStructuredSections && contentViewMode === 'doc-catalog-index' ? (
-                <DocDetailDocCatalogIndex
-                  docTitle={docTitle}
-                  docSummary={docFeatureSummary}
-                  isZhContent={isZhContent}
-                  onPlatformClick={handlePlatformNavigate}
-                  platforms={docDetailPlatforms}
-                />
-              ) : usesStructuredSections && showStructuredArticle ? (
+              {usesStructuredSections && showStructuredArticle ? (
                 <DocDetailPlatformArticle
                   key={hasDocPlatforms ? activePlatformId : 'article-detail'}
                   articleTitle={platformArticleContent.articleTitle}

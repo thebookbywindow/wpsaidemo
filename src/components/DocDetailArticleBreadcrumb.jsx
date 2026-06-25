@@ -1,6 +1,4 @@
 import { ChevronRight } from 'lucide-react'
-import { getDocDetailPlatformIcon } from '../utils/docDetailPlatformIcons'
-import DocDetailIndexVideoPlaceholder from './DocDetailIndexVideoPlaceholder'
 
 function getBreadcrumbDocParts(docDisplayParts = []) {
   if (docDisplayParts.length >= 3) {
@@ -19,65 +17,12 @@ export function getDocDetailDisplayTitle(docDisplayParts = []) {
   return docDisplayParts[docDisplayParts.length - 1] ?? ''
 }
 
-export function DocDetailDocCatalogIndex({
-  docTitle = '',
-  docSummary = '',
-  isZhContent,
-  onPlatformClick,
-  platforms,
-}) {
-  return (
-    <div className="docs-detail-index-page">
-      <header className="docs-detail-index-header">
-        <h2>{docTitle}</h2>
-        <div className="docs-detail-index-header-body">
-          {docSummary ? <p>{docSummary}</p> : null}
-          <DocDetailIndexVideoPlaceholder isZhContent={isZhContent} title={docTitle} />
-        </div>
-      </header>
-      <section className="docs-detail-catalog-platform-section" aria-labelledby="docs-detail-platform-picker-title">
-        <h3 id="docs-detail-platform-picker-title" className="docs-detail-catalog-platform-heading">
-          {isZhContent ? '选择平台' : 'Select platform'}
-        </h3>
-        <ul className="docs-detail-catalog-platform-grid" role="list">
-          {platforms.map((platform) => {
-            const PlatformIcon = getDocDetailPlatformIcon(platform.id)
-
-            return (
-              <li key={`doc-catalog-${platform.id}`} className="docs-detail-catalog-platform-item">
-                <div
-                  role="link"
-                  tabIndex={0}
-                  className="docs-detail-catalog-platform-tile"
-                  onClick={() => onPlatformClick(platform.id)}
-                  onKeyDown={(event) => {
-                    if (event.key === 'Enter' || event.key === ' ') {
-                      event.preventDefault()
-                      onPlatformClick(platform.id)
-                    }
-                  }}
-                >
-                  <span className="docs-detail-catalog-platform-icon" aria-hidden="true">
-                    <PlatformIcon size={18} strokeWidth={1.85} />
-                  </span>
-                  <span className="docs-detail-catalog-platform-name">{platform.label}</span>
-                </div>
-              </li>
-            )
-          })}
-        </ul>
-      </section>
-    </div>
-  )
-}
-
 export default function DocDetailArticleBreadcrumb({
   docDisplayParts,
   rootLabel = '',
   platformLabel,
   contentViewMode,
   onRootClick,
-  onDocClick,
   ariaLabel,
 }) {
   const items = []
@@ -94,16 +39,10 @@ export default function DocDetailArticleBreadcrumb({
   const breadcrumbDocParts = getBreadcrumbDocParts(docDisplayParts)
 
   breadcrumbDocParts.forEach((label, trailIndex) => {
-    const isLastDocPart = trailIndex === breadcrumbDocParts.length - 1
-
     items.push({
       key: `doc-${label}-${trailIndex}`,
       label,
-      clickable:
-        isLastDocPart
-        && Boolean(onDocClick)
-        && contentViewMode === 'platform-detail',
-      onClick: onDocClick,
+      clickable: false,
     })
   })
 

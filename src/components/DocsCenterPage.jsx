@@ -7,6 +7,7 @@ import {
   buildHelpCenterMetaMap,
   buildHelpCenterSectionModels,
 } from '../utils/helpCenterCatalog'
+import { getDocDetailPlatforms } from '../data/docDetailTocData'
 import { getLocaleDocsPath, parseDocsRoute, normalizeDocsRoute, buildCanonicalDocPath, resolveDocRouteSlug, resolveDocSectionSlug, resolveDocBlockSlug, buildHelpDocRouteLookupKey } from '../utils/docsRoute'
 
 const siteLocaleToDocLangMap = {
@@ -765,9 +766,9 @@ export default function DocsCenterPage({
       return
     }
 
-    const displayParts = displayPathBySourceKey.get(meta.pathKey) ?? meta.pathParts
     const docPathSlug = resolveDocRouteSlug(meta, catalogSectionSlugMap, meta.pathParts, fallbackSlug, catalogBlockSlugMap)
-    navigatePreservingScroll(getLocaleDocsPath(currentLocale, docPathSlug))
+    const defaultPlatformId = getDocDetailPlatforms(meta.routeSlug)[0]?.id ?? ''
+    navigatePreservingScroll(getLocaleDocsPath(currentLocale, docPathSlug, defaultPlatformId))
   }
 
   const handleBreadcrumbRootClick = () => {

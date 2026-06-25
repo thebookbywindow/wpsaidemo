@@ -1,13 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { scrollDocDetailPanelToTop } from '../utils/docDetailSectionContent'
 
-function deriveContentViewMode(platformId, hasPlatforms = true) {
+function deriveContentViewMode(hasPlatforms = true) {
   if (!hasPlatforms) {
     return 'article-detail'
-  }
-
-  if (!platformId) {
-    return 'doc-catalog-index'
   }
 
   return 'platform-detail'
@@ -33,8 +29,8 @@ export function useDocDetailToc({
   }, [routePlatformId, routeDetailSectionId])
 
   const contentViewMode = useMemo(
-    () => deriveContentViewMode(routePlatformId, hasPlatforms),
-    [hasPlatforms, routePlatformId],
+    () => deriveContentViewMode(hasPlatforms),
+    [hasPlatforms],
   )
 
   const expandedPlatformId = routePlatformId
@@ -46,7 +42,7 @@ export function useDocDetailToc({
       return
     }
 
-    if (routePlatformId === platformId && deriveContentViewMode(routePlatformId, hasPlatforms) === 'platform-detail') {
+    if (routePlatformId === platformId && deriveContentViewMode(hasPlatforms) === 'platform-detail') {
       setScrollLinkedSectionId('')
       window.requestAnimationFrame(() => {
         scrollDocDetailPanelToTop()
@@ -75,11 +71,6 @@ export function useDocDetailToc({
     shouldScrollToSectionRef.current = sectionId
   }, [hasPlatforms, onRouteChange, routePlatformId])
 
-  const handleBreadcrumbDocClick = useCallback(() => {
-    setScrollLinkedSectionId('')
-    onRouteChange?.({ platformId: '', detailSectionId: '' })
-  }, [onRouteChange])
-
   const consumePendingScrollSectionId = useCallback(() => {
     const sectionId = pendingScrollSectionIdRef.current
     pendingScrollSectionIdRef.current = ''
@@ -99,7 +90,6 @@ export function useDocDetailToc({
     contentViewMode,
     handlePlatformNavigate,
     handleSectionAnchorClick,
-    handleBreadcrumbDocClick,
     consumePendingScrollSectionId,
     consumeShouldScrollSectionId,
     setScrollLinkedSectionId,
