@@ -53,23 +53,28 @@ export function parseDocsRoute(pathname) {
     return createEmptyDocsRoute()
   }
 
-  const routeSegments = segments.slice(docsIndex + 1)
+  let routeSegments = segments.slice(docsIndex + 1)
   if (!routeSegments.length) {
     return createEmptyDocsRoute()
   }
 
-  const lastSegment = routeSegments[routeSegments.length - 1]
-  const hasPlatform = isValidDocDetailPlatformId(lastSegment)
-  const platformId = hasPlatform ? lastSegment : ''
-  let contentSegments = hasPlatform ? routeSegments.slice(0, -1) : routeSegments
-
+  let platformId = ''
   let detailSectionId = ''
+  let contentSegments = [...routeSegments]
+
   if (
-    hasPlatform
-    && contentSegments.length > 0
+    contentSegments.length > 0
     && isValidDocDetailSectionUrlSlug(contentSegments[contentSegments.length - 1])
   ) {
     detailSectionId = resolveDocDetailSectionIdFromUrlSlug(contentSegments[contentSegments.length - 1])
+    contentSegments = contentSegments.slice(0, -1)
+  }
+
+  if (
+    contentSegments.length > 0
+    && isValidDocDetailPlatformId(contentSegments[contentSegments.length - 1])
+  ) {
+    platformId = contentSegments[contentSegments.length - 1]
     contentSegments = contentSegments.slice(0, -1)
   }
 
@@ -177,14 +182,19 @@ export function getLocaleDocsPath(
     return joinPath(urlLocale, 'docs')
   }
 
+  const detailSectionUrlSlug = detailSectionId
+    ? getDocDetailSectionUrlSlug(detailSectionId)
+    : ''
+
   if (isValidDocDetailPlatformId(platformOrItemSlug)) {
-    const detailSectionUrlSlug = detailSectionId
-      ? getDocDetailSectionUrlSlug(detailSectionId)
-      : ''
     if (detailSectionUrlSlug && isValidDocDetailSectionUrlSlug(detailSectionUrlSlug)) {
       return joinPath(urlLocale, 'docs', ...slugParts, platformOrItemSlug, detailSectionUrlSlug)
     }
     return joinPath(urlLocale, 'docs', ...slugParts, platformOrItemSlug)
+  }
+
+  if (detailSectionUrlSlug && isValidDocDetailSectionUrlSlug(detailSectionUrlSlug)) {
+    return joinPath(urlLocale, 'docs', ...slugParts, detailSectionUrlSlug)
   }
 
   if (platformOrItemSlug) {

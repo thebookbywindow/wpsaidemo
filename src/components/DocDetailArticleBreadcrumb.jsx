@@ -1,4 +1,6 @@
 import { ChevronRight } from 'lucide-react'
+import { getDocDetailCatalogSectionColumns } from '../data/docDetailTocData'
+import { getDocDetailSectionLabel } from '../utils/docDetailSectionContent'
 import { getDocDetailPlatformIcon } from '../utils/docDetailPlatformIcons'
 import DocDetailIndexVideoPlaceholder from './DocDetailIndexVideoPlaceholder'
 
@@ -23,9 +25,11 @@ export function DocDetailDocCatalogIndex({
   docTitle = '',
   docSummary = '',
   isZhContent,
-  onPlatformClick,
+  onSectionClick,
   platforms,
 }) {
+  const sectionColumns = getDocDetailCatalogSectionColumns(isZhContent)
+
   return (
     <div className="docs-detail-index-page">
       <header className="docs-detail-index-header">
@@ -35,38 +39,45 @@ export function DocDetailDocCatalogIndex({
           <DocDetailIndexVideoPlaceholder isZhContent={isZhContent} title={docTitle} />
         </div>
       </header>
-      <section className="docs-detail-catalog-platform-section" aria-labelledby="docs-detail-platform-picker-title">
-        <h3 id="docs-detail-platform-picker-title" className="docs-detail-catalog-platform-heading">
-          {isZhContent ? '选择平台' : 'Select platform'}
-        </h3>
-        <ul className="docs-detail-catalog-platform-grid" role="list">
-          {platforms.map((platform) => {
-            const PlatformIcon = getDocDetailPlatformIcon(platform.id)
+      <div className="docs-detail-catalog-platform-rows">
+        {platforms.map((platform) => {
+          const PlatformIcon = getDocDetailPlatformIcon(platform.id)
 
-            return (
-              <li key={`doc-catalog-${platform.id}`} className="docs-detail-catalog-platform-item">
-                <div
-                  role="link"
-                  tabIndex={0}
-                  className="docs-detail-catalog-platform-tile"
-                  onClick={() => onPlatformClick(platform.id)}
-                  onKeyDown={(event) => {
-                    if (event.key === 'Enter' || event.key === ' ') {
-                      event.preventDefault()
-                      onPlatformClick(platform.id)
-                    }
-                  }}
-                >
-                  <span className="docs-detail-catalog-platform-icon" aria-hidden="true">
-                    <PlatformIcon size={18} strokeWidth={1.85} />
-                  </span>
-                  <span className="docs-detail-catalog-platform-name">{platform.label}</span>
-                </div>
-              </li>
-            )
-          })}
-        </ul>
-      </section>
+          return (
+            <section
+              key={`doc-catalog-${platform.id}`}
+              className="docs-detail-catalog-platform-row"
+              aria-labelledby={`doc-catalog-platform-${platform.id}`}
+            >
+              <span className="docs-detail-catalog-platform-icon" aria-hidden="true">
+                <PlatformIcon size={14} strokeWidth={1.85} />
+              </span>
+              <h3 id={`doc-catalog-platform-${platform.id}`} className="docs-detail-catalog-platform-name">
+                {platform.label}
+              </h3>
+              <div className="docs-detail-catalog-sections-grid">
+                {sectionColumns.map((columnSections, columnIndex) => (
+                  <div
+                    key={`doc-catalog-${platform.id}-col-${columnIndex}`}
+                    className="docs-detail-catalog-sections-column"
+                  >
+                    {columnSections.map((section) => (
+                      <button
+                        key={`doc-catalog-${platform.id}-${section.id}`}
+                        type="button"
+                        className="docs-detail-section-link"
+                        onClick={() => onSectionClick(platform.id, section.id)}
+                      >
+                        {section.label}
+                      </button>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </section>
+          )
+        })}
+      </div>
     </div>
   )
 }
@@ -75,6 +86,8 @@ export default function DocDetailArticleBreadcrumb({
   docDisplayParts,
   rootLabel = '',
   platformLabel,
+  activeSectionId,
+  docLanguage,
   contentViewMode,
   onRootClick,
   onDocClick,
@@ -102,17 +115,28 @@ export default function DocDetailArticleBreadcrumb({
       clickable:
         isLastDocPart
         && Boolean(onDocClick)
-        && contentViewMode === 'platform-detail',
+        && contentViewMode !== 'doc-catalog-index',
       onClick: onDocClick,
     })
   })
 
-  if (platformLabel && contentViewMode === 'platform-detail') {
+  if (platformLabel && contentViewMode === 'section-detail') {
     items.push({
       key: `platform-${platformLabel}`,
       label: platformLabel,
       clickable: false,
     })
+  }
+
+  if (contentViewMode === 'section-detail') {
+    const sectionLabel = getDocDetailSectionLabel(activeSectionId, docLanguage)
+    if (sectionLabel) {
+      items.push({
+        key: `section-${activeSectionId}`,
+        label: sectionLabel,
+        clickable: false,
+      })
+    }
   }
 
   return (

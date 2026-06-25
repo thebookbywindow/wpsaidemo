@@ -14,10 +14,18 @@ export function useDocDetailArticleNav({
 }) {
   const sections = useMemo(() => getDocDetailTocSections(isZhContent), [isZhContent])
 
-  const activePlatform = useMemo(
-    () => platforms.find((platform) => platform.id === activePlatformId) ?? null,
-    [platforms, activePlatformId],
-  )
+  const activePlatform = useMemo(() => {
+    const matchedPlatform = platforms.find((platform) => platform.id === activePlatformId)
+    if (matchedPlatform) {
+      return matchedPlatform
+    }
+
+    if (!platforms.length) {
+      return { id: '', label: '' }
+    }
+
+    return null
+  }, [platforms, activePlatformId])
 
   const platformNavItems = useMemo(
     () => buildDocDetailPlatformNavItems(activePlatform, sections),
@@ -25,12 +33,16 @@ export function useDocDetailArticleNav({
   )
 
   const neighbors = useMemo(() => {
-    if (contentViewMode !== 'section-detail' || !activePlatformId) {
+    if (contentViewMode !== 'section-detail') {
+      return { prev: null, next: null, currentIndex: -1 }
+    }
+
+    if (platforms.length > 0 && !activePlatformId) {
       return { prev: null, next: null, currentIndex: -1 }
     }
 
     return getDocDetailArticleNavNeighbors(platformNavItems, activeSectionId)
-  }, [activePlatformId, activeSectionId, contentViewMode, platformNavItems])
+  }, [activePlatformId, activeSectionId, contentViewMode, platformNavItems, platforms.length])
 
   return {
     navItems: platformNavItems,

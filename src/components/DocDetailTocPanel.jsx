@@ -7,9 +7,8 @@ export default function DocDetailTocPanel({
   activePlatformId,
   activeSectionId,
   contentViewMode,
-  onPlatformNavigate,
-  onSectionAnchorClick,
-  onFeatureTitleClick,
+  onPlatformToggle,
+  onSectionClick,
   platforms,
   embedded = false,
 }) {
@@ -21,9 +20,8 @@ export default function DocDetailTocPanel({
       activePlatformId={activePlatformId}
       activeSectionId={activeSectionId}
       contentViewMode={contentViewMode}
-      onPlatformNavigate={onPlatformNavigate}
-      onSectionAnchorClick={onSectionAnchorClick}
-      onFeatureTitleClick={onFeatureTitleClick}
+      onPlatformToggle={onPlatformToggle}
+      onSectionClick={onSectionClick}
       platforms={platforms}
       embedded={embedded}
     />

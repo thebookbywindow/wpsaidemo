@@ -91,6 +91,28 @@ export function isValidDocDetailSectionUrlSlug(urlSlug) {
   return Boolean(DOC_DETAIL_SECTION_URL_SLUG_TO_ID[urlSlug])
 }
 
+export const DEFAULT_DOC_DETAIL_SECTION_ID = 'summary'
+
 export function getDocDetailTocSections(isZhContent) {
   return isZhContent ? DOC_DETAIL_TOC_SECTIONS_ZH : DOC_DETAIL_TOC_SECTIONS_EN
+}
+
+export function getDefaultDocDetailSectionId() {
+  return DEFAULT_DOC_DETAIL_SECTION_ID
+}
+
+const DOC_DETAIL_CATALOG_SECTION_COLUMN_IDS = [
+  ['summary', 'related'],
+  ['description', 'notes'],
+  ['steps'],
+  ['faq'],
+]
+
+export function getDocDetailCatalogSectionColumns(isZhContent) {
+  const sections = getDocDetailTocSections(isZhContent)
+  const sectionById = Object.fromEntries(sections.map((section) => [section.id, section]))
+
+  return DOC_DETAIL_CATALOG_SECTION_COLUMN_IDS.map((columnIds) =>
+    columnIds.map((sectionId) => sectionById[sectionId]).filter(Boolean),
+  )
 }

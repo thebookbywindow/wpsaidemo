@@ -12,23 +12,22 @@ export default function DocDetailTocSidebar({
   activePlatformId,
   activeSectionId,
   contentViewMode,
-  onPlatformNavigate,
-  onSectionAnchorClick,
-  onFeatureTitleClick,
+  onPlatformToggle,
+  onSectionClick,
   platforms = getDocDetailPlatforms(),
   embedded = false,
 }) {
   const sections = getDocDetailTocSections(isZhContent)
   const isPlatformLess = platforms.length === 0
-  const showStructuredNav =
-    contentViewMode === 'article-detail' || contentViewMode === 'platform-detail'
+  const showStructuredNav = contentViewMode === 'section-detail'
+  const platformLessGroupLabel = isZhContent ? '本功能' : 'On this feature'
 
   const renderSectionButtons = (platformId) =>
     sections.map((section) => {
       const isSectionActive = isPlatformLess
-        ? showStructuredNav && activeSectionId === section.id
+        ? contentViewMode === 'section-detail' && activeSectionId === section.id
         : activePlatformId === platformId
-          && contentViewMode === 'platform-detail'
+          && contentViewMode === 'section-detail'
           && activeSectionId === section.id
 
       return (
@@ -36,16 +35,12 @@ export default function DocDetailTocSidebar({
           key={`doc-toc-section-${platformId || 'feature'}-${section.id}`}
           type="button"
           className={`docs-detail-sidebar-section${isSectionActive ? ' is-active' : ''}`}
-          onClick={() => onSectionAnchorClick(platformId, section.id)}
+          onClick={() => onSectionClick(platformId, section.id)}
         >
           {section.label}
         </button>
       )
     })
-
-  const handleFeatureTitleClick = () => {
-    onFeatureTitleClick?.()
-  }
 
   return (
     <aside
@@ -60,18 +55,15 @@ export default function DocDetailTocSidebar({
       <nav className="docs-detail-sidebar-nav">
         {isPlatformLess ? (
           <div className="docs-detail-sidebar-group is-expanded">
-            <button
-              type="button"
-              className={`docs-detail-sidebar-platform docs-detail-sidebar-platform--feature${
+            <div
+              className={`docs-detail-sidebar-platform docs-detail-sidebar-platform--feature docs-detail-sidebar-platform--static${
                 showStructuredNav ? ' is-active' : ''
               }`}
-              aria-expanded
-              onClick={handleFeatureTitleClick}
             >
               <span className="docs-detail-sidebar-platform-main">
-                <span className="docs-detail-sidebar-platform-label">{sidebarTitle}</span>
+                <span className="docs-detail-sidebar-platform-label">{platformLessGroupLabel}</span>
               </span>
-            </button>
+            </div>
             {showStructuredNav ? (
               <div className="docs-detail-sidebar-sections">
                 {renderSectionButtons('')}
@@ -83,7 +75,7 @@ export default function DocDetailTocSidebar({
             const isExpanded =
               Boolean(expandedPlatformId) && expandedPlatformId === platform.id
             const isPlatformActive =
-              activePlatformId === platform.id && contentViewMode === 'platform-detail'
+              activePlatformId === platform.id && contentViewMode === 'section-detail'
             const PlatformIcon = getDocDetailPlatformIcon(platform.id)
 
             return (
@@ -95,7 +87,7 @@ export default function DocDetailTocSidebar({
                   type="button"
                   className={`docs-detail-sidebar-platform${isPlatformActive ? ' is-active' : ''}`}
                   aria-expanded={isExpanded}
-                  onClick={() => onPlatformNavigate(platform.id)}
+                  onClick={() => onPlatformToggle(platform.id)}
                 >
                   <span className="docs-detail-sidebar-platform-main">
                     <span className="docs-detail-sidebar-platform-icon" aria-hidden="true">

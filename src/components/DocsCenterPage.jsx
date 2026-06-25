@@ -743,7 +743,7 @@ export default function DocsCenterPage({
     handleScrollToSection(sectionTitle)
   }, [routeSectionSlug, routeItemSlug, currentDocMeta, sectionModels, docSectionRouteReverseMap])
 
-  const handleDocDetailRouteChange = useCallback(({ platformId = '' } = {}) => {
+  const handleDocDetailRouteChange = useCallback(({ platformId = '', detailSectionId = '' } = {}) => {
     if (!currentDocRouteSlug) {
       return
     }
@@ -753,6 +753,7 @@ export default function DocsCenterPage({
         currentLocale,
         currentDocRouteSlug,
         platformId,
+        detailSectionId,
       ),
     )
   }, [currentDocRouteSlug, currentLocale, navigatePreservingScroll])

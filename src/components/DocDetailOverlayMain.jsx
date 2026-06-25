@@ -3,25 +3,25 @@ import DocDetailArticleBreadcrumb, {
   DocDetailDocCatalogIndex,
   getDocDetailDisplayTitle,
 } from './DocDetailArticleBreadcrumb'
-import DocDetailPlatformArticle from './DocDetailPlatformArticle'
+import DocDetailArticlePager from './DocDetailArticlePager'
+import DocDetailSectionArticle from './DocDetailSectionArticle'
 import DocDetailTocPanel from './DocDetailTocPanel'
 import DocsDetailCatalogSidebar from './DocsDetailCatalogSidebar'
 import {
+  getDefaultDocDetailSectionId,
   getDocDetailPlatforms,
   isDocDetailPlatformAllowed,
 } from '../data/docDetailTocData'
+import { useDocDetailArticleNav } from '../hooks/useDocDetailArticleNav'
 import { useDocDetailToc } from '../hooks/useDocDetailToc'
-import { useDocDetailSectionScrollSpy } from '../hooks/useDocDetailSectionScrollSpy'
 import {
   adaptStructuredDocMarkdownForPlatform,
+  extractDocDetailSection,
   extractDocDetailUpdatedAt,
   extractDocFeatureSummaryIntro,
-  injectDocDetailSectionAnchors,
+  getDocDetailSectionLabel,
   scrollDocDetailPanelToTop,
-  scrollToDocDetailSection,
-  stripStructuredDocLead,
   supportsStructuredDocSections,
-  syncDocDetailScrollOffsetVar,
 } from '../utils/docDetailSectionContent'
 
 function escapeHtml(text) {
@@ -114,27 +114,25 @@ export default function DocDetailOverlayMain({
     [routeSlug],
   )
   const hasDocPlatforms = docDetailPlatforms.length > 0
+  const usesStructuredSections = supportsStructuredDocSections(routeSlug, docContent, docLanguage)
 
   const {
     expandedPlatformId,
     activePlatformId,
     activeSectionId,
     contentViewMode,
-    handlePlatformNavigate,
-    handleSectionAnchorClick,
+    handleSidebarPlatformToggle,
+    handleSectionClick,
     handleBreadcrumbDocClick,
-    consumePendingScrollSectionId,
-    consumeShouldScrollSectionId,
-    setScrollLinkedSectionId,
   } = useDocDetailToc({
     routePlatformId,
     routeDetailSectionId,
     onRouteChange: onDocRouteChange,
     hasPlatforms: hasDocPlatforms,
+    usesStructuredSections,
   })
 
-  const showStructuredArticle =
-    contentViewMode === 'platform-detail' || contentViewMode === 'article-detail'
+  const showDetailContent = contentViewMode !== 'doc-catalog-index'
 
   useEffect(() => {
     if (!routePlatformId || isDocDetailPlatformAllowed(routeSlug, routePlatformId)) {
@@ -144,34 +142,54 @@ export default function DocDetailOverlayMain({
     onDocRouteChange?.({ platformId: '', detailSectionId: '' })
   }, [onDocRouteChange, routePlatformId, routeSlug])
 
-  const previousPlatformIdRef = useRef('')
-  const previousDocRouteRef = useRef({ routeSlug: '', routePlatformId: '' })
+  const previousDocRouteRef = useRef({
+    routeSlug: '',
+    routePlatformId: '',
+    routeDetailSectionId: '',
+  })
 
   const platformLabel =
     docDetailPlatforms.find((platform) => platform.id === activePlatformId)?.label ?? ''
 
-  const usesStructuredSections = supportsStructuredDocSections(routeSlug, docContent, docLanguage)
-
   useEffect(() => {
-    if (contentViewMode !== 'platform-detail' || !routePlatformId) {
-      previousPlatformIdRef.current = routePlatformId
+    if (!usesStructuredSections || !hasDocPlatforms) {
       return
     }
 
-    if (previousPlatformIdRef.current !== routePlatformId) {
-      window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(() => {
-          scrollDocDetailPanelToTop()
-        })
-      })
+    if (routePlatformId && !routeDetailSectionId) {
+      onDocRouteChange?.({ platformId: '', detailSectionId: '' })
+    }
+  }, [
+    hasDocPlatforms,
+    onDocRouteChange,
+    routeDetailSectionId,
+    routePlatformId,
+    usesStructuredSections,
+  ])
+
+  useEffect(() => {
+    if (!usesStructuredSections || hasDocPlatforms || routeDetailSectionId) {
+      return
     }
 
-    previousPlatformIdRef.current = routePlatformId
-  }, [contentViewMode, routePlatformId])
+    onDocRouteChange?.({
+      platformId: '',
+      detailSectionId: getDefaultDocDetailSectionId(),
+    })
+  }, [
+    hasDocPlatforms,
+    onDocRouteChange,
+    routeDetailSectionId,
+    usesStructuredSections,
+  ])
 
   useEffect(() => {
     if (!usesStructuredSections) {
-      previousDocRouteRef.current = { routeSlug, routePlatformId }
+      previousDocRouteRef.current = {
+        routeSlug,
+        routePlatformId,
+        routeDetailSectionId,
+      }
       return
     }
 
@@ -179,11 +197,14 @@ export default function DocDetailOverlayMain({
     const docChanged = previousRoute.routeSlug !== routeSlug
     const returnedToCatalogIndex =
       hasDocPlatforms
+      && previousRoute.routeSlug === routeSlug
       && !routePlatformId
       && Boolean(previousRoute.routePlatformId)
-      && previousRoute.routeSlug === routeSlug
+    const detailRouteChanged =
+      previousRoute.routePlatformId !== routePlatformId
+      || previousRoute.routeDetailSectionId !== routeDetailSectionId
 
-    if (docChanged || returnedToCatalogIndex) {
+    if (docChanged || returnedToCatalogIndex || detailRouteChanged) {
       window.requestAnimationFrame(() => {
         window.requestAnimationFrame(() => {
           scrollDocDetailPanelToTop()
@@ -191,8 +212,18 @@ export default function DocDetailOverlayMain({
       })
     }
 
-    previousDocRouteRef.current = { routeSlug, routePlatformId }
-  }, [hasDocPlatforms, routePlatformId, routeSlug, usesStructuredSections])
+    previousDocRouteRef.current = {
+      routeSlug,
+      routePlatformId,
+      routeDetailSectionId,
+    }
+  }, [
+    hasDocPlatforms,
+    routeDetailSectionId,
+    routePlatformId,
+    routeSlug,
+    usesStructuredSections,
+  ])
 
   const docTitle = useMemo(() => getDocDetailDisplayTitle(docDisplayParts), [docDisplayParts])
 
@@ -201,6 +232,18 @@ export default function DocDetailOverlayMain({
     [docContent, docLanguage],
   )
 
+  const scopedMarkdown = useMemo(() => {
+    if (!usesStructuredSections) {
+      return docContent
+    }
+
+    if (hasDocPlatforms && activePlatformId) {
+      return adaptStructuredDocMarkdownForPlatform(docContent, activePlatformId, docLanguage)
+    }
+
+    return docContent
+  }, [activePlatformId, docContent, docLanguage, hasDocPlatforms, usesStructuredSections])
+
   const docHtml = useMemo(() => {
     if (contentViewMode === 'doc-catalog-index') {
       return fallbackNoticeHtml
@@ -208,112 +251,44 @@ export default function DocDetailOverlayMain({
     return `${fallbackNoticeHtml}${markdownToHtml(docContent, emptyDocContentText)}`
   }, [contentViewMode, docContent, emptyDocContentText, fallbackNoticeHtml])
 
-  const platformArticleContent = useMemo(() => {
-    if (!usesStructuredSections || !showStructuredArticle) {
-      return { articleTitle: docTitle, bodyHtml: '' }
-    }
-
-    const scopedMarkdown = hasDocPlatforms
-      ? adaptStructuredDocMarkdownForPlatform(docContent, activePlatformId, docLanguage)
-      : docContent
-    const bodyMarkdown = stripStructuredDocLead(scopedMarkdown)
-    const html = markdownToHtml(bodyMarkdown, emptyDocContentText)
-    const bodyHtml = injectDocDetailSectionAnchors(html, docLanguage)
-
-    return { articleTitle: docTitle, bodyHtml }
-  }, [
-    activePlatformId,
-    docContent,
-    docLanguage,
-    docTitle,
-    emptyDocContentText,
-    hasDocPlatforms,
-    showStructuredArticle,
-    usesStructuredSections,
-  ])
-
-  const handleScrollSpySectionChange = useCallback((sectionId) => {
-    setScrollLinkedSectionId((currentSectionId) =>
-      currentSectionId === sectionId ? currentSectionId : sectionId,
-    )
-  }, [setScrollLinkedSectionId])
-
-  const handleFeatureTitleClick = useCallback(() => {
-    window.requestAnimationFrame(() => {
-      scrollDocDetailPanelToTop()
-    })
-  }, [])
-
-  const { lockScrollSpy } = useDocDetailSectionScrollSpy({
-    enabled: usesStructuredSections && showStructuredArticle,
-    isZhContent,
-    bodyHtml: platformArticleContent.bodyHtml,
-    onActiveSectionChange: handleScrollSpySectionChange,
-  })
-
-  const lockScrollSpyRef = useRef(lockScrollSpy)
-  lockScrollSpyRef.current = lockScrollSpy
-
-  useEffect(() => {
-    if (!showStructuredArticle) {
-      return undefined
-    }
-
-    const syncOffset = () => {
-      syncDocDetailScrollOffsetVar()
-    }
-
-    syncOffset()
-    window.addEventListener('resize', syncOffset)
-
-    return () => {
-      window.removeEventListener('resize', syncOffset)
-    }
-  }, [platformArticleContent.bodyHtml, platformLabel, showStructuredArticle])
-
-  useEffect(() => {
-    if (!showStructuredArticle) {
-      return
-    }
-
-    const pendingSectionId = consumePendingScrollSectionId()
-    const legacySectionId = routeDetailSectionId
-    const scrollTargetId = pendingSectionId || legacySectionId
-
-    if (scrollTargetId) {
-      if (legacySectionId) {
-        setScrollLinkedSectionId(legacySectionId)
-        onDocRouteChange?.({ platformId: routePlatformId, detailSectionId: '' })
-      }
-
-      lockScrollSpyRef.current(scrollTargetId)
-      scrollToDocDetailSection(scrollTargetId)
-      return
-    }
-
-    const clickedSectionId = consumeShouldScrollSectionId()
-    if (clickedSectionId) {
-      lockScrollSpyRef.current(clickedSectionId)
-      scrollToDocDetailSection(clickedSectionId)
-    }
-  }, [
-    activeSectionId,
-    consumePendingScrollSectionId,
-    consumeShouldScrollSectionId,
-    onDocRouteChange,
-    platformArticleContent.bodyHtml,
-    routeDetailSectionId,
-    routePlatformId,
-    setScrollLinkedSectionId,
-    showStructuredArticle,
-  ])
-
   const docUpdatedAt = useMemo(
     () => extractDocDetailUpdatedAt(docContent),
     [docContent],
   )
 
-  const showDetailTocSidebar = usesStructuredSections && showStructuredArticle
+  const activeSectionLabel = getDocDetailSectionLabel(activeSectionId, docLanguage)
+
+  const activeSectionBodyHtml = useMemo(() => {
+    if (!usesStructuredSections || contentViewMode !== 'section-detail') {
+      return ''
+    }
+
+    return markdownToHtml(
+      extractDocDetailSection(scopedMarkdown, activeSectionId, docLanguage),
+      emptyDocContentText,
+    )
+  }, [
+    activeSectionId,
+    contentViewMode,
+    docLanguage,
+    emptyDocContentText,
+    scopedMarkdown,
+    usesStructuredSections,
+  ])
+
+  const { prev: prevArticle, next: nextArticle } = useDocDetailArticleNav({
+    platforms: docDetailPlatforms,
+    isZhContent,
+    activePlatformId,
+    activeSectionId,
+    contentViewMode,
+  })
+
+  const handleArticlePagerNavigate = useCallback((platformId, sectionId) => {
+    handleSectionClick(platformId, sectionId)
+  }, [handleSectionClick])
+
+  const showDetailTocSidebar = usesStructuredSections && showDetailContent
 
   return (
     <div className="docs-center-overlay-main">
@@ -335,6 +310,8 @@ export default function DocDetailOverlayMain({
               docDisplayParts={docDisplayParts}
               rootLabel={breadcrumbRootLabel}
               platformLabel={platformLabel}
+              activeSectionId={activeSectionId}
+              docLanguage={docLanguage}
               contentViewMode={contentViewMode}
               onRootClick={onBreadcrumbRootClick}
               onDocClick={handleBreadcrumbDocClick}
@@ -346,28 +323,31 @@ export default function DocDetailOverlayMain({
               showDetailTocSidebar ? ' docs-detail-article-layout--with-toc' : ''
             }`}
           >
-            <div
-              className={`docs-detail-article-content${
-                showStructuredArticle ? ' docs-detail-article-content--platform-detail' : ''
-              }`}
-            >
-              {usesStructuredSections && contentViewMode === 'doc-catalog-index' ? (
+            <div className="docs-detail-article-content">
+              {usesStructuredSections && hasDocPlatforms && contentViewMode === 'doc-catalog-index' ? (
                 <DocDetailDocCatalogIndex
                   docTitle={docTitle}
                   docSummary={docFeatureSummary}
                   isZhContent={isZhContent}
-                  onPlatformClick={handlePlatformNavigate}
+                  onSectionClick={handleSectionClick}
                   platforms={docDetailPlatforms}
                 />
-              ) : usesStructuredSections && showStructuredArticle ? (
-                <DocDetailPlatformArticle
-                  key={hasDocPlatforms ? activePlatformId : 'article-detail'}
-                  articleTitle={platformArticleContent.articleTitle}
-                  bodyHtml={platformArticleContent.bodyHtml}
-                  fallbackNoticeHtml={fallbackNoticeHtml}
-                  isZhContent={isZhContent}
-                  updatedAt={docUpdatedAt}
-                />
+              ) : usesStructuredSections && contentViewMode === 'section-detail' ? (
+                <>
+                  <DocDetailSectionArticle
+                    sectionLabel={activeSectionLabel}
+                    sectionBodyHtml={activeSectionBodyHtml}
+                    fallbackNoticeHtml={fallbackNoticeHtml}
+                    isZhContent={isZhContent}
+                    updatedAt={docUpdatedAt}
+                  />
+                  <DocDetailArticlePager
+                    prev={prevArticle}
+                    next={nextArticle}
+                    isZhContent={isZhContent}
+                    onNavigate={handleArticlePagerNavigate}
+                  />
+                </>
               ) : (
                 <div dangerouslySetInnerHTML={{ __html: docHtml }} />
               )}
@@ -380,9 +360,8 @@ export default function DocDetailOverlayMain({
                 activePlatformId={activePlatformId}
                 activeSectionId={activeSectionId}
                 contentViewMode={contentViewMode}
-                onPlatformNavigate={handlePlatformNavigate}
-                onSectionAnchorClick={handleSectionAnchorClick}
-                onFeatureTitleClick={handleFeatureTitleClick}
+                onPlatformToggle={handleSidebarPlatformToggle}
+                onSectionClick={handleSectionClick}
                 platforms={docDetailPlatforms}
                 embedded
               />
