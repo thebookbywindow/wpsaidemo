@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "ask-question-mcp": {
+      "type": "stdio",
+      "command": "c:\\Users\\wps\\.cursor\\extensions\\cursor-feedback.ask-question-mcp-1.6.0\\bin\\ask-question-mcp.exe",
+      "args": [],
+      "env": {
+        "ASK_QUESTION_CURSOR_PID": "15160",
+        "ASK_QUESTION_WORKSPACE": "d:\\xuqiu\\wps.ai-demo",
+        "ASK_QUESTION_WORKSPACE_NAME": "wps.ai-demo"
+      },
+      "timeout": 600
+    }
+  }
+}
