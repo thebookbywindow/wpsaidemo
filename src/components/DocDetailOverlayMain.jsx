@@ -8,9 +8,15 @@ import DocDetailSectionArticle from './DocDetailSectionArticle'
 import DocDetailTocPanel from './DocDetailTocPanel'
 import DocsDetailCatalogSidebar from './DocsDetailCatalogSidebar'
 import {
-  getDefaultDocDetailSectionId,
+  getDocDetailPlatformSectionIds,
   getDocDetailPlatforms,
+  getDocDetailUniversalSectionGroupLabel,
+  getDocDetailUniversalSectionIds,
+  hasDocDetailUniversalSections,
+  isDocDetailCommonScopeId,
   isDocDetailPlatformAllowed,
+  isDocDetailPlatformLess,
+  shouldDocDetailSectionUseCommonScope,
 } from '../data/docDetailTocData'
 import { useDocDetailArticleNav } from '../hooks/useDocDetailArticleNav'
 import { useDocDetailToc } from '../hooks/useDocDetailToc'
@@ -115,6 +121,17 @@ export default function DocDetailOverlayMain({
   )
   const hasDocPlatforms = docDetailPlatforms.length > 0
   const usesStructuredSections = supportsStructuredDocSections(routeSlug, docContent, docLanguage)
+  const hasDocUniversalSections = hasDocDetailUniversalSections(routeSlug)
+  const hasFeatureScopeGroup =
+    hasDocUniversalSections || (usesStructuredSections && !hasDocPlatforms)
+  const universalSectionIds = useMemo(
+    () => getDocDetailUniversalSectionIds(routeSlug),
+    [routeSlug],
+  )
+  const platformSectionIds = useMemo(
+    () => getDocDetailPlatformSectionIds(routeSlug, isZhContent),
+    [isZhContent, routeSlug],
+  )
 
   const {
     expandedPlatformId,
@@ -128,7 +145,9 @@ export default function DocDetailOverlayMain({
     routePlatformId,
     routeDetailSectionId,
     onRouteChange: onDocRouteChange,
+    routeSlug,
     hasPlatforms: hasDocPlatforms,
+    hasFeatureScopeGroup,
     usesStructuredSections,
   })
 
@@ -151,6 +170,10 @@ export default function DocDetailOverlayMain({
   const platformLabel =
     docDetailPlatforms.find((platform) => platform.id === activePlatformId)?.label ?? ''
 
+  const generalScopeLabel = hasFeatureScopeGroup
+    ? getDocDetailUniversalSectionGroupLabel(isZhContent, 'sidebar')
+    : ''
+
   useEffect(() => {
     if (!usesStructuredSections || !hasDocPlatforms) {
       return
@@ -168,22 +191,6 @@ export default function DocDetailOverlayMain({
   ])
 
   useEffect(() => {
-    if (!usesStructuredSections || hasDocPlatforms || routeDetailSectionId) {
-      return
-    }
-
-    onDocRouteChange?.({
-      platformId: '',
-      detailSectionId: getDefaultDocDetailSectionId(),
-    })
-  }, [
-    hasDocPlatforms,
-    onDocRouteChange,
-    routeDetailSectionId,
-    usesStructuredSections,
-  ])
-
-  useEffect(() => {
     if (!usesStructuredSections) {
       previousDocRouteRef.current = {
         routeSlug,
@@ -196,10 +203,13 @@ export default function DocDetailOverlayMain({
     const previousRoute = previousDocRouteRef.current
     const docChanged = previousRoute.routeSlug !== routeSlug
     const returnedToCatalogIndex =
-      hasDocPlatforms
-      && previousRoute.routeSlug === routeSlug
+      previousRoute.routeSlug === routeSlug
       && !routePlatformId
-      && Boolean(previousRoute.routePlatformId)
+      && !routeDetailSectionId
+      && (
+        Boolean(previousRoute.routePlatformId)
+        || Boolean(previousRoute.routeDetailSectionId)
+      )
     const detailRouteChanged =
       previousRoute.routePlatformId !== routePlatformId
       || previousRoute.routeDetailSectionId !== routeDetailSectionId
@@ -237,7 +247,7 @@ export default function DocDetailOverlayMain({
       return docContent
     }
 
-    if (hasDocPlatforms && activePlatformId) {
+    if (hasDocPlatforms && activePlatformId && !isDocDetailCommonScopeId(activePlatformId)) {
       return adaptStructuredDocMarkdownForPlatform(docContent, activePlatformId, docLanguage)
     }
 
@@ -282,6 +292,9 @@ export default function DocDetailOverlayMain({
     activePlatformId,
     activeSectionId,
     contentViewMode,
+    universalSectionIds,
+    platformSectionIds,
+    hasUniversalSections: hasDocUniversalSections,
   })
 
   const handleArticlePagerNavigate = useCallback((platformId, sectionId) => {
@@ -310,6 +323,8 @@ export default function DocDetailOverlayMain({
               docDisplayParts={docDisplayParts}
               rootLabel={breadcrumbRootLabel}
               platformLabel={platformLabel}
+              generalScopeLabel={generalScopeLabel}
+              scopePlatformId={activePlatformId}
               activeSectionId={activeSectionId}
               docLanguage={docLanguage}
               contentViewMode={contentViewMode}
@@ -324,13 +339,16 @@ export default function DocDetailOverlayMain({
             }`}
           >
             <div className="docs-detail-article-content">
-              {usesStructuredSections && hasDocPlatforms && contentViewMode === 'doc-catalog-index' ? (
+              {usesStructuredSections && contentViewMode === 'doc-catalog-index' ? (
                 <DocDetailDocCatalogIndex
                   docTitle={docTitle}
                   docSummary={docFeatureSummary}
                   isZhContent={isZhContent}
                   onSectionClick={handleSectionClick}
                   platforms={docDetailPlatforms}
+                  routeSlug={routeSlug}
+                  universalSectionIds={universalSectionIds}
+                  platformSectionIds={platformSectionIds}
                 />
               ) : usesStructuredSections && contentViewMode === 'section-detail' ? (
                 <>
@@ -340,6 +358,7 @@ export default function DocDetailOverlayMain({
                     fallbackNoticeHtml={fallbackNoticeHtml}
                     isZhContent={isZhContent}
                     updatedAt={docUpdatedAt}
+                    routeSlug={routeSlug}
                   />
                   <DocDetailArticlePager
                     prev={prevArticle}
@@ -363,6 +382,8 @@ export default function DocDetailOverlayMain({
                 onPlatformToggle={handleSidebarPlatformToggle}
                 onSectionClick={handleSectionClick}
                 platforms={docDetailPlatforms}
+                universalSectionIds={universalSectionIds}
+                platformSectionIds={platformSectionIds}
                 embedded
               />
             ) : null}

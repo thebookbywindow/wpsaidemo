@@ -10,6 +10,8 @@ export default function DocDetailTocPanel({
   onPlatformToggle,
   onSectionClick,
   platforms,
+  universalSectionIds = [],
+  platformSectionIds = [],
   embedded = false,
 }) {
   return (
@@ -23,6 +25,8 @@ export default function DocDetailTocPanel({
       onPlatformToggle={onPlatformToggle}
       onSectionClick={onSectionClick}
       platforms={platforms}
+      universalSectionIds={universalSectionIds}
+      platformSectionIds={platformSectionIds}
       embedded={embedded}
     />
   )

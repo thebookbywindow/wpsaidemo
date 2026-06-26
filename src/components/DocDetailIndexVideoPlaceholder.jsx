@@ -6,9 +6,17 @@ import {
   getDocDetailIndexVideoLabels,
 } from '../utils/docDetailIndexVideo'
 
-export default function DocDetailIndexVideoPlaceholder({ isZhContent, title = '' }) {
+export default function DocDetailIndexVideoPlaceholder({
+  isZhContent,
+  title = '',
+  enabled = true,
+}) {
   const { isOpen, open, close } = useDocDetailIndexVideo()
   const labels = getDocDetailIndexVideoLabels(isZhContent)
+
+  if (!enabled) {
+    return null
+  }
   const displayTitle = title.trim() || labels.fallbackTitle
   const duration = DOC_DETAIL_INDEX_VIDEO_DURATION
 
@@ -25,9 +33,6 @@ export default function DocDetailIndexVideoPlaceholder({ isZhContent, title = ''
         onClick={open}
       >
         <span className="docs-detail-index-video-preview">
-          <span className="docs-detail-index-video-overlay-title" aria-hidden="true">
-            {displayTitle}
-          </span>
           <span className="docs-detail-index-video-play" aria-hidden="true">
             <Play size={18} strokeWidth={0} fill="currentColor" />
           </span>

@@ -1,5 +1,9 @@
 import { useMemo } from 'react'
-import { getDocDetailTocSections } from '../data/docDetailTocData'
+import {
+  filterDocDetailSectionsByIds,
+  getDocDetailTocSections,
+  isDocDetailCommonScopeId,
+} from '../data/docDetailTocData'
 import {
   buildDocDetailPlatformNavItems,
   getDocDetailArticleNavNeighbors,
@@ -11,10 +15,17 @@ export function useDocDetailArticleNav({
   activePlatformId = '',
   activeSectionId = '',
   contentViewMode = '',
+  universalSectionIds = [],
+  platformSectionIds = [],
+  hasUniversalSections = false,
 }) {
   const sections = useMemo(() => getDocDetailTocSections(isZhContent), [isZhContent])
 
   const activePlatform = useMemo(() => {
+    if (isDocDetailCommonScopeId(activePlatformId) || (!activePlatformId && hasUniversalSections)) {
+      return { id: '', label: '' }
+    }
+
     const matchedPlatform = platforms.find((platform) => platform.id === activePlatformId)
     if (matchedPlatform) {
       return matchedPlatform
@@ -25,11 +36,32 @@ export function useDocDetailArticleNav({
     }
 
     return null
-  }, [platforms, activePlatformId])
+  }, [activePlatformId, hasUniversalSections, platforms])
+
+  const navSections = useMemo(() => {
+    if (!hasUniversalSections) {
+      return sections
+    }
+
+    if (!activePlatformId || isDocDetailCommonScopeId(activePlatformId)) {
+      return filterDocDetailSectionsByIds(sections, universalSectionIds)
+    }
+
+    return filterDocDetailSectionsByIds(
+      sections,
+      platformSectionIds.length > 0 ? platformSectionIds : sections.map((section) => section.id),
+    )
+  }, [
+    activePlatformId,
+    hasUniversalSections,
+    platformSectionIds,
+    sections,
+    universalSectionIds,
+  ])
 
   const platformNavItems = useMemo(
-    () => buildDocDetailPlatformNavItems(activePlatform, sections),
-    [activePlatform, sections],
+    () => buildDocDetailPlatformNavItems(activePlatform, navSections),
+    [activePlatform, navSections],
   )
 
   const neighbors = useMemo(() => {
@@ -37,12 +69,12 @@ export function useDocDetailArticleNav({
       return { prev: null, next: null, currentIndex: -1 }
     }
 
-    if (platforms.length > 0 && !activePlatformId) {
+    if (!activePlatform) {
       return { prev: null, next: null, currentIndex: -1 }
     }
 
     return getDocDetailArticleNavNeighbors(platformNavItems, activeSectionId)
-  }, [activePlatformId, activeSectionId, contentViewMode, platformNavItems, platforms.length])
+  }, [activePlatform, activeSectionId, contentViewMode, platformNavItems])
 
   return {
     navItems: platformNavItems,

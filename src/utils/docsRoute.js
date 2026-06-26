@@ -1,7 +1,9 @@
 import {
   DOC_DETAIL_TOC_PLATFORMS,
   getDocDetailSectionUrlSlug,
+  isDocDetailCommonScopeId,
   isValidDocDetailSectionUrlSlug,
+  normalizeDocDetailRoutePlatformId,
   resolveDocDetailSectionIdFromUrlSlug,
 } from '../data/docDetailTocData'
 import { toUrlLocale } from './localeUrl'
@@ -28,6 +30,10 @@ function createEmptyDocsRoute() {
 
 export function isValidDocDetailPlatformId(platformId) {
   return DOC_DETAIL_PLATFORM_IDS.has(platformId)
+}
+
+function isDocDetailRoutePlatformSegment(platformId) {
+  return isValidDocDetailPlatformId(platformId) || isDocDetailCommonScopeId(platformId)
 }
 
 export function isLegacyFlatDocRouteSlug(slug) {
@@ -72,9 +78,9 @@ export function parseDocsRoute(pathname) {
 
   if (
     contentSegments.length > 0
-    && isValidDocDetailPlatformId(contentSegments[contentSegments.length - 1])
+    && isDocDetailRoutePlatformSegment(contentSegments[contentSegments.length - 1])
   ) {
-    platformId = contentSegments[contentSegments.length - 1]
+    platformId = normalizeDocDetailRoutePlatformId(contentSegments[contentSegments.length - 1])
     contentSegments = contentSegments.slice(0, -1)
   }
 
@@ -186,11 +192,13 @@ export function getLocaleDocsPath(
     ? getDocDetailSectionUrlSlug(detailSectionId)
     : ''
 
-  if (isValidDocDetailPlatformId(platformOrItemSlug)) {
+  const normalizedPlatformId = normalizeDocDetailRoutePlatformId(platformOrItemSlug)
+
+  if (isDocDetailRoutePlatformSegment(normalizedPlatformId)) {
     if (detailSectionUrlSlug && isValidDocDetailSectionUrlSlug(detailSectionUrlSlug)) {
-      return joinPath(urlLocale, 'docs', ...slugParts, platformOrItemSlug, detailSectionUrlSlug)
+      return joinPath(urlLocale, 'docs', ...slugParts, normalizedPlatformId, detailSectionUrlSlug)
     }
-    return joinPath(urlLocale, 'docs', ...slugParts, platformOrItemSlug)
+    return joinPath(urlLocale, 'docs', ...slugParts, normalizedPlatformId)
   }
 
   if (detailSectionUrlSlug && isValidDocDetailSectionUrlSlug(detailSectionUrlSlug)) {

@@ -14,6 +14,97 @@ export const DOC_DETAIL_PLATFORM_IDS_BY_ROUTE_SLUG = {
   'share-after-compression': [],
 }
 
+export const DOC_DETAIL_UNIVERSAL_SECTION_IDS_BY_ROUTE_SLUG = {
+  'create-document': ['summary', 'description', 'faq', 'related', 'notes'],
+}
+
+export const DOC_DETAIL_COMMON_SCOPE_SLUG = 'common'
+
+/** @deprecated Use DOC_DETAIL_COMMON_SCOPE_SLUG */
+export const DOC_DETAIL_FEATURE_SCOPE_ID = DOC_DETAIL_COMMON_SCOPE_SLUG
+
+export function isDocDetailCommonScopeId(platformId) {
+  return platformId === DOC_DETAIL_COMMON_SCOPE_SLUG || platformId === 'feature'
+}
+
+export function normalizeDocDetailRoutePlatformId(platformId = '') {
+  if (platformId === 'feature') {
+    return DOC_DETAIL_COMMON_SCOPE_SLUG
+  }
+  return platformId
+}
+
+export function shouldDocDetailSectionUseCommonScope(routeSlug = '', sectionId = '') {
+  if (isDocDetailPlatformLess(routeSlug)) {
+    return Boolean(sectionId)
+  }
+
+  return getDocDetailUniversalSectionIds(routeSlug).includes(sectionId)
+}
+
+export function resolveDocDetailSectionRoutePlatformId({
+  platformId = '',
+  sectionId = '',
+  routeSlug = '',
+  hasPlatforms = true,
+  hasFeatureScopeGroup = false,
+} = {}) {
+  if (platformId && !isDocDetailCommonScopeId(platformId)) {
+    return hasPlatforms ? platformId : ''
+  }
+
+  if (
+    sectionId
+    && (hasFeatureScopeGroup || !hasPlatforms)
+    && shouldDocDetailSectionUseCommonScope(routeSlug, sectionId)
+  ) {
+    return DOC_DETAIL_COMMON_SCOPE_SLUG
+  }
+
+  return ''
+}
+
+export function getDocDetailUniversalSectionGroupLabel(isZhContent, variant = 'catalog') {
+  if (variant === 'sidebar') {
+    return isZhContent ? '通用' : 'Common'
+  }
+
+  return isZhContent ? '通用指南' : 'Common Guides'
+}
+
+export function getDocDetailUniversalSectionIds(routeSlug = '') {
+  return DOC_DETAIL_UNIVERSAL_SECTION_IDS_BY_ROUTE_SLUG[routeSlug] ?? []
+}
+
+export function hasDocDetailUniversalSections(routeSlug = '') {
+  return (
+    getDocDetailUniversalSectionIds(routeSlug).length > 0
+    && getDocDetailPlatforms(routeSlug).length > 0
+  )
+}
+
+export function getDocDetailPlatformSectionIds(routeSlug = '', isZhContent) {
+  void routeSlug
+  return getDocDetailTocSections(isZhContent).map((section) => section.id)
+}
+
+export function filterDocDetailSectionsByIds(sections = [], sectionIds = []) {
+  const allowedIds = new Set(sectionIds)
+  return sections.filter((section) => allowedIds.has(section.id))
+}
+
+export function getDocDetailCatalogSectionColumnsForIds(isZhContent, sectionIds) {
+  if (!sectionIds?.length) {
+    return getDocDetailCatalogSectionColumns(isZhContent)
+  }
+
+  const allowedIds = new Set(sectionIds)
+
+  return getDocDetailCatalogSectionColumns(isZhContent)
+    .map((columnSections) => columnSections.filter((section) => allowedIds.has(section.id)))
+    .filter((columnSections) => columnSections.length > 0)
+}
+
 export function isDocDetailPlatformLess(routeSlug = '') {
   const allowedIds = DOC_DETAIL_PLATFORM_IDS_BY_ROUTE_SLUG[routeSlug]
   return Array.isArray(allowedIds) && allowedIds.length === 0
@@ -34,8 +125,13 @@ export function getDocDetailPlatforms(routeSlug = '') {
 }
 
 export function isDocDetailPlatformAllowed(routeSlug, platformId) {
-  if (!platformId) {
+  const normalizedPlatformId = normalizeDocDetailRoutePlatformId(platformId)
+  if (!normalizedPlatformId) {
     return true
+  }
+
+  if (isDocDetailCommonScopeId(normalizedPlatformId)) {
+    return hasDocDetailUniversalSections(routeSlug) || isDocDetailPlatformLess(routeSlug)
   }
 
   if (isDocDetailPlatformLess(routeSlug)) {
@@ -47,7 +143,7 @@ export function isDocDetailPlatformAllowed(routeSlug, platformId) {
     return true
   }
 
-  return allowedIds.includes(platformId)
+  return allowedIds.includes(normalizedPlatformId)
 }
 
 export const DOC_DETAIL_TOC_SECTIONS_ZH = [

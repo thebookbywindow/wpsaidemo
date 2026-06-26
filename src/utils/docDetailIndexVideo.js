@@ -3,6 +3,14 @@ export const DOC_DETAIL_INDEX_DEMO_VIDEO_SRC =
 
 export const DOC_DETAIL_INDEX_VIDEO_DURATION = '03:57'
 
+export const DOC_DETAIL_INDEX_VIDEO_DISABLED_ROUTE_SLUGS = new Set([
+  'share-after-compression',
+])
+
+export function hasDocDetailIndexVideo(routeSlug = '') {
+  return !DOC_DETAIL_INDEX_VIDEO_DISABLED_ROUTE_SLUGS.has(routeSlug)
+}
+
 export function getDocDetailIndexVideoLabels(isZhContent) {
   return {
     fallbackTitle: isZhContent ? '视频介绍' : 'Video overview',

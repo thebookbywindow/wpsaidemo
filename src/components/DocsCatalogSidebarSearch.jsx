@@ -1,4 +1,6 @@
-import { Search } from 'lucide-react'
+import { createPortal } from 'react-dom'
+import { CornerDownRight, Folder, Search } from 'lucide-react'
+import { useFloatingListboxPosition } from '../hooks/useFloatingListboxPosition'
 
 function renderHighlightedText(text, keyword) {
   if (!keyword) {
@@ -33,6 +35,23 @@ function renderHighlightedText(text, keyword) {
   return parts
 }
 
+function getResultMetaLabel(result) {
+  if (result.type === 'block' && result.sectionTitle) {
+    return result.sectionTitle
+  }
+  return ''
+}
+
+function renderResultIcon(result) {
+  if (result.type === 'section') {
+    return <Folder size={14} strokeWidth={2} aria-hidden="true" />
+  }
+  if (result.type === 'block') {
+    return <CornerDownRight size={14} strokeWidth={2} aria-hidden="true" />
+  }
+  return null
+}
+
 export default function DocsCatalogSidebarSearch({
   comboboxRef,
   searchKeyword,
@@ -46,6 +65,53 @@ export default function DocsCatalogSidebarSearch({
   onSelectResult,
 }) {
   const showDropdown = isDropdownOpen && Boolean(keyword)
+  const dropdownStyle = useFloatingListboxPosition({
+    anchorRef: comboboxRef,
+    isOpen: showDropdown,
+  })
+
+  const dropdown = showDropdown && dropdownStyle ? (
+    <div
+      id="docs-catalog-sidebar-search-listbox"
+      className="docs-center-sidebar-search-dropdown"
+      role="listbox"
+      data-docs-search-dropdown=""
+      style={dropdownStyle}
+    >
+      {results.length ? (
+        results.map((result) => {
+          const metaLabel = getResultMetaLabel(result)
+          const ResultIcon = renderResultIcon(result)
+
+          return (
+            <button
+              key={result.key}
+              type="button"
+              role="option"
+              className={`docs-center-sidebar-search-option docs-center-sidebar-search-option--${result.type}`}
+              onClick={() => onSelectResult(result)}
+            >
+              {ResultIcon ? (
+                <span className="docs-center-sidebar-search-option-icon">{ResultIcon}</span>
+              ) : null}
+              <span className="docs-center-sidebar-search-option-body">
+                <span className="docs-center-sidebar-search-option-label">
+                  {renderHighlightedText(result.label, keyword)}
+                </span>
+                {metaLabel ? (
+                  <span className="docs-center-sidebar-search-option-meta">
+                    {metaLabel}
+                  </span>
+                ) : null}
+              </span>
+            </button>
+          )
+        })
+      ) : (
+        <p className="docs-center-sidebar-search-empty">{emptyResultsText}</p>
+      )}
+    </div>
+  ) : null
 
   return (
     <div className="docs-center-sidebar-search-combobox" ref={comboboxRef}>
@@ -71,31 +137,7 @@ export default function DocsCatalogSidebarSearch({
           }}
         />
       </label>
-      {showDropdown ? (
-        <div
-          id="docs-catalog-sidebar-search-listbox"
-          className="docs-center-sidebar-search-dropdown"
-          role="listbox"
-        >
-          {results.length ? (
-            results.map((result) => (
-              <button
-                key={result.key}
-                type="button"
-                role="option"
-                className="docs-center-sidebar-search-option"
-                onClick={() => onSelectResult(result)}
-              >
-                <span className="docs-center-sidebar-search-option-label">
-                  {renderHighlightedText(result.label, keyword)}
-                </span>
-              </button>
-            ))
-          ) : (
-            <p className="docs-center-sidebar-search-empty">{emptyResultsText}</p>
-          )}
-        </div>
-      ) : null}
+      {dropdown ? createPortal(dropdown, document.body) : null}
     </div>
   )
 }

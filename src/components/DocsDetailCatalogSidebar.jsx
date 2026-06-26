@@ -3,6 +3,7 @@ import { ChevronRight } from 'lucide-react'
 import { createDocsPathKey } from '../data/docsCenterMeta'
 import { useDocsCatalogSidebarSearch } from '../hooks/useDocsCatalogSidebarSearch'
 import DocsCatalogSidebarSearch from './DocsCatalogSidebarSearch'
+import DocsCatalogSidebarFilterSearch from './DocsCatalogSidebarFilterSearch'
 
 function findActiveLocation(sectionModels, activeDocPathKey) {
   if (!activeDocPathKey) {
@@ -149,6 +150,9 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
     directoryTitle,
     searchPlaceholder,
     searchEmptyText = 'No matching items',
+    searchMode = 'dropdown',
+    searchKeyword = '',
+    onSearchKeywordChange,
     sidebarClassName = 'docs-center-sidebar docs-detail-catalog-sidebar',
     showLeafNodes = true,
     limitToActiveSection = false,
@@ -227,10 +231,12 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
     onLeafClick?.(sourcePathParts)
   }
 
+  const isContentFilterSearch = searchMode === 'content-filter'
+
   const {
     comboboxRef,
-    searchKeyword,
-    setSearchKeyword,
+    searchKeyword: dropdownSearchKeyword,
+    setSearchKeyword: setDropdownSearchKeyword,
     isDropdownOpen,
     setIsDropdownOpen,
     keyword,
@@ -242,6 +248,7 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
     showLeafNodes,
     onLeafSelect: handleLeafClick,
     onBlockSelect: onBlockNavigate,
+    onSectionSelect: onSectionNavigate,
   })
 
   useEffect(() => {
@@ -424,18 +431,26 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
   return (
     <aside ref={ref} className={sidebarClassName} aria-label={sidebarHeading}>
       <h3>{sidebarHeading}</h3>
-      <DocsCatalogSidebarSearch
-        comboboxRef={comboboxRef}
-        searchKeyword={searchKeyword}
-        onSearchKeywordChange={setSearchKeyword}
-        isDropdownOpen={isDropdownOpen}
-        onDropdownOpenChange={setIsDropdownOpen}
-        searchPlaceholder={searchPlaceholder}
-        emptyResultsText={searchEmptyText}
-        keyword={keyword}
-        results={results}
-        onSelectResult={handleSelectResult}
-      />
+      {isContentFilterSearch ? (
+        <DocsCatalogSidebarFilterSearch
+          searchKeyword={searchKeyword}
+          onSearchKeywordChange={onSearchKeywordChange}
+          searchPlaceholder={searchPlaceholder}
+        />
+      ) : (
+        <DocsCatalogSidebarSearch
+          comboboxRef={comboboxRef}
+          searchKeyword={dropdownSearchKeyword}
+          onSearchKeywordChange={setDropdownSearchKeyword}
+          isDropdownOpen={isDropdownOpen}
+          onDropdownOpenChange={setIsDropdownOpen}
+          searchPlaceholder={searchPlaceholder}
+          emptyResultsText={searchEmptyText}
+          keyword={keyword}
+          results={results}
+          onSelectResult={handleSelectResult}
+        />
+      )}
       <div>
         {limitToActiveSection ? (
           scopedSectionModels.map((section) => (

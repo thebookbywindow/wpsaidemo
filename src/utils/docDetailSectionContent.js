@@ -125,6 +125,91 @@ export function extractDocFeatureSummaryIntro(markdown, docLang) {
   return introLines.join(' ').trim()
 }
 
+function truncatePreviewText(text, maxLength = 96) {
+  const normalized = `${text ?? ''}`.replace(/\s+/g, ' ').trim()
+  if (!normalized) {
+    return ''
+  }
+
+  if (normalized.length <= maxLength) {
+    return normalized
+  }
+
+  return `${normalized.slice(0, maxLength - 1).trimEnd()}…`
+}
+
+function stripMarkdownInline(text) {
+  return `${text ?? ''}`
+    .replace(/\*\*(.+?)\*\*/g, '$1')
+    .replace(/\*(.+?)\*/g, '$1')
+    .replace(/`([^`]+)`/g, '$1')
+    .trim()
+}
+
+export function extractDocFeatureSummaryCapabilities(markdown, docLang) {
+  const summaryBody = extractDocDetailSection(markdown, 'summary', docLang)
+  if (!summaryBody) {
+    return []
+  }
+
+  return summaryBody
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => line.startsWith('-'))
+    .map((line) => stripMarkdownInline(line.replace(/^-\s*/, '')))
+    .filter(Boolean)
+}
+
+export function extractDocDetailMetaLine(markdown) {
+  const blockquoteMatch = `${markdown ?? ''}`.match(/^>\s*(.+)$/m)
+  return blockquoteMatch?.[1]?.trim() ?? ''
+}
+
+export function extractDocDetailSectionPreview(markdown, sectionId, docLang, maxLength = 96) {
+  const body = extractDocDetailSection(markdown, sectionId, docLang)
+  if (!body) {
+    return ''
+  }
+
+  const lines = body.split('\n').map((line) => line.trim()).filter(Boolean)
+
+  for (const line of lines) {
+    if (line.startsWith('### ')) {
+      const heading = stripMarkdownInline(line.replace(/^###\s+/, ''))
+      const headingIndex = lines.indexOf(line)
+      const nextLine = lines[headingIndex + 1]
+      if (nextLine && !nextLine.startsWith('#')) {
+        return truncatePreviewText(`${heading} — ${stripMarkdownInline(nextLine)}`, maxLength)
+      }
+      return truncatePreviewText(heading, maxLength)
+    }
+
+    if (line.startsWith('- **')) {
+      const question = line.match(/^-\s*\*\*(.+?)\*\*/)?.[1]
+      if (question) {
+        return truncatePreviewText(stripMarkdownInline(question), maxLength)
+      }
+    }
+
+    if (line.startsWith('- ')) {
+      const item = stripMarkdownInline(line.replace(/^-\s*/, ''))
+      if (item && !item.startsWith('[')) {
+        return truncatePreviewText(item, maxLength)
+      }
+    }
+
+    if (/^\d+\.\s/.test(line)) {
+      return truncatePreviewText(stripMarkdownInline(line.replace(/^\d+\.\s*/, '')), maxLength)
+    }
+
+    if (!line.startsWith('**') && !line.startsWith('>')) {
+      return truncatePreviewText(stripMarkdownInline(line), maxLength)
+    }
+  }
+
+  return ''
+}
+
 export function buildDocDetailSectionMarkdown({
   markdown,
   sectionId,

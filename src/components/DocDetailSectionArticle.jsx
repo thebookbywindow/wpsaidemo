@@ -1,6 +1,7 @@
 import DocDetailIndexVideoPlaceholder from './DocDetailIndexVideoPlaceholder'
 import DocDetailSectionShareButton from './DocDetailSectionShareButton'
 import { getDocDetailUpdatedLabel } from '../utils/docDetailSectionContent'
+import { hasDocDetailIndexVideo } from '../utils/docDetailIndexVideo'
 
 export default function DocDetailSectionArticle({
   sectionLabel,
@@ -8,8 +9,10 @@ export default function DocDetailSectionArticle({
   fallbackNoticeHtml = '',
   isZhContent,
   updatedAt = '',
+  routeSlug = '',
 }) {
   const updatedLabel = getDocDetailUpdatedLabel(isZhContent)
+  const hasIndexVideo = hasDocDetailIndexVideo(routeSlug)
 
   return (
     <article className="docs-detail-section-article">
@@ -29,9 +32,11 @@ export default function DocDetailSectionArticle({
           )}
           <DocDetailSectionShareButton isZhContent={isZhContent} title={sectionLabel} />
         </div>
-        <div className="docs-detail-section-article-video">
-          <DocDetailIndexVideoPlaceholder isZhContent={isZhContent} title={sectionLabel} />
-        </div>
+        {hasIndexVideo ? (
+          <div className="docs-detail-section-article-video">
+            <DocDetailIndexVideoPlaceholder isZhContent={isZhContent} title={sectionLabel} />
+          </div>
+        ) : null}
       </header>
       <div
         className="docs-detail-section-article-body"
