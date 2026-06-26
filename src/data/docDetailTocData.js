@@ -204,11 +204,128 @@ const DOC_DETAIL_CATALOG_SECTION_COLUMN_IDS = [
   ['faq'],
 ]
 
+export function flattenDocDetailCatalogSectionColumns(sectionColumns = []) {
+  const sections = []
+  const seenIds = new Set()
+
+  sectionColumns.forEach((column) => {
+    column.forEach((section) => {
+      if (!section || seenIds.has(section.id)) {
+        return
+      }
+      seenIds.add(section.id)
+      sections.push(section)
+    })
+  })
+
+  return sections
+}
+
+export function distributeDocDetailCatalogSectionsToColumns(
+  sections = [],
+  columnCount = DOC_DETAIL_CATALOG_SECTION_COLUMN_IDS.length,
+) {
+  if (!sections.length) {
+    return []
+  }
+
+  const columns = Array.from({ length: columnCount }, () => [])
+  sections.forEach((section, index) => {
+    columns[index % columnCount].push(section)
+  })
+
+  return columns.filter((column) => column.length > 0)
+}
+
 export function getDocDetailCatalogSectionColumns(isZhContent) {
   const sections = getDocDetailTocSections(isZhContent)
   const sectionById = Object.fromEntries(sections.map((section) => [section.id, section]))
 
   return DOC_DETAIL_CATALOG_SECTION_COLUMN_IDS.map((columnIds) =>
     columnIds.map((sectionId) => sectionById[sectionId]).filter(Boolean),
+  )
+}
+
+const DOC_DETAIL_PLATFORM_CATALOG_GROUPS = [
+  {
+    id: 'desktop',
+    labels: { en: 'Desktop', zh: '桌面端' },
+    entries: [
+      { routeId: 'windows' },
+      { routeId: 'mac' },
+      { routeId: 'linux' },
+    ],
+  },
+  {
+    id: 'mobile-phone',
+    labels: { en: 'Mobile Phone', zh: '手机' },
+    entries: [
+      {
+        routeId: 'android',
+        catalogId: 'android-phone',
+        labels: { en: 'Android Phone', zh: 'Android 手机' },
+      },
+      {
+        routeId: 'ios',
+        catalogId: 'iphone',
+        labels: { en: 'iPhone', zh: 'iPhone' },
+      },
+    ],
+  },
+  {
+    id: 'tablet',
+    labels: { en: 'Tablet', zh: '平板' },
+    entries: [
+      {
+        routeId: 'android',
+        catalogId: 'android-tablet',
+        labels: { en: 'Android Tablet', zh: 'Android 平板' },
+      },
+      {
+        routeId: 'ios',
+        catalogId: 'ipad',
+        labels: { en: 'iPad', zh: 'iPad' },
+      },
+    ],
+  },
+  {
+    id: 'web',
+    labels: { en: 'Web', zh: '网页端' },
+    entries: [{ routeId: 'web' }],
+  },
+]
+
+export function groupDocDetailPlatformsForCatalog(platforms = [], isZhContent) {
+  const allowedRouteIds = new Set(platforms.map((platform) => platform.id))
+  const platformLabelByRouteId = Object.fromEntries(
+    platforms.map((platform) => [platform.id, platform.label]),
+  )
+
+  return DOC_DETAIL_PLATFORM_CATALOG_GROUPS.map((groupDef) => {
+    const catalogPlatforms = groupDef.entries
+      .filter((entry) => allowedRouteIds.has(entry.routeId))
+      .map((entry) => ({
+        catalogId: entry.catalogId ?? entry.routeId,
+        routeId: entry.routeId,
+        label: entry.labels
+          ? (isZhContent ? entry.labels.zh : entry.labels.en)
+          : platformLabelByRouteId[entry.routeId],
+      }))
+
+    if (!catalogPlatforms.length) {
+      return null
+    }
+
+    return {
+      id: groupDef.id,
+      label: isZhContent ? groupDef.labels.zh : groupDef.labels.en,
+      platforms: catalogPlatforms,
+    }
+  }).filter(Boolean)
+}
+
+export function flattenDocDetailPlatformsForCatalog(platforms = [], isZhContent) {
+  return groupDocDetailPlatformsForCatalog(platforms, isZhContent).flatMap(
+    (group) => group.platforms,
   )
 }

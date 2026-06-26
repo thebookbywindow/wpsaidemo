@@ -2618,49 +2618,43 @@ body {
   border-top: 1px solid #edf1f6;
 }
 
-.docs-detail-catalog-platform-row {
-  display: grid;
-  grid-template-columns: 24px minmax(0, 1fr);
-  column-gap: 8px;
-  row-gap: 12px;
-  align-items: center;
+.docs-detail-catalog-platform-type {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
 }
 
-.docs-detail-catalog-platform-icon {
-  grid-column: 1;
-  grid-row: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 7px;
-  background: #f1efff;
-  color: var(--purple-600);
-  flex-shrink: 0;
+.docs-detail-catalog-platform-category {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.docs-detail-catalog-platform-name {
-  grid-column: 2;
-  grid-row: 1;
+.docs-detail-catalog-platform-category-title {
   margin: 0;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.4;
+  padding-left: 2px;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.35;
   color: var(--text);
 }
 
-.docs-detail-catalog-platform-name--feature {
-  font-size: 17px;
-  font-weight: 700;
+.docs-detail-catalog-platform-category-body {
+  min-width: 0;
+  padding-left: 14px;
+}
+
+.docs-detail-catalog-sections-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 
 .docs-detail-catalog-sections-grid {
-  grid-column: 2;
-  grid-row: 2;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 4px 24px;
+  gap: 8px 16px;
 }
 
 .docs-detail-catalog-sections-column {
@@ -2670,9 +2664,31 @@ body {
   min-width: 0;
 }
 
-.docs-detail-catalog-sections-grid .docs-detail-section-link {
-  padding: 6px 0;
+.docs-detail-catalog-sections-grid .docs-detail-section-link,
+.docs-detail-catalog-sections-grid .docs-detail-catalog-section-text {
+  padding: 8px 10px;
+  margin: 0 -10px;
+  border-radius: 8px;
   font-size: 14px;
+  line-height: 1.5;
+  max-width: 100%;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.docs-detail-catalog-sections-grid .docs-detail-catalog-section-text {
+  display: block;
+  color: var(--text-secondary);
+  cursor: default;
+}
+
+.docs-detail-catalog-sections-grid .docs-detail-section-link:hover {
+  background: var(--purple-50);
+  color: var(--purple-600);
+  text-decoration: none;
 }
 
 .docs-center-md h1 {
@@ -2828,6 +2844,7 @@ body {
 
   .docs-detail-catalog-sections-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 16px;
   }
 }
 

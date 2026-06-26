@@ -1,9 +1,10 @@
 import { ChevronRight } from 'lucide-react'
-import { getDocDetailCatalogSectionColumnsForIds, getDocDetailUniversalSectionGroupLabel, isDocDetailCommonScopeId } from '../data/docDetailTocData'
+import { getDocDetailCatalogSectionColumnsForIds, getDocDetailUniversalSectionGroupLabel } from '../data/docDetailTocData'
 import { getDocDetailSectionLabel } from '../utils/docDetailSectionContent'
-import { getDocDetailFeatureIcon, getDocDetailPlatformIcon } from '../utils/docDetailPlatformIcons'
 import { hasDocDetailIndexVideo } from '../utils/docDetailIndexVideo'
 import DocDetailIndexVideoPlaceholder from './DocDetailIndexVideoPlaceholder'
+import DocDetailCatalogUniversalCategory from './DocDetailCatalogUniversalCategory'
+import DocDetailCatalogPlatformTypeSection from './DocDetailCatalogPlatformTypeSection'
 
 function getBreadcrumbDocParts(docDisplayParts = []) {
   if (docDisplayParts.length >= 3) {
@@ -34,7 +35,6 @@ export function DocDetailDocCatalogIndex({
 }) {
   const isPlatformLess = platforms.length === 0
   const hasUniversalSections = universalSectionIds.length > 0 && !isPlatformLess
-  const FeatureIcon = getDocDetailFeatureIcon()
   const universalGroupLabel = getDocDetailUniversalSectionGroupLabel(isZhContent, 'catalog')
   const hasIndexVideo = hasDocDetailIndexVideo(routeSlug)
   const universalSectionColumns = getDocDetailCatalogSectionColumnsForIds(
@@ -46,28 +46,6 @@ export function DocDetailDocCatalogIndex({
     platformSectionIds.length > 0 ? platformSectionIds : undefined,
   )
   const defaultSectionColumns = getDocDetailCatalogSectionColumnsForIds(isZhContent)
-
-  const renderSectionGrid = (platformId, sectionColumns = defaultSectionColumns) => (
-    <div className="docs-detail-catalog-sections-grid">
-      {sectionColumns.map((columnSections, columnIndex) => (
-        <div
-          key={`doc-catalog-${platformId || 'feature'}-col-${columnIndex}`}
-          className="docs-detail-catalog-sections-column"
-        >
-          {columnSections.map((section) => (
-            <button
-              key={`doc-catalog-${platformId || 'feature'}-${section.id}`}
-              type="button"
-              className="docs-detail-section-link"
-              onClick={() => onSectionClick(platformId, section.id)}
-            >
-              {section.label}
-            </button>
-          ))}
-        </div>
-      ))}
-    </div>
-  )
 
   return (
     <div className="docs-detail-index-page">
@@ -88,60 +66,22 @@ export function DocDetailDocCatalogIndex({
       </header>
       <div className="docs-detail-catalog-platform-rows">
         {isPlatformLess ? (
-          <section
-            className="docs-detail-catalog-platform-row docs-detail-catalog-platform-row--feature"
-            aria-labelledby="doc-catalog-platform-feature"
-          >
-            <span className="docs-detail-catalog-platform-icon" aria-hidden="true">
-              <FeatureIcon size={14} strokeWidth={1.85} />
-            </span>
-            <h3
-              id="doc-catalog-platform-feature"
-              className="docs-detail-catalog-platform-name docs-detail-catalog-platform-name--feature"
-            >
-              {universalGroupLabel}
-            </h3>
-            {renderSectionGrid('')}
-          </section>
+          <DocDetailCatalogUniversalCategory
+            groupLabel={universalGroupLabel}
+            sectionColumns={defaultSectionColumns}
+            onSectionClick={onSectionClick}
+          />
         ) : (
-          <>
-            {hasUniversalSections ? (
-              <section
-                className="docs-detail-catalog-platform-row docs-detail-catalog-platform-row--feature"
-                aria-labelledby="doc-catalog-platform-feature"
-              >
-                <span className="docs-detail-catalog-platform-icon" aria-hidden="true">
-                  <FeatureIcon size={14} strokeWidth={1.85} />
-                </span>
-                <h3
-                  id="doc-catalog-platform-feature"
-                  className="docs-detail-catalog-platform-name docs-detail-catalog-platform-name--feature"
-                >
-                  {universalGroupLabel}
-                </h3>
-                {renderSectionGrid('', universalSectionColumns)}
-              </section>
-            ) : null}
-            {platforms.map((platform) => {
-              const PlatformIcon = getDocDetailPlatformIcon(platform.id)
-
-              return (
-                <section
-                  key={`doc-catalog-${platform.id}`}
-                  className="docs-detail-catalog-platform-row"
-                  aria-labelledby={`doc-catalog-platform-${platform.id}`}
-                >
-                  <span className="docs-detail-catalog-platform-icon" aria-hidden="true">
-                    <PlatformIcon size={14} strokeWidth={1.85} />
-                  </span>
-                  <h3 id={`doc-catalog-platform-${platform.id}`} className="docs-detail-catalog-platform-name">
-                    {platform.label}
-                  </h3>
-                  {renderSectionGrid(platform.id, platformSectionColumns)}
-                </section>
-              )
-            })}
-          </>
+          <DocDetailCatalogPlatformTypeSection
+            platforms={platforms}
+            platformSectionColumns={platformSectionColumns}
+            isZhContent={isZhContent}
+            onSectionClick={onSectionClick}
+            universalGroupLabel={hasUniversalSections ? universalGroupLabel : ''}
+            universalSectionColumns={
+              hasUniversalSections ? universalSectionColumns : null
+            }
+          />
         )}
       </div>
     </div>
@@ -151,9 +91,6 @@ export function DocDetailDocCatalogIndex({
 export default function DocDetailArticleBreadcrumb({
   docDisplayParts,
   rootLabel = '',
-  platformLabel,
-  generalScopeLabel = '',
-  scopePlatformId = '',
   activeSectionId,
   docLanguage,
   contentViewMode,
@@ -187,22 +124,6 @@ export default function DocDetailArticleBreadcrumb({
       onClick: onDocClick,
     })
   })
-
-  if (contentViewMode === 'section-detail') {
-    if (platformLabel) {
-      items.push({
-        key: `platform-${platformLabel}`,
-        label: platformLabel,
-        clickable: false,
-      })
-    } else if (isDocDetailCommonScopeId(scopePlatformId) && generalScopeLabel) {
-      items.push({
-        key: 'general-scope',
-        label: generalScopeLabel,
-        clickable: false,
-      })
-    }
-  }
 
   if (contentViewMode === 'section-detail') {
     const sectionLabel = getDocDetailSectionLabel(activeSectionId, docLanguage)

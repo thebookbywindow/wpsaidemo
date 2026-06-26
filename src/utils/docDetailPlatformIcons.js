@@ -1,4 +1,4 @@
-import { Globe, Laptop, Layers, Monitor, Smartphone, Terminal } from 'lucide-react'
+import { Globe, Laptop, Layers, Monitor, Smartphone, Tablet, Terminal } from 'lucide-react'
 
 export const DOC_DETAIL_PLATFORM_ICON_MAP = {
   windows: Monitor,
@@ -7,6 +7,10 @@ export const DOC_DETAIL_PLATFORM_ICON_MAP = {
   web: Globe,
   android: Smartphone,
   ios: Smartphone,
+  'android-phone': Smartphone,
+  iphone: Smartphone,
+  'android-tablet': Tablet,
+  ipad: Tablet,
   common: Layers,
   feature: Layers,
 }

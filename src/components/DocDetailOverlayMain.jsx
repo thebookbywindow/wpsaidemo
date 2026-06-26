@@ -10,7 +10,6 @@ import DocsDetailCatalogSidebar from './DocsDetailCatalogSidebar'
 import {
   getDocDetailPlatformSectionIds,
   getDocDetailPlatforms,
-  getDocDetailUniversalSectionGroupLabel,
   getDocDetailUniversalSectionIds,
   hasDocDetailUniversalSections,
   isDocDetailCommonScopeId,
@@ -167,13 +166,6 @@ export default function DocDetailOverlayMain({
     routeDetailSectionId: '',
   })
 
-  const platformLabel =
-    docDetailPlatforms.find((platform) => platform.id === activePlatformId)?.label ?? ''
-
-  const generalScopeLabel = hasFeatureScopeGroup
-    ? getDocDetailUniversalSectionGroupLabel(isZhContent, 'sidebar')
-    : ''
-
   useEffect(() => {
     if (!usesStructuredSections || !hasDocPlatforms) {
       return
@@ -322,9 +314,6 @@ export default function DocDetailOverlayMain({
             <DocDetailArticleBreadcrumb
               docDisplayParts={docDisplayParts}
               rootLabel={breadcrumbRootLabel}
-              platformLabel={platformLabel}
-              generalScopeLabel={generalScopeLabel}
-              scopePlatformId={activePlatformId}
               activeSectionId={activeSectionId}
               docLanguage={docLanguage}
               contentViewMode={contentViewMode}
