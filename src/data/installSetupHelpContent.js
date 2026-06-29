@@ -1,21 +1,27 @@
 import { buildWriterStructuredArticle } from './writerHelpContent.js'
 
 const sectionHeadingsZh = {
-  summary: '功能摘要',
-  description: '功能说明',
-  steps: '操作步骤',
+  productUpdates: '产品更新 / 发行说明',
+  featuresOverview: '功能概述',
+  plansPricing: '套餐与定价',
+  gettingStarted: '快速入门',
+  howToGuide: '操作指南',
   faq: '常见问题',
-  related: '关联问题',
   notes: '注意事项',
+  glossary: '术语表',
+  relatedResources: '相关资源',
 }
 
 const sectionHeadingsEn = {
-  summary: 'Feature Summary',
-  description: 'Feature Description',
-  steps: 'Steps',
+  productUpdates: 'Release Notes',
+  featuresOverview: 'Features Overview',
+  plansPricing: 'Plans & Pricing',
+  gettingStarted: 'Getting Started',
+  howToGuide: 'How-to Guide',
   faq: 'FAQ',
-  related: 'Related Questions',
   notes: 'Notes',
+  glossary: 'Glossary',
+  relatedResources: 'Related Resources',
 }
 
 const sharedZh = {
@@ -51,6 +57,9 @@ const sharedZh = {
       '首次启动后点击「登录」，使用手机号、邮箱或第三方账号完成验证',
       '在设置中确认云同步、自动保存与默认应用关联是否开启',
       '打开任意文档验证编辑、保存与跨端同步是否正常',
+      'Windows：可在安装向导中选择安装路径与是否创建桌面快捷方式',
+      'macOS：若提示「无法打开」，请在系统设置中允许来自 WPS 的安装来源',
+      '安装完成后在「帮助 → 检查更新」获取最新安全补丁',
     ],
     screenshots: [
       '安装向导首页',
@@ -58,6 +67,44 @@ const sharedZh = {
       '设置中的云同步开关',
     ],
   },
+  howToGuideSections: [
+    {
+      title: 'Windows 安装',
+      items: [
+        '从官网下载 .exe 安装包，双击运行并以管理员身份安装（如遇权限提示）',
+        '选择安装路径与需要安装的组件（文字、表格、演示等）',
+        '完成安装后从开始菜单或桌面快捷方式启动 WPS',
+        '首次启动可设置 WPS 为 .docx 等格式的默认打开程序',
+      ],
+    },
+    {
+      title: 'macOS 安装',
+      items: [
+        '下载 .dmg 或 pkg 安装包，将 WPS 拖入「应用程序」文件夹',
+        '若系统拦截，打开「系统设置 → 隐私与安全性」并点击「仍要打开」',
+        '从启动台打开 WPS，按提示完成首次启动向导',
+        '在「系统设置 → 桌面与程序坞 → 默认网页浏览器 / 文稿」中关联 Office 格式（可选）',
+      ],
+    },
+    {
+      title: '账号登录与绑定',
+      items: [
+        '点击右上角头像或起始页「登录」，选择手机号、邮箱或第三方账号',
+        '首次登录建议绑定备用联系方式，便于找回密码与二次验证',
+        '企业用户可选择 SSO 入口，使用组织账号一次登录',
+        '登录成功后云文档、模板与会员权益会自动同步到当前设备',
+      ],
+    },
+    {
+      title: '安装后验证',
+      items: [
+        '打开示例文档，测试输入、保存与撤销是否正常',
+        '在设置中确认「自动保存」与「云同步」已开启',
+        '将一份测试文档保存到云文档，在手机端登录同一账号验证是否可见',
+        '若组件缺失或启动报错，使用安装包「修复」或覆盖安装最新版本',
+      ],
+    },
+  ],
   faq: [
     {
       q: '安装后必须登录吗？',
@@ -71,11 +118,60 @@ const sharedZh = {
       q: '多台设备会冲突吗？',
       a: '同一账号可在多台设备登录，云文档会自动同步，建议开启版本历史以便恢复。',
     },
+    {
+      q: '安装包从哪里下载最安全？',
+      a: '请通过 WPS 官网或官方应用商店下载，避免使用来源不明的第三方安装包。',
+    },
+    {
+      q: '安装失败或卡住怎么办？',
+      a: '检查磁盘空间与权限，关闭安全软件拦截后重试；仍失败可下载最新安装包覆盖安装。',
+    },
+    {
+      q: '可以不创建桌面快捷方式吗？',
+      a: '可以。安装向导中可取消快捷方式选项，之后仍可从开始菜单或应用程序文件夹启动。',
+    },
   ],
-  related: ['WPS Writer 帮助中心', 'WPS Cloud 云文档', 'Plans & Billing'],
+  productUpdates: [
+    '2026 年 6 月 24 日：更新 Windows / macOS 安装与登录引导文案。',
+    '2026 年 5 月：安装向导增加磁盘空间不足的前置检测提示。',
+    '2026 年 4 月：登录面板支持更多第三方账号绑定方式（以客户端为准）。',
+    '2026 年 3 月：修复部分 macOS 版本上首次启动云同步默认未开启的问题。',
+  ],
+  glossary: [
+    '**安装包**：用于在本地部署 WPS 客户端的可执行文件或磁盘映像。',
+    '**云同步**：登录后将文档变更同步到云端，便于多设备访问。',
+    '**SSO**：企业单点登录，使用组织账号一次登录访问 WPS 服务。',
+    '**自动保存**：编辑时后台保存，降低异常退出导致的数据丢失。',
+    '**默认应用**：将 WPS 设为打开 .docx 等文件的系统默认程序。',
+  ],
+  plansPricingSections: [
+    {
+      title: '安装与登录',
+      body: '下载、安装与账号登录本身免费，不收取额外费用。',
+    },
+    {
+      title: '会员与 AI',
+      body: '安装完成后可按需订阅会员或购买 AI 额度，非安装流程的必选项。',
+    },
+    {
+      title: '企业部署',
+      body: '批量许可、私有化与统一升级策略由企业合同覆盖，与个人免费安装相互独立。',
+    },
+  ],
+  related: [
+    '**WPS Writer 帮助中心** — 安装完成后的文字处理功能总览。',
+    '**WPS Cloud 云文档** — 登录后如何使用云盘与同步。',
+    '**Plans & Billing** — 会员、AI 与企业套餐说明。',
+    '**新建文档** — 安装后创建第一份文档的快速路径。',
+    '**安全与隐私设置** — 管理自动上传、诊断数据与账号权限。',
+  ],
   notes: [
-    '企业用户请联系管理员获取批量部署与 SSO 配置说明',
-    '安装完成后建议立即检查更新，以获得最新安全补丁',
+    '企业用户请联系管理员获取批量部署与 SSO 配置说明。',
+    '安装完成后建议立即检查更新，以获得最新安全补丁。',
+    '首次登录请绑定常用手机号或邮箱，便于找回密码与二次验证。',
+    '在受限网络环境（代理/VPN）下，云同步可能需额外网络白名单配置。',
+    '卸载前请确认重要文档已同步至云端或已本地备份。',
+    '公共电脑上使用后请退出账号并清除本地缓存。',
   ],
 }
 
@@ -112,6 +208,9 @@ const sharedEn = {
       'On first launch, choose Sign in and verify with phone, email, or a linked account',
       'Open Settings and confirm cloud sync, autosave, and default app associations',
       'Open a sample document to verify edit, save, and cross-device sync',
+      'Windows: pick install path and shortcuts in the setup wizard',
+      'macOS: allow WPS under Privacy & Security if macOS blocks the first launch',
+      'After setup, use Help → Check for Updates for the latest security patches',
     ],
     screenshots: [
       'Installer welcome screen',
@@ -119,6 +218,44 @@ const sharedEn = {
       'Cloud sync toggle in Settings',
     ],
   },
+  howToGuideSections: [
+    {
+      title: 'Install on Windows',
+      items: [
+        'Download the .exe from the official site and run as administrator if prompted',
+        'Choose install location and components (Writer, Sheets, Presentation, etc.)',
+        'Launch WPS from the Start menu or desktop shortcut',
+        'Set WPS as the default app for .docx and related formats on first run',
+      ],
+    },
+    {
+      title: 'Install on macOS',
+      items: [
+        'Open the .dmg or .pkg, then drag WPS into Applications',
+        'If blocked, open System Settings → Privacy & Security and choose Open Anyway',
+        'Launch from Launchpad and complete the first-run wizard',
+        'Optionally associate Office formats under system default app settings',
+      ],
+    },
+    {
+      title: 'Sign in and account binding',
+      items: [
+        'Tap the avatar or Sign in on the start screen; use phone, email, or a linked account',
+        'Add a backup contact on first sign-in for password recovery and 2FA',
+        'Enterprise users can use SSO with their organization identity',
+        'Cloud files, templates, and membership sync after a successful sign-in',
+      ],
+    },
+    {
+      title: 'Post-install verification',
+      items: [
+        'Open a sample file and test typing, save, and undo',
+        'Confirm auto-save and cloud sync are enabled in Settings',
+        'Save a test doc to the cloud and check it on mobile with the same account',
+        'If components are missing, run Repair or reinstall the latest build',
+      ],
+    },
+  ],
   faq: [
     {
       q: 'Do I have to sign in?',
@@ -132,11 +269,60 @@ const sharedEn = {
       q: 'Can I use the same account on multiple devices?',
       a: 'Yes. Cloud documents sync across devices; enable version history if you need rollback.',
     },
+    {
+      q: 'Is an offline installer available?',
+      a: 'Enterprises can obtain offline packages; consumers should use the online installer for the latest patches.',
+    },
+    {
+      q: 'Install failed or permission denied?',
+      a: 'On Windows run the installer as administrator; on macOS allow WPS under Privacy & Security settings.',
+    },
+    {
+      q: 'Can I switch WPS accounts?',
+      a: 'Sign out in Settings and sign in with another account; upload local files first—they do not auto-migrate.',
+    },
   ],
-  related: ['WPS Writer Help Center', 'WPS Cloud', 'Plans & Billing'],
+  productUpdates: [
+    'June 24, 2026: Refreshed Windows and macOS install plus first sign-in guidance.',
+    'May 2026: Installer detects legacy builds and prompts to remove conflicting components.',
+    'April 2026: Sign-in panel adds more third-party bindings and faster verification.',
+    'March 2026: First-run wizard adds one-tap cloud sync and privacy presets.',
+  ],
+  glossary: [
+    '**Installer**: The package that deploys WPS desktop clients from the official site.',
+    '**Cloud sync**: Saves documents and preferences online for multi-device consistency after sign-in.',
+    '**SSO**: Enterprise single sign-on with your company identity provider.',
+    '**Default app**: The office suite Windows or macOS opens for .docx and similar files.',
+    '**Version history**: Cloud revisions you can restore after accidental edits or deletes.',
+  ],
+  plansPricingSections: [
+    {
+      title: 'Personal install (free)',
+      body: 'Download, install, and sign in at no cost—core Writer, Sheets, and Presentation features included.',
+    },
+    {
+      title: 'Membership activation',
+      body: 'Subscribe in the client or on the web; benefits bind to your account without reinstalling.',
+    },
+    {
+      title: 'Enterprise deployment',
+      body: 'Volume licenses, offline MSI/PKG, and policy templates require admin or sales channels.',
+    },
+  ],
+  related: [
+    '**WPS Writer Help Center** — Feature index after setup is complete.',
+    '**WPS Cloud** — Upload, sync, and manage online files post sign-in.',
+    '**Plans & Billing** — Membership tiers, invoices, and renewal.',
+    '**Create Document** — Smoke-test editing to confirm a good install.',
+    '**Security & privacy settings** — Autosave, telemetry, and default app associations.',
+  ],
   notes: [
-    'Enterprise admins should use managed deployment and SSO guides for bulk setup',
-    'Check for updates right after install to get the latest security fixes',
+    'Enterprise admins should use managed deployment and SSO guides for bulk setup.',
+    'Check for updates right after install to get the latest security fixes.',
+    'Remove conflicting legacy WPS or office suites before reinstalling if startup fails.',
+    'Link a phone or email on first sign-in for password recovery and 2FA.',
+    'In restricted networks configure proxy access or use an offline package.',
+    'Sign out and clear cache on shared machines when you are done.',
   ],
 }
 
@@ -145,6 +331,7 @@ function buildLocalizedArticle(language, config) {
     ...config,
     sectionHeadings: language === 'zh' ? sectionHeadingsZh : sectionHeadingsEn,
     faqAnswerLabel: language === 'zh' ? '解决方案：' : 'Solution: ',
+    language: language === 'zh' ? 'zh' : 'en',
   })
 }
 

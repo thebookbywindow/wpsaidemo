@@ -37,12 +37,12 @@ const cases = [
   },
   {
     name: 'L1+L2+platform detail route',
-    pathname: '/en-us/docs/getting-started/wps-writer/windows/steps',
+    pathname: '/en-us/docs/getting-started/wps-writer/windows/getting-started',
     expected: {
       sectionSlug: 'getting-started',
       itemSlug: 'wps-writer',
       platformId: 'windows',
-      detailSectionId: 'steps',
+      detailSectionId: 'getting-started',
       isLegacyFlatRoute: false,
     },
   },
@@ -52,7 +52,7 @@ const cases = [
     expected: {
       docRouteSlug: 'wps-writer',
       platformId: 'windows',
-      detailSectionId: 'steps',
+      detailSectionId: 'getting-started',
       isLegacyFlatRoute: true,
     },
   },
@@ -84,8 +84,8 @@ assert.equal(
 )
 
 assert.equal(
-  getLocaleDocsPath('en-us', 'getting-started/wps-writer', 'windows', 'steps').toLowerCase(),
-  '/en-us/docs/getting-started/wps-writer/windows/steps',
+  getLocaleDocsPath('en-us', 'getting-started/wps-writer', 'windows', 'getting-started').toLowerCase(),
+  '/en-us/docs/getting-started/wps-writer/windows/getting-started',
 )
 
 const metaMap = buildDocsStaticMetaMap()

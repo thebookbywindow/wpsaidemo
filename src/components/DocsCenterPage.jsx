@@ -8,7 +8,12 @@ import helpCenterCatalogEntries from '../data/helpCenterCatalogEntries.json'
 import {
   buildHelpCenterMetaMap,
   buildHelpCenterSectionModels,
+  openHelpCenterDocument,
 } from '../utils/helpCenterCatalog'
+import {
+  filterSectionsForLeafKeyword,
+  resolveHeroSearchScrollTarget,
+} from '../utils/docsCenterSearch'
 import { getLocaleDocsPath, parseDocsRoute, normalizeDocsRoute, buildCanonicalDocPath, resolveDocRouteSlug, resolveDocSectionSlug, resolveDocBlockSlug, buildHelpDocRouteLookupKey, isValidDocDetailPlatformId } from '../utils/docsRoute'
 import {
   DOC_DETAIL_COMMON_SCOPE_SLUG,
@@ -234,77 +239,6 @@ function isCatalogLeafClickable(pathKey, staticMetaMap) {
   return Boolean(meta?.helpContent && meta?.routeSlug)
 }
 
-function filterSectionsForCatalogDirectory(sectionModels, keyword) {
-  if (!keyword) {
-    return sectionModels
-  }
-
-  return sectionModels
-    .map((section) => {
-      const sectionMatches = includesKeyword(section.title, keyword)
-      const nextBlocks = section.blocks
-        .map((block) => {
-          const blockMatches = includesKeyword(block.title, keyword)
-          if (!sectionMatches && !blockMatches) {
-            return null
-          }
-
-          return {
-            ...block,
-            items: block.items,
-          }
-        })
-        .filter(Boolean)
-
-      if (!nextBlocks.length) {
-        return null
-      }
-
-      return {
-        ...section,
-        blocks: nextBlocks,
-      }
-    })
-    .filter(Boolean)
-}
-
-function filterSectionsForKeyword(sectionModels, keyword) {
-  if (!keyword) {
-    return sectionModels
-  }
-
-  return sectionModels
-    .map((section) => {
-      const sectionMatches = includesKeyword(section.title, keyword)
-      const nextBlocks = section.blocks
-        .map((block) => {
-          const blockMatches = includesKeyword(block.title, keyword)
-          const nextItems =
-            sectionMatches || blockMatches
-              ? block.items
-              : block.items.filter((item) => includesKeyword(item.label, keyword))
-          if (!nextItems.length) {
-            return null
-          }
-          return {
-            ...block,
-            items: nextItems,
-          }
-        })
-        .filter(Boolean)
-
-      if (!nextBlocks.length) {
-        return null
-      }
-
-      return {
-        ...section,
-        blocks: nextBlocks,
-      }
-    })
-    .filter(Boolean)
-}
-
 export default function DocsCenterPage({
   currentLocale,
   currentPathname,
@@ -319,7 +253,6 @@ export default function DocsCenterPage({
   sourceSectionMarkersMap: _sourceSectionMarkersMap,
   getSectionBlocks: _getSectionBlocks,
 }) {
-  const [sidebarFilterKeyword, setSidebarFilterKeyword] = useState('')
   const [heroFilterKeyword, setHeroFilterKeyword] = useState('')
   const preferredDocLanguage = getDocLanguageFromLocale(currentLocale)
 
@@ -363,27 +296,18 @@ export default function DocsCenterPage({
     return nextMap
   }, [sectionModels])
 
-  const contentHighlightKeyword = useMemo(() => {
-    const sidebarKeyword = sidebarFilterKeyword.trim().toLowerCase()
-    if (sidebarKeyword) {
-      return sidebarKeyword
-    }
-    return heroFilterKeyword.trim().toLowerCase()
-  }, [heroFilterKeyword, sidebarFilterKeyword])
+  const heroMatchKeyword = useMemo(
+    () => heroFilterKeyword.trim().toLowerCase(),
+    [heroFilterKeyword],
+  )
 
   const visibleSections = useMemo(() => {
-    const sidebarKeyword = sidebarFilterKeyword.trim().toLowerCase()
-    if (sidebarKeyword) {
-      return filterSectionsForCatalogDirectory(sectionModels, sidebarKeyword)
-    }
-
-    const heroKeyword = heroFilterKeyword.trim().toLowerCase()
-    if (heroKeyword) {
-      return filterSectionsForKeyword(sectionModels, heroKeyword)
+    if (heroMatchKeyword) {
+      return filterSectionsForLeafKeyword(sectionModels, heroMatchKeyword)
     }
 
     return sectionModels
-  }, [heroFilterKeyword, sectionModels, sidebarFilterKeyword])
+  }, [heroMatchKeyword, sectionModels])
 
   const helpDocRouteMap = useMemo(() => {
     const nextMap = new Map()
@@ -888,6 +812,10 @@ export default function DocsCenterPage({
   })
 
   const handleHeroSearch = () => {
+    if (heroSearchMatchKeyword && !heroSearchResults.length) {
+      return
+    }
+
     setHeroFilterKeyword(heroSearchKeyword)
     setHeroSearchDropdownOpen(false)
   }
@@ -910,7 +838,7 @@ export default function DocsCenterPage({
             searchPlaceholder={docsUiText.heroSearchPlaceholder}
             searchButtonLabel={docsUiText.heroSearchButton}
             searchSrOnly={docsUiText.searchSrOnly}
-            emptyResultsText={docsUiText.noResults}
+            emptyResultsText={docsUiText.heroSearchEmptyResults}
             keyword={heroSearchMatchKeyword}
             results={heroSearchResults}
             onSelectResult={handleHeroSearchSelect}
@@ -922,7 +850,7 @@ export default function DocsCenterPage({
       <main className="docs-center-layout docs-center-container">
         <DocsDetailCatalogSidebar
           ref={sidebarRef}
-          sectionModels={sectionModels}
+          sectionModels={visibleSections}
           staticMetaMap={staticMetaMap}
           helpCenterMetaMap={helpCenterMetaMap}
           activeSectionTitle={resolvedActiveSection}
@@ -932,13 +860,10 @@ export default function DocsCenterPage({
               : ''
           }
           directoryTitle={docsUiText.directoryTitle}
-          searchPlaceholder={docsUiText.sidebarSearchPlaceholder}
-          searchEmptyText={docsUiText.noResults}
           sidebarClassName="docs-center-sidebar"
           showLeafNodes={false}
-          searchMode="content-filter"
-          searchKeyword={sidebarFilterKeyword}
-          onSearchKeywordChange={setSidebarFilterKeyword}
+          searchMode="none"
+          expandAllVisibleSections={Boolean(heroMatchKeyword)}
           onSectionNavigate={handleCatalogSectionNavigate}
           onBlockNavigate={handleCatalogBlockNavigate}
         />
@@ -952,7 +877,7 @@ export default function DocsCenterPage({
                 className="docs-center-section"
               >
                 <header className="docs-center-section-head">
-                  <h2>{renderHighlightedText(section.title, contentHighlightKeyword)}</h2>
+                  <h2>{section.title}</h2>
                 </header>
                 <div className="docs-center-section-body">
                   {section.blocks.map((block, blockIndex) => {
@@ -974,7 +899,7 @@ export default function DocsCenterPage({
                         {hasTitledGroup ? (
                           <div className={wrapperClassName}>
                             <h3 className="docs-center-group-title">
-                              {renderHighlightedText(block.title, contentHighlightKeyword)}
+                              {block.title}
                             </h3>
                             <div className="docs-center-items">
                               {block.items.map((item) => {
@@ -988,14 +913,14 @@ export default function DocsCenterPage({
                                     className="docs-center-item has-doc"
                                     onClick={() => handleNodeClick(sourcePathParts)}
                                   >
-                                    {renderHighlightedText(item.label, contentHighlightKeyword)}
+                                    {renderHighlightedText(item.label, heroMatchKeyword)}
                                   </button>
                                 ) : (
                                   <span
                                     key={pathKey}
                                     className="docs-center-item"
                                   >
-                                    {renderHighlightedText(item.label, contentHighlightKeyword)}
+                                    {renderHighlightedText(item.label, heroMatchKeyword)}
                                   </span>
                                 )
                               })}
@@ -1014,11 +939,11 @@ export default function DocsCenterPage({
                                   className="docs-center-item has-doc"
                                   onClick={() => handleNodeClick(sourcePathParts)}
                                 >
-                                  {renderHighlightedText(item.label, contentHighlightKeyword)}
+                                  {renderHighlightedText(item.label, heroMatchKeyword)}
                                 </button>
                               ) : (
                                 <span key={pathKey} className="docs-center-item">
-                                  {renderHighlightedText(item.label, contentHighlightKeyword)}
+                                  {renderHighlightedText(item.label, heroMatchKeyword)}
                                 </span>
                               )
                             })}
@@ -1033,10 +958,21 @@ export default function DocsCenterPage({
           ) : (
             <article className="docs-center-section">
               <header className="docs-center-section-head">
-                <h2>{docsUiText.directoryTitle}</h2>
+                <h2>
+                  {heroMatchKeyword
+                    ? docsUiText.heroSearchResultsTitle
+                    : docsUiText.directoryTitle}
+                </h2>
               </header>
               <div className="docs-center-section-body">
-                <p className="docs-center-empty">{docsUiText.noResults}</p>
+                <p className="docs-center-empty">
+                  {heroMatchKeyword
+                    ? docsUiText.heroSearchNoResults.replace(
+                        '{keyword}',
+                        heroFilterKeyword.trim(),
+                      )
+                    : docsUiText.noResults}
+                </p>
               </div>
             </article>
           )}

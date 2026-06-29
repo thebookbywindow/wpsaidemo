@@ -1,38 +1,6 @@
 import { createPortal } from 'react-dom'
 import { useFloatingListboxPosition } from '../hooks/useFloatingListboxPosition'
-
-function renderHighlightedText(text, keyword) {
-  if (!keyword) {
-    return text
-  }
-
-  const source = `${text ?? ''}`
-  const lowerSource = source.toLowerCase()
-  const lowerKeyword = keyword.toLowerCase()
-  const parts = []
-  let cursor = 0
-  let matchIndex = lowerSource.indexOf(lowerKeyword)
-
-  while (matchIndex !== -1) {
-    if (matchIndex > cursor) {
-      parts.push(source.slice(cursor, matchIndex))
-    }
-    const match = source.slice(matchIndex, matchIndex + lowerKeyword.length)
-    parts.push(
-      <span key={`${match}-${matchIndex}`} className="docs-center-sidebar-search-highlight">
-        {match}
-      </span>,
-    )
-    cursor = matchIndex + lowerKeyword.length
-    matchIndex = lowerSource.indexOf(lowerKeyword, cursor)
-  }
-
-  if (cursor < source.length) {
-    parts.push(source.slice(cursor))
-  }
-
-  return parts
-}
+import { getCatalogSearchResultMetaLabel } from '../utils/docsCenterSearch'
 
 export default function DocsCenterHeroSearch({
   comboboxRef,
@@ -50,6 +18,7 @@ export default function DocsCenterHeroSearch({
   onSubmitSearch,
 }) {
   const showDropdown = isDropdownOpen && Boolean(keyword)
+  const canSubmitSearch = !keyword || results.length > 0
   const dropdownStyle = useFloatingListboxPosition({
     anchorRef: comboboxRef,
     isOpen: showDropdown,
@@ -66,19 +35,30 @@ export default function DocsCenterHeroSearch({
       style={dropdownStyle}
     >
       {results.length ? (
-        results.map((result) => (
-          <button
-            key={result.key}
-            type="button"
-            role="option"
-            className="docs-center-sidebar-search-option"
-            onClick={() => onSelectResult(result)}
-          >
-            <span className="docs-center-sidebar-search-option-label">
-              {renderHighlightedText(result.label, keyword)}
-            </span>
-          </button>
-        ))
+        results.map((result) => {
+          const metaLabel = getCatalogSearchResultMetaLabel(result)
+
+          return (
+            <button
+              key={result.key}
+              type="button"
+              role="option"
+              className={`docs-center-sidebar-search-option docs-center-sidebar-search-option--${result.type}`}
+              onClick={() => onSelectResult(result)}
+            >
+              <span className="docs-center-sidebar-search-option-body">
+                <span className="docs-center-sidebar-search-option-label">
+                  {result.label}
+                </span>
+                {metaLabel ? (
+                  <span className="docs-center-sidebar-search-option-meta">
+                    {metaLabel}
+                  </span>
+                ) : null}
+              </span>
+            </button>
+          )
+        })
       ) : (
         <p className="docs-center-sidebar-search-empty">{emptyResultsText}</p>
       )}
@@ -104,7 +84,7 @@ export default function DocsCenterHeroSearch({
             }}
             onFocus={() => onDropdownOpenChange(true)}
             onKeyDown={(event) => {
-              if (event.key === 'Enter') {
+              if (event.key === 'Enter' && canSubmitSearch) {
                 onSubmitSearch()
               }
               if (event.key === 'Escape') {
@@ -115,7 +95,13 @@ export default function DocsCenterHeroSearch({
         </label>
       </div>
       {dropdown ? createPortal(dropdown, document.body) : null}
-      <button type="button" className="docs-center-search-btn" onClick={onSubmitSearch}>
+      <button
+        type="button"
+        className="docs-center-search-btn"
+        disabled={!canSubmitSearch}
+        aria-disabled={!canSubmitSearch}
+        onClick={onSubmitSearch}
+      >
         {searchButtonLabel}
       </button>
     </div>

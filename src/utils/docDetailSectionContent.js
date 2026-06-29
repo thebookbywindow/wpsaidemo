@@ -11,37 +11,49 @@ export const STRUCTURED_DOC_ROUTE_SLUGS = new Set([
 const DOC_DETAIL_SECTION_HEADINGS = {
   'zh-cn': Object.fromEntries(DOC_DETAIL_TOC_SECTIONS_ZH.map((item) => [item.id, item.label])),
   'zh-tw': {
-    summary: '功能摘要',
-    description: '功能說明',
-    steps: '操作步驟',
+    'product-updates': '產品更新 / 發行說明',
+    'features-overview': '功能概述',
+    'plans-pricing': '方案與定價',
+    'getting-started': '快速入門',
+    'how-to-guide': '操作指南',
     faq: '常見問題',
-    related: '關聯問題',
     notes: '注意事項',
+    glossary: '術語表',
+    'related-resources': '相關資源',
   },
   'en-us': Object.fromEntries(DOC_DETAIL_TOC_SECTIONS_EN.map((item) => [item.id, item.label])),
   'ja-jp': {
-    summary: '機能概要',
-    description: '機能説明',
-    steps: '操作手順',
+    'product-updates': '製品アップデート / リリースノート',
+    'features-overview': '機能概要',
+    'plans-pricing': 'プランと料金',
+    'getting-started': 'はじめに',
+    'how-to-guide': '操作ガイド',
     faq: 'よくある質問',
-    related: '関連する質問',
     notes: '注意事項',
+    glossary: '用語集',
+    'related-resources': '関連リソース',
   },
   'ko-kr': {
-    summary: '기능 요약',
-    description: '기능 설명',
-    steps: '操作 단계',
+    'product-updates': '제품 업데이트 / 릴리스 노트',
+    'features-overview': '기능 개요',
+    'plans-pricing': '요금제 및 가격',
+    'getting-started': '시작하기',
+    'how-to-guide': '사용 가이드',
     faq: '자주 묻는 질문',
-    related: '관련 질문',
     notes: '주의사항',
+    glossary: '용어집',
+    'related-resources': '관련 리소스',
   },
   'es-mx': {
-    summary: 'Resumen de funciones',
-    description: 'Descripcion de funciones',
-    steps: 'Pasos de operacion',
+    'product-updates': 'Actualizaciones / Notas de version',
+    'features-overview': 'Descripcion general de funciones',
+    'plans-pricing': 'Planes y precios',
+    'getting-started': 'Primeros pasos',
+    'how-to-guide': 'Guia de procedimientos',
     faq: 'Preguntas frecuentes',
-    related: 'Preguntas relacionadas',
     notes: 'Notas',
+    glossary: 'Glosario',
+    'related-resources': 'Recursos relacionados',
   },
 }
 
@@ -102,7 +114,7 @@ export function getDocDetailSectionLabel(sectionId, docLang) {
 }
 
 export function extractDocFeatureSummaryIntro(markdown, docLang) {
-  const summaryBody = extractDocDetailSection(markdown, 'summary', docLang)
+  const summaryBody = extractDocDetailSection(markdown, 'features-overview', docLang)
   if (!summaryBody) {
     return ''
   }
@@ -147,7 +159,7 @@ function stripMarkdownInline(text) {
 }
 
 export function extractDocFeatureSummaryCapabilities(markdown, docLang) {
-  const summaryBody = extractDocDetailSection(markdown, 'summary', docLang)
+  const summaryBody = extractDocDetailSection(markdown, 'features-overview', docLang)
   if (!summaryBody) {
     return []
   }
@@ -466,7 +478,10 @@ export function adaptStructuredDocMarkdownForPlatform(markdown, platformId, docL
   }
 
   const headings = getSectionHeadings(docLang)
-  const stepsTitle = headings.steps
+  const proceduralSectionTitles = new Set([
+    headings['getting-started'],
+    headings['how-to-guide'],
+  ])
   let inStepsSection = false
   let stepCounter = 0
   const output = []
@@ -474,7 +489,7 @@ export function adaptStructuredDocMarkdownForPlatform(markdown, platformId, docL
   markdown.split('\n').forEach((line) => {
     const headingMatch = line.match(/^## (.+)$/)
     if (headingMatch) {
-      inStepsSection = headingMatch[1].trim() === stepsTitle
+      inStepsSection = proceduralSectionTitles.has(headingMatch[1].trim())
       stepCounter = 0
       output.push(line)
       return

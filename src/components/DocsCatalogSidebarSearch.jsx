@@ -1,6 +1,7 @@
 import { createPortal } from 'react-dom'
 import { CornerDownRight, Folder, Search } from 'lucide-react'
 import { useFloatingListboxPosition } from '../hooks/useFloatingListboxPosition'
+import { getCatalogSearchResultMetaLabel } from '../utils/docsCenterSearch'
 
 function renderHighlightedText(text, keyword) {
   if (!keyword) {
@@ -35,13 +36,6 @@ function renderHighlightedText(text, keyword) {
   return parts
 }
 
-function getResultMetaLabel(result) {
-  if (result.type === 'block' && result.sectionTitle) {
-    return result.sectionTitle
-  }
-  return ''
-}
-
 function renderResultIcon(result) {
   if (result.type === 'section') {
     return <Folder size={14} strokeWidth={2} aria-hidden="true" />
@@ -63,6 +57,7 @@ export default function DocsCatalogSidebarSearch({
   keyword,
   results,
   onSelectResult,
+  showResultMeta = true,
 }) {
   const showDropdown = isDropdownOpen && Boolean(keyword)
   const dropdownStyle = useFloatingListboxPosition({
@@ -80,7 +75,7 @@ export default function DocsCatalogSidebarSearch({
     >
       {results.length ? (
         results.map((result) => {
-          const metaLabel = getResultMetaLabel(result)
+          const metaLabel = showResultMeta ? getCatalogSearchResultMetaLabel(result) : ''
           const ResultIcon = renderResultIcon(result)
 
           return (

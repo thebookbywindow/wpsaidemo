@@ -1299,6 +1299,16 @@ body {
   background: var(--purple-800);
 }
 
+.docs-center-search-btn:disabled {
+  background: #d0d5dd;
+  color: #98a2b3;
+  cursor: not-allowed;
+}
+
+.docs-center-search-btn:disabled:hover {
+  background: #d0d5dd;
+}
+
 .docs-center-jump-grid {
   margin-top: 22px;
   display: grid;
@@ -1350,15 +1360,25 @@ body {
   position: sticky;
   top: calc(var(--nav-height) + 16px);
   align-self: start;
+  display: flex;
+  flex-direction: column;
   border: 1px solid var(--border);
   border-radius: 10px;
   background: #fff;
+  min-height: calc(100vh - var(--nav-height) - 32px);
   max-height: calc(100vh - var(--nav-height) - 32px);
-  overflow: auto;
+  overflow: hidden;
   padding: 10px;
   box-shadow: var(--shadow-md);
   font-size: 13px;
   line-height: 1.45;
+}
+
+.docs-center-sidebar-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
 }
 
 .docs-center-sidebar-search {
@@ -1461,6 +1481,11 @@ body {
   padding: 0;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
+}
+
+.docs-center-toc-parent-btn .docs-center-sidebar-search-highlight,
+.docs-center-toc-child .docs-center-sidebar-search-highlight {
+  color: inherit;
 }
 
 .docs-center-sidebar-search-empty {
@@ -2797,7 +2822,14 @@ body {
 
   .docs-center-sidebar {
     position: static;
+    display: block;
+    min-height: 0;
     max-height: none;
+    overflow: visible;
+  }
+
+  .docs-center-sidebar-body {
+    overflow: visible;
   }
 
   .docs-center-search-wrap {
@@ -2816,7 +2848,9 @@ body {
 
   .docs-detail-catalog-sidebar {
     position: static;
+    min-height: 0;
     max-height: none;
+    overflow: visible;
   }
 
   .docs-detail-sidebar {

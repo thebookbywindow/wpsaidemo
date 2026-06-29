@@ -3,7 +3,6 @@ import { ChevronRight } from 'lucide-react'
 import { createDocsPathKey } from '../data/docsCenterMeta'
 import { useDocsCatalogSidebarSearch } from '../hooks/useDocsCatalogSidebarSearch'
 import DocsCatalogSidebarSearch from './DocsCatalogSidebarSearch'
-import DocsCatalogSidebarFilterSearch from './DocsCatalogSidebarFilterSearch'
 
 function findActiveLocation(sectionModels, activeDocPathKey) {
   if (!activeDocPathKey) {
@@ -151,8 +150,7 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
     searchPlaceholder,
     searchEmptyText = 'No matching items',
     searchMode = 'dropdown',
-    searchKeyword = '',
-    onSearchKeywordChange,
+    expandAllVisibleSections = false,
     sidebarClassName = 'docs-center-sidebar docs-detail-catalog-sidebar',
     showLeafNodes = true,
     limitToActiveSection = false,
@@ -189,6 +187,9 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
 
     return sectionScoped
   }, [activeLocation.blockKey, activeLocation.sectionTitle, limitToActiveSection, sectionModels])
+
+  const showSidebarSearch = searchMode !== 'none'
+  const displayedSectionModels = scopedSectionModels
 
   const [expandedSections, setExpandedSections] = useState(() => {
     if (!showLeafNodes) {
@@ -231,8 +232,6 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
     onLeafClick?.(sourcePathParts)
   }
 
-  const isContentFilterSearch = searchMode === 'content-filter'
-
   const {
     comboboxRef,
     searchKeyword: dropdownSearchKeyword,
@@ -244,8 +243,8 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
     handleSelectResult,
   } = useDocsCatalogSidebarSearch({
     sectionModels: scopedSectionModels,
-    staticMetaMap,
     showLeafNodes,
+    searchScope: undefined,
     onLeafSelect: handleLeafClick,
     onBlockSelect: onBlockNavigate,
     onSectionSelect: onSectionNavigate,
@@ -257,6 +256,13 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
     }
 
     if (!showLeafNodes) {
+      if (expandAllVisibleSections) {
+        setExpandedSections(
+          new Set(displayedSectionModels.map((section) => section.title)),
+        )
+        return
+      }
+
       setExpandedSections(() =>
         activeSectionTitle ? new Set([activeSectionTitle]) : new Set(),
       )
@@ -272,7 +278,14 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
     if (activeBlockKey) {
       setExpandedBlocks((previous) => mergeExpandedBlock(previous, activeBlockKey))
     }
-  }, [activeBlockKey, activeDocPathKey, activeSectionTitle, showLeafNodes])
+  }, [
+    activeBlockKey,
+    activeDocPathKey,
+    activeSectionTitle,
+    displayedSectionModels,
+    expandAllVisibleSections,
+    showLeafNodes,
+  ])
 
   const toggleSection = (sectionTitle) => {
     setExpandedSections((previous) => {
@@ -381,7 +394,9 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
                 aria-expanded={isBlockExpanded}
                 onClick={() => handleBlockClick(section, block)}
               >
-                <span className="docs-center-toc-expand-label">{block.title}</span>
+                <span className="docs-center-toc-expand-label">
+                  {block.title}
+                </span>
                 {block.items.length > 0 ? (
                   <ChevronRight
                     size={12}
@@ -431,13 +446,7 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
   return (
     <aside ref={ref} className={sidebarClassName} aria-label={sidebarHeading}>
       <h3>{sidebarHeading}</h3>
-      {isContentFilterSearch ? (
-        <DocsCatalogSidebarFilterSearch
-          searchKeyword={searchKeyword}
-          onSearchKeywordChange={onSearchKeywordChange}
-          searchPlaceholder={searchPlaceholder}
-        />
-      ) : (
+      {showSidebarSearch ? (
         <DocsCatalogSidebarSearch
           comboboxRef={comboboxRef}
           searchKeyword={dropdownSearchKeyword}
@@ -449,11 +458,12 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
           keyword={keyword}
           results={results}
           onSelectResult={handleSelectResult}
+          showResultMeta={!limitToActiveSection}
         />
-      )}
-      <div>
+      ) : null}
+      <div className="docs-center-sidebar-body">
         {limitToActiveSection ? (
-          scopedSectionModels.map((section) => (
+          displayedSectionModels.map((section) => (
             <div
               key={`detail-catalog-scoped-${section.title}-${activeLocation.blockKey}`}
               className="docs-center-toc-children docs-center-toc-children--scoped-root"
@@ -462,7 +472,7 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
             </div>
           ))
         ) : (
-          scopedSectionModels.map((section) => {
+          displayedSectionModels.map((section) => {
             const isSectionExpanded = expandedSections.has(section.title)
 
             return (
@@ -478,7 +488,9 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
                   aria-expanded={isSectionExpanded}
                   onClick={() => handleSectionClick(section.title)}
                 >
-                  <span className="docs-center-toc-expand-label">{section.title}</span>
+                  <span className="docs-center-toc-expand-label">
+                    {section.title}
+                  </span>
                   {sectionHasExpandableChildren(section, showLeafNodes) ? (
                     <ChevronRight
                       size={13}
