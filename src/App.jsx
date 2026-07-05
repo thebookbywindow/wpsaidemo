@@ -27,7 +27,7 @@ import { translateOfflinePhrase } from './data/offlinePhraseTranslations'
 import { uiTextByLanguage } from './data/uiText'
 import { resolveWorldwideText } from './data/worldwideText'
 import { getLocaleDocsPath } from './utils/docsRoute'
-import { joinPath } from './utils/pathUrl'
+import { ensureTrailingSlash, joinPath } from './utils/pathUrl'
 import { normalizeLocaleCode, toUrlLocale } from './utils/localeUrl'
 
 const products = [
@@ -2030,7 +2030,8 @@ function App() {
   )
   const [currentPathname, setCurrentPathname] = useState(() => {
     const nextLocale = resolveLocaleFromPath(window.location.pathname)
-    return getCanonicalLocalizedPath(window.location.pathname, nextLocale) ?? window.location.pathname
+    return getCanonicalLocalizedPath(window.location.pathname, nextLocale)
+      ?? ensureTrailingSlash(window.location.pathname)
   })
   const currentUrlLocale = useMemo(() => toUrlLocale(currentLocale), [currentLocale])
   const langMenuRef = useRef(null)
@@ -2091,7 +2092,8 @@ function App() {
   useEffect(() => {
     const mountLocale = resolveLocaleFromPath(window.location.pathname)
     const canonicalOnMount =
-      getCanonicalLocalizedPath(window.location.pathname, mountLocale) ?? window.location.pathname
+      getCanonicalLocalizedPath(window.location.pathname, mountLocale)
+      ?? ensureTrailingSlash(window.location.pathname)
     if (canonicalOnMount !== window.location.pathname) {
       window.history.replaceState({}, '', canonicalOnMount)
     }
@@ -2115,7 +2117,8 @@ function App() {
     const onPopState = () => {
       const nextLocale = resolveLocaleFromPath(window.location.pathname)
       const canonicalPath =
-        getCanonicalLocalizedPath(window.location.pathname, nextLocale) ?? window.location.pathname
+        getCanonicalLocalizedPath(window.location.pathname, nextLocale)
+        ?? ensureTrailingSlash(window.location.pathname)
       if (canonicalPath !== window.location.pathname) {
         window.history.replaceState({}, '', canonicalPath)
       }
@@ -2902,7 +2905,8 @@ function App() {
     const localizedPath = buildLocalizedPath(targetLocale, currentPathname)
     const nextUrl = new URL(localizedPath, window.location.origin)
     const canonicalPathname =
-      getCanonicalLocalizedPath(nextUrl.pathname, targetLocale) ?? nextUrl.pathname
+      getCanonicalLocalizedPath(nextUrl.pathname, targetLocale)
+      ?? ensureTrailingSlash(nextUrl.pathname)
     const nextPath = `${canonicalPathname}${nextUrl.search}${nextUrl.hash}`
     window.history.pushState({}, '', nextPath)
     window.scrollTo({ top: 0, left: 0 })
@@ -2920,7 +2924,8 @@ function App() {
     const targetUrl = new URL(targetPath, window.location.origin)
     const fallbackLocale = resolveLocaleFromPath(targetUrl.pathname)
     const canonicalPathname =
-      getCanonicalLocalizedPath(targetUrl.pathname, fallbackLocale) ?? targetUrl.pathname
+      getCanonicalLocalizedPath(targetUrl.pathname, fallbackLocale)
+      ?? ensureTrailingSlash(targetUrl.pathname)
     const canonicalTargetPath = `${canonicalPathname}${targetUrl.search}${targetUrl.hash}`
     const currentFullPath = `${window.location.pathname}${window.location.search}${window.location.hash}`
     if (canonicalTargetPath === currentFullPath) {
@@ -4884,11 +4889,11 @@ function App() {
                       <div className="mt-auto flex items-center justify-between border-t border-[#edeff4] bg-[#f4f2ed] px-4 py-3">
                         <span className="text-[11px] text-[#9aa3b3]">{guide.readTime}</span>
                         <a
-                          href={`/${currentUrlLocale}/guides/${guide.slug}`}
+                          href={joinPath(currentUrlLocale, 'guides', guide.slug)}
                           className="text-[12px] font-semibold text-[#5a51c9] transition hover:text-[#3f38a6]"
                           onClick={(event) => {
                             event.preventDefault()
-                            navigateTo(`/${currentUrlLocale}/guides/${guide.slug}`)
+                            navigateTo(joinPath(currentUrlLocale, 'guides', guide.slug))
                           }}
                         >
                           {uiText.guides.readGuide} →
