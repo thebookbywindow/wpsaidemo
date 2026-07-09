@@ -24,10 +24,7 @@ export default function DocDetailPlatformArticle({
               <span className="docs-detail-section-article-updated-label">{updatedLabel}</span>
               <time dateTime={updatedAt}>{updatedAt}</time>
             </p>
-          ) : (
-            <span className="docs-detail-section-article-updated" aria-hidden="true" />
-          )}
-          <DocDetailSectionShareButton isZhContent={isZhContent} title={articleTitle} />
+          ) : null}
         </div>
         <div className="docs-detail-section-article-video">
           <DocDetailIndexVideoPlaceholder isZhContent={isZhContent} title={articleTitle} />
@@ -37,6 +34,9 @@ export default function DocDetailPlatformArticle({
         className="docs-detail-platform-article-body docs-detail-section-article-body"
         dangerouslySetInnerHTML={{ __html: bodyHtml }}
       />
+      <footer className="docs-detail-section-article-footer">
+        <DocDetailSectionShareButton isZhContent={isZhContent} title={articleTitle} />
+      </footer>
     </article>
   )
 }

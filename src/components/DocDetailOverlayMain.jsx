@@ -4,6 +4,8 @@ import DocDetailArticleBreadcrumb, {
   getDocDetailDisplayTitle,
 } from './DocDetailArticleBreadcrumb'
 import DocDetailArticlePager from './DocDetailArticlePager'
+import DocDetailMobileDrawer from './DocDetailMobileDrawer'
+import DocDetailMobileDrawerNav from './DocDetailMobileDrawerNav'
 import DocDetailSectionArticle from './DocDetailSectionArticle'
 import DocDetailTocPanel from './DocDetailTocPanel'
 import DocsDetailCatalogSidebar from './DocsDetailCatalogSidebar'
@@ -18,6 +20,8 @@ import {
   shouldDocDetailSectionUseCommonScope,
 } from '../data/docDetailTocData'
 import { useDocDetailArticleNav } from '../hooks/useDocDetailArticleNav'
+import { useDocDetailMobileDrawers } from '../hooks/useDocDetailMobileDrawers'
+import { useDocDetailMobileDrawerSwipe } from '../hooks/useDocDetailMobileDrawerSwipe'
 import { useDocDetailToc } from '../hooks/useDocDetailToc'
 import {
   adaptStructuredDocMarkdownForPlatform,
@@ -28,6 +32,8 @@ import {
   scrollDocDetailPanelToTop,
   supportsStructuredDocSections,
 } from '../utils/docDetailSectionContent'
+import { buildDocDetailArticleHeading } from '../utils/docDetailArticleHeading'
+import { hasDocDetailIndexVideo } from '../utils/docDetailIndexVideo'
 
 function escapeHtml(text) {
   return `${text ?? ''}`
@@ -35,6 +41,59 @@ function escapeHtml(text) {
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
+}
+
+function convertMarkdownListsToHtml(text) {
+  const lines = text.split('\n')
+  const output = []
+  let index = 0
+
+  const renderList = (items) => {
+    const hasNested = items.some((item) => item.subs.length > 0)
+    const listClass = hasNested ? ' class="docs-detail-faq-list"' : ''
+    const listItems = items
+      .map((item) => {
+        if (item.subs.length) {
+          const answers = item.subs
+            .map((sub) => `<li class="docs-detail-faq-answer-item">${sub}</li>`)
+            .join('')
+          return `<li class="docs-detail-faq-item"><p class="docs-detail-faq-question">${item.content}</p><ul class="docs-detail-faq-answers">${answers}</ul></li>`
+        }
+        return `<li>${item.content}</li>`
+      })
+      .join('\n')
+    return `<ul${listClass}>\n${listItems}\n</ul>`
+  }
+
+  while (index < lines.length) {
+    const topMatch = lines[index]?.match(/^([-*•]) (.+)$/)
+    if (!topMatch) {
+      output.push(lines[index])
+      index += 1
+      continue
+    }
+
+    const items = []
+    while (index < lines.length) {
+      const currentTop = lines[index]?.match(/^([-*•]) (.+)$/)
+      if (!currentTop) {
+        break
+      }
+
+      const item = { content: currentTop[2], subs: [] }
+      index += 1
+      while (index < lines.length && /^  [-*•] (.+)$/.test(lines[index])) {
+        const subMatch = lines[index].match(/^  [-*•] (.+)$/)
+        item.subs.push(subMatch[1])
+        index += 1
+      }
+      items.push(item)
+    }
+
+    output.push(renderList(items))
+  }
+
+  return output.join('\n')
 }
 
 function markdownToHtml(markdown, emptyText = 'No content available.') {
@@ -57,8 +116,7 @@ function markdownToHtml(markdown, emptyText = 'No content available.') {
     const inner = match.replace(/^&gt; (.+)$/gm, '<p>$1</p>').trim()
     return `<blockquote>${inner}</blockquote>\n`
   })
-  html = html.replace(/^([-*•]) (.+)$/gm, (_, __, item) => `<li>${item}</li>`)
-  html = html.replace(/(<li>.*<\/li>\n?)+/g, (match) => `<ul>${match}</ul>`)
+  html = convertMarkdownListsToHtml(html)
   html = html.replace(/^\d+\. (.+)$/gm, (_, item) => `<oli>${item}</oli>`)
   html = html.replace(/(<oli>.*<\/oli>\n?)+/g, (match) =>
     `<ol>${match.replaceAll('<oli>', '<li>').replaceAll('</oli>', '</li>')}</ol>`,
@@ -73,8 +131,9 @@ function markdownToHtml(markdown, emptyText = 'No content available.') {
     }
     if (
       trimmed.startsWith('<h')
-      || trimmed.startsWith('<ul>')
-      || trimmed.startsWith('<ol>')
+      || trimmed.startsWith('<ul')
+      || trimmed.startsWith('<ol')
+      || trimmed.startsWith('<li')
       || trimmed.startsWith('<pre>')
       || trimmed.startsWith('<table')
       || trimmed.startsWith('<blockquote')
@@ -260,6 +319,17 @@ export default function DocDetailOverlayMain({
 
   const activeSectionLabel = getDocDetailSectionLabel(activeSectionId, docLanguage)
 
+  const sectionArticleHeading = useMemo(
+    () => buildDocDetailArticleHeading({
+      routeSlug,
+      sectionId: activeSectionId,
+      platformId: activePlatformId,
+      docTitle,
+      docLang: docLanguage,
+    }),
+    [activePlatformId, activeSectionId, docLanguage, docTitle, routeSlug],
+  )
+
   const activeSectionBodyHtml = useMemo(() => {
     if (!usesStructuredSections || contentViewMode !== 'section-detail') {
       return ''
@@ -289,25 +359,109 @@ export default function DocDetailOverlayMain({
     hasUniversalSections: hasDocUniversalSections,
   })
 
-  const handleArticlePagerNavigate = useCallback((platformId, sectionId) => {
-    handleSectionClick(platformId, sectionId)
-  }, [handleSectionClick])
+  const {
+    isMobile,
+    leftOpen,
+    rightOpen,
+    toggleLeft,
+    toggleRight,
+    openLeft,
+    openRight,
+    closeAll,
+  } = useDocDetailMobileDrawers()
 
   const showDetailTocSidebar = usesStructuredSections && showDetailContent
 
+  useDocDetailMobileDrawerSwipe({
+    enabled: usesStructuredSections,
+    isMobile,
+    leftOpen,
+    rightOpen,
+    showRight: showDetailTocSidebar,
+    openLeft,
+    openRight,
+    closeAll,
+  })
+
+  const handleArticlePagerNavigate = useCallback((platformId, sectionId) => {
+    closeAll()
+    handleSectionClick(platformId, sectionId)
+  }, [closeAll, handleSectionClick])
+
+  const handleCatalogLeafClick = useCallback(
+    (payload) => {
+      closeAll()
+      onCatalogLeafClick?.(payload)
+    },
+    [closeAll, onCatalogLeafClick],
+  )
+
+  const handleDrawerSectionClick = useCallback(
+    (platformId, sectionId) => {
+      closeAll()
+      handleSectionClick(platformId, sectionId)
+    },
+    [closeAll, handleSectionClick],
+  )
+
+  const handleDrawerPlatformToggle = useCallback(
+    (platformId) => {
+      handleSidebarPlatformToggle(platformId)
+    },
+    [handleSidebarPlatformToggle],
+  )
+
+  const leftDrawerLabel = isZhContent ? '功能目录' : 'Directory'
+  const leftDrawerHint = isZhContent ? '展开功能目录' : 'Open feature directory'
+  const rightDrawerLabel = isZhContent ? '端与章节' : 'Platform & Section'
+  const rightDrawerHint = isZhContent ? '选择平台与章节' : 'Choose platform and section'
+
   return (
-    <div className="docs-center-overlay-main">
-      <DocsDetailCatalogSidebar
-        sectionModels={sectionModels}
-        staticMetaMap={staticMetaMap}
-        helpCenterMetaMap={helpCenterMetaMap}
-        activeDocPathKey={activeDocPathKey}
-        directoryTitle={catalogDirectoryTitle}
-        searchPlaceholder={catalogSearchPlaceholder}
-        searchEmptyText={catalogSearchEmptyText}
-        limitToActiveSection
-        onLeafClick={onCatalogLeafClick}
-      />
+    <div
+      className={`docs-center-overlay-main${
+        isMobile ? ' docs-center-overlay-main--mobile-drawers' : ''
+      }${leftOpen || rightOpen ? ' has-mobile-drawer-open' : ''}`}
+    >
+      {isMobile && (leftOpen || rightOpen) ? (
+        <button
+          type="button"
+          className="docs-detail-mobile-drawer-backdrop"
+          aria-label={isZhContent ? '关闭导航' : 'Close navigation'}
+          onClick={closeAll}
+        />
+      ) : null}
+      <DocDetailMobileDrawer
+        side="left"
+        isOpen={leftOpen}
+        isMobile={isMobile}
+        onClose={closeAll}
+        panelLabel={catalogDirectoryTitle || leftDrawerLabel}
+      >
+        <DocsDetailCatalogSidebar
+          sectionModels={sectionModels}
+          staticMetaMap={staticMetaMap}
+          helpCenterMetaMap={helpCenterMetaMap}
+          activeDocPathKey={activeDocPathKey}
+          directoryTitle={catalogDirectoryTitle}
+          searchPlaceholder={catalogSearchPlaceholder}
+          searchEmptyText={catalogSearchEmptyText}
+          limitToActiveSection
+          onLeafClick={handleCatalogLeafClick}
+        />
+      </DocDetailMobileDrawer>
+      {isMobile && usesStructuredSections ? (
+        <DocDetailMobileDrawerNav
+          leftLabel={leftDrawerLabel}
+          leftHint={leftDrawerHint}
+          leftOpen={leftOpen}
+          onLeftToggle={toggleLeft}
+          rightLabel={rightDrawerLabel}
+          rightHint={rightDrawerHint}
+          rightOpen={rightOpen}
+          onRightToggle={toggleRight}
+          showRight={showDetailTocSidebar}
+        />
+      ) : null}
       <div className="docs-center-overlay-body docs-center-md">
         <div className="docs-detail-article-panel">
           {usesStructuredSections ? (
@@ -342,12 +496,16 @@ export default function DocDetailOverlayMain({
               ) : usesStructuredSections && contentViewMode === 'section-detail' ? (
                 <>
                   <DocDetailSectionArticle
+                    articleTitle={sectionArticleHeading}
                     sectionLabel={activeSectionLabel}
                     sectionBodyHtml={activeSectionBodyHtml}
                     fallbackNoticeHtml={fallbackNoticeHtml}
                     isZhContent={isZhContent}
                     updatedAt={docUpdatedAt}
                     routeSlug={routeSlug}
+                    showIndexVideo={
+                      hasDocDetailIndexVideo(routeSlug) && activeSectionId === 'features-overview'
+                    }
                   />
                   <DocDetailArticlePager
                     prev={prevArticle}
@@ -361,20 +519,28 @@ export default function DocDetailOverlayMain({
               )}
             </div>
             {showDetailTocSidebar ? (
-              <DocDetailTocPanel
-                sidebarTitle={docTitle || sidebarTitle}
-                isZhContent={isZhContent}
-                expandedPlatformId={expandedPlatformId}
-                activePlatformId={activePlatformId}
-                activeSectionId={activeSectionId}
-                contentViewMode={contentViewMode}
-                onPlatformToggle={handleSidebarPlatformToggle}
-                onSectionClick={handleSectionClick}
-                platforms={docDetailPlatforms}
-                universalSectionIds={universalSectionIds}
-                platformSectionIds={platformSectionIds}
-                embedded
-              />
+              <DocDetailMobileDrawer
+                side="right"
+                isOpen={rightOpen}
+                isMobile={isMobile}
+                onClose={closeAll}
+                panelLabel={rightDrawerLabel}
+              >
+                <DocDetailTocPanel
+                  sidebarTitle={docTitle || sidebarTitle}
+                  isZhContent={isZhContent}
+                  expandedPlatformId={expandedPlatformId}
+                  activePlatformId={activePlatformId}
+                  activeSectionId={activeSectionId}
+                  contentViewMode={contentViewMode}
+                  onPlatformToggle={handleDrawerPlatformToggle}
+                  onSectionClick={handleDrawerSectionClick}
+                  platforms={docDetailPlatforms}
+                  universalSectionIds={universalSectionIds}
+                  platformSectionIds={platformSectionIds}
+                  embedded
+                />
+              </DocDetailMobileDrawer>
             ) : null}
           </div>
         </div>

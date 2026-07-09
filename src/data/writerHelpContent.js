@@ -13,28 +13,6 @@ function formatGuideSections(sections = []) {
     .join('\n\n')
 }
 
-function extractProductUpdateLine(metaLine = '', language = 'en') {
-  const patterns = [
-    /更新日期[：:]\s*([^|]+)/,
-    /Last Updated:\s*([^|]+)/i,
-    /更新日[：:]\s*([^|]+)/,
-    /업데이트:\s*([^|]+)/,
-    /Actualizado:\s*([^|]+)/i,
-  ]
-
-  for (const pattern of patterns) {
-    const match = `${metaLine}`.match(pattern)
-    if (match) {
-      const date = match[1].trim()
-      return language === 'zh'
-        ? `- 最近更新：${date}`
-        : `- Last updated: ${date}`
-    }
-  }
-
-  return ''
-}
-
 export function buildWriterStructuredArticle({
   title,
   metaLine,
@@ -53,6 +31,12 @@ export function buildWriterStructuredArticle({
   faqAnswerLabel = '解决方案：',
   language = 'zh',
 }) {
+  void related
+  void notes
+  void productUpdates
+  void glossary
+  void plansPricingSections
+
   const capabilityLines = summary.capabilities.map((item) => `- ${item}`).join('\n')
   const dimensionLines = description.dimensions
     .map((item) => `### ${item.title}\n${item.body}`)
@@ -62,30 +46,17 @@ export function buildWriterStructuredArticle({
   const faqLines = faq
     .map((item) => `- **${item.q}**\n  - ${faqAnswerLabel}${item.a}`)
     .join('\n')
-  const relatedLines = related.map((item) => `- ${item}`).join('\n')
-  const noteLines = notes.map((item) => `- ${item}`).join('\n')
-  const productUpdateLines = productUpdates?.length
-    ? formatBulletList(productUpdates)
-    : extractProductUpdateLine(metaLine, language)
   const howToGuideLines = howToGuide?.length
     ? formatBulletList(howToGuide)
     : howToGuideSections.length
       ? formatGuideSections(howToGuideSections)
-      : screenshotLines
-  const glossaryLines = glossary?.length ? formatBulletList(glossary) : ''
-  const plansPricingExtraLines = plansPricingSections
-    .map((item) => `### ${item.title}\n${item.body}`)
-    .join('\n\n')
+      : [steps.intro, stepLines, screenshotLines].filter(Boolean).join('\n\n')
 
   return `# ${title}
 
 > ${metaLine}
 
 ---
-
-## ${sectionHeadings.productUpdates}
-
-${productUpdateLines || (language === 'zh' ? '- 暂无新的发行说明。' : '- No new release notes at this time.')}
 
 ## ${sectionHeadings.featuresOverview}
 
@@ -95,65 +66,26 @@ ${capabilityLines ? `\n${capabilityLines}` : ''}
 
 ${dimensionLines ? `\n${dimensionLines}` : ''}
 
-## ${sectionHeadings.plansPricing}
-
-### ${description.membershipTitle}
-${description.membership}
-
-### ${description.versionTitle}
-${description.version}
-${plansPricingExtraLines ? `\n\n${plansPricingExtraLines}` : ''}
-
-## ${sectionHeadings.gettingStarted}
-
-${steps.intro}
-
-${stepLines}
-
 ## ${sectionHeadings.howToGuide}
 
-${howToGuideLines || (language === 'zh' ? '- 详细操作步骤请参阅上方快速入门。' : '- See Getting Started above for detailed procedures.')}
+${howToGuideLines || (language === 'zh' ? '- 暂无操作步骤。' : '- No how-to steps yet.')}
 
 ## ${sectionHeadings.faq}
 
 ${faqLines}
-
-## ${sectionHeadings.notes}
-
-${noteLines}
-
-## ${sectionHeadings.glossary}
-
-${glossaryLines || (language === 'zh' ? '- 暂无术语条目。' : '- No glossary entries yet.')}
-
-## ${sectionHeadings.relatedResources}
-
-${relatedLines}
 `
 }
 
 const writerSectionHeadingsZh = {
-  productUpdates: '产品更新 / 发行说明',
-  featuresOverview: '功能概述',
-  plansPricing: '套餐与定价',
-  gettingStarted: '快速入门',
-  howToGuide: '操作指南',
+  featuresOverview: '简介',
+  howToGuide: '使用方法',
   faq: '常见问题',
-  notes: '注意事项',
-  glossary: '术语表',
-  relatedResources: '相关资源',
 }
 
 const writerSectionHeadingsEn = {
-  productUpdates: 'Release Notes',
-  featuresOverview: 'Features Overview',
-  plansPricing: 'Plans & Pricing',
-  gettingStarted: 'Getting Started',
-  howToGuide: 'How-to Guide',
+  featuresOverview: 'Introduction',
+  howToGuide: 'How to Use',
   faq: 'FAQ',
-  notes: 'Notes',
-  glossary: 'Glossary',
-  relatedResources: 'Related Resources',
 }
 
 const writerSharedZh = {
@@ -534,15 +466,9 @@ export const writerHelpContent = {
     related: writerSharedZh.related,
     notes: writerSharedZh.notes,
     sectionHeadings: {
-      productUpdates: '產品更新 / 發行說明',
-      featuresOverview: '功能概述',
-      plansPricing: '方案與定價',
-      gettingStarted: '快速入門',
-      howToGuide: '操作指南',
+      featuresOverview: '簡介',
+      howToGuide: '使用方法',
       faq: '常見問題',
-      notes: '注意事項',
-      glossary: '術語表',
-      relatedResources: '相關資源',
     },
     language: 'zh',
   }),
@@ -560,15 +486,9 @@ export const writerHelpContent = {
     ...writerSharedEn,
     faqAnswerLabel: 'Solution: ',
     sectionHeadings: {
-      productUpdates: '製品アップデート / リリースノート',
-      featuresOverview: '機能概要',
-      plansPricing: 'プランと料金',
-      gettingStarted: 'はじめに',
-      howToGuide: '操作ガイド',
+      featuresOverview: 'はじめに',
+      howToGuide: '使い方',
       faq: 'よくある質問',
-      notes: '注意事項',
-      glossary: '用語集',
-      relatedResources: '関連リソース',
     },
     language: 'en',
   }),
@@ -578,15 +498,9 @@ export const writerHelpContent = {
     ...writerSharedEn,
     faqAnswerLabel: 'Solution: ',
     sectionHeadings: {
-      productUpdates: '제품 업데이트 / 릴리스 노트',
-      featuresOverview: '기능 개요',
-      plansPricing: '요금제 및 가격',
-      gettingStarted: '시작하기',
-      howToGuide: '사용 가이드',
+      featuresOverview: '소개',
+      howToGuide: '사용 방법',
       faq: '자주 묻는 질문',
-      notes: '주의사항',
-      glossary: '용어집',
-      relatedResources: '관련 리소스',
     },
     language: 'en',
   }),
@@ -596,15 +510,9 @@ export const writerHelpContent = {
     ...writerSharedEn,
     faqAnswerLabel: 'Solution: ',
     sectionHeadings: {
-      productUpdates: 'Actualizaciones / Notas de version',
-      featuresOverview: 'Descripcion general de funciones',
-      plansPricing: 'Planes y precios',
-      gettingStarted: 'Primeros pasos',
-      howToGuide: 'Guia de procedimientos',
+      featuresOverview: 'Introduccion',
+      howToGuide: 'Como usar',
       faq: 'Preguntas frecuentes',
-      notes: 'Notas',
-      glossary: 'Glosario',
-      relatedResources: 'Recursos relacionados',
     },
     language: 'en',
   }),

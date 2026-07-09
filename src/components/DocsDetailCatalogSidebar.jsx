@@ -1,5 +1,5 @@
 import { forwardRef, useEffect, useMemo, useState } from 'react'
-import { ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { createDocsPathKey } from '../data/docsCenterMeta'
 import { useDocsCatalogSidebarSearch } from '../hooks/useDocsCatalogSidebarSearch'
 import DocsCatalogSidebarSearch from './DocsCatalogSidebarSearch'
@@ -97,6 +97,10 @@ function mergeExpandedSection(previous, sectionTitle) {
   return next
 }
 
+function exclusiveExpandedSection(sectionTitle) {
+  return sectionTitle ? new Set([sectionTitle]) : new Set()
+}
+
 function mergeExpandedBlock(previous, blockKey) {
   if (!blockKey || previous.has(blockKey)) {
     return previous
@@ -154,6 +158,9 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
     sidebarClassName = 'docs-center-sidebar docs-detail-catalog-sidebar',
     showLeafNodes = true,
     limitToActiveSection = false,
+    expandSectionsOnClickOnly = false,
+    onDrawerClose,
+    drawerCloseLabel = '',
     onLeafClick,
     onSectionNavigate,
     onBlockNavigate,
@@ -256,6 +263,13 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
     }
 
     if (!showLeafNodes) {
+      if (expandSectionsOnClickOnly) {
+        if (activeSectionTitle) {
+          setExpandedSections(exclusiveExpandedSection(activeSectionTitle))
+        }
+        return
+      }
+
       if (expandAllVisibleSections) {
         setExpandedSections(
           new Set(displayedSectionModels.map((section) => section.title)),
@@ -284,6 +298,7 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
     activeSectionTitle,
     displayedSectionModels,
     expandAllVisibleSections,
+    expandSectionsOnClickOnly,
     showLeafNodes,
   ])
 
@@ -313,9 +328,20 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
 
   const handleSectionClick = (sectionTitle) => {
     if (!limitToActiveSection) {
-      toggleSection(sectionTitle)
+      if (expandSectionsOnClickOnly) {
+        setExpandedSections((previous) => {
+          if (previous.has(sectionTitle) && previous.size === 1) {
+            return previous
+          }
+          return exclusiveExpandedSection(sectionTitle)
+        })
+      } else {
+        toggleSection(sectionTitle)
+      }
     }
-    onSectionNavigate?.(sectionTitle)
+    if (!expandSectionsOnClickOnly) {
+      onSectionNavigate?.(sectionTitle)
+    }
   }
 
   const handleBlockClick = (section, block) => {
@@ -445,7 +471,20 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
 
   return (
     <aside ref={ref} className={sidebarClassName} aria-label={sidebarHeading}>
-      <h3>{sidebarHeading}</h3>
+      <div className={`docs-center-sidebar-heading${onDrawerClose ? ' has-drawer-close' : ''}`}>
+        <h3>{sidebarHeading}</h3>
+        {onDrawerClose ? (
+          <button
+            type="button"
+            className="docs-detail-mobile-drawer-close docs-center-sidebar-drawer-close"
+            aria-label={drawerCloseLabel || sidebarHeading}
+            title={drawerCloseLabel || sidebarHeading}
+            onClick={onDrawerClose}
+          >
+            <ChevronLeft size={16} strokeWidth={2.25} aria-hidden="true" />
+          </button>
+        ) : null}
+      </div>
       {showSidebarSearch ? (
         <DocsCatalogSidebarSearch
           comboboxRef={comboboxRef}

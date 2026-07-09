@@ -1,7 +1,11 @@
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
+import DocDetailMobileDrawer from './DocDetailMobileDrawer'
+import DocDetailMobileDrawerNav from './DocDetailMobileDrawerNav'
 import DocDetailOverlayMain from './DocDetailOverlayMain'
 import DocsCenterHeroSearch from './DocsCenterHeroSearch'
 import DocsDetailCatalogSidebar from './DocsDetailCatalogSidebar'
+import { useDocDetailMobileDrawers } from '../hooks/useDocDetailMobileDrawers'
+import { useDocDetailMobileDrawerSwipe } from '../hooks/useDocDetailMobileDrawerSwipe'
 import { useDocsCatalogSidebarSearch } from '../hooks/useDocsCatalogSidebarSearch'
 import { buildDocsStaticMetaMap, createDocsPathKey } from '../data/docsCenterMeta'
 import helpCenterCatalogEntries from '../data/helpCenterCatalogEntries.json'
@@ -244,7 +248,6 @@ export default function DocsCenterPage({
   currentPathname,
   navigateTo,
   docsUiText,
-  infoPanels,
   activeSection,
   sectionSlugMap: _sectionSlugMap,
   catalogSections: _catalogSections,
@@ -486,6 +489,7 @@ export default function DocsCenterPage({
   const scrollSpyUnlockTimeoutRef = useRef(0)
   const requestScrollSpyUpdateRef = useRef(() => {})
   const scrollToSectionTimeoutRef = useRef(0)
+  const suppressRouteSectionScrollRef = useRef(false)
   const resolvedActiveSection =
     scrollLinkedTarget?.sectionTitle
     ?? (sectionModels.some((section) => section.title === activeSection)
@@ -529,11 +533,32 @@ export default function DocsCenterPage({
     if (scrollSpyLockRef.current) {
       return
     }
-    setScrollLinkedTarget({
-      sectionTitle: resolvedActiveSection,
-      blockTitle: activeBlockTitle,
+
+    const sectionTitle = sectionModels.some((section) => section.title === activeSection)
+      ? activeSection
+      : defaultCatalogSection
+
+    setScrollLinkedTarget((previous) => {
+      // Catalog pages have no leaf route; keep scroll-spy L2 highlight when only the section slug changes.
+      if (!activeBlockTitle && previous?.blockTitle) {
+        if (!previous.sectionTitle || previous.sectionTitle === sectionTitle) {
+          return previous
+        }
+      }
+
+      if (
+        previous?.sectionTitle === sectionTitle
+        && previous?.blockTitle === activeBlockTitle
+      ) {
+        return previous
+      }
+
+      return {
+        sectionTitle,
+        blockTitle: activeBlockTitle,
+      }
     })
-  }, [activeBlockTitle, resolvedActiveSection])
+  }, [activeBlockTitle, activeSection, defaultCatalogSection, sectionModels])
 
   const detailOverlayWasOpenRef = useRef(false)
 
@@ -619,7 +644,7 @@ export default function DocsCenterPage({
         if (!element) {
           return
         }
-        if (element.getBoundingClientRect().top - scrollOffset <= 0) {
+        if (element.getBoundingClientRect().top - scrollOffset <= 1) {
           nextActiveTarget = target
         }
       })
@@ -727,6 +752,7 @@ export default function DocsCenterPage({
     const sourceTitle = section?.sourceTitle ?? sectionTitle
     const sectionSlug =
       catalogSectionSlugMap[sourceTitle] ?? fallbackSlug(sourceTitle, catalogSectionSlugMap)
+    suppressRouteSectionScrollRef.current = true
     navigatePreservingScroll(getLocaleDocsPath(currentLocale, sectionSlug))
     handleScrollToSection(sectionTitle)
   }
@@ -736,12 +762,18 @@ export default function DocsCenterPage({
     const sourceTitle = section?.sourceTitle ?? sectionTitle
     const sectionSlug =
       catalogSectionSlugMap[sourceTitle] ?? fallbackSlug(sourceTitle, catalogSectionSlugMap)
+    suppressRouteSectionScrollRef.current = true
     navigatePreservingScroll(getLocaleDocsPath(currentLocale, sectionSlug))
     handleScrollToSection(sectionTitle, blockTitle)
   }
 
   useEffect(() => {
     if (!routeSectionSlug || routeItemSlug || currentDocMeta) {
+      return
+    }
+
+    if (suppressRouteSectionScrollRef.current) {
+      suppressRouteSectionScrollRef.current = false
       return
     }
 
@@ -824,8 +856,72 @@ export default function DocsCenterPage({
     navigateTo(getLocaleDocsPath(currentLocale))
   }
 
+  const {
+    isMobile,
+    leftOpen,
+    toggleLeft,
+    openLeft,
+    closeAll,
+  } = useDocDetailMobileDrawers()
+
+  const showMobileCatalogDrawer = isMobile && !currentDocMeta
+
+  useDocDetailMobileDrawerSwipe({
+    enabled: showMobileCatalogDrawer,
+    isMobile,
+    leftOpen,
+    rightOpen: false,
+    showRight: false,
+    openLeft,
+    openRight: () => {},
+    closeAll,
+  })
+
+  useEffect(() => {
+    closeAll()
+  }, [closeAll, currentDocMeta])
+
+  const handleCatalogBlockNavigateMobile = useCallback((sectionTitle, blockTitle) => {
+    handleCatalogBlockNavigate(sectionTitle, blockTitle)
+    closeAll()
+  }, [closeAll, handleCatalogBlockNavigate])
+
+  const catalogSidebar = (
+    <DocsDetailCatalogSidebar
+      ref={sidebarRef}
+      sectionModels={visibleSections}
+      staticMetaMap={staticMetaMap}
+      helpCenterMetaMap={helpCenterMetaMap}
+      activeSectionTitle={resolvedActiveSection}
+      activeBlockKey={
+        resolvedActiveBlockTitle
+          ? `${resolvedActiveSection}::${resolvedActiveBlockTitle}`
+          : ''
+      }
+      directoryTitle={docsUiText.directoryTitle}
+      sidebarClassName="docs-center-sidebar"
+      showLeafNodes={false}
+      searchMode="none"
+      expandAllVisibleSections={Boolean(heroMatchKeyword)}
+      expandSectionsOnClickOnly={showMobileCatalogDrawer}
+      onDrawerClose={showMobileCatalogDrawer ? closeAll : undefined}
+      drawerCloseLabel={isZhContent ? '关闭目录' : 'Close directory'}
+      onSectionNavigate={showMobileCatalogDrawer ? undefined : handleCatalogSectionNavigate}
+      onBlockNavigate={showMobileCatalogDrawer ? handleCatalogBlockNavigateMobile : handleCatalogBlockNavigate}
+    />
+  )
+
+  const leftDrawerLabel = isZhContent ? '功能目录' : 'Directory'
+  const leftDrawerHint = isZhContent ? '展开功能目录' : 'Open feature directory'
+
   return (
-    <div className={`docs-center-page${currentDocMeta ? ' docs-center-page--detail-open' : ''}`}>
+    <div
+      className={`docs-center-page${
+        currentDocMeta ? ' docs-center-page--detail-open' : ''
+      }${showMobileCatalogDrawer ? ' docs-center-page--mobile-drawer' : ''}${
+        showMobileCatalogDrawer && leftOpen ? ' has-mobile-drawer-open' : ''
+      }`}
+    >
       <section className="docs-center-hero">
         <div className="docs-center-container docs-center-hero-inner">
           <h1>{docsUiText.heroTitle}</h1>
@@ -847,26 +943,42 @@ export default function DocsCenterPage({
         </div>
       </section>
 
+      {showMobileCatalogDrawer ? (
+        <>
+          {leftOpen ? (
+            <button
+              type="button"
+              className="docs-detail-mobile-drawer-backdrop"
+              aria-label={isZhContent ? '关闭目录' : 'Close directory'}
+              onClick={closeAll}
+            />
+          ) : null}
+          <DocDetailMobileDrawer
+            side="left"
+            isOpen={leftOpen}
+            isMobile={isMobile}
+            onClose={closeAll}
+            panelLabel={docsUiText.directoryTitle}
+            showPanelHead={false}
+          >
+            {catalogSidebar}
+          </DocDetailMobileDrawer>
+          <DocDetailMobileDrawerNav
+            leftLabel={leftDrawerLabel}
+            leftHint={leftDrawerHint}
+            leftOpen={leftOpen}
+            onLeftToggle={toggleLeft}
+            rightLabel=""
+            rightHint=""
+            rightOpen={false}
+            onRightToggle={() => {}}
+            showRight={false}
+          />
+        </>
+      ) : null}
+
       <main className="docs-center-layout docs-center-container">
-        <DocsDetailCatalogSidebar
-          ref={sidebarRef}
-          sectionModels={visibleSections}
-          staticMetaMap={staticMetaMap}
-          helpCenterMetaMap={helpCenterMetaMap}
-          activeSectionTitle={resolvedActiveSection}
-          activeBlockKey={
-            resolvedActiveBlockTitle
-              ? `${resolvedActiveSection}::${resolvedActiveBlockTitle}`
-              : ''
-          }
-          directoryTitle={docsUiText.directoryTitle}
-          sidebarClassName="docs-center-sidebar"
-          showLeafNodes={false}
-          searchMode="none"
-          expandAllVisibleSections={Boolean(heroMatchKeyword)}
-          onSectionNavigate={handleCatalogSectionNavigate}
-          onBlockNavigate={handleCatalogBlockNavigate}
-        />
+        {showMobileCatalogDrawer ? null : catalogSidebar}
 
         <section className="docs-center-content">
           {visibleSections.length ? (
@@ -978,15 +1090,6 @@ export default function DocsCenterPage({
           )}
         </section>
       </main>
-
-      <section className="docs-center-info-panels docs-center-container">
-        {infoPanels.map((item) => (
-          <article key={`docs-panel-${item.title}`} className="docs-center-panel">
-            <h4>{item.title}</h4>
-            <p>{item.desc}</p>
-          </article>
-        ))}
-      </section>
 
       <div className="docs-center-float-actions">
         <button

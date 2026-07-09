@@ -2399,7 +2399,6 @@ function App() {
   const localizedDocsQuickTabs = localizedDocsContent.quickTabs
   const localizedDocsSectionSlugMap = localizedDocsContent.sectionSlugMap
   const localizedDocsCatalogSections = localizedDocsContent.catalogSections
-  const localizedDocsFaqItems = localizedDocsContent.faqItems
   const localizedDocsSectionMarkersMap = localizedDocsContent.sectionMarkersMap ?? {}
   const localizedDocsSlugSectionMap = useMemo(
     () =>
@@ -4149,7 +4148,6 @@ function App() {
             currentPathname={currentPathname}
             navigateTo={navigateTo}
             docsUiText={docsUiText}
-            infoPanels={localizedDocsFaqItems}
             sectionSlugMap={localizedDocsSectionSlugMap}
             activeSection={activeDocsSection}
             catalogSections={localizedDocsCatalogSections}

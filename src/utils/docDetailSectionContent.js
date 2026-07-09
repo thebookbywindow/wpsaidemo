@@ -11,49 +11,25 @@ export const STRUCTURED_DOC_ROUTE_SLUGS = new Set([
 const DOC_DETAIL_SECTION_HEADINGS = {
   'zh-cn': Object.fromEntries(DOC_DETAIL_TOC_SECTIONS_ZH.map((item) => [item.id, item.label])),
   'zh-tw': {
-    'product-updates': '產品更新 / 發行說明',
-    'features-overview': '功能概述',
-    'plans-pricing': '方案與定價',
-    'getting-started': '快速入門',
-    'how-to-guide': '操作指南',
+    'features-overview': '簡介',
+    'how-to-guide': '使用方法',
     faq: '常見問題',
-    notes: '注意事項',
-    glossary: '術語表',
-    'related-resources': '相關資源',
   },
   'en-us': Object.fromEntries(DOC_DETAIL_TOC_SECTIONS_EN.map((item) => [item.id, item.label])),
   'ja-jp': {
-    'product-updates': '製品アップデート / リリースノート',
-    'features-overview': '機能概要',
-    'plans-pricing': 'プランと料金',
-    'getting-started': 'はじめに',
-    'how-to-guide': '操作ガイド',
+    'features-overview': 'はじめに',
+    'how-to-guide': '使い方',
     faq: 'よくある質問',
-    notes: '注意事項',
-    glossary: '用語集',
-    'related-resources': '関連リソース',
   },
   'ko-kr': {
-    'product-updates': '제품 업데이트 / 릴리스 노트',
-    'features-overview': '기능 개요',
-    'plans-pricing': '요금제 및 가격',
-    'getting-started': '시작하기',
-    'how-to-guide': '사용 가이드',
+    'features-overview': '소개',
+    'how-to-guide': '사용 방법',
     faq: '자주 묻는 질문',
-    notes: '주의사항',
-    glossary: '용어집',
-    'related-resources': '관련 리소스',
   },
   'es-mx': {
-    'product-updates': 'Actualizaciones / Notas de version',
-    'features-overview': 'Descripcion general de funciones',
-    'plans-pricing': 'Planes y precios',
-    'getting-started': 'Primeros pasos',
-    'how-to-guide': 'Guia de procedimientos',
+    'features-overview': 'Introduccion',
+    'how-to-guide': 'Como usar',
     faq: 'Preguntas frecuentes',
-    notes: 'Notas',
-    glossary: 'Glosario',
-    'related-resources': 'Recursos relacionados',
   },
 }
 
@@ -112,6 +88,8 @@ export function getDocDetailSectionLabel(sectionId, docLang) {
   const headings = getSectionHeadings(docLang)
   return headings[sectionId] ?? sectionId
 }
+
+export { buildDocDetailArticleHeading, getDocDetailArticleHeading } from './docDetailArticleHeading'
 
 export function extractDocFeatureSummaryIntro(markdown, docLang) {
   const summaryBody = extractDocDetailSection(markdown, 'features-overview', docLang)
@@ -340,7 +318,10 @@ export function scrollToDocDetailSection(sectionId, attempt = 0) {
 
 export function scrollDocDetailPanelToTop(attempt = 0) {
   const panel = document.querySelector('.docs-detail-article-panel')
-  const catalogSidebar = document.querySelector('.docs-detail-catalog-sidebar')
+  const isMobileDrawerLayout = Boolean(
+    window.matchMedia('(max-width: 980px)').matches
+    && document.querySelector('.docs-center-overlay-main--mobile-drawers'),
+  )
 
   if (!panel) {
     if (attempt < 10) {
@@ -349,6 +330,58 @@ export function scrollDocDetailPanelToTop(attempt = 0) {
     return
   }
 
+  if (isMobileDrawerLayout) {
+    const overlayMain =
+      document.querySelector('.docs-center-overlay-main--mobile-drawers')
+      || document.querySelector('.docs-center-overlay-main')
+    const articleHeader =
+      document.querySelector('.docs-detail-section-article-header')
+      || document.querySelector('.docs-detail-section-article')
+
+    if (overlayMain) {
+      const navHeight = Number.parseInt(
+        getComputedStyle(document.documentElement).getPropertyValue('--nav-height'),
+        10,
+      ) || 64
+      const overlayTop = overlayMain.getBoundingClientRect().top + window.scrollY
+      const targetScrollTop = Math.max(0, overlayTop - navHeight - 8)
+
+      if (Math.abs(window.scrollY - targetScrollTop) > 2) {
+        window.scrollTo({ top: targetScrollTop, behavior: 'auto' })
+      }
+      return
+    }
+
+    if (articleHeader) {
+      const anchor =
+        document.querySelector('.docs-detail-mobile-drawer-nav')
+        || document.querySelector('.docs-detail-breadcrumb')
+        || panel
+      const anchorBottom = anchor.getBoundingClientRect().bottom
+      const articleTop = articleHeader.getBoundingClientRect().top
+      const delta = articleTop - anchorBottom - 8
+
+      if (Math.abs(delta) > 2) {
+        window.scrollTo({ top: Math.max(0, window.scrollY + delta), behavior: 'auto' })
+      }
+      return
+    }
+
+    const anchor =
+      document.querySelector('.docs-detail-mobile-drawer-nav')
+      || document.querySelector('.docs-detail-breadcrumb')
+      || panel
+    const anchorBottom = anchor.getBoundingClientRect().bottom
+    const panelTop = panel.getBoundingClientRect().top
+    const delta = panelTop - anchorBottom - 8
+
+    if (Math.abs(delta) > 2) {
+      window.scrollTo({ top: Math.max(0, window.scrollY + delta), behavior: 'auto' })
+    }
+    return
+  }
+
+  const catalogSidebar = document.querySelector('.docs-detail-catalog-sidebar')
   const panelTop = panel.getBoundingClientRect().top
   const alignTop = catalogSidebar
     ? catalogSidebar.getBoundingClientRect().top
@@ -479,7 +512,6 @@ export function adaptStructuredDocMarkdownForPlatform(markdown, platformId, docL
 
   const headings = getSectionHeadings(docLang)
   const proceduralSectionTitles = new Set([
-    headings['getting-started'],
     headings['how-to-guide'],
   ])
   let inStepsSection = false

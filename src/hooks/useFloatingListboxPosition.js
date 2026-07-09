@@ -1,6 +1,24 @@
 import { useLayoutEffect, useState } from 'react'
 
 const VIEWPORT_PADDING = 8
+const MIN_LISTBOX_HEIGHT = 96
+
+function getVisibleViewportBounds() {
+  const viewport = window.visualViewport
+  if (viewport) {
+    return {
+      top: viewport.offsetTop,
+      bottom: viewport.offsetTop + viewport.height,
+      height: viewport.height,
+    }
+  }
+
+  return {
+    top: 0,
+    bottom: window.innerHeight,
+    height: window.innerHeight,
+  }
+}
 
 export function useFloatingListboxPosition({
   anchorRef,
@@ -23,12 +41,33 @@ export function useFloatingListboxPosition({
       }
 
       const rect = anchor.getBoundingClientRect()
-      const spaceBelow = window.innerHeight - rect.bottom - gap - VIEWPORT_PADDING
-      const resolvedMaxHeight = Math.min(maxHeight, Math.max(96, spaceBelow))
+      const viewport = getVisibleViewportBounds()
+      const spaceBelow = viewport.bottom - rect.bottom - gap - VIEWPORT_PADDING
+      const spaceAbove = rect.top - viewport.top - gap - VIEWPORT_PADDING
+      const preferBelow = spaceBelow >= MIN_LISTBOX_HEIGHT || spaceBelow >= spaceAbove
+      const availableSpace = preferBelow ? spaceBelow : spaceAbove
+      const resolvedMaxHeight = Math.min(
+        maxHeight,
+        Math.max(MIN_LISTBOX_HEIGHT, availableSpace),
+      )
+
+      if (preferBelow) {
+        setStyle({
+          position: 'fixed',
+          top: `${rect.bottom + gap}px`,
+          bottom: 'auto',
+          left: `${rect.left}px`,
+          width: `${rect.width}px`,
+          maxHeight: `${resolvedMaxHeight}px`,
+          zIndex: 60,
+        })
+        return
+      }
 
       setStyle({
         position: 'fixed',
-        top: `${rect.bottom + gap}px`,
+        top: 'auto',
+        bottom: `${window.innerHeight - rect.top + gap}px`,
         left: `${rect.left}px`,
         width: `${rect.width}px`,
         maxHeight: `${resolvedMaxHeight}px`,
@@ -40,9 +79,15 @@ export function useFloatingListboxPosition({
     window.addEventListener('scroll', updatePosition, true)
     window.addEventListener('resize', updatePosition)
 
+    const visualViewport = window.visualViewport
+    visualViewport?.addEventListener('resize', updatePosition)
+    visualViewport?.addEventListener('scroll', updatePosition)
+
     return () => {
       window.removeEventListener('scroll', updatePosition, true)
       window.removeEventListener('resize', updatePosition)
+      visualViewport?.removeEventListener('resize', updatePosition)
+      visualViewport?.removeEventListener('scroll', updatePosition)
     }
   }, [anchorRef, gap, isOpen, maxHeight])
 

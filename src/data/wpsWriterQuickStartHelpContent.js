@@ -1,27 +1,15 @@
 import { buildWriterStructuredArticle } from './writerHelpContent.js'
 
 const sectionHeadingsZh = {
-  productUpdates: '产品更新 / 发行说明',
-  featuresOverview: '功能概述',
-  plansPricing: '套餐与定价',
-  gettingStarted: '快速入门',
-  howToGuide: '操作指南',
+  featuresOverview: '简介',
+  howToGuide: '使用方法',
   faq: '常见问题',
-  notes: '注意事项',
-  glossary: '术语表',
-  relatedResources: '相关资源',
 }
 
 const sectionHeadingsEn = {
-  productUpdates: 'Release Notes',
-  featuresOverview: 'Features Overview',
-  plansPricing: 'Plans & Pricing',
-  gettingStarted: 'Getting Started',
-  howToGuide: 'How-to Guide',
+  featuresOverview: 'Introduction',
+  howToGuide: 'How to Use',
   faq: 'FAQ',
-  notes: 'Notes',
-  glossary: 'Glossary',
-  relatedResources: 'Related Resources',
 }
 
 const createDocumentSharedZh = {

@@ -69,7 +69,6 @@ export default function DocsCenterHeroSearch({
     <div className="docs-center-search-wrap">
       <div className="docs-center-search-combobox" ref={comboboxRef}>
         <label className="docs-center-search-input-wrap" aria-label={searchSrOnly}>
-          <span aria-hidden="true">⌕</span>
           <input
             type="search"
             role="combobox"
