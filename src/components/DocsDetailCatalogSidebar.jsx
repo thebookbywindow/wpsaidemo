@@ -394,6 +394,36 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
     return scopedBlockTitle || activeLocation.sectionTitle || directoryTitle
   })()
 
+  const renderSidebarHeadingContent = () => {
+    if (!limitToActiveSection || !activeLocation.sectionTitle) {
+      return sidebarHeading
+    }
+
+    const sectionButton = (
+      <button
+        type="button"
+        className="docs-center-sidebar-heading-link"
+        onClick={() => onSectionNavigate?.(activeLocation.sectionTitle)}
+      >
+        {activeLocation.sectionTitle}
+      </button>
+    )
+
+    if (!scopedBlockTitle) {
+      return sectionButton
+    }
+
+    return (
+      <>
+        {sectionButton}
+        <span className="docs-center-sidebar-heading-separator" aria-hidden="true">
+          {' > '}
+        </span>
+        <span className="docs-center-sidebar-heading-suffix">{scopedBlockTitle}</span>
+      </>
+    )
+  }
+
   const renderScopedLeafNodes = (section) => (
     <div className="docs-center-toc-leaves docs-center-toc-leaves--scoped-flat">
       {section.blocks.flatMap((block) => block.items.map((item) => renderLeaf(section, block, item)))}
@@ -471,8 +501,12 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
 
   return (
     <aside ref={ref} className={sidebarClassName} aria-label={sidebarHeading}>
-      <div className={`docs-center-sidebar-heading${onDrawerClose ? ' has-drawer-close' : ''}`}>
-        <h3>{sidebarHeading}</h3>
+      <div
+        className={`docs-center-sidebar-heading${
+          onDrawerClose ? ' has-drawer-close has-drawer-close--trailing' : ''
+        }`}
+      >
+        <h3>{renderSidebarHeadingContent()}</h3>
         {onDrawerClose ? (
           <button
             type="button"

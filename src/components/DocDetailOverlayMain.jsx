@@ -173,6 +173,7 @@ export default function DocDetailOverlayMain({
   catalogSearchPlaceholder = 'Search directory',
   catalogSearchEmptyText = 'No matching items',
   onCatalogLeafClick,
+  onCatalogSectionNavigate,
 }) {
   const docDetailPlatforms = useMemo(
     () => getDocDetailPlatforms(routeSlug),
@@ -397,6 +398,14 @@ export default function DocDetailOverlayMain({
     [closeAll, onCatalogLeafClick],
   )
 
+  const handleCatalogSectionNavigate = useCallback(
+    (sectionTitle) => {
+      closeAll()
+      onCatalogSectionNavigate?.(sectionTitle)
+    },
+    [closeAll, onCatalogSectionNavigate],
+  )
+
   const handleDrawerSectionClick = useCallback(
     (platformId, sectionId) => {
       closeAll()
@@ -414,8 +423,10 @@ export default function DocDetailOverlayMain({
 
   const leftDrawerLabel = isZhContent ? '功能目录' : 'Directory'
   const leftDrawerHint = isZhContent ? '展开功能目录' : 'Open feature directory'
+  const leftDrawerCloseLabel = isZhContent ? '关闭目录' : 'Close directory'
   const rightDrawerLabel = isZhContent ? '端与章节' : 'Platform & Section'
   const rightDrawerHint = isZhContent ? '选择平台与章节' : 'Choose platform and section'
+  const rightDrawerCloseLabel = isZhContent ? '关闭端与章节' : 'Close platform & section'
   const rightDrawerIcon = getDocDetailPlatformIcon(activePlatformId)
 
   return (
@@ -438,6 +449,7 @@ export default function DocDetailOverlayMain({
         isMobile={isMobile}
         onClose={closeAll}
         panelLabel={catalogDirectoryTitle || leftDrawerLabel}
+        showPanelHead={false}
       >
         <DocsDetailCatalogSidebar
           sectionModels={sectionModels}
@@ -448,6 +460,9 @@ export default function DocDetailOverlayMain({
           searchPlaceholder={catalogSearchPlaceholder}
           searchEmptyText={catalogSearchEmptyText}
           limitToActiveSection
+          onSectionNavigate={handleCatalogSectionNavigate}
+          onDrawerClose={isMobile ? closeAll : undefined}
+          drawerCloseLabel={isMobile ? leftDrawerCloseLabel : ''}
           onLeafClick={handleCatalogLeafClick}
         />
       </DocDetailMobileDrawer>
@@ -528,9 +543,11 @@ export default function DocDetailOverlayMain({
                 isMobile={isMobile}
                 onClose={closeAll}
                 panelLabel={rightDrawerLabel}
+                showPanelHead={false}
               >
                 <DocDetailTocPanel
                   sidebarTitle={docTitle || sidebarTitle}
+                  drawerHeadTitle={rightDrawerLabel}
                   isZhContent={isZhContent}
                   expandedPlatformId={expandedPlatformId}
                   activePlatformId={activePlatformId}
@@ -541,6 +558,9 @@ export default function DocDetailOverlayMain({
                   platforms={docDetailPlatforms}
                   universalSectionIds={universalSectionIds}
                   platformSectionIds={platformSectionIds}
+                  onDrawerClose={isMobile ? closeAll : undefined}
+                  drawerCloseLabel={isMobile ? rightDrawerCloseLabel : ''}
+                  drawerCloseSide="right"
                   embedded
                 />
               </DocDetailMobileDrawer>

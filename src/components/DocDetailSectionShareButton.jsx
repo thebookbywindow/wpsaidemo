@@ -20,12 +20,20 @@ const SHARE_ITEMS = [
   { id: 'copyLink', Icon: FaLink, actionKey: 'copyLink' },
 ]
 
-export default function DocDetailSectionShareButton({ isZhContent, title = '' }) {
+export default function DocDetailSectionShareButton({
+  isZhContent,
+  title = '',
+  className = '',
+}) {
   const { actions, isCopied } = useDocDetailSectionShare({ title })
   const labels = getDocDetailSectionShareLabels(isZhContent)
 
   return (
-    <div className="docs-detail-section-share" role="group" aria-label={labels.shareAriaLabel}>
+    <div
+      className={`docs-detail-section-share${className ? ` ${className}` : ''}`}
+      role="group"
+      aria-label={labels.shareAriaLabel}
+    >
       <span className="docs-detail-section-share-label">{labels.shareLabel}</span>
       <div className="docs-detail-section-share-icons">
         {SHARE_ITEMS.map(({ id, Icon, actionKey }) => {

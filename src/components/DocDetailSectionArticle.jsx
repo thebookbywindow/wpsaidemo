@@ -28,6 +28,11 @@ export default function DocDetailSectionArticle({
               <time dateTime={updatedAt}>{updatedAt}</time>
             </p>
           ) : null}
+          <DocDetailSectionShareButton
+            isZhContent={isZhContent}
+            title={sectionLabel}
+            className="docs-detail-section-share--inline"
+          />
         </div>
         {showIndexVideo ? (
           <div className="docs-detail-section-article-video">
@@ -40,7 +45,11 @@ export default function DocDetailSectionArticle({
         dangerouslySetInnerHTML={{ __html: sectionBodyHtml }}
       />
       <footer className="docs-detail-section-article-footer">
-        <DocDetailSectionShareButton isZhContent={isZhContent} title={sectionLabel} />
+        <DocDetailSectionShareButton
+          isZhContent={isZhContent}
+          title={sectionLabel}
+          className="docs-detail-section-share--footer"
+        />
       </footer>
     </article>
   )

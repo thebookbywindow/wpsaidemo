@@ -1145,6 +1145,7 @@ export default function DocsCenterPage({
               catalogSearchPlaceholder={docsUiText.sidebarSearchPlaceholder}
               catalogSearchEmptyText={docsUiText.noResults}
               onCatalogLeafClick={handleNodeClick}
+              onCatalogSectionNavigate={handleCatalogSectionNavigate}
             />
           ) : (
             <div className="docs-center-overlay-body">

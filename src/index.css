@@ -1526,18 +1526,62 @@ body {
 .docs-center-sidebar-heading h3 {
   min-width: 0;
   flex: 1;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+}
+
+.docs-center-sidebar-heading-link {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .docs-center-sidebar-heading-link:hover {
+    color: var(--purple-600);
+  }
+}
+
+.docs-center-sidebar-heading-separator,
+.docs-center-sidebar-heading-suffix {
+  color: inherit;
 }
 
 .docs-center-sidebar-heading.has-drawer-close {
+  align-items: center;
   margin-bottom: 4px;
 }
 
-.docs-center-sidebar-heading.has-drawer-close h3 {
-  margin-bottom: 0;
+.docs-center-sidebar-heading.has-drawer-close--leading {
+  justify-content: flex-start;
 }
 
-.docs-center-sidebar-drawer-close {
-  margin: 0 2px 0 0;
+.docs-center-sidebar-heading.has-drawer-close--trailing {
+  justify-content: space-between;
+}
+
+.docs-center-sidebar-heading.has-drawer-close h3 {
+  margin: 0;
+  flex: 1;
+  line-height: 26px;
+}
+
+.docs-center-sidebar-heading.has-drawer-close--leading .docs-center-sidebar-drawer-close {
+  margin: 0 6px 0 0;
+  flex-shrink: 0;
+}
+
+.docs-center-sidebar-heading.has-drawer-close--trailing .docs-center-sidebar-drawer-close {
+  margin: 0 0 0 6px;
+  flex-shrink: 0;
 }
 
 .docs-center-toc-parent + .docs-center-toc-parent {
@@ -1569,6 +1613,37 @@ body {
     background: var(--purple-50);
     color: var(--purple-600);
   }
+}
+
+/* Touch / DevTools device emulation: tap can leave :hover stuck; only .active shows purple */
+@media (hover: none), (pointer: coarse) {
+  .docs-center-toc-parent-btn:not(.active):hover {
+    background: transparent;
+    border-left-color: transparent;
+    color: var(--text-secondary);
+    font-weight: inherit;
+  }
+
+  .docs-center-toc-child:not(.active):hover {
+    background: transparent;
+    color: #6b7280;
+    font-weight: inherit;
+  }
+}
+
+.docs-center-page--mobile-drawer .docs-center-toc-parent-btn:not(.active):hover,
+.docs-detail-mobile-drawer .docs-center-toc-parent-btn:not(.active):hover {
+  background: transparent;
+  border-left-color: transparent;
+  color: var(--text-secondary);
+  font-weight: inherit;
+}
+
+.docs-center-page--mobile-drawer .docs-center-toc-child:not(.active):hover,
+.docs-detail-mobile-drawer .docs-center-toc-child:not(.active):hover {
+  background: transparent;
+  color: #6b7280;
+  font-weight: inherit;
 }
 
 .docs-center-toc-parent-btn.active {
@@ -2232,22 +2307,50 @@ body {
 .docs-detail-section-article-meta {
   display: flex;
   align-items: center;
-  min-height: 0;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 28px;
 }
 
 .docs-detail-section-article-updated {
   margin: 0;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  min-height: 28px;
   font-size: 12px;
-  line-height: 1.5;
+  line-height: 1;
   color: var(--text-muted);
 }
 
-.docs-detail-section-article-updated-label {
-  color: var(--text-muted);
+.docs-detail-section-article-updated-label,
+.docs-detail-section-article-updated time {
+  line-height: 1;
+}
+
+.docs-detail-section-share--inline {
+  margin-left: auto;
+  flex-shrink: 0;
+  min-height: 28px;
+}
+
+.docs-detail-section-share--inline .docs-detail-section-share-label {
+  line-height: 1;
+}
+
+.docs-detail-section-share--inline .docs-detail-section-share-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+}
+
+.docs-detail-section-share.docs-detail-section-share--footer {
+  display: none;
 }
 
 .docs-detail-section-article-footer {
-  display: flex;
+  display: none;
   justify-content: flex-end;
   margin-top: 20px;
 }
@@ -3120,6 +3223,33 @@ body {
   overflow: visible;
 }
 
+.docs-detail-mobile-drawer-panel-body .docs-center-sidebar-heading,
+.docs-detail-mobile-drawer-panel-body .docs-detail-sidebar .docs-center-sidebar-heading {
+  padding: 4px 6px;
+  align-items: center;
+}
+
+.docs-detail-mobile-drawer-panel-body .docs-center-sidebar-heading.has-drawer-close {
+  margin-bottom: 2px;
+}
+
+.docs-detail-mobile-drawer-panel-body .docs-center-sidebar-heading h3,
+.docs-detail-mobile-drawer-panel-body .docs-detail-sidebar .docs-center-sidebar-heading h3 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: inherit;
+  line-height: 26px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.docs-detail-mobile-drawer-panel-body .docs-center-sidebar-drawer-close {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+}
+
 @media (max-width: 980px) {
   .docs-center-container {
     padding: 0 16px;
@@ -3505,9 +3635,19 @@ body {
 
   .docs-detail-section-article-meta {
     align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .docs-detail-section-share.docs-detail-section-share--inline {
+    display: none;
+  }
+
+  .docs-detail-section-share.docs-detail-section-share--footer {
+    display: inline-flex;
   }
 
   .docs-detail-section-article-footer {
+    display: flex;
     justify-content: flex-end;
     margin-top: 16px;
   }

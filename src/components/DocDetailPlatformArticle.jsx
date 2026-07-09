@@ -25,6 +25,11 @@ export default function DocDetailPlatformArticle({
               <time dateTime={updatedAt}>{updatedAt}</time>
             </p>
           ) : null}
+          <DocDetailSectionShareButton
+            isZhContent={isZhContent}
+            title={articleTitle}
+            className="docs-detail-section-share--inline"
+          />
         </div>
         <div className="docs-detail-section-article-video">
           <DocDetailIndexVideoPlaceholder isZhContent={isZhContent} title={articleTitle} />
@@ -35,7 +40,11 @@ export default function DocDetailPlatformArticle({
         dangerouslySetInnerHTML={{ __html: bodyHtml }}
       />
       <footer className="docs-detail-section-article-footer">
-        <DocDetailSectionShareButton isZhContent={isZhContent} title={articleTitle} />
+        <DocDetailSectionShareButton
+          isZhContent={isZhContent}
+          title={articleTitle}
+          className="docs-detail-section-share--footer"
+        />
       </footer>
     </article>
   )

@@ -13,6 +13,10 @@ export default function DocDetailTocPanel({
   universalSectionIds = [],
   platformSectionIds = [],
   embedded = false,
+  onDrawerClose,
+  drawerCloseLabel = '',
+  drawerHeadTitle = '',
+  drawerCloseSide = 'left',
 }) {
   return (
     <DocDetailTocSidebar
@@ -28,6 +32,10 @@ export default function DocDetailTocPanel({
       universalSectionIds={universalSectionIds}
       platformSectionIds={platformSectionIds}
       embedded={embedded}
+      onDrawerClose={onDrawerClose}
+      drawerCloseLabel={drawerCloseLabel}
+      drawerHeadTitle={drawerHeadTitle}
+      drawerCloseSide={drawerCloseSide}
     />
   )
 }

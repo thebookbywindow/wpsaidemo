@@ -1,4 +1,4 @@
-import { ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import {
   DOC_DETAIL_COMMON_SCOPE_SLUG,
   DOC_DETAIL_FEATURE_SCOPE_ID,
@@ -23,6 +23,10 @@ export default function DocDetailTocSidebar({
   universalSectionIds = [],
   platformSectionIds = [],
   embedded = false,
+  onDrawerClose,
+  drawerCloseLabel = '',
+  drawerHeadTitle = '',
+  drawerCloseSide = 'left',
 }) {
   const sections = getDocDetailTocSections(isZhContent)
   const isPlatformLess = platforms.length === 0
@@ -113,14 +117,33 @@ export default function DocDetailTocSidebar({
     )
   }
 
+  const CloseIcon = drawerCloseSide === 'right' ? ChevronRight : ChevronLeft
+  const showSidebarHead = !embedded || Boolean(onDrawerClose)
+  const sidebarHeadTitle = onDrawerClose ? drawerHeadTitle || sidebarTitle : sidebarTitle
+
   return (
     <aside
       className={`docs-detail-sidebar${embedded ? ' docs-detail-sidebar--embedded' : ''}`}
-      aria-label={sidebarTitle}
+      aria-label={sidebarHeadTitle}
     >
-      {!embedded ? (
-        <div className="docs-detail-sidebar-head">
-          <h3>{sidebarTitle}</h3>
+      {showSidebarHead ? (
+        <div
+          className={`docs-center-sidebar-heading${
+            onDrawerClose ? ' has-drawer-close has-drawer-close--leading' : ''
+          }${!onDrawerClose ? ' docs-detail-sidebar-head' : ''}`}
+        >
+          {onDrawerClose ? (
+            <button
+              type="button"
+              className="docs-detail-mobile-drawer-close docs-center-sidebar-drawer-close"
+              aria-label={drawerCloseLabel || sidebarHeadTitle}
+              title={drawerCloseLabel || sidebarHeadTitle}
+              onClick={onDrawerClose}
+            >
+              <CloseIcon size={16} strokeWidth={2.25} aria-hidden="true" />
+            </button>
+          ) : null}
+          <h3>{sidebarHeadTitle}</h3>
         </div>
       ) : null}
       <nav className="docs-detail-sidebar-nav">
