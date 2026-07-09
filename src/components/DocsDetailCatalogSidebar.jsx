@@ -513,6 +513,7 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
         ) : (
           displayedSectionModels.map((section) => {
             const isSectionExpanded = expandedSections.has(section.title)
+            const isSectionActive = activeLocation.sectionTitle === section.title
 
             return (
               <div
@@ -522,7 +523,7 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
                 <button
                   type="button"
                   className={`docs-center-toc-parent-btn docs-center-toc-expand-btn${
-                    activeLocation.sectionTitle === section.title ? ' active' : ''
+                    isSectionActive ? ' active' : ''
                   }${isSectionExpanded ? ' is-expanded' : ''}`}
                   aria-expanded={isSectionExpanded}
                   onClick={() => handleSectionClick(section.title)}

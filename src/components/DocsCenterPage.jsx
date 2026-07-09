@@ -637,7 +637,7 @@ export default function DocsCenterPage({
 
       clearPendingScrollSpyUnlock()
 
-      let nextActiveTarget = scrollSpyTargets[0]
+      let crossedTarget = null
 
       scrollSpyTargets.forEach((target) => {
         const element = document.getElementById(target.id)
@@ -645,9 +645,26 @@ export default function DocsCenterPage({
           return
         }
         if (element.getBoundingClientRect().top - scrollOffset <= 1) {
-          nextActiveTarget = target
+          crossedTarget = target
         }
       })
+
+      // Prefer L2 block highlight: page top / section headers alone should not
+      // leave the parent purple without an active secondary item.
+      let nextActiveTarget =
+        crossedTarget
+        ?? scrollSpyTargets.find((target) => target.blockTitle)
+        ?? scrollSpyTargets[0]
+
+      if (nextActiveTarget && !nextActiveTarget.blockTitle) {
+        const firstBlockInSection = scrollSpyTargets.find(
+          (target) =>
+            target.sectionTitle === nextActiveTarget.sectionTitle && target.blockTitle,
+        )
+        if (firstBlockInSection) {
+          nextActiveTarget = firstBlockInSection
+        }
+      }
 
       setScrollLinkedTarget((previousTarget) => {
         if (

@@ -1564,9 +1564,11 @@ body {
   font: inherit;
 }
 
-.docs-center-toc-parent-btn:hover {
-  background: var(--purple-50);
-  color: var(--purple-600);
+@media (hover: hover) and (pointer: fine) {
+  .docs-center-toc-parent-btn:hover {
+    background: var(--purple-50);
+    color: var(--purple-600);
+  }
 }
 
 .docs-center-toc-parent-btn.active {
@@ -1595,7 +1597,12 @@ body {
   font: inherit;
 }
 
-.docs-center-toc-child:hover,
+@media (hover: hover) and (pointer: fine) {
+  .docs-center-toc-child:hover {
+    color: var(--purple-600);
+  }
+}
+
 .docs-center-toc-child.active {
   color: var(--purple-600);
 }
