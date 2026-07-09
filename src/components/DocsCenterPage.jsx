@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
-import { ListTree } from 'lucide-react'
+import { ChevronDown, ChevronUp, ListTree } from 'lucide-react'
 import DocDetailMobileDrawer from './DocDetailMobileDrawer'
 import { DocDetailMobileDrawerNavButton } from './DocDetailMobileDrawerNav'
 import DocDetailOverlayMain from './DocDetailOverlayMain'
@@ -77,6 +77,10 @@ function resolveAvailableDocLanguage(helpContent, preferredLanguage) {
     return 'en-us'
   }
   return Object.keys(helpContent)[0] ?? ''
+}
+
+function buildMobileCatalogBlockKey(sectionTitle, blockTitle) {
+  return `${sectionTitle}::${blockTitle}`
 }
 
 function safeIdSegment(value) {
@@ -484,6 +488,8 @@ export default function DocsCenterPage({
   const isZhContent = `${currentLocale}`.toLowerCase().startsWith('zh')
   const activeBlockTitle = currentDocDisplayParts?.length === 3 ? currentDocDisplayParts[1] : ''
   const [scrollLinkedTarget, setScrollLinkedTarget] = useState(null)
+  const [mobileCollapsedSections, setMobileCollapsedSections] = useState(() => new Set())
+  const [mobileCollapsedBlocks, setMobileCollapsedBlocks] = useState(() => new Set())
   const sidebarRef = useRef(null)
   const scrollSpyFrameRef = useRef(0)
   const scrollSpyLockRef = useRef(null)
@@ -900,9 +906,46 @@ export default function DocsCenterPage({
   }, [closeAll, currentDocMeta])
 
   const handleCatalogBlockNavigateMobile = useCallback((sectionTitle, blockTitle) => {
+    setMobileCollapsedSections((previous) => {
+      const next = new Set(previous)
+      next.delete(sectionTitle)
+      return next
+    })
+    if (blockTitle) {
+      setMobileCollapsedBlocks((previous) => {
+        const next = new Set(previous)
+        next.delete(buildMobileCatalogBlockKey(sectionTitle, blockTitle))
+        return next
+      })
+    }
     handleCatalogBlockNavigate(sectionTitle, blockTitle)
     closeAll()
   }, [closeAll, handleCatalogBlockNavigate])
+
+  const toggleMobileSection = useCallback((sectionTitle) => {
+    setMobileCollapsedSections((previous) => {
+      const next = new Set(previous)
+      if (next.has(sectionTitle)) {
+        next.delete(sectionTitle)
+      } else {
+        next.add(sectionTitle)
+      }
+      return next
+    })
+  }, [])
+
+  const toggleMobileBlock = useCallback((sectionTitle, blockTitle) => {
+    const blockKey = buildMobileCatalogBlockKey(sectionTitle, blockTitle)
+    setMobileCollapsedBlocks((previous) => {
+      const next = new Set(previous)
+      if (next.has(blockKey)) {
+        next.delete(blockKey)
+      } else {
+        next.add(blockKey)
+      }
+      return next
+    })
+  }, [])
 
   const catalogSidebar = (
     <DocsDetailCatalogSidebar
@@ -1001,20 +1044,62 @@ export default function DocsCenterPage({
 
         <section className="docs-center-content">
           {visibleSections.length ? (
-            visibleSections.map((section) => (
+            visibleSections.map((section) => {
+              const isMobileSectionExpanded =
+                !showMobileCatalogDrawer || !mobileCollapsedSections.has(section.title)
+
+              return (
               <article
                 key={`catalog-${section.title}`}
                 id={`docs-section-${safeIdSegment(section.title)}`}
-                className="docs-center-section"
+                className={`docs-center-section${
+                  showMobileCatalogDrawer && !isMobileSectionExpanded ? ' is-collapsed' : ''
+                }`}
               >
                 <header className="docs-center-section-head">
-                  <h2>{section.title}</h2>
+                  {showMobileCatalogDrawer ? (
+                    <button
+                      type="button"
+                      className="docs-center-section-head-btn"
+                      aria-expanded={isMobileSectionExpanded}
+                      onClick={() => toggleMobileSection(section.title)}
+                    >
+                      <h2>{section.title}</h2>
+                      {isMobileSectionExpanded ? (
+                        <ChevronUp
+                          size={18}
+                          strokeWidth={2}
+                          className="docs-center-section-collapse-icon"
+                          aria-hidden="true"
+                        />
+                      ) : (
+                        <ChevronDown
+                          size={18}
+                          strokeWidth={2}
+                          className="docs-center-section-collapse-icon"
+                          aria-hidden="true"
+                        />
+                      )}
+                    </button>
+                  ) : (
+                    <h2>{section.title}</h2>
+                  )}
                 </header>
+                {isMobileSectionExpanded ? (
                 <div className="docs-center-section-body">
                   {section.blocks.map((block, blockIndex) => {
                     const hasTitledGroup = Boolean(block.title)
+                    const blockKey = hasTitledGroup
+                      ? buildMobileCatalogBlockKey(section.title, block.title)
+                      : ''
+                    const isMobileBlockExpanded =
+                      !showMobileCatalogDrawer
+                      || !hasTitledGroup
+                      || !mobileCollapsedBlocks.has(blockKey)
                     const wrapperClassName = hasTitledGroup
-                      ? 'docs-center-group'
+                      ? `docs-center-group${
+                          showMobileCatalogDrawer && !isMobileBlockExpanded ? ' is-collapsed' : ''
+                        }`
                       : `docs-center-items docs-center-items--flat${blockIndex > 0 ? ' docs-center-items--spaced' : ''}`
 
                     return (
@@ -1029,9 +1114,36 @@ export default function DocsCenterPage({
                       >
                         {hasTitledGroup ? (
                           <div className={wrapperClassName}>
-                            <h3 className="docs-center-group-title">
-                              {block.title}
-                            </h3>
+                            {showMobileCatalogDrawer ? (
+                              <button
+                                type="button"
+                                className="docs-center-group-title docs-center-group-title-btn"
+                                aria-expanded={isMobileBlockExpanded}
+                                onClick={() => toggleMobileBlock(section.title, block.title)}
+                              >
+                                <span>{block.title}</span>
+                                {isMobileBlockExpanded ? (
+                                  <ChevronUp
+                                    size={16}
+                                    strokeWidth={2}
+                                    className="docs-center-group-collapse-icon"
+                                    aria-hidden="true"
+                                  />
+                                ) : (
+                                  <ChevronDown
+                                    size={16}
+                                    strokeWidth={2}
+                                    className="docs-center-group-collapse-icon"
+                                    aria-hidden="true"
+                                  />
+                                )}
+                              </button>
+                            ) : (
+                              <h3 className="docs-center-group-title">
+                                {block.title}
+                              </h3>
+                            )}
+                            {isMobileBlockExpanded ? (
                             <div className="docs-center-items">
                               {block.items.map((item) => {
                                 const sourcePathParts = [section.sourceTitle, block.sourceTitle, item.sourceLabel]
@@ -1056,6 +1168,7 @@ export default function DocsCenterPage({
                                 )
                               })}
                             </div>
+                            ) : null}
                           </div>
                         ) : (
                           <div className={wrapperClassName}>
@@ -1084,8 +1197,9 @@ export default function DocsCenterPage({
                     )
                   })}
                 </div>
+                ) : null}
               </article>
-            ))
+            )})
           ) : (
             <article className="docs-center-section">
               <header className="docs-center-section-head">

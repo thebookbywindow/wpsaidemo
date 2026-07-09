@@ -1873,6 +1873,64 @@ body {
   color: #2b3242;
 }
 
+.docs-center-page--mobile-drawer .docs-center-section-head {
+  padding: 0;
+}
+
+.docs-center-page--mobile-drawer .docs-center-section-head-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+}
+
+.docs-center-page--mobile-drawer .docs-center-section-head-btn h2 {
+  margin: 0;
+  font-size: 18px;
+  flex: 1;
+  min-width: 0;
+}
+
+.docs-center-page--mobile-drawer .docs-center-section-collapse-icon {
+  flex-shrink: 0;
+  color: #94a3b8;
+}
+
+.docs-center-page--mobile-drawer .docs-center-group-title-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  font-size: 14px;
+  font-weight: inherit;
+}
+
+.docs-center-page--mobile-drawer .docs-center-group-title-btn span {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+
+.docs-center-page--mobile-drawer .docs-center-group.is-collapsed .docs-center-group-title-btn {
+  border-bottom: 0;
+}
+
+.docs-center-page--mobile-drawer .docs-center-group-collapse-icon {
+  flex-shrink: 0;
+  color: #94a3b8;
+}
+
 .docs-center-items {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
