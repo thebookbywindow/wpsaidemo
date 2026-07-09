@@ -488,7 +488,6 @@ export default function DocDetailOverlayMain({
                     icon={ListTree}
                     isOpen={leftOpen}
                     onClick={toggleLeft}
-                    showLabel
                   />
                 ) : null
               }
