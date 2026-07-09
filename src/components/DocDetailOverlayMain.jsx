@@ -34,6 +34,7 @@ import {
 } from '../utils/docDetailSectionContent'
 import { buildDocDetailArticleHeading } from '../utils/docDetailArticleHeading'
 import { hasDocDetailIndexVideo } from '../utils/docDetailIndexVideo'
+import { getDocDetailPlatformIcon } from '../utils/docDetailPlatformIcons'
 
 function escapeHtml(text) {
   return `${text ?? ''}`
@@ -415,6 +416,7 @@ export default function DocDetailOverlayMain({
   const leftDrawerHint = isZhContent ? '展开功能目录' : 'Open feature directory'
   const rightDrawerLabel = isZhContent ? '端与章节' : 'Platform & Section'
   const rightDrawerHint = isZhContent ? '选择平台与章节' : 'Choose platform and section'
+  const rightDrawerIcon = getDocDetailPlatformIcon(activePlatformId)
 
   return (
     <div
@@ -459,6 +461,7 @@ export default function DocDetailOverlayMain({
           rightHint={rightDrawerHint}
           rightOpen={rightOpen}
           onRightToggle={toggleRight}
+          rightIcon={rightDrawerIcon}
           showRight={showDetailTocSidebar}
         />
       ) : null}

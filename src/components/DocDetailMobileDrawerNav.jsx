@@ -40,6 +40,7 @@ export default function DocDetailMobileDrawerNav({
   rightHint,
   rightOpen,
   onRightToggle,
+  rightIcon: RightIcon = Layers,
   showRight = true,
 }) {
   return (
@@ -57,7 +58,7 @@ export default function DocDetailMobileDrawerNav({
           side="right"
           label={rightLabel}
           hint={rightHint}
-          icon={Layers}
+          icon={RightIcon}
           isOpen={rightOpen}
           onClick={onRightToggle}
         />
