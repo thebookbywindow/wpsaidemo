@@ -7,6 +7,7 @@ function DocDetailMobileDrawerNavButton({
   icon: Icon,
   isOpen,
   onClick,
+  showLabel = false,
 }) {
   const accessibleLabel = hint ? `${hint}：${label}` : label
 
@@ -14,8 +15,8 @@ function DocDetailMobileDrawerNavButton({
     <button
       type="button"
       className={`docs-detail-mobile-drawer-nav-btn docs-detail-mobile-drawer-nav-btn--${side}${
-        isOpen ? ' is-active' : ''
-      }`}
+        showLabel ? ' docs-detail-mobile-drawer-nav-btn--with-label' : ''
+      }${isOpen ? ' is-active' : ''}`}
       aria-label={accessibleLabel}
       aria-expanded={isOpen}
       title={accessibleLabel}
@@ -27,9 +28,14 @@ function DocDetailMobileDrawerNavButton({
         className="docs-detail-mobile-drawer-nav-btn-icon"
         aria-hidden="true"
       />
+      {showLabel ? (
+        <span className="docs-detail-mobile-drawer-nav-btn-label">{label}</span>
+      ) : null}
     </button>
   )
 }
+
+export { DocDetailMobileDrawerNavButton }
 
 export default function DocDetailMobileDrawerNav({
   leftLabel,
@@ -41,18 +47,21 @@ export default function DocDetailMobileDrawerNav({
   rightOpen,
   onRightToggle,
   rightIcon: RightIcon = Layers,
+  showLeft = true,
   showRight = true,
 }) {
   return (
     <div className="docs-detail-mobile-drawer-nav" role="toolbar" aria-label={leftLabel}>
-      <DocDetailMobileDrawerNavButton
-        side="left"
-        label={leftLabel}
-        hint={leftHint}
-        icon={ListTree}
-        isOpen={leftOpen}
-        onClick={onLeftToggle}
-      />
+      {showLeft ? (
+        <DocDetailMobileDrawerNavButton
+          side="left"
+          label={leftLabel}
+          hint={leftHint}
+          icon={ListTree}
+          isOpen={leftOpen}
+          onClick={onLeftToggle}
+        />
+      ) : null}
       {showRight ? (
         <DocDetailMobileDrawerNavButton
           side="right"

@@ -16,6 +16,7 @@ export default function DocsCenterHeroSearch({
   results,
   onSelectResult,
   onSubmitSearch,
+  leadingAction = null,
 }) {
   const showDropdown = isDropdownOpen && Boolean(keyword)
   const canSubmitSearch = !keyword || results.length > 0
@@ -66,9 +67,16 @@ export default function DocsCenterHeroSearch({
   ) : null
 
   return (
-    <div className="docs-center-search-wrap">
+    <div
+      className={`docs-center-search-wrap${
+        leadingAction ? ' docs-center-search-wrap--with-leading-action' : ''
+      }`}
+    >
       <div className="docs-center-search-combobox" ref={comboboxRef}>
         <label className="docs-center-search-input-wrap" aria-label={searchSrOnly}>
+          {leadingAction ? (
+            <span className="docs-center-search-leading-action">{leadingAction}</span>
+          ) : null}
           <input
             type="search"
             role="combobox"

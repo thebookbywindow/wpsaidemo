@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { ListTree } from 'lucide-react'
 import DocDetailArticleBreadcrumb, {
   DocDetailDocCatalogIndex,
   getDocDetailDisplayTitle,
 } from './DocDetailArticleBreadcrumb'
 import DocDetailArticlePager from './DocDetailArticlePager'
 import DocDetailMobileDrawer from './DocDetailMobileDrawer'
-import DocDetailMobileDrawerNav from './DocDetailMobileDrawerNav'
+import { DocDetailMobileDrawerNavButton } from './DocDetailMobileDrawerNav'
 import DocDetailSectionArticle from './DocDetailSectionArticle'
 import DocDetailTocPanel from './DocDetailTocPanel'
 import DocsDetailCatalogSidebar from './DocsDetailCatalogSidebar'
@@ -466,20 +467,6 @@ export default function DocDetailOverlayMain({
           onLeafClick={handleCatalogLeafClick}
         />
       </DocDetailMobileDrawer>
-      {isMobile && usesStructuredSections ? (
-        <DocDetailMobileDrawerNav
-          leftLabel={leftDrawerLabel}
-          leftHint={leftDrawerHint}
-          leftOpen={leftOpen}
-          onLeftToggle={toggleLeft}
-          rightLabel={rightDrawerLabel}
-          rightHint={rightDrawerHint}
-          rightOpen={rightOpen}
-          onRightToggle={toggleRight}
-          rightIcon={rightDrawerIcon}
-          showRight={showDetailTocSidebar}
-        />
-      ) : null}
       <div className="docs-center-overlay-body docs-center-md">
         <div className="docs-detail-article-panel">
           {usesStructuredSections ? (
@@ -492,6 +479,31 @@ export default function DocDetailOverlayMain({
               onRootClick={onBreadcrumbRootClick}
               onDocClick={handleBreadcrumbDocClick}
               ariaLabel={articleBreadcrumbAriaLabel}
+              leadingAction={
+                isMobile ? (
+                  <DocDetailMobileDrawerNavButton
+                    side="left"
+                    label={leftDrawerLabel}
+                    hint={leftDrawerHint}
+                    icon={ListTree}
+                    isOpen={leftOpen}
+                    onClick={toggleLeft}
+                    showLabel
+                  />
+                ) : null
+              }
+              trailingAction={
+                isMobile && showDetailTocSidebar ? (
+                  <DocDetailMobileDrawerNavButton
+                    side="right"
+                    label={rightDrawerLabel}
+                    hint={rightDrawerHint}
+                    icon={rightDrawerIcon}
+                    isOpen={rightOpen}
+                    onClick={toggleRight}
+                  />
+                ) : null
+              }
             />
           ) : null}
           <div

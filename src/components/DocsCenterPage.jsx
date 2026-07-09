@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
+import { ListTree } from 'lucide-react'
 import DocDetailMobileDrawer from './DocDetailMobileDrawer'
-import DocDetailMobileDrawerNav from './DocDetailMobileDrawerNav'
+import { DocDetailMobileDrawerNavButton } from './DocDetailMobileDrawerNav'
 import DocDetailOverlayMain from './DocDetailOverlayMain'
 import DocsCenterHeroSearch from './DocsCenterHeroSearch'
 import DocsDetailCatalogSidebar from './DocsDetailCatalogSidebar'
@@ -956,6 +957,18 @@ export default function DocsCenterPage({
             results={heroSearchResults}
             onSelectResult={handleHeroSearchSelect}
             onSubmitSearch={handleHeroSearch}
+            leadingAction={
+              showMobileCatalogDrawer ? (
+                <DocDetailMobileDrawerNavButton
+                  side="left"
+                  label={leftDrawerLabel}
+                  hint={leftDrawerHint}
+                  icon={ListTree}
+                  isOpen={leftOpen}
+                  onClick={toggleLeft}
+                />
+              ) : null
+            }
           />
         </div>
       </section>
@@ -980,17 +993,6 @@ export default function DocsCenterPage({
           >
             {catalogSidebar}
           </DocDetailMobileDrawer>
-          <DocDetailMobileDrawerNav
-            leftLabel={leftDrawerLabel}
-            leftHint={leftDrawerHint}
-            leftOpen={leftOpen}
-            onLeftToggle={toggleLeft}
-            rightLabel=""
-            rightHint=""
-            rightOpen={false}
-            onRightToggle={() => {}}
-            showRight={false}
-          />
         </>
       ) : null}
 

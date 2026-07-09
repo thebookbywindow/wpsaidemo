@@ -97,6 +97,8 @@ export default function DocDetailArticleBreadcrumb({
   onRootClick,
   onDocClick,
   ariaLabel,
+  leadingAction = null,
+  trailingAction = null,
 }) {
   const items = []
 
@@ -137,23 +139,41 @@ export default function DocDetailArticleBreadcrumb({
   }
 
   return (
-    <nav className="docs-detail-breadcrumb" aria-label={ariaLabel}>
-      {items.map((item, index) => (
-        <span key={item.key} className="docs-detail-breadcrumb-item">
-          {index > 0 ? (
-            <ChevronRight size={14} className="docs-detail-breadcrumb-sep" aria-hidden="true" />
-          ) : null}
-          {item.clickable ? (
-            <button type="button" className="docs-detail-breadcrumb-link" onClick={item.onClick}>
-              {item.label}
-            </button>
-          ) : (
-            <span className={index === items.length - 1 ? 'docs-detail-breadcrumb-current' : ''}>
-              {item.label}
-            </span>
-          )}
-        </span>
-      ))}
+    <nav
+      className={`docs-detail-breadcrumb${
+        leadingAction ? ' docs-detail-breadcrumb--with-leading-action' : ''
+      }${trailingAction ? ' docs-detail-breadcrumb--with-trailing-action' : ''}`}
+      aria-label={ariaLabel}
+    >
+      {leadingAction ? (
+        <>
+          <span className="docs-detail-breadcrumb-leading">{leadingAction}</span>
+          <span className="docs-detail-breadcrumb-sep docs-detail-breadcrumb-sep--leading" aria-hidden="true">
+            |
+          </span>
+        </>
+      ) : null}
+      <div className="docs-detail-breadcrumb-trail">
+        {items.map((item, index) => (
+          <span key={item.key} className="docs-detail-breadcrumb-item">
+            {index > 0 ? (
+              <ChevronRight size={14} className="docs-detail-breadcrumb-sep" aria-hidden="true" />
+            ) : null}
+            {item.clickable ? (
+              <button type="button" className="docs-detail-breadcrumb-link" onClick={item.onClick}>
+                {item.label}
+              </button>
+            ) : (
+              <span className={index === items.length - 1 ? 'docs-detail-breadcrumb-current' : ''}>
+                {item.label}
+              </span>
+            )}
+          </span>
+        ))}
+      </div>
+      {trailingAction ? (
+        <span className="docs-detail-breadcrumb-trailing">{trailingAction}</span>
+      ) : null}
     </nav>
   )
 }
