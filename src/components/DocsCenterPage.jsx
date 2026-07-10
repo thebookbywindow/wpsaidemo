@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import { ChevronDown, ChevronUp, ListTree } from 'lucide-react'
 import DocDetailMobileDrawer from './DocDetailMobileDrawer'
-import { DocDetailMobileDrawerNavButton } from './DocDetailMobileDrawerNav'
 import DocDetailOverlayMain from './DocDetailOverlayMain'
 import DocsCenterHeroSearch from './DocsCenterHeroSearch'
 import DocsDetailCatalogSidebar from './DocsDetailCatalogSidebar'
@@ -1000,18 +999,6 @@ export default function DocsCenterPage({
             results={heroSearchResults}
             onSelectResult={handleHeroSearchSelect}
             onSubmitSearch={handleHeroSearch}
-            leadingAction={
-              showMobileCatalogDrawer ? (
-                <DocDetailMobileDrawerNavButton
-                  side="left"
-                  label={leftDrawerLabel}
-                  hint={leftDrawerHint}
-                  icon={ListTree}
-                  isOpen={leftOpen}
-                  onClick={toggleLeft}
-                />
-              ) : null
-            }
           />
         </div>
       </section>
@@ -1223,6 +1210,21 @@ export default function DocsCenterPage({
           )}
         </section>
       </main>
+
+      {showMobileCatalogDrawer ? (
+        <div className="docs-center-float-actions docs-center-float-actions--left">
+          <button
+            type="button"
+            className={leftOpen ? 'is-active' : ''}
+            aria-label={`${leftDrawerHint}：${leftDrawerLabel}`}
+            aria-expanded={leftOpen}
+            title={`${leftDrawerHint}：${leftDrawerLabel}`}
+            onClick={toggleLeft}
+          >
+            <ListTree size={20} strokeWidth={2.2} aria-hidden="true" />
+          </button>
+        </div>
+      ) : null}
 
       <div className="docs-center-float-actions">
         <button
