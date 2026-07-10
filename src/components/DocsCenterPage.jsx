@@ -489,7 +489,10 @@ export default function DocsCenterPage({
   const [scrollLinkedTarget, setScrollLinkedTarget] = useState(null)
   const [mobileCollapsedSections, setMobileCollapsedSections] = useState(() => new Set())
   const [mobileCollapsedBlocks, setMobileCollapsedBlocks] = useState(() => new Set())
+  const [catalogEdgeTabTop, setCatalogEdgeTabTop] = useState(null)
   const sidebarRef = useRef(null)
+  const firstSectionTitleRef = useRef(null)
+  const catalogEdgeTabRef = useRef(null)
   const scrollSpyFrameRef = useRef(0)
   const scrollSpyLockRef = useRef(null)
   const scrollSpyUnlockTimeoutRef = useRef(0)
@@ -904,6 +907,40 @@ export default function DocsCenterPage({
     closeAll()
   }, [closeAll, currentDocMeta])
 
+  useEffect(() => {
+    if (!showMobileCatalogDrawer) {
+      setCatalogEdgeTabTop(null)
+      return undefined
+    }
+
+    const syncCatalogEdgeTabTop = () => {
+      const titleEl = firstSectionTitleRef.current
+      const tabEl = catalogEdgeTabRef.current
+      if (!titleEl || !tabEl) {
+        return
+      }
+
+      const titleRect = titleEl.getBoundingClientRect()
+      const tabHeight = tabEl.offsetHeight || 40
+      const topAtScrollZero =
+        titleRect.top
+        + window.scrollY
+        + titleRect.height / 2
+        - tabHeight / 2
+
+      setCatalogEdgeTabTop(Math.max(0, Math.round(topAtScrollZero)))
+    }
+
+    syncCatalogEdgeTabTop()
+    const frameId = window.requestAnimationFrame(syncCatalogEdgeTabTop)
+    window.addEventListener('resize', syncCatalogEdgeTabTop)
+
+    return () => {
+      window.cancelAnimationFrame(frameId)
+      window.removeEventListener('resize', syncCatalogEdgeTabTop)
+    }
+  }, [showMobileCatalogDrawer, visibleSections, heroFilterKeyword, leftOpen])
+
   const handleCatalogBlockNavigateMobile = useCallback((sectionTitle, blockTitle) => {
     setMobileCollapsedSections((previous) => {
       const next = new Set(previous)
@@ -1031,9 +1068,10 @@ export default function DocsCenterPage({
 
         <section className="docs-center-content">
           {visibleSections.length ? (
-            visibleSections.map((section) => {
+            visibleSections.map((section, sectionIndex) => {
               const isMobileSectionExpanded =
                 !showMobileCatalogDrawer || !mobileCollapsedSections.has(section.title)
+              const isFirstVisibleSection = sectionIndex === 0
 
               return (
               <article
@@ -1051,7 +1089,9 @@ export default function DocsCenterPage({
                       aria-expanded={isMobileSectionExpanded}
                       onClick={() => toggleMobileSection(section.title)}
                     >
-                      <h2>{section.title}</h2>
+                      <h2 ref={isFirstVisibleSection ? firstSectionTitleRef : undefined}>
+                        {section.title}
+                      </h2>
                       {isMobileSectionExpanded ? (
                         <ChevronUp
                           size={18}
@@ -1212,16 +1252,20 @@ export default function DocsCenterPage({
       </main>
 
       {showMobileCatalogDrawer ? (
-        <div className="docs-center-float-actions docs-center-float-actions--left">
+        <div
+          ref={catalogEdgeTabRef}
+          className="docs-center-catalog-edge-tab"
+          style={catalogEdgeTabTop == null ? undefined : { top: `${catalogEdgeTabTop}px` }}
+        >
           <button
             type="button"
-            className={leftOpen ? 'is-active' : ''}
+            className={`docs-center-catalog-edge-tab-btn${leftOpen ? ' is-active' : ''}`}
             aria-label={`${leftDrawerHint}：${leftDrawerLabel}`}
             aria-expanded={leftOpen}
             title={`${leftDrawerHint}：${leftDrawerLabel}`}
             onClick={toggleLeft}
           >
-            <ListTree size={20} strokeWidth={2.2} aria-hidden="true" />
+            <ListTree size={16} strokeWidth={2.2} aria-hidden="true" />
           </button>
         </div>
       ) : null}
