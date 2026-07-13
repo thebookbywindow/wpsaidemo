@@ -869,7 +869,15 @@ export default function DocsCenterPage({
     onBlockSelect: handleCatalogBlockNavigate,
   })
 
+  const isHeroSearchResetMode = Boolean(heroMatchKeyword) && !heroSearchMatchKeyword
+
   const handleHeroSearch = () => {
+    if (isHeroSearchResetMode) {
+      setHeroFilterKeyword('')
+      setHeroSearchDropdownOpen(false)
+      return
+    }
+
     if (heroSearchMatchKeyword && !heroSearchResults.length) {
       return
     }
@@ -1029,7 +1037,12 @@ export default function DocsCenterPage({
             isDropdownOpen={isHeroSearchDropdownOpen}
             onDropdownOpenChange={setHeroSearchDropdownOpen}
             searchPlaceholder={docsUiText.heroSearchPlaceholder}
-            searchButtonLabel={docsUiText.heroSearchButton}
+            searchButtonLabel={
+              isHeroSearchResetMode
+                ? docsUiText.heroSearchResetButton
+                : docsUiText.heroSearchButton
+            }
+            isResetMode={isHeroSearchResetMode}
             searchSrOnly={docsUiText.searchSrOnly}
             emptyResultsText={docsUiText.heroSearchEmptyResults}
             keyword={heroSearchMatchKeyword}

@@ -16,10 +16,11 @@ export default function DocsCenterHeroSearch({
   results,
   onSelectResult,
   onSubmitSearch,
+  isResetMode = false,
   leadingAction = null,
 }) {
   const showDropdown = isDropdownOpen && Boolean(keyword)
-  const canSubmitSearch = !keyword || results.length > 0
+  const canSubmitSearch = isResetMode || !keyword || results.length > 0
   const dropdownStyle = useFloatingListboxPosition({
     anchorRef: comboboxRef,
     isOpen: showDropdown,
@@ -104,7 +105,7 @@ export default function DocsCenterHeroSearch({
       {dropdown ? createPortal(dropdown, document.body) : null}
       <button
         type="button"
-        className="docs-center-search-btn"
+        className={`docs-center-search-btn${isResetMode ? ' docs-center-search-btn--reset' : ''}`}
         disabled={!canSubmitSearch}
         aria-disabled={!canSubmitSearch}
         onClick={onSubmitSearch}
