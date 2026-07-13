@@ -2406,7 +2406,7 @@ body {
 
 .docs-detail-breadcrumb {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 4px;
   margin: 0;
@@ -2420,18 +2420,19 @@ body {
 }
 
 .docs-detail-breadcrumb-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  min-width: 0;
+  display: inline;
+  white-space: nowrap;
 }
 
 .docs-detail-breadcrumb-sep {
+  display: inline;
+  vertical-align: middle;
+  margin: 0 2px;
   color: #cbd5e0;
-  flex-shrink: 0;
 }
 
 .docs-detail-breadcrumb-link {
+  display: inline;
   border: 0;
   background: transparent;
   padding: 0;
@@ -2439,6 +2440,7 @@ body {
   color: var(--purple-600);
   cursor: pointer;
   transition: opacity 0.15s ease;
+  vertical-align: baseline;
 }
 
 .docs-detail-breadcrumb-link:hover {
@@ -2447,8 +2449,10 @@ body {
 }
 
 .docs-detail-breadcrumb-current {
+  display: inline;
   color: var(--text);
   font-weight: 600;
+  vertical-align: baseline;
 }
 
 .docs-detail-breadcrumb-leading {
@@ -2466,12 +2470,16 @@ body {
 }
 
 .docs-detail-breadcrumb-trail {
-  display: flex;
   flex: 1;
   min-width: 0;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 4px;
+  overflow: hidden;
+}
+
+.docs-detail-breadcrumb-trail-inner {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .docs-detail-breadcrumb-trailing {
@@ -3931,13 +3939,6 @@ body {
   .docs-detail-breadcrumb .docs-detail-mobile-drawer-nav-btn .docs-detail-mobile-drawer-nav-btn-icon,
   .docs-detail-breadcrumb .docs-detail-mobile-drawer-nav-btn .docs-detail-mobile-drawer-nav-btn-label {
     color: var(--purple-600);
-  }
-
-  .docs-detail-breadcrumb-current {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 100%;
   }
 
   .docs-detail-catalog-sidebar h3,

@@ -138,6 +138,8 @@ export default function DocDetailArticleBreadcrumb({
     }
   }
 
+  const trailTitle = items.map((item) => item.label).join(' / ')
+
   return (
     <nav
       className={`docs-detail-breadcrumb${
@@ -153,23 +155,25 @@ export default function DocDetailArticleBreadcrumb({
           </span>
         </>
       ) : null}
-      <div className="docs-detail-breadcrumb-trail">
-        {items.map((item, index) => (
-          <span key={item.key} className="docs-detail-breadcrumb-item">
-            {index > 0 ? (
-              <ChevronRight size={14} className="docs-detail-breadcrumb-sep" aria-hidden="true" />
-            ) : null}
-            {item.clickable ? (
-              <button type="button" className="docs-detail-breadcrumb-link" onClick={item.onClick}>
-                {item.label}
-              </button>
-            ) : (
-              <span className={index === items.length - 1 ? 'docs-detail-breadcrumb-current' : ''}>
-                {item.label}
-              </span>
-            )}
-          </span>
-        ))}
+      <div className="docs-detail-breadcrumb-trail" title={trailTitle}>
+        <span className="docs-detail-breadcrumb-trail-inner">
+          {items.map((item, index) => (
+            <span key={item.key} className="docs-detail-breadcrumb-item">
+              {index > 0 ? (
+                <ChevronRight size={14} className="docs-detail-breadcrumb-sep" aria-hidden="true" />
+              ) : null}
+              {item.clickable ? (
+                <button type="button" className="docs-detail-breadcrumb-link" onClick={item.onClick}>
+                  {item.label}
+                </button>
+              ) : (
+                <span className={index === items.length - 1 ? 'docs-detail-breadcrumb-current' : ''}>
+                  {item.label}
+                </span>
+              )}
+            </span>
+          ))}
+        </span>
       </div>
       {trailingAction ? (
         <span className="docs-detail-breadcrumb-trailing">{trailingAction}</span>
