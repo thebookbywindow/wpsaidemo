@@ -871,6 +871,18 @@ export default function DocsCenterPage({
 
   const isHeroSearchResetMode = Boolean(heroMatchKeyword) && !heroSearchMatchKeyword
 
+  const handleHeroSearchKeywordChange = (value) => {
+    setHeroSearchKeyword(value)
+
+    if (!value.trim()) {
+      setHeroFilterKeyword('')
+      setHeroSearchDropdownOpen(false)
+      return
+    }
+
+    setHeroSearchDropdownOpen(true)
+  }
+
   const handleHeroSearch = () => {
     if (isHeroSearchResetMode) {
       setHeroFilterKeyword('')
@@ -1033,7 +1045,7 @@ export default function DocsCenterPage({
           <DocsCenterHeroSearch
             comboboxRef={heroSearchComboboxRef}
             searchKeyword={heroSearchKeyword}
-            onSearchKeywordChange={setHeroSearchKeyword}
+            onSearchKeywordChange={handleHeroSearchKeywordChange}
             isDropdownOpen={isHeroSearchDropdownOpen}
             onDropdownOpenChange={setHeroSearchDropdownOpen}
             searchPlaceholder={docsUiText.heroSearchPlaceholder}

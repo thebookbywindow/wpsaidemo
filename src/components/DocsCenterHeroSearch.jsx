@@ -87,8 +87,16 @@ export default function DocsCenterHeroSearch({
             placeholder={searchPlaceholder}
             value={searchKeyword}
             onChange={(event) => {
-              onSearchKeywordChange(event.target.value)
-              onDropdownOpenChange(true)
+              const nextValue = event.target.value
+              onSearchKeywordChange(nextValue)
+              onDropdownOpenChange(Boolean(nextValue.trim()))
+            }}
+            onSearch={(event) => {
+              const nextValue = event.currentTarget.value
+              if (!nextValue) {
+                onSearchKeywordChange('')
+                onDropdownOpenChange(false)
+              }
             }}
             onFocus={() => onDropdownOpenChange(true)}
             onKeyDown={(event) => {
