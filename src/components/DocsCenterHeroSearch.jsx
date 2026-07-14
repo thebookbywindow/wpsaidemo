@@ -1,6 +1,8 @@
+import { useRef } from 'react'
 import { createPortal } from 'react-dom'
+import { RotateCcw, Search } from 'lucide-react'
 import { useFloatingListboxPosition } from '../hooks/useFloatingListboxPosition'
-import { getCatalogSearchResultMetaLabel } from '../utils/docsCenterSearch'
+import { getCatalogSearchResultMetaLabel, shouldHeroSearchClearFilter } from '../utils/docsCenterSearch'
 
 export default function DocsCenterHeroSearch({
   comboboxRef,
@@ -16,17 +18,30 @@ export default function DocsCenterHeroSearch({
   results,
   onSelectResult,
   onSubmitSearch,
+  onSearchClear,
   isResetMode = false,
   leadingAction = null,
 }) {
   const showDropdown = isDropdownOpen && Boolean(keyword)
   const canSubmitSearch = isResetMode || !keyword || results.length > 0
+  const isManualDeleteKeyRef = useRef(false)
   const dropdownStyle = useFloatingListboxPosition({
     anchorRef: comboboxRef,
     isOpen: showDropdown,
     maxHeight: 320,
     gap: 6,
   })
+
+  const handleKeywordBecomesEmpty = (event) => {
+    const shouldClearFilter = shouldHeroSearchClearFilter({
+      inputType: event.nativeEvent?.inputType,
+      isManualDeleteKey: isManualDeleteKeyRef.current,
+    })
+    isManualDeleteKeyRef.current = false
+    if (shouldClearFilter) {
+      onSearchClear?.()
+    }
+  }
 
   const dropdown = showDropdown && dropdownStyle ? (
     <div
@@ -87,19 +102,24 @@ export default function DocsCenterHeroSearch({
             placeholder={searchPlaceholder}
             value={searchKeyword}
             onChange={(event) => {
-              const nextValue = event.target.value
-              onSearchKeywordChange(nextValue)
-              onDropdownOpenChange(Boolean(nextValue.trim()))
+              const value = event.target.value
+              onSearchKeywordChange(value)
+              onDropdownOpenChange(true)
+              if (!value) {
+                handleKeywordBecomesEmpty(event)
+              } else {
+                isManualDeleteKeyRef.current = false
+              }
             }}
             onSearch={(event) => {
-              const nextValue = event.currentTarget.value
-              if (!nextValue) {
-                onSearchKeywordChange('')
-                onDropdownOpenChange(false)
+              if (!event.currentTarget.value) {
+                onSearchClear?.()
               }
             }}
             onFocus={() => onDropdownOpenChange(true)}
             onKeyDown={(event) => {
+              isManualDeleteKeyRef.current =
+                event.key === 'Backspace' || event.key === 'Delete'
               if (event.key === 'Enter' && canSubmitSearch) {
                 onSubmitSearch()
               }
@@ -116,9 +136,15 @@ export default function DocsCenterHeroSearch({
         className={`docs-center-search-btn${isResetMode ? ' docs-center-search-btn--reset' : ''}`}
         disabled={!canSubmitSearch}
         aria-disabled={!canSubmitSearch}
+        aria-label={searchButtonLabel}
+        title={searchButtonLabel}
         onClick={onSubmitSearch}
       >
-        {searchButtonLabel}
+        {isResetMode ? (
+          <RotateCcw size={18} strokeWidth={2.25} aria-hidden="true" />
+        ) : (
+          <Search size={18} strokeWidth={2.25} aria-hidden="true" />
+        )}
       </button>
     </div>
   )

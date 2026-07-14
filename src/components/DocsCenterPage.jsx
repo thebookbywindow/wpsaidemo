@@ -871,18 +871,6 @@ export default function DocsCenterPage({
 
   const isHeroSearchResetMode = Boolean(heroMatchKeyword) && !heroSearchMatchKeyword
 
-  const handleHeroSearchKeywordChange = (value) => {
-    setHeroSearchKeyword(value)
-
-    if (!value.trim()) {
-      setHeroFilterKeyword('')
-      setHeroSearchDropdownOpen(false)
-      return
-    }
-
-    setHeroSearchDropdownOpen(true)
-  }
-
   const handleHeroSearch = () => {
     if (isHeroSearchResetMode) {
       setHeroFilterKeyword('')
@@ -897,6 +885,11 @@ export default function DocsCenterPage({
     setHeroFilterKeyword(heroSearchKeyword)
     setHeroSearchDropdownOpen(false)
   }
+
+  const handleHeroSearchClear = useCallback(() => {
+    setHeroFilterKeyword('')
+    setHeroSearchDropdownOpen(false)
+  }, [setHeroSearchDropdownOpen])
 
   const handleBreadcrumbRootClick = () => {
     navigateTo(getLocaleDocsPath(currentLocale))
@@ -1045,7 +1038,7 @@ export default function DocsCenterPage({
           <DocsCenterHeroSearch
             comboboxRef={heroSearchComboboxRef}
             searchKeyword={heroSearchKeyword}
-            onSearchKeywordChange={handleHeroSearchKeywordChange}
+            onSearchKeywordChange={setHeroSearchKeyword}
             isDropdownOpen={isHeroSearchDropdownOpen}
             onDropdownOpenChange={setHeroSearchDropdownOpen}
             searchPlaceholder={docsUiText.heroSearchPlaceholder}
@@ -1061,6 +1054,7 @@ export default function DocsCenterPage({
             results={heroSearchResults}
             onSelectResult={handleHeroSearchSelect}
             onSubmitSearch={handleHeroSearch}
+            onSearchClear={handleHeroSearchClear}
           />
         </div>
       </section>

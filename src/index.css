@@ -1238,7 +1238,7 @@ body {
   max-width: 620px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 110px;
+  grid-template-columns: 1fr 52px;
   gap: 0;
   border: 1px solid #dbe3ef;
   border-radius: 2px;
@@ -1344,6 +1344,9 @@ body {
 }
 
 .docs-center-search-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 0;
   background: var(--purple-600);
   color: #fff;
@@ -1351,6 +1354,10 @@ body {
   font-weight: 600;
   cursor: pointer;
   transition: background 0.15s ease;
+}
+
+.docs-center-search-btn svg {
+  flex-shrink: 0;
 }
 
 .docs-center-search-btn:hover {
@@ -3623,7 +3630,7 @@ body {
   .docs-center-search-wrap {
     width: 100%;
     max-width: none;
-    grid-template-columns: minmax(0, 1fr) 96px;
+    grid-template-columns: minmax(0, 1fr) 48px;
     border-radius: 10px;
     overflow: hidden;
   }
@@ -3653,8 +3660,7 @@ body {
 
   .docs-center-search-btn {
     min-height: 44px;
-    padding: 0 12px;
-    font-size: 14px;
+    padding: 0;
   }
 
   .docs-center-search-input-wrap input {
@@ -3878,7 +3884,7 @@ body {
   }
 
   .docs-center-search-wrap {
-    grid-template-columns: minmax(0, 1fr) 76px;
+    grid-template-columns: minmax(0, 1fr) 44px;
     border-radius: 8px;
   }
 
@@ -3887,8 +3893,7 @@ body {
   }
 
   .docs-center-search-btn {
-    padding: 0 8px;
-    font-size: 13px;
+    padding: 0;
   }
 
   .docs-center-overlay-main {

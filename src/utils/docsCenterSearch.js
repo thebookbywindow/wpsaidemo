@@ -248,3 +248,17 @@ export function resolveHeroSearchScrollTarget(sectionModels, keyword) {
     blockTitle: matchedBlock?.title ?? '',
   }
 }
+
+/** 点搜索框原生 × 清空时应重置目录筛选；键盘手动删空则否。 */
+export function shouldHeroSearchClearFilter({ inputType = '', isManualDeleteKey = false } = {}) {
+  if (isManualDeleteKey) {
+    return false
+  }
+
+  const normalizedInputType = `${inputType ?? ''}`
+  if (normalizedInputType.startsWith('delete')) {
+    return false
+  }
+
+  return true
+}
