@@ -1,6 +1,6 @@
-import { Blocks, Bot, Cloud, FileText, Languages, Presentation, Sparkles, SquarePen, TableProperties, WandSparkles } from 'lucide-react'
 import { Fragment, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import DocsCenterPage from './components/DocsCenterPage'
+import HomePage from './components/HomePage'
 import {
   encyclopediaEntriesByLocale,
   encyclopediaUiTextByLocale,
@@ -31,19 +31,19 @@ import { ensureTrailingSlash, joinPath } from './utils/pathUrl'
 import { normalizeLocaleCode, toUrlLocale } from './utils/localeUrl'
 
 const products = [
-  { name: 'PDF Tools', desc: 'Convert, edit, compress PDFs', color: '#e74c3c', iconKey: 'pdf' },
-  { name: 'AI Writing', desc: 'Write faster with AI assistance', color: '#534ab7', iconKey: 'writing' },
-  { name: 'AI Slides', desc: 'Create stunning presentations', color: '#d24726', iconKey: 'slides' },
-  { name: 'AI Sheets', desc: 'Spreadsheets powered by AI', color: '#217346', iconKey: 'sheets' },
-  { name: 'AI Tools', desc: 'Productivity tools for everyone', color: '#185fa5', iconKey: 'tools' },
+  { name: 'PDF Tools', desc: 'WPS PDF: edit PDF, PDF to Word, convert & compress', color: '#e74c3c', iconKey: 'pdf' },
+  { name: 'AI Writing', desc: 'WPS Writer for Word docs with AI assistance', color: '#534ab7', iconKey: 'writing' },
+  { name: 'AI Slides', desc: 'PowerPoint-ready slides with AI Slides tools', color: '#d24726', iconKey: 'slides' },
+  { name: 'AI Sheets', desc: 'Excel spreadsheets with AI formula help', color: '#217346', iconKey: 'sheets' },
+  { name: 'AI Tools', desc: 'Online WPS tools for everyday office tasks', color: '#185fa5', iconKey: 'tools' },
 ]
 
 const productsZh = [
-  { name: 'PDF Tools', displayName: 'PDF 工具', desc: '支持 PDF 转换、编辑与压缩', color: '#e74c3c', iconKey: 'pdf' },
-  { name: 'AI Writing', displayName: 'AI 写作', desc: '借助 AI 更快完成内容创作', color: '#534ab7', iconKey: 'writing' },
-  { name: 'AI Slides', displayName: 'AI 演示', desc: '快速生成更出色的演示文稿', color: '#d24726', iconKey: 'slides' },
-  { name: 'AI Sheets', displayName: 'AI 表格', desc: 'AI 驱动的数据分析与表格能力', color: '#217346', iconKey: 'sheets' },
-  { name: 'AI Tools', displayName: 'AI 工具', desc: '覆盖日常办公场景的效率工具', color: '#185fa5', iconKey: 'tools' },
+  { name: 'PDF Tools', displayName: 'WPS PDF', desc: 'PDF 编辑、PDF 转 Word、转换与压缩', color: '#e74c3c', iconKey: 'pdf' },
+  { name: 'AI Writing', displayName: 'WPS 文字', desc: '面向 Word 文档的 AI 写作与编辑', color: '#534ab7', iconKey: 'writing' },
+  { name: 'AI Slides', displayName: 'AI 演示', desc: 'PowerPoint 演示与 AI Slides 工具', color: '#d24726', iconKey: 'slides' },
+  { name: 'AI Sheets', displayName: 'AI 表格', desc: 'Excel 表格与 AI 公式辅助', color: '#217346', iconKey: 'sheets' },
+  { name: 'AI Tools', displayName: '在线工具', desc: 'WPS 在线办公高频工具', color: '#185fa5', iconKey: 'tools' },
 ]
 
 const templateMenuSections = [
@@ -119,21 +119,6 @@ const featuresZh = [
     iconKey: 'tools',
   },
 ]
-
-const PRODUCT_ICON_MAP = {
-  pdf: FileText,
-  writing: SquarePen,
-  slides: Presentation,
-  sheets: TableProperties,
-  tools: WandSparkles,
-}
-
-const FEATURE_ICON_MAP = {
-  ai: Bot,
-  languages: Languages,
-  cloud: Cloud,
-  tools: Blocks,
-}
 
 const desktopDownloadItems = [
   {
@@ -3990,158 +3975,15 @@ function App() {
 
       <main>
         {pageType === 'home' ? (
-          <>
-            <section className="home-hero-section px-6 py-[72px] text-center">
-          <div className="home-section-inner home-hero-inner mx-auto w-full max-w-[1160px]">
-            <p className="home-hero-badge mx-auto mb-4 inline-flex rounded-[20px] bg-[#cecbf6] px-3 py-1 text-[12px] font-semibold text-[#3c3489]">
-              {uiText.home.trustedBadge}
-            </p>
-            <h1 className="home-hero-title mx-auto max-w-3xl text-[clamp(28px,4vw,44px)] font-extrabold leading-[1.2] tracking-[-0.04em] text-[#1a202c]">
-              {uiText.home.heroTitle}
-            </h1>
-            <p className="home-hero-desc mx-auto mt-4 max-w-[640px] text-[18px] text-[#4a5568]">
-              {uiText.home.heroDesc}
-            </p>
-            <div className="home-hero-actions mt-7 flex flex-wrap items-center justify-center gap-3">
-              <button
-                className="home-primary-btn rounded-[10px] bg-[#534ab7] px-7 py-[13px] text-[16px] font-semibold text-white transition hover:bg-[#3c3489]"
-                type="button"
-              >
-                  {uiText.nav.getStartedFree}
-              </button>
-              <button
-                className="home-secondary-btn rounded-[10px] border border-[#e2e8f0] bg-transparent px-7 py-[13px] text-[16px] font-semibold text-[#1a202c] transition hover:border-[#7f77dd] hover:bg-[#eeedfe] hover:text-[#534ab7]"
-                type="button"
-              >
-                {uiText.home.seeHowItWorks}
-              </button>
-        </div>
-          </div>
-            </section>
-
-            <section className="home-stats-section border-b border-[#e2e8f0] bg-white py-6">
-          <div className="home-section-inner home-stats-panel mx-auto grid w-full max-w-[1160px] grid-cols-2 gap-0 px-6 text-center md:grid-cols-4">
-            <div className="home-stat-item flex flex-col gap-1">
-              <strong className="home-stat-value text-[26px] font-bold text-[#534ab7]">500M+</strong>
-              <span className="home-stat-label text-[12px] text-[#a0aec0]">{uiText.home.stats.activeUsers}</span>
-            </div>
-            <div className="home-stat-item flex flex-col gap-1">
-              <strong className="home-stat-value text-[26px] font-bold text-[#534ab7]">200+</strong>
-              <span className="home-stat-label text-[12px] text-[#a0aec0]">{uiText.home.stats.countries}</span>
-            </div>
-            <div className="home-stat-item flex flex-col gap-1">
-              <strong className="home-stat-value text-[26px] font-bold text-[#534ab7]">20</strong>
-              <span className="home-stat-label text-[12px] text-[#a0aec0]">{uiText.home.stats.languages}</span>
-            </div>
-            <div className="home-stat-item flex flex-col gap-1">
-              <strong className="home-stat-value text-[26px] font-bold text-[#534ab7]">1B+</strong>
-              <span className="home-stat-label text-[12px] text-[#a0aec0]">{uiText.home.stats.filesProcessed}</span>
-            </div>
-          </div>
-            </section>
-
-            <section className="home-products-section px-6 py-12">
-          <div className="home-section-inner mx-auto w-full max-w-[1160px]">
-            <h2 className="home-section-title mb-8 text-center text-[clamp(20px,2.5vw,26px)] font-semibold text-[#1a202c]">
-              {uiText.home.ourProducts}
-            </h2>
-            <div className="home-products-grid grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
-              {homeProductCards.map((item) => {
-                const ProductIcon = PRODUCT_ICON_MAP[item.iconKey] ?? Sparkles
-
-                return (
-                  <a
-                    key={item.name}
-                    className="home-product-card group relative overflow-hidden rounded-[14px] border border-[#e2e8f0] bg-white p-6 transition hover:-translate-y-[3px] hover:border-[#d7d3fb] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)]"
-                    href={item.targetPath}
-                    onClick={(event) => {
-                      event.preventDefault()
-                      navigateTo(item.targetPath)
-                    }}
-                  >
-                    <span
-                      className="mb-4 flex items-center justify-start"
-                      style={{ color: item.color }}
-                      aria-hidden="true"
-                    >
-                      <ProductIcon className="h-6 w-6" strokeWidth={2} />
-                    </span>
-                    <h3 className="home-card-title text-[14px] font-semibold text-[#1a202c]">{item.displayName ?? item.name}</h3>
-                    <p className="home-card-desc mt-1 text-[12.5px] text-[#4a5568]">{item.desc}</p>
-                  </a>
-                )
-              })}
-            </div>
-          </div>
-            </section>
-
-            <section className="home-features-section bg-[#f1efe8] px-6 py-12">
-          <div className="home-section-inner mx-auto w-full max-w-[1160px]">
-            <h2 className="home-section-title text-center text-[clamp(20px,2.5vw,26px)] font-semibold text-[#1a202c]">
-              {uiText.home.everythingYouNeed}
-            </h2>
-            <p className="home-section-subtitle mx-auto mb-8 mt-2 max-w-[560px] text-center text-[14px] text-[#4a5568]">
-              {uiText.home.aiPoweredTools}
-            </p>
-            <div className="home-features-grid grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-              {localizedFeatures.map((item) => {
-                const FeatureIcon = FEATURE_ICON_MAP[item.iconKey] ?? Sparkles
-                const targetPath = item.linkKey === 'worldwide' ? localeWorldwidePath : null
-                const isClickable = Boolean(targetPath)
-
-                return (
-                  <article
-                    key={item.title}
-                    className={`home-feature-card rounded-[10px] border border-[#e2e8f0] bg-white p-6 ${
-                      isClickable ? 'cursor-pointer transition hover:border-[#cfc4f7] hover:shadow-[0_4px_18px_rgba(83,74,183,0.08)]' : ''
-                    }`}
-                    role={isClickable ? 'button' : undefined}
-                    tabIndex={isClickable ? 0 : undefined}
-                    onClick={isClickable ? () => navigateTo(targetPath) : undefined}
-                    onKeyDown={
-                      isClickable
-                        ? (event) => {
-                            if (event.key === 'Enter' || event.key === ' ') {
-                              event.preventDefault()
-                              navigateTo(targetPath)
-                            }
-                          }
-                        : undefined
-                    }
-                  >
-                    <span
-                      className="mb-4 flex items-center justify-start text-[#534ab7]"
-                      aria-hidden="true"
-                    >
-                      <FeatureIcon className="h-6 w-6" strokeWidth={2} />
-                    </span>
-                    <h3 className="home-card-title home-feature-title text-[15px] font-semibold text-[#1a202c]">{item.title}</h3>
-                    <p className="home-card-desc home-feature-desc mt-2 text-[13px] text-[#4a5568]">{item.desc}</p>
-                  </article>
-                )
-              })}
-        </div>
-          </div>
-            </section>
-
-            <section className="home-cta-section bg-gradient-to-br from-[#534ab7] to-[#3c3489] px-6 py-16 text-center text-white">
-          <div className="home-cta-card mx-auto w-full max-w-[1160px]">
-            <h2 className="home-cta-title text-[clamp(20px,2.5vw,26px)] font-semibold text-white">
-              {uiText.home.readyToBoost}
-            </h2>
-            <p className="home-cta-desc mb-7 mt-3 text-[16px] text-white/85">
-              {uiText.home.joinUsers}
-            </p>
-        <button
-              className="home-cta-button rounded-[10px] bg-white px-7 py-[13px] text-[16px] font-semibold text-[#534ab7] transition hover:bg-[#f1efe8]"
-          type="button"
-          onClick={() => navigateTo(localeDownloadPath)}
-        >
-              {uiText.home.startForFree}
-        </button>
-          </div>
-            </section>
-          </>
+          <HomePage
+            uiText={uiText}
+            localeDownloadPath={localeDownloadPath}
+            localeAllProductsPath={localeAllProductsPath}
+            localeEncyclopediaPath={localeEncyclopediaPath}
+            currentUrlLocale={currentUrlLocale}
+            navigateTo={navigateTo}
+            contentLanguage={contentLanguage}
+          />
         ) : pageType === 'docs-center' ? (
           <DocsCenterPage
             currentLocale={currentLocale}

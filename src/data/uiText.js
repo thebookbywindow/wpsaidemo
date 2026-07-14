@@ -19,23 +19,170 @@ export const uiTextByLanguage = {
       qa: 'Q&A',
     },
     home: {
-      trustedBadge: 'Trusted by 500M+ users worldwide',
-      heroTitle: 'Your AI-Powered Office Suite',
-      heroDesc: 'WPS AI brings intelligent writing, PDF editing, presentations, and spreadsheets into one seamless experience.',
-      getStartedFree: 'Get Started Free',
-      seeHowItWorks: 'See how it works',
-      stats: {
-        activeUsers: 'Active Users',
-        countries: 'Countries',
-        languages: 'Languages',
-        filesProcessed: 'Files Processed',
+      // Hero: primary keywords + one-line definition
+      heroTitle: 'WPS Office & WPS AI — free suite for Word, Excel, PowerPoint & PDF',
+      heroDesc:
+        'WPS AI is the AI experience in WPS Office: a free office suite for Word documents, Excel spreadsheets, PowerPoint slides, and PDF files (including PDF to Word).',
+      // Entity: brand relationship only (not a product list)
+      entityTitle: 'What is WPS AI?',
+      entityAnswer:
+        'WPS AI is the AI layer inside WPS Office (also called WPS or Kingsoft Office). It is not a separate suite: it adds AI drafting, rewriting, summarization, and formula help across the WPS Office apps.',
+      downloadCta: 'Download WPS Office',
+      faqAnchorCta: 'FAQ',
+      // Catalog: inventory + internal links only
+      catalogTitle: 'WPS Office apps and platforms',
+      catalogSummary: 'Product and platform inventory with links to downloads and tools.',
+      catalogGroups: {
+        office: 'Office apps',
+        ai: 'AI features',
+        platforms: 'Platforms',
       },
-      ourProducts: 'Our Products',
-      everythingYouNeed: 'Everything you need to work smarter',
-      aiPoweredTools: 'AI-powered tools that adapt to your workflow',
-      readyToBoost: 'Ready to boost your productivity?',
-      joinUsers: 'Join 500 million users already using WPS AI',
-      startForFree: 'Start for Free',
+      // Freshness signal
+      updatedLabel: 'Updated',
+      updatedDate: 'July 2026',
+      // About: company entity one-liner
+      aboutTitle: 'About WPS',
+      aboutText:
+        'WPS Office and WPS AI are products of Kingsoft Office Software (WPS). The suite provides free office apps for documents, spreadsheets, presentations, and PDF across desktop, mobile, and web.',
+      aboutLinkLabel: 'Product encyclopedia',
+      // High-intent internal links
+      intentLinksTitle: 'Popular WPS topics',
+      intentLinksSub: 'Jump to high-intent pages for download, online use, and PDF tools.',
+      intentLinks: {
+        download: {
+          label: 'Download WPS Office',
+          desc: 'Free WPS Office download for PC, Mac, Linux, and mobile',
+        },
+        online: {
+          label: 'WPS Online',
+          desc: 'Use WPS Office tools in the browser',
+        },
+        pdf: {
+          label: 'WPS PDF',
+          desc: 'Edit, convert, and manage PDF files',
+        },
+        'pdf-to-word': {
+          label: 'PDF to Word',
+          desc: 'Convert PDF documents to editable Word files',
+        },
+      },
+      // Comparison: quotable differences across common alternatives
+      compareTitle: 'WPS Office vs Microsoft 365, Google Workspace, Notion & Adobe',
+      compareSub:
+        'A short factual comparison across office suites, AI workspaces, and PDF/creative tools — based on public product and pricing pages.',
+      compareColumns: ['wps', 'microsoft', 'google', 'notion', 'adobe'],
+      compareHeaders: {
+        feature: 'Feature',
+        wps: 'WPS Office / WPS AI',
+        microsoft: 'Microsoft 365',
+        google: 'Google Workspace',
+        notion: 'Notion',
+        adobe: 'Adobe',
+      },
+      compareRows: [
+        {
+          feature: 'Primary category',
+          wps: 'Free all-in-one office suite (Writer, Spreadsheet, Presentation, PDF)',
+          microsoft: 'Office productivity suite (Word, Excel, PowerPoint, and more)',
+          google: 'Cloud office suite (Docs, Sheets, Slides, and Workspace services)',
+          notion: 'AI workspace (docs, wiki, databases, agents)',
+          adobe: 'PDF and creative document tools (Acrobat, Creative Cloud)',
+        },
+        {
+          feature: 'Free start',
+          wps: 'Free Standard plan with free download; advanced PDF/AI and higher cloud on paid plans',
+          microsoft: 'Free web apps; paid plans for full desktop apps on PC and Mac',
+          google: 'Free consumer Docs/Sheets/Slides; Google Workspace business plans paid',
+          notion: 'Free plan for individuals; paid plans for teams and advanced features',
+          adobe: 'Free Acrobat Reader / limited free tools; Acrobat Pro and Creative Cloud paid',
+        },
+        {
+          feature: 'Desktop apps for PC',
+          wps: 'Windows, Mac, and Linux desktop apps',
+          microsoft: 'Windows and Mac desktop apps with paid Microsoft 365 plans',
+          google: 'Primarily browser-based; limited offline/desktop options',
+          notion: 'Windows and Mac desktop apps, plus web and mobile',
+          adobe: 'Windows and Mac desktop apps (Acrobat, Creative Cloud apps)',
+        },
+        {
+          feature: 'Word / Excel / PowerPoint',
+          wps: 'Writer, Spreadsheet, Presentation',
+          microsoft: 'Word, Excel, PowerPoint',
+          google: 'Docs, Sheets, Slides',
+          notion: 'Docs, databases, and wiki pages — not a classic Office trio',
+          adobe: 'Not a full Word / Excel / PowerPoint suite',
+        },
+        {
+          feature: 'PDF editing',
+          wps: 'Built-in WPS PDF; basic PDF on Free, advanced edit/convert (incl. PDF to Word) on paid plans',
+          microsoft: 'PDF features vary by Microsoft 365 app and plan',
+          google: 'Limited native PDF editing; some Workspace plans add PDF-related tools (e.g. eSignature)',
+          notion: 'Import/export support; no dedicated Acrobat-style PDF editor',
+          adobe: 'Acrobat — edit, sign, convert between PDF and Word/Excel/PowerPoint',
+        },
+        {
+          feature: 'AI assistance',
+          wps: 'WPS AI across office apps (limits vary by plan)',
+          microsoft: 'Copilot / AI features (plan-dependent)',
+          google: 'Gemini features in Workspace apps (plan-dependent)',
+          notion: 'Notion AI and agents (plan-dependent)',
+          adobe: 'Acrobat AI Assistant and Firefly features (plan-dependent)',
+        },
+      ],
+      compareDisclaimer:
+        'Informational comparison only, based on publicly available product and pricing pages. Third-party product names are trademarks of their respective owners. Features, pricing, and availability vary by plan, platform, and region. Last updated: July 2026.',
+      // Key facts: verifiable attributes (not definitions, not inventory)
+      keyFactsTitle: 'Key facts',
+      keyFacts: [
+        {
+          title: 'Free download and WPS online',
+          desc: 'Download WPS Office free for Windows PC, Mac, Linux, Android, and iOS, or use WPS online in the browser with no install.',
+        },
+        {
+          title: 'Microsoft Office file compatibility',
+          desc: 'Open and edit common DOC/DOCX, XLS/XLSX, PPT/PPTX, and PDF formats used with Microsoft Word, Excel, and PowerPoint.',
+        },
+        {
+          title: 'WPS PDF and PDF to Word',
+          desc: 'WPS PDF supports edit PDF, PDF to Word, convert, compress, and related PDF workflows.',
+        },
+        {
+          title: '20 languages',
+          desc: 'WPS Office is localized in 20 languages for users and teams across regions.',
+        },
+      ],
+      // FAQ: query-shaped answers only (definition lives in Entity)
+      faqTitle: 'Frequently asked questions',
+      faqs: [
+        {
+          question: 'Is WPS Office free to download?',
+          answer:
+            'Yes. You can download WPS Office free for PC and mobile. Paid plans unlock higher capacity and premium features.',
+        },
+        {
+          question: 'Can I use WPS Office online?',
+          answer:
+            'Yes. WPS Office online (WPS online / WPS web) works in the browser without installing software.',
+        },
+        {
+          question: 'Does WPS include PDF to Word and a PDF editor?',
+          answer:
+            'Yes. WPS PDF can edit PDFs and convert files such as PDF to Word for everyday document work.',
+        },
+        {
+          question: 'Does WPS Office work with Microsoft Office files?',
+          answer:
+            'Yes. WPS Writer, Spreadsheets, and Presentation open common Microsoft Word, Excel, and PowerPoint formats.',
+        },
+        {
+          question: 'Where can I download WPS Office for PC?',
+          answer:
+            'Open the Download WPS Office page and choose Windows PC, Mac, Linux, Android, or iOS installers.',
+        },
+      ],
+      seoTitle: 'WPS AI | WPS Office Free Download — Word, Excel, PPT & PDF Online',
+      seoDescription:
+        'Download WPS Office free for PC, or use WPS online. WPS AI helps with Word, Excel, PowerPoint, and WPS PDF — including PDF to Word — on Windows, Mac, Linux, and mobile.',
     },
     footer: {
       products: 'Products',
@@ -162,23 +309,160 @@ export const uiTextByLanguage = {
       qa: '问答',
     },
     home: {
-      trustedBadge: '全球超5亿用户的信赖之选',
-      heroTitle: '您的 AI 驱动办公套件',
-      heroDesc: 'WPS AI 将智能写作、PDF 编辑、演示文稿和电子表格整合为无缝体验。',
-      getStartedFree: '免费开始',
-      seeHowItWorks: '了解工作原理',
-      stats: {
-        activeUsers: '活跃用户',
-        countries: '国家与地区',
-        languages: '支持语言',
-        filesProcessed: '处理文件数',
+      // Hero: 主关键词 + 一句话定义
+      heroTitle: 'WPS Office 与 WPS AI — 免费办公套件：文字、表格、演示与 PDF',
+      heroDesc:
+        'WPS AI 是 WPS Office 中的 AI 能力：免费办公套件，覆盖 Word 文档、Excel 表格、PowerPoint 演示与 PDF（含 PDF 转 Word）。',
+      // Entity: 只讲品牌关系
+      entityTitle: '什么是 WPS AI？',
+      entityAnswer:
+        'WPS AI 是 WPS Office（又称 WPS / 金山办公）内部的 AI 能力层，不是另一套独立办公软件；它为 WPS 各应用提供起草、改写、摘要与公式辅助等 AI 功能。',
+      downloadCta: '下载 WPS Office',
+      faqAnchorCta: '常见问题',
+      // Catalog: 只做清单与内链
+      catalogTitle: 'WPS Office 应用与平台',
+      catalogSummary: '产品与平台清单，可进入对应下载或工具页。',
+      catalogGroups: {
+        office: '办公应用',
+        ai: 'AI 能力',
+        platforms: '支持平台',
       },
-      ourProducts: '我们的产品',
-      everythingYouNeed: '更智能工作所需的一切',
-      aiPoweredTools: '适应您工作流的 AI 工具',
-      readyToBoost: '准备好提升生产力了吗？',
-      joinUsers: '加入已经在使用 WPS AI 的 5 亿用户',
-      startForFree: '免费开始',
+      updatedLabel: '更新于',
+      updatedDate: '2026 年 7 月',
+      aboutTitle: '关于 WPS',
+      aboutText:
+        'WPS Office 与 WPS AI 由金山办公（WPS / Kingsoft Office）提供，覆盖文档、表格、演示与 PDF，支持桌面端、移动端与网页端免费使用入口。',
+      aboutLinkLabel: '产品百科',
+      intentLinksTitle: '热门 WPS 主题',
+      intentLinksSub: '前往下载、在线使用与 PDF 等高意图页面。',
+      intentLinks: {
+        download: {
+          label: '下载 WPS Office',
+          desc: '免费下载电脑版、Mac、Linux 与移动端',
+        },
+        online: {
+          label: 'WPS 在线',
+          desc: '在浏览器中使用 WPS Office 工具',
+        },
+        pdf: {
+          label: 'WPS PDF',
+          desc: '编辑、转换与管理 PDF 文件',
+        },
+        'pdf-to-word': {
+          label: 'PDF 转 Word',
+          desc: '将 PDF 转为可编辑的 Word 文档',
+        },
+      },
+      compareTitle: 'WPS Office 对比 Microsoft 365、Google Workspace、Notion 与 Adobe',
+      compareSub: '面向办公套件、AI 工作区与 PDF/创意工具的简要事实表，依据各产品公开的产品页与定价页整理。',
+      compareColumns: ['wps', 'microsoft', 'google', 'notion', 'adobe'],
+      compareHeaders: {
+        feature: '对比项',
+        wps: 'WPS Office / WPS AI',
+        microsoft: 'Microsoft 365',
+        google: 'Google Workspace',
+        notion: 'Notion',
+        adobe: 'Adobe',
+      },
+      compareRows: [
+        {
+          feature: '主要品类',
+          wps: '免费一体化办公套件（文字、表格、演示、PDF）',
+          microsoft: '办公生产力套件（Word、Excel、PowerPoint 等）',
+          google: '云端办公套件（Docs、Sheets、Slides 及 Workspace 服务）',
+          notion: 'AI 工作区（文档、知识库、数据库、Agent）',
+          adobe: 'PDF 与创意文档工具（Acrobat、Creative Cloud）',
+        },
+        {
+          feature: '免费开始',
+          wps: '提供免费 Standard 计划与免费下载；高级 PDF/AI 与更大云空间为付费能力',
+          microsoft: '提供免费网页版应用；完整桌面应用需付费 Microsoft 365 方案',
+          google: '个人版 Docs/Sheets/Slides 可免费使用；Google Workspace 商业方案付费',
+          notion: '个人可使用免费计划；团队与高级能力需付费计划',
+          adobe: '提供免费 Acrobat Reader / 有限免费工具；Acrobat Pro 与 Creative Cloud 付费',
+        },
+        {
+          feature: '电脑桌面端',
+          wps: '提供 Windows、Mac、Linux 桌面应用',
+          microsoft: '付费方案提供 Windows、Mac 桌面应用',
+          google: '以浏览器为主；离线/桌面选项有限',
+          notion: '提供 Windows、Mac 桌面应用，以及网页与移动端',
+          adobe: '提供 Windows、Mac 桌面应用（Acrobat、Creative Cloud）',
+        },
+        {
+          feature: '文字 / 表格 / 演示',
+          wps: '文字、表格、演示',
+          microsoft: 'Word、Excel、PowerPoint',
+          google: 'Docs、Sheets、Slides',
+          notion: '文档、数据库与知识库页面 — 非传统 Office 三件套',
+          adobe: '非完整 Word / Excel / PowerPoint 套件',
+        },
+        {
+          feature: 'PDF 编辑',
+          wps: '内置 WPS PDF；免费档为基础 PDF，高级编辑/转换（含 PDF 转 Word）在付费方案',
+          microsoft: 'PDF 能力因 Microsoft 365 应用与套餐而异',
+          google: '原生 PDF 编辑有限；部分 Workspace 方案提供 PDF 相关能力（如电子签名）',
+          notion: '支持导入导出；无 Acrobat 类专用 PDF 编辑器',
+          adobe: 'Acrobat — 编辑、签名，以及 PDF 与 Word/Excel/PowerPoint 互转',
+        },
+        {
+          feature: 'AI 辅助',
+          wps: 'WPS AI 覆盖办公应用（额度视套餐）',
+          microsoft: 'Copilot / AI 能力（视套餐）',
+          google: 'Workspace 应用中的 Gemini 能力（视套餐）',
+          notion: 'Notion AI 与 Agent（视套餐）',
+          adobe: 'Acrobat AI Assistant 与 Firefly 相关能力（视套餐）',
+        },
+      ],
+      compareDisclaimer:
+        '本表仅供信息参考，依据各产品公开的产品页与定价页整理。第三方产品名称为其各自权利人的商标。功能、价格与可用性因套餐、平台和地区而异。最后更新：2026 年 7 月。',
+      // Key facts: 可验证属性
+      keyFactsTitle: '关键事实',
+      keyFacts: [
+        {
+          title: '免费下载与 WPS 在线',
+          desc: '可免费下载 WPS Office 到 Windows PC、Mac、Linux、Android 与 iOS，也可在浏览器使用 WPS 在线版，无需安装。',
+        },
+        {
+          title: '兼容 Microsoft Office 格式',
+          desc: '可打开并编辑常见 DOC/DOCX、XLS/XLSX、PPT/PPTX 与 PDF 等 Word、Excel、PowerPoint 常用格式。',
+        },
+        {
+          title: 'WPS PDF 与 PDF 转 Word',
+          desc: 'WPS PDF 支持 PDF 编辑、PDF 转 Word，以及转换、压缩等常见 PDF 工作流。',
+        },
+        {
+          title: '20 种语言',
+          desc: 'WPS Office 提供 20 种语言本地化，面向多地区用户与团队。',
+        },
+      ],
+      // FAQ: 只回答检索型问题（定义在 Entity）
+      faqTitle: '常见问题',
+      faqs: [
+        {
+          question: 'WPS Office 可以免费下载吗？',
+          answer: '可以。可免费下载电脑版与移动版；付费方案用于更高容量与高级功能。',
+        },
+        {
+          question: '可以在线使用 WPS Office 吗？',
+          answer: '可以。WPS Office 在线版（WPS online / WPS web）无需安装即可在浏览器中使用。',
+        },
+        {
+          question: 'WPS 是否支持 PDF 转 Word 和 PDF 编辑？',
+          answer: '支持。WPS PDF 可编辑 PDF，并支持 PDF 转 Word 等常见转换。',
+        },
+        {
+          question: 'WPS Office 兼容 Microsoft Office 文件吗？',
+          answer: '兼容。WPS 文字、表格、演示可处理常见 Word、Excel、PowerPoint 格式。',
+        },
+        {
+          question: '如何下载 WPS Office 电脑版？',
+          answer: '打开「下载 WPS Office」页面，选择 Windows PC、Mac、Linux、Android 或 iOS 安装包即可。',
+        },
+      ],
+      seoTitle: 'WPS AI | 免费下载 WPS Office — 在线文字、表格、演示与 PDF',
+      seoDescription:
+        '免费下载 WPS Office 电脑版，或使用 WPS 在线办公。WPS AI 覆盖 Word、Excel、PowerPoint 与 WPS PDF（含 PDF 转 Word），支持 Windows、Mac、Linux 与移动端。',
     },
     footer: {
       products: '产品',
