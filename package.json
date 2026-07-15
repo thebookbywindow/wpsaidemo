@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "generate:content-phrases": "node scripts/generate-blog-encyclopedia-phrases.mjs",
-    "build:phrase-json": "node scripts/jsonl-to-phrase-json.mjs"
+    "build:phrase-json": "node scripts/jsonl-to-phrase-json.mjs",
+    "validate:intl-ai": "node scripts/validate-intl-ai-features.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.16.0",
