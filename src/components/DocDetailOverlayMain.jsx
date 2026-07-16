@@ -175,6 +175,7 @@ export default function DocDetailOverlayMain({
   catalogSearchEmptyText = 'No matching items',
   onCatalogLeafClick,
   onCatalogSectionNavigate,
+  backToTopAriaLabel = 'Back to top',
 }) {
   const docDetailPlatforms = useMemo(
     () => getDocDetailPlatforms(routeSlug),
@@ -479,18 +480,7 @@ export default function DocDetailOverlayMain({
               onRootClick={onBreadcrumbRootClick}
               onDocClick={handleBreadcrumbDocClick}
               ariaLabel={articleBreadcrumbAriaLabel}
-              leadingAction={
-                isMobile ? (
-                  <DocDetailMobileDrawerNavButton
-                    side="left"
-                    label={leftDrawerLabel}
-                    hint={leftDrawerHint}
-                    icon={ListTree}
-                    isOpen={leftOpen}
-                    onClick={toggleLeft}
-                  />
-                ) : null
-              }
+              leadingAction={null}
               trailingAction={
                 isMobile && showDetailTocSidebar ? (
                   <DocDetailMobileDrawerNavButton
@@ -578,6 +568,29 @@ export default function DocDetailOverlayMain({
             ) : null}
           </div>
         </div>
+      </div>
+
+      <div className="docs-center-float-actions docs-detail-float-actions">
+        {isMobile ? (
+          <button
+            type="button"
+            className={`docs-center-float-catalog-btn${leftOpen ? ' is-active' : ''}`}
+            aria-label={`${leftDrawerHint}: ${leftDrawerLabel}`}
+            aria-expanded={leftOpen}
+            title={`${leftDrawerHint}: ${leftDrawerLabel}`}
+            onClick={toggleLeft}
+          >
+            <ListTree size={20} strokeWidth={2.2} aria-hidden="true" />
+          </button>
+        ) : null}
+        <button
+          type="button"
+          aria-label={backToTopAriaLabel}
+          title={backToTopAriaLabel}
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+          ↑
+        </button>
       </div>
     </div>
   )
