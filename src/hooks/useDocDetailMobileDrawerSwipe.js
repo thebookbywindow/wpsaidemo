@@ -11,7 +11,7 @@ function isSwipeIgnoredTarget(target) {
 
   return Boolean(
     target.closest(
-      'a, button, input, textarea, select, label, .docs-detail-mobile-drawer-panel, .docs-detail-mobile-drawer-nav',
+      'a, button, input, textarea, select, label, .docs-detail-mobile-drawer-panel, .docs-detail-mobile-drawer-nav, .docs-detail-platform-popover',
     ),
   )
 }
@@ -19,10 +19,8 @@ function isSwipeIgnoredTarget(target) {
 export function useDocDetailMobileDrawerSwipe({
   enabled = false,
   isMobile = false,
-  leftOpen = false,
   rightOpen = false,
   showRight = true,
-  openLeft,
   openRight,
   closeAll,
 }) {
@@ -81,17 +79,7 @@ export function useDocDetailMobileDrawerSwipe({
       if (deltaX > 0) {
         if (rightOpen) {
           closeAll()
-          return
         }
-
-        if (!leftOpen) {
-          openLeft()
-        }
-        return
-      }
-
-      if (leftOpen) {
-        closeAll()
         return
       }
 
@@ -111,8 +99,6 @@ export function useDocDetailMobileDrawerSwipe({
     closeAll,
     enabled,
     isMobile,
-    leftOpen,
-    openLeft,
     openRight,
     rightOpen,
     showRight,

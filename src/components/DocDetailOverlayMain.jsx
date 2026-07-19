@@ -6,7 +6,7 @@ import DocDetailArticleBreadcrumb, {
 } from './DocDetailArticleBreadcrumb'
 import DocDetailArticlePager from './DocDetailArticlePager'
 import DocDetailMobileDrawer from './DocDetailMobileDrawer'
-import { DocDetailMobileDrawerNavButton } from './DocDetailMobileDrawerNav'
+import DocDetailMobilePlatformPopover from './DocDetailMobilePlatformPopover'
 import DocDetailSectionArticle from './DocDetailSectionArticle'
 import DocDetailTocPanel from './DocDetailTocPanel'
 import DocsDetailCatalogSidebar from './DocsDetailCatalogSidebar'
@@ -369,7 +369,6 @@ export default function DocDetailOverlayMain({
     rightOpen,
     toggleLeft,
     toggleRight,
-    openLeft,
     openRight,
     closeAll,
   } = useDocDetailMobileDrawers()
@@ -379,10 +378,8 @@ export default function DocDetailOverlayMain({
   useDocDetailMobileDrawerSwipe({
     enabled: usesStructuredSections,
     isMobile,
-    leftOpen,
     rightOpen,
-    showRight: showDetailTocSidebar,
-    openLeft,
+    showRight: true,
     openRight,
     closeAll,
   })
@@ -428,16 +425,17 @@ export default function DocDetailOverlayMain({
   const leftDrawerCloseLabel = isZhContent ? '关闭目录' : 'Close directory'
   const rightDrawerLabel = isZhContent ? '端与章节' : 'Platform & Section'
   const rightDrawerHint = isZhContent ? '选择平台与章节' : 'Choose platform and section'
-  const rightDrawerCloseLabel = isZhContent ? '关闭端与章节' : 'Close platform & section'
   const rightDrawerIcon = getDocDetailPlatformIcon(activePlatformId)
 
   return (
     <div
       className={`docs-center-overlay-main${
         isMobile ? ' docs-center-overlay-main--mobile-drawers' : ''
-      }${leftOpen || rightOpen ? ' has-mobile-drawer-open' : ''}`}
+      }${rightOpen ? ' has-mobile-drawer-open' : ''}${
+        leftOpen ? ' has-platform-popover-open' : ''
+      }`}
     >
-      {isMobile && (leftOpen || rightOpen) ? (
+      {isMobile && rightOpen ? (
         <button
           type="button"
           className="docs-detail-mobile-drawer-backdrop"
@@ -446,8 +444,8 @@ export default function DocDetailOverlayMain({
         />
       ) : null}
       <DocDetailMobileDrawer
-        side="left"
-        isOpen={leftOpen}
+        side="right"
+        isOpen={rightOpen}
         isMobile={isMobile}
         onClose={closeAll}
         panelLabel={catalogDirectoryTitle || leftDrawerLabel}
@@ -465,6 +463,7 @@ export default function DocDetailOverlayMain({
           onSectionNavigate={handleCatalogSectionNavigate}
           onDrawerClose={isMobile ? closeAll : undefined}
           drawerCloseLabel={isMobile ? leftDrawerCloseLabel : ''}
+          drawerCloseSide="right"
           onLeafClick={handleCatalogLeafClick}
         />
       </DocDetailMobileDrawer>
@@ -483,13 +482,24 @@ export default function DocDetailOverlayMain({
               leadingAction={null}
               trailingAction={
                 isMobile && showDetailTocSidebar ? (
-                  <DocDetailMobileDrawerNavButton
-                    side="right"
+                  <DocDetailMobilePlatformPopover
                     label={rightDrawerLabel}
                     hint={rightDrawerHint}
                     icon={rightDrawerIcon}
-                    isOpen={rightOpen}
-                    onClick={toggleRight}
+                    isOpen={leftOpen}
+                    onToggle={toggleLeft}
+                    onClose={closeAll}
+                    sidebarTitle={docTitle || sidebarTitle}
+                    isZhContent={isZhContent}
+                    expandedPlatformId={expandedPlatformId}
+                    activePlatformId={activePlatformId}
+                    activeSectionId={activeSectionId}
+                    contentViewMode={contentViewMode}
+                    onPlatformToggle={handleDrawerPlatformToggle}
+                    onSectionClick={handleDrawerSectionClick}
+                    platforms={docDetailPlatforms}
+                    universalSectionIds={universalSectionIds}
+                    platformSectionIds={platformSectionIds}
                   />
                 ) : null
               }
@@ -537,34 +547,21 @@ export default function DocDetailOverlayMain({
                 <div dangerouslySetInnerHTML={{ __html: docHtml }} />
               )}
             </div>
-            {showDetailTocSidebar ? (
-              <DocDetailMobileDrawer
-                side="right"
-                isOpen={rightOpen}
-                isMobile={isMobile}
-                onClose={closeAll}
-                panelLabel={rightDrawerLabel}
-                showPanelHead={false}
-              >
-                <DocDetailTocPanel
-                  sidebarTitle={docTitle || sidebarTitle}
-                  drawerHeadTitle={rightDrawerLabel}
-                  isZhContent={isZhContent}
-                  expandedPlatformId={expandedPlatformId}
-                  activePlatformId={activePlatformId}
-                  activeSectionId={activeSectionId}
-                  contentViewMode={contentViewMode}
-                  onPlatformToggle={handleDrawerPlatformToggle}
-                  onSectionClick={handleDrawerSectionClick}
-                  platforms={docDetailPlatforms}
-                  universalSectionIds={universalSectionIds}
-                  platformSectionIds={platformSectionIds}
-                  onDrawerClose={isMobile ? closeAll : undefined}
-                  drawerCloseLabel={isMobile ? rightDrawerCloseLabel : ''}
-                  drawerCloseSide="right"
-                  embedded
-                />
-              </DocDetailMobileDrawer>
+            {showDetailTocSidebar && !isMobile ? (
+              <DocDetailTocPanel
+                sidebarTitle={docTitle || sidebarTitle}
+                isZhContent={isZhContent}
+                expandedPlatformId={expandedPlatformId}
+                activePlatformId={activePlatformId}
+                activeSectionId={activeSectionId}
+                contentViewMode={contentViewMode}
+                onPlatformToggle={handleDrawerPlatformToggle}
+                onSectionClick={handleDrawerSectionClick}
+                platforms={docDetailPlatforms}
+                universalSectionIds={universalSectionIds}
+                platformSectionIds={platformSectionIds}
+                embedded
+              />
             ) : null}
           </div>
         </div>
@@ -574,11 +571,11 @@ export default function DocDetailOverlayMain({
         {isMobile ? (
           <button
             type="button"
-            className={`docs-center-float-catalog-btn${leftOpen ? ' is-active' : ''}`}
+            className={`docs-center-float-catalog-btn${rightOpen ? ' is-active' : ''}`}
             aria-label={`${leftDrawerHint}: ${leftDrawerLabel}`}
-            aria-expanded={leftOpen}
+            aria-expanded={rightOpen}
             title={`${leftDrawerHint}: ${leftDrawerLabel}`}
-            onClick={toggleLeft}
+            onClick={toggleRight}
           >
             <ListTree size={20} strokeWidth={2.2} aria-hidden="true" />
           </button>

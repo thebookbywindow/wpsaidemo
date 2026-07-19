@@ -894,9 +894,9 @@ export default function DocsCenterPage({
 
   const {
     isMobile,
-    leftOpen,
-    toggleLeft,
-    openLeft,
+    rightOpen,
+    toggleRight,
+    openRight,
     closeAll,
   } = useDocDetailMobileDrawers()
 
@@ -905,11 +905,9 @@ export default function DocsCenterPage({
   useDocDetailMobileDrawerSwipe({
     enabled: showMobileCatalogDrawer,
     isMobile,
-    leftOpen,
-    rightOpen: false,
-    showRight: false,
-    openLeft,
-    openRight: () => {},
+    rightOpen,
+    showRight: true,
+    openRight,
     closeAll,
   })
 
@@ -979,6 +977,7 @@ export default function DocsCenterPage({
       expandSectionsOnClickOnly={showMobileCatalogDrawer}
       onDrawerClose={showMobileCatalogDrawer ? closeAll : undefined}
       drawerCloseLabel={isZhContent ? '关闭目录' : 'Close directory'}
+      drawerCloseSide={showMobileCatalogDrawer ? 'right' : 'left'}
       onSectionNavigate={showMobileCatalogDrawer ? undefined : handleCatalogSectionNavigate}
       onBlockNavigate={showMobileCatalogDrawer ? handleCatalogBlockNavigateMobile : handleCatalogBlockNavigate}
     />
@@ -992,7 +991,7 @@ export default function DocsCenterPage({
       className={`docs-center-page${
         currentDocMeta ? ' docs-center-page--detail-open' : ''
       }${showMobileCatalogDrawer ? ' docs-center-page--mobile-drawer' : ''}${
-        showMobileCatalogDrawer && leftOpen ? ' has-mobile-drawer-open' : ''
+        showMobileCatalogDrawer && rightOpen ? ' has-mobile-drawer-open' : ''
       }`}
     >
       <section className="docs-center-hero">
@@ -1024,7 +1023,7 @@ export default function DocsCenterPage({
 
       {showMobileCatalogDrawer ? (
         <>
-          {leftOpen ? (
+          {rightOpen ? (
             <button
               type="button"
               className="docs-detail-mobile-drawer-backdrop"
@@ -1033,8 +1032,8 @@ export default function DocsCenterPage({
             />
           ) : null}
           <DocDetailMobileDrawer
-            side="left"
-            isOpen={leftOpen}
+            side="right"
+            isOpen={rightOpen}
             isMobile={isMobile}
             onClose={closeAll}
             panelLabel={docsUiText.directoryTitle}
@@ -1234,11 +1233,11 @@ export default function DocsCenterPage({
         {showMobileCatalogDrawer ? (
           <button
             type="button"
-            className={`docs-center-float-catalog-btn${leftOpen ? ' is-active' : ''}`}
+            className={`docs-center-float-catalog-btn${rightOpen ? ' is-active' : ''}`}
             aria-label={`${leftDrawerHint}: ${leftDrawerLabel}`}
-            aria-expanded={leftOpen}
+            aria-expanded={rightOpen}
             title={`${leftDrawerHint}: ${leftDrawerLabel}`}
-            onClick={toggleLeft}
+            onClick={toggleRight}
           >
             <ListTree size={20} strokeWidth={2.2} aria-hidden="true" />
           </button>

@@ -161,6 +161,7 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
     expandSectionsOnClickOnly = false,
     onDrawerClose,
     drawerCloseLabel = '',
+    drawerCloseSide = 'left',
     onLeafClick,
     onSectionNavigate,
     onBlockNavigate,
@@ -499,14 +500,24 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
     })
   }
 
+  const CloseIcon = drawerCloseSide === 'right' ? ChevronRight : ChevronLeft
+  const resolvedSidebarClassName = [
+    sidebarClassName,
+    onDrawerClose && drawerCloseSide === 'right'
+      ? 'docs-detail-catalog-sidebar--drawer-right'
+      : '',
+    onDrawerClose && drawerCloseSide === 'left' ? 'docs-detail-catalog-sidebar--drawer-left' : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
+
   return (
-    <aside ref={ref} className={sidebarClassName} aria-label={sidebarHeading}>
+    <aside ref={ref} className={resolvedSidebarClassName} aria-label={sidebarHeading}>
       <div
         className={`docs-center-sidebar-heading${
-          onDrawerClose ? ' has-drawer-close has-drawer-close--trailing' : ''
+          onDrawerClose ? ' has-drawer-close has-drawer-close--leading' : ''
         }`}
       >
-        <h3>{renderSidebarHeadingContent()}</h3>
         {onDrawerClose ? (
           <button
             type="button"
@@ -515,9 +526,10 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
             title={drawerCloseLabel || sidebarHeading}
             onClick={onDrawerClose}
           >
-            <ChevronLeft size={16} strokeWidth={2.25} aria-hidden="true" />
+            <CloseIcon size={16} strokeWidth={2.25} aria-hidden="true" />
           </button>
         ) : null}
+        <h3>{renderSidebarHeadingContent()}</h3>
       </div>
       {showSidebarSearch ? (
         <DocsCatalogSidebarSearch

@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react'
 import {
   DOC_DETAIL_COMMON_SCOPE_SLUG,
   DOC_DETAIL_FEATURE_SCOPE_ID,
@@ -27,7 +27,10 @@ export default function DocDetailTocSidebar({
   drawerCloseLabel = '',
   drawerHeadTitle = '',
   drawerCloseSide = 'left',
+  variant = 'default',
 }) {
+  const isPopover = variant === 'popover'
+  const PlatformChevron = isPopover ? ChevronDown : ChevronRight
   const sections = getDocDetailTocSections(isZhContent)
   const isPlatformLess = platforms.length === 0
   const hasUniversalSections = universalSectionIds.length > 0 && !isPlatformLess
@@ -88,7 +91,7 @@ export default function DocDetailTocSidebar({
               </span>
               <span className="docs-detail-sidebar-platform-label">{platformLessGroupLabel}</span>
             </span>
-            <ChevronRight
+            <PlatformChevron
               size={13}
               className="docs-detail-sidebar-platform-chevron"
               aria-hidden="true"
@@ -123,7 +126,9 @@ export default function DocDetailTocSidebar({
 
   return (
     <aside
-      className={`docs-detail-sidebar${embedded ? ' docs-detail-sidebar--embedded' : ''}`}
+      className={`docs-detail-sidebar${embedded ? ' docs-detail-sidebar--embedded' : ''}${
+        isPopover ? ' docs-detail-sidebar--popover' : ''
+      }`}
       aria-label={sidebarHeadTitle}
     >
       {showSidebarHead ? (
@@ -176,7 +181,7 @@ export default function DocDetailTocSidebar({
                       </span>
                       <span className="docs-detail-sidebar-platform-label">{platform.label}</span>
                     </span>
-                    <ChevronRight
+                    <PlatformChevron
                       size={13}
                       className="docs-detail-sidebar-platform-chevron"
                       aria-hidden="true"
@@ -216,7 +221,7 @@ export default function DocDetailTocSidebar({
                     </span>
                     <span className="docs-detail-sidebar-platform-label">{platform.label}</span>
                   </span>
-                  <ChevronRight
+                  <PlatformChevron
                     size={13}
                     className="docs-detail-sidebar-platform-chevron"
                     aria-hidden="true"

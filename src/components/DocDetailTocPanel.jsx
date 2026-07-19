@@ -17,6 +17,7 @@ export default function DocDetailTocPanel({
   drawerCloseLabel = '',
   drawerHeadTitle = '',
   drawerCloseSide = 'left',
+  variant = 'default',
 }) {
   return (
     <DocDetailTocSidebar
@@ -36,6 +37,7 @@ export default function DocDetailTocPanel({
       drawerCloseLabel={drawerCloseLabel}
       drawerHeadTitle={drawerHeadTitle}
       drawerCloseSide={drawerCloseSide}
+      variant={variant}
     />
   )
 }
