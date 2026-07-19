@@ -71,6 +71,10 @@ export const HOME_HERO_COPILOT = COPILOT_HERO_COMPONENT
   ? Object.freeze({
       ...COPILOT_HERO_COMPONENT,
       imageSrc: '/images/intl-ai-features/wps-ai-copilot-hub.jpg',
+      imageWidth: 708,
+      imageHeight: 600,
+      sourceImageUrl:
+        'https://ds.cache.wpscdn.com/wps_ai_website/_nuxt/ai-banner-img.db370249.jpg',
     })
   : null
 

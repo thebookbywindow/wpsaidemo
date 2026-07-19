@@ -421,7 +421,7 @@ export const INTL_AI_FEATURE_META = {
     "sourceImageUrl": "https://abroadad.cache.wpscdn.com/upload/ad_adapter/2024-07-24/2b42300e9f952a41fee316005d32a985.webp"
   },
   "wps-ai-copilot-hub": {
-    "description": "WPS AI is your intelligent office copilot for writing, presentations, spreadsheets, and PDF workflows with faster output and professional results.",
+    "description": "Meet your next Office Copilot — AI Writing, Slide Designer, PDF AI Reader, and Data Analyst built into your everyday WPS workflow.",
     "imageSrc": "/images/intl-ai-features/wps-ai-copilot-hub.jpg",
     "sourceImageUrl": "https://ds.cache.wpscdn.com/wps_ai_website/_nuxt/ai-banner-img.db370249.jpg"
   }

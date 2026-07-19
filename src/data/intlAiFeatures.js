@@ -601,3 +601,18 @@ export function validateIntlAiFeatures(
 
   return { ok: errors.length === 0, errors, itemCount: seenIds.size }
 }
+
+const INTL_AI_FEATURE_CATALOG = Object.freeze([
+  ...INTL_AI_COPILOT_LINKS,
+  ...INTL_AI_FEATURE_GROUPS.flatMap((group) => group.items),
+])
+
+/** Official landing-page URL by stable feature id. */
+export const INTL_AI_FEATURE_URL_BY_ID = Object.freeze(
+  Object.fromEntries(INTL_AI_FEATURE_CATALOG.map((item) => [item.id, item.url])),
+)
+
+export function getIntlAiFeatureUrl(id) {
+  if (!id) return null
+  return INTL_AI_FEATURE_URL_BY_ID[id] ?? null
+}

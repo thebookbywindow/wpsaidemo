@@ -1,22 +1,46 @@
 import { useEffect, useMemo, useState } from 'react'
 import { HOME_AI_CORE_PILLAR_IDS } from '../data/homeAiCapabilities'
+import { HOME_HERO_COPILOT } from '../data/homeHeroComponents'
 import { useHomeAiCapabilities } from '../hooks/useHomeAiCapabilities'
 import { useHomeTabsScrollPin } from '../hooks/useHomeTabsScrollPin'
+import HomeAiSpotlightFeatureList from './HomeAiSpotlightFeatureList'
+import { renderFaqAnswer } from '../utils/renderFaqAnswer'
 
 function HomeAiSpotlightPanel({ pillar, imageOnRight = false }) {
+  const productUrl = pillar.productPageUrl
+  const productLabel = pillar.label ?? pillar.id
+
   return (
     <article
       className={`home-ai-spotlight${imageOnRight ? ' home-ai-spotlight--image-right' : ''}`}
     >
       <div className="home-ai-spotlight-media">
         {pillar.spotlightImageSrc ? (
-          <img
-            className="home-ai-spotlight-image"
-            src={pillar.spotlightImageSrc}
-            alt=""
-            loading="lazy"
-            decoding="async"
-          />
+          productUrl ? (
+            <a
+              className="home-ai-spotlight-media-link"
+              href={productUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${productLabel} — WPS Office`}
+            >
+              <img
+                className="home-ai-spotlight-image"
+                src={pillar.spotlightImageSrc}
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+            </a>
+          ) : (
+            <img
+              className="home-ai-spotlight-image"
+              src={pillar.spotlightImageSrc}
+              alt=""
+              loading="lazy"
+              decoding="async"
+            />
+          )
         ) : (
           <div className="home-ai-spotlight-image home-ai-spotlight-image--empty" aria-hidden="true" />
         )}
@@ -24,45 +48,63 @@ function HomeAiSpotlightPanel({ pillar, imageOnRight = false }) {
 
       <div className="home-ai-spotlight-copy">
         <header className="home-ai-spotlight-head">
-          {pillar.iconSrc ? (
-            <img
-              className="home-ai-spotlight-icon"
-              src={pillar.iconSrc}
-              alt=""
-              draggable={false}
-              decoding="async"
-            />
-          ) : null}
-          <div className="home-ai-spotlight-head-copy">
-            <h3 className="home-ai-spotlight-title">{pillar.label}</h3>
-            {pillar.tagline ? (
-              <p className="home-ai-spotlight-tagline">{pillar.tagline}</p>
-            ) : null}
-          </div>
+          {productUrl ? (
+            <a
+              className="home-ai-spotlight-head-link"
+              href={productUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${productLabel} — WPS Office`}
+            >
+              {pillar.iconSrc ? (
+                <img
+                  className="home-ai-spotlight-icon"
+                  src={pillar.iconSrc}
+                  alt=""
+                  draggable={false}
+                  decoding="async"
+                />
+              ) : null}
+              <div className="home-ai-spotlight-head-copy">
+                <h3 className="home-ai-spotlight-title">{pillar.label}</h3>
+                {pillar.tagline ? (
+                  <p className="home-ai-spotlight-tagline">{pillar.tagline}</p>
+                ) : null}
+              </div>
+            </a>
+          ) : (
+            <>
+              {pillar.iconSrc ? (
+                <img
+                  className="home-ai-spotlight-icon"
+                  src={pillar.iconSrc}
+                  alt=""
+                  draggable={false}
+                  decoding="async"
+                />
+              ) : null}
+              <div className="home-ai-spotlight-head-copy">
+                <h3 className="home-ai-spotlight-title">{pillar.label}</h3>
+                {pillar.tagline ? (
+                  <p className="home-ai-spotlight-tagline">{pillar.tagline}</p>
+                ) : null}
+              </div>
+            </>
+          )}
         </header>
 
         {pillar.spotlightLead ? (
-          <p className="home-ai-spotlight-lead">{pillar.spotlightLead}</p>
+          <p className="home-ai-spotlight-lead">{renderFaqAnswer(pillar.spotlightLead)}</p>
         ) : null}
 
-        <ul className="home-ai-spotlight-features">
-          {pillar.features.map((feature) => (
-            <li key={feature.id} className="home-ai-spotlight-feature">
-              <span className="home-ai-spotlight-feature-title">{feature.label}</span>
-              {feature.description ? (
-                <span className="home-ai-spotlight-feature-desc">{feature.description}</span>
-              ) : null}
-            </li>
-          ))}
-        </ul>
+        <HomeAiSpotlightFeatureList features={pillar.features} />
       </div>
     </article>
   )
 }
 
 /**
- * Homepage AI overview — capsule picks Docs / Sheets / Slides / PDF.
- * Scroll advances tabs while the panel stays pinned under the nav.
+ * Homepage AI overview — Copilot header + Docs / PDF / Slides / Sheets tabs.
  */
 export default function HomeIntlAiFeatures({ copy, title, summary }) {
   const { pillars } = useHomeAiCapabilities(copy)
@@ -115,15 +157,32 @@ export default function HomeIntlAiFeatures({ copy, title, summary }) {
       aria-labelledby="home-intl-ai-title"
     >
       <div className="home-section-inner mx-auto w-full max-w-[1160px]">
-        <h2
-          id="home-intl-ai-title"
-          className="home-section-title text-center text-[clamp(20px,2.5vw,26px)] font-semibold text-[#1a202c]"
-        >
-          {title}
-        </h2>
-        <p className="home-section-subtitle mx-auto mt-2 max-w-[640px] text-center text-[14px] leading-relaxed text-[#4a5568]">
-          {summary}
-        </p>
+        <header className="home-intl-ai-copilot-head">
+          <div className="home-intl-ai-copilot-head-title-row">
+            {HOME_HERO_COPILOT?.iconSrc ? (
+              <img
+                className="home-intl-ai-copilot-head-icon"
+                src={HOME_HERO_COPILOT.iconSrc}
+                alt=""
+                width={52}
+                height={52}
+                draggable={false}
+                decoding="async"
+              />
+            ) : null}
+            <div className="home-intl-ai-copilot-head-copy">
+              <h2
+                id="home-intl-ai-title"
+                className="home-section-title text-[clamp(20px,2.5vw,26px)] font-semibold text-[#1a202c]"
+              >
+                {title}
+              </h2>
+              {summary ? (
+                <p className="home-ai-spotlight-tagline">{summary}</p>
+              ) : null}
+            </div>
+          </div>
+        </header>
 
         <div
           ref={trackRef}

@@ -39,24 +39,26 @@ export function useHomeAiCapabilities(copy) {
       const featureCopy = labels.features ?? {}
       const featureDetails = labels.featureDetails ?? {}
 
-      const features = pillar.featureIds.map((featureId) => {
+      const features = (pillar.featureIds ?? []).map((featureId) => {
         const resolved = groupItemsById[featureId]
         return {
           id: featureId,
           label: featureCopy[featureId] ?? resolved?.label ?? featureId,
           description:
             featureDetails[featureId] ?? resolved?.description ?? '',
+          url: resolved?.url ?? null,
         }
       })
 
       const spotlightId =
-        pillar.spotlightImageId ?? pillar.featureIds[0] ?? ''
+        pillar.spotlightImageId ?? pillar.featureIds?.[0] ?? ''
       const spotlightResolved =
-        groupItemsById[spotlightId] ?? groupItemsById[pillar.featureIds[0]]
+        groupItemsById[spotlightId] ?? groupItemsById[pillar.featureIds?.[0]]
 
       return {
         id: pillar.id,
         directoryGroupId: pillar.directoryGroupId ?? pillar.id,
+        productPageUrl: pillar.productPageUrl ?? null,
         label: labels.label ?? pillar.id,
         tagline: labels.tagline ?? '',
         iconSrc: HERO_ICON_BY_ID[pillar.iconId] ?? null,

@@ -6,11 +6,11 @@ import HomeDownloadSection from './HomeDownloadSection'
 import HomeEntityCatalog from './HomeEntityCatalog'
 import { flattenHomeFaqs } from '../utils/homeFaq'
 import HomeFaq from './HomeFaq'
-import HomeHeroCopilot from './HomeHeroCopilot'
 import HomeHeroTitle from './HomeHeroTitle'
 import HomeIntlAiFeatures from './HomeIntlAiFeatures'
 import HomeMediaProof from './HomeMediaProof'
 import HomeTrustBar from './HomeTrustBar'
+import { renderFaqAnswer } from '../utils/renderFaqAnswer'
 
 /**
  * SEO/GEO homepage — each section owns one job.
@@ -28,11 +28,7 @@ export default function HomePage({
   const entityCatalogGroups = useHomeEntityCatalog({
     localeDownloadPath,
   })
-  const intentLinks = useHomeIntentLinks({
-    currentUrlLocale,
-    localeDownloadPath,
-    localeAllProductsPath,
-  })
+  const intentLinks = useHomeIntentLinks()
   useHomeScrollTopOnMount()
   useHomePageSeo({
     enabled: true,
@@ -72,12 +68,6 @@ export default function HomePage({
 
       <HomeTrustBar label={home.trustBarLabel} copy={home.trustBar} />
 
-      <HomeHeroCopilot
-        copy={home.copilotSection}
-        localeAiFeaturesPath={localeAiFeaturesPath}
-        navigateTo={navigateTo}
-      />
-
       <HomeIntlAiFeatures
         title={home.intlAiFeatures?.title}
         summary={home.intlAiFeatures?.summary}
@@ -88,13 +78,10 @@ export default function HomePage({
         <div className="home-section-inner mx-auto w-full max-w-[1160px]">
           <h2
             id="home-intent-title"
-            className="home-section-title text-center text-[clamp(20px,2.5vw,26px)] font-semibold text-[#1a202c]"
+            className="home-section-title mx-auto mb-8 max-w-[560px] text-center text-[clamp(20px,2.5vw,26px)] font-semibold text-[#1a202c]"
           >
             {home.intentLinksTitle}
           </h2>
-          <p className="home-section-subtitle mx-auto mt-2 mb-8 max-w-[560px] text-center text-[14px] text-[#4a5568]">
-            {home.intentLinksSub}
-          </p>
           <ul className="home-intent-list">
             {intentLinks.map((item) => {
               const copy = home.intentLinks?.[item.id]
@@ -105,7 +92,11 @@ export default function HomePage({
                   <a
                     className="home-intent-card"
                     href={item.path}
+                    {...(item.external
+                      ? { target: '_blank', rel: 'noopener noreferrer' }
+                      : {})}
                     onClick={(event) => {
+                      if (item.external) return
                       event.preventDefault()
                       navigateTo(item.path)
                     }}
@@ -129,7 +120,7 @@ export default function HomePage({
             {(home.keyFacts ?? []).map((item) => (
               <article key={item.title} className="home-diff-card">
                 <h3>{item.title}</h3>
-                <p>{item.desc}</p>
+                <p>{renderFaqAnswer(item.desc)}</p>
               </article>
             ))}
           </div>

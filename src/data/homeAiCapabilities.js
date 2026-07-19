@@ -7,6 +7,7 @@ export const HOME_AI_PILLARS = Object.freeze([
     id: 'docs',
     iconId: 'docs',
     directoryGroupId: 'writer',
+    productPageUrl: 'https://www.wps.com/office/writer/',
     spotlightImageId: 'ai-writer-feature',
     featureIds: ['ai-writer', 'ai-summarizer'],
   }),
@@ -14,6 +15,7 @@ export const HOME_AI_PILLARS = Object.freeze([
     id: 'sheets',
     iconId: 'sheets',
     directoryGroupId: 'spreadsheet',
+    productPageUrl: 'https://www.wps.com/office/spreadsheet/',
     spotlightImageId: 'ai-in-excel-spreadsheets',
     featureIds: ['ai-excel-formula-generator', 'ai-in-excel-spreadsheets'],
   }),
@@ -21,6 +23,7 @@ export const HOME_AI_PILLARS = Object.freeze([
     id: 'slides',
     iconId: 'slides',
     directoryGroupId: 'presentation',
+    productPageUrl: 'https://www.wps.com/office/presentation/',
     spotlightImageId: 'ai-ppt-maker',
     featureIds: ['ai-ppt-maker', 'ai-powerpoint-generator'],
   }),
@@ -28,6 +31,7 @@ export const HOME_AI_PILLARS = Object.freeze([
     id: 'pdf',
     iconId: 'pdf',
     directoryGroupId: 'pdf',
+    productPageUrl: 'https://www.wps.com/office/pdf/',
     spotlightImageId: 'chat-with-pdf',
     featureIds: ['chat-with-pdf', 'ai-pdf-summarizer'],
   }),
@@ -63,7 +67,7 @@ export const HOME_AI_PILLARS = Object.freeze([
   }),
 ])
 
-/** Four core suite apps shown in the homepage AI capsule (Writer → PDF → Slides → Sheets). */
+/** Core homepage AI tabs — Docs / PDF / Slides / Sheets. */
 export const HOME_AI_CORE_PILLAR_IDS = Object.freeze(['docs', 'pdf', 'slides', 'sheets'])
 
 /** Build /ai-features anchor for a homepage pillar card. */

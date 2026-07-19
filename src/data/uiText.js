@@ -28,18 +28,6 @@ export const uiTextByLanguage = {
         'Create smarter & faster across Copilot, Docs, Slides, Sheets, PDF, Photos, AirPage, AirSheet, Forms, DBSheet With an AI-powered agentic free office',
       heroDesc:
         'Meet WPS Office — a better way to work, all in one place. Collaborate in real time and stay in sync across PC, mobile, and online.',
-      copilotSection: {
-        badge: 'WPS Copilot',
-        title: 'Your suite-wide AI assistant',
-        summary:
-          'Draft, rewrite, and summarize across every WPS app — from Docs and Sheets to PDF and Slides.',
-        features: [
-          'Draft and polish content in any WPS app',
-          'Summarize long documents in one click',
-          'Use AIPal as your web Copilot entry point',
-        ],
-        ctaLabel: 'Explore Copilot features',
-      },
       // Entity: brand relationship only (not a product list)
       entityTitle: 'What is WPS AI?',
       entityAnswer:
@@ -57,80 +45,115 @@ export const uiTextByLanguage = {
       },
       // International AI feature directory (external official URLs)
       intlAiFeatures: {
-        title: 'AI across WPS Office',
-        summary:
-          'Draft, analyze, present, and edit — explore built-in AI in Docs, Sheets, Slides, PDF, and the rest of the suite.',
+        title: 'WPS Copilot',
+        summary: 'Your suite-wide Office Copilot',
         pillars: {
           copilot: {
             label: 'Copilot',
-            tagline: 'Your suite-wide AI assistant',
+            tagline: 'Your suite-wide Office Copilot',
+            suiteAppsLabel: 'Writer · Spreadsheet · Presentation · PDF',
+            hubLinkId: 'wps-ai-copilot-hub',
+            spotlightLead:
+              'One AI assistant across Writer, Spreadsheet, Presentation, and PDF — draft, analyze, present, and read without switching apps.',
+            featureItems: [
+              {
+                id: 'copilot-ai-writing',
+                label: 'AI Writing',
+                description:
+                  'Instant drafts and tone switching — semantic polish and rewrite in Writer.',
+              },
+              {
+                id: 'copilot-slide-designer',
+                label: 'Slide Designer',
+                description:
+                  'One-click PPT generation with automated slide layouts in Presentation.',
+              },
+              {
+                id: 'copilot-data-analyst',
+                label: 'Data Analyst',
+                description:
+                  'Chat with your spreadsheets — formula assistance and insights in Sheets.',
+              },
+              {
+                id: 'copilot-pdf-ai-reader',
+                label: 'PDF AI Reader',
+                description:
+                  'Inquire long PDF documents — AI-powered insight extraction via Chat PDF.',
+              },
+            ],
             features: {
-              'wps-ai-copilot-hub': 'Draft, rewrite, and summarize across WPS apps',
-              aipal: 'Use AIPal as your web Copilot entry point',
+              'wps-ai-copilot-hub': 'AI Writing, Slide Designer, PDF AI Reader, and more',
+              aipal: 'AIPal web Copilot entry point',
+            },
+            featureDetails: {
+              'wps-ai-copilot-hub':
+                'Meet your next Office Copilot — instant drafts, one-click PPT generation, spreadsheet analysis, and Chat PDF in one suite-wide workflow.',
+              aipal:
+                'Open AIPal in the browser for web-based Copilot access when you are away from the desktop app.',
             },
           },
           docs: {
             label: 'Docs',
             tagline: 'Write and rewrite smarter',
             spotlightLead:
-              'WPS AI inside Writer helps you draft from a blank page, rewrite tone and clarity, and summarize long documents — all without leaving your doc.',
+              'WPS AI inside [WPS Writer](https://www.wps.com/office/writer/) helps you draft from a blank page, rewrite tone and clarity, and [summarize long documents](https://www.wps.com/feature/ai-summarizer/) — all without leaving your doc.',
             features: {
               'ai-writer': 'Generate drafts and polish tone with AI Writer',
               'ai-summarizer': 'Summarize long documents in one click',
             },
             featureDetails: {
               'ai-writer':
-                'Generate essays, blogs, and business copy up to 10× faster. AI Writer includes grammar checking and ChatGPT-powered drafting inside Word.',
+                'Generate essays, blogs, and business copy up to 10× faster. [AI Writer](https://www.wps.com/feature/ai-writer/) includes grammar checking and ChatGPT-powered drafting inside Word.',
               'ai-summarizer':
-                'Turn reports, contracts, and research into concise summaries with AI — keep the key points and skip the manual read-through.',
+                'Turn reports, contracts, and research into concise summaries with [AI Summarizer](https://www.wps.com/feature/ai-summarizer/) — keep the key points and skip the manual read-through.',
             },
           },
           sheets: {
             label: 'Sheets',
             tagline: 'Analyze data with less manual work',
             spotlightLead:
-              'Spreadsheet AI turns plain-language questions into formulas, insights, and tables — so you spend less time on syntax and more on decisions.',
+              '[WPS Spreadsheet](https://www.wps.com/office/spreadsheet/) AI turns plain-language questions into formulas, insights, and tables — so you spend less time on syntax and more on decisions.',
             features: {
               'ai-excel-formula-generator': 'Build formulas from plain language',
               'ai-in-excel-spreadsheets': 'Ask questions and get insights from your data',
             },
             featureDetails: {
               'ai-excel-formula-generator':
-                'Describe what you need in everyday language and get accurate Excel formulas instantly — fewer errors, no formula memorization.',
+                'Describe what you need in everyday language and get accurate Excel formulas instantly with the [AI Excel Formula Generator](https://www.wps.com/feature/ai-excel-formula-generator/) — fewer errors, no formula memorization.',
               'ai-in-excel-spreadsheets':
-                'Ask questions about your data in natural language and get AI-driven insights, summaries, and analysis right inside your sheet.',
+                'Ask questions about your data in natural language and get AI-driven insights with [AI in Excel Spreadsheets](https://www.wps.com/feature/ai-in-excel-spreadsheets/) right inside your sheet.',
             },
           },
           slides: {
             label: 'Slides',
             tagline: 'Create presentations faster',
             spotlightLead:
-              'Presentation AI turns outlines, topics, and briefs into polished slide decks — layout, structure, and copy included.',
+              '[WPS Presentation](https://www.wps.com/office/presentation/) AI turns outlines, topics, and briefs into polished slide decks — layout, structure, and copy included.',
             features: {
               'ai-ppt-maker': 'Turn an outline into a polished deck',
               'ai-powerpoint-generator': 'Generate slides from a topic or brief',
             },
             featureDetails: {
               'ai-ppt-maker':
-                'Paste an outline or bullet list and let AI build a complete, well-structured presentation you can refine slide by slide.',
+                'Paste an outline or bullet list and let [AI PPT Maker](https://www.wps.com/feature/ai-ppt-maker/) build a complete, well-structured presentation you can refine slide by slide.',
               'ai-powerpoint-generator':
-                'Start from a topic, prompt, or brief and generate professional slides in seconds — compatible with PowerPoint workflows.',
+                'Start from a topic, prompt, or brief and generate professional slides in seconds with the [AI PowerPoint Generator](https://explore.wps.com/ppt/ai-powerpoint-generator) — compatible with PowerPoint workflows.',
             },
           },
           pdf: {
             label: 'PDF',
             tagline: 'Read, chat, and summarize PDFs',
             spotlightLead:
-              'PDF AI lets you chat with documents, pull answers with source proof, and summarize long reports — securely inside WPS.',
+              '[WPS PDF](https://www.wps.com/office/pdf/) AI lets you chat with documents, pull answers with source proof, and summarize long reports — securely inside WPS.',
             features: {
               'chat-with-pdf': 'Chat with PDFs to find answers instantly',
               'ai-pdf-summarizer': 'Summarize reports without reading every page',
             },
             featureDetails: {
               'chat-with-pdf':
-                'Ask questions about any PDF and get instant answers with clickable source references — ideal for manuals, papers, and contracts.',
+                'Ask questions about any PDF and get instant answers with [Chat with PDF](https://explore.wps.com/pdf/chat-with-pdf) — clickable source references for manuals, papers, and contracts.',
               'ai-pdf-summarizer':
-                'Summarize lengthy PDFs in seconds with AI analysis and mobile-friendly reading — no need to scroll every page yourself.',
+                'Summarize lengthy PDFs in seconds with the [AI PDF Summarizer](https://explore.wps.com/pdf/ai-pdf-summarizer) — no need to scroll every page yourself.',
             },
           },
           photos: {
@@ -341,23 +364,24 @@ export const uiTextByLanguage = {
       aboutLinkLabel: 'Product encyclopedia',
       // High-intent internal links
       intentLinksTitle: 'Popular WPS topics',
-      intentLinksSub: 'Jump to high-intent pages for download, online use, and PDF tools.',
+      intentLinksSub:
+        'Start with the online office, AI, and PDF tools WPS users explore most.',
       intentLinks: {
-        download: {
-          label: 'Download WPS Office',
-          desc: 'Free WPS Office download for PC, Mac, Linux, and mobile',
+        'pdf-extension': {
+          label: 'PDF Extension for Chrome',
+          desc: 'Read PDFs in Chrome with AI summary, translation, and Chat PDF — highlight, annotate, and ask questions in the browser.',
         },
-        online: {
-          label: 'WPS Online',
-          desc: 'Use WPS Office tools in the browser',
+        'wps-office-web': {
+          label: 'WPS Office Web',
+          desc: 'Edit Word, Excel, PowerPoint, and PDF online in your browser — no install, synced across your devices.',
         },
-        pdf: {
-          label: 'WPS PDF',
-          desc: 'Edit, convert, and manage PDF files',
+        'wps-ai-ppt': {
+          label: 'WPS AI PPT & Slides',
+          desc: 'Turn a topic, brief, or outline into polished slides — AI presentation maker for decks in seconds.',
         },
         'pdf-to-word': {
-          label: 'PDF to Word',
-          desc: 'Convert PDF documents to editable Word files',
+          label: 'PDF to Word Online',
+          desc: 'Convert PDF to editable Word online — drag, upload, convert, and download DOCX free.',
         },
       },
       // Comparison: quotable differences across common alternatives
@@ -426,7 +450,7 @@ export const uiTextByLanguage = {
       compareDisclaimer:
         'Informational comparison only, based on publicly available product and pricing pages. Third-party product names are trademarks of their respective owners. Features, pricing, and availability vary by plan, platform, and region. Last updated: July 2026.',
       // Key facts: verifiable attributes (not definitions, not inventory)
-      keyFactsTitle: 'Key facts',
+      keyFactsTitle: 'WPS at a glance',
       mediaProofTitle: 'Trusted by Experts & Proven by Users',
       mediaProofSummary:
         'Experience the shift from manual labor to intelligent creation. WPS software is your co-pilot for every task.',
@@ -437,20 +461,24 @@ export const uiTextByLanguage = {
       },
       keyFacts: [
         {
-          title: 'Free download and WPS online',
-          desc: 'Download WPS Office free for Windows PC, Mac, Linux, Android, and iOS, or use WPS online in the browser with no install.',
+          title: '600 million monthly active users',
+          desc:
+            'Trusted by [600 million monthly active users](https://www.wps.com/about-us/) worldwide. Kingsoft Office reported [672 million global monthly active devices](https://ir.kingsoft.com/) for WPS Office as of March 2026.',
         },
         {
-          title: 'Microsoft Office file compatibility',
-          desc: 'Open and edit common DOC/DOCX, XLS/XLSX, PPT/PPTX, and PDF formats used with Microsoft Word, Excel, and PowerPoint.',
+          title: '220+ countries & regions',
+          desc:
+            'WPS Office reaches [220+ countries and regions](https://www.wps.com/about-us/) — ranked #1 in more than 21 countries on major app stores.',
         },
         {
-          title: 'WPS PDF and PDF to Word',
-          desc: 'WPS PDF supports edit PDF, PDF to Word, convert, compress, and related PDF workflows.',
+          title: '46 languages supported',
+          desc:
+            'The suite supports [46 languages](https://www.wps.com/about-us/) — localized Writer, Spreadsheet, Presentation, and PDF for global teams and individuals.',
         },
         {
-          title: '20 languages',
-          desc: 'WPS Office is localized in 20 languages for users and teams across regions.',
+          title: '200,000+ enterprise customers',
+          desc:
+            '[200,000+ leading enterprises](https://www.wps.com/about-us/) worldwide trust and use WPS — alongside [500M+ users](https://www.wps.com/download/) on the free download page.',
         },
       ],
       // FAQ: query-shaped answers grouped by SEO topic (definition lives in Entity)
@@ -750,18 +778,6 @@ export const uiTextByLanguage = {
         '更聪明、更高效地创作，尽在 Copilot, Docs, Slides, Sheets, PDF, Photos, AirPage, AirSheet, Forms, DBSheet — 搭配 Agentic AI 驱动的 free office',
       heroDesc:
         '遇见 WPS Office —— 更好的工作方式，一站到位。实时协作，多端同步，PC、移动端与在线版随时衔接。',
-      copilotSection: {
-        badge: 'WPS Copilot',
-        title: '套件级 AI 助手',
-        summary:
-          '在 WPS 各应用中起草、改写与摘要 —— 覆盖文字、表格、演示、PDF 等完整办公套件。',
-        features: [
-          '在任意 WPS 应用中起草与润色内容',
-          '一键摘要长文档',
-          '通过 AIPal 使用网页版 Copilot 入口',
-        ],
-        ctaLabel: '探索 Copilot 功能',
-      },
       // Entity: 只讲品牌关系
       entityTitle: '什么是 WPS AI？',
       entityAnswer:
@@ -778,80 +794,110 @@ export const uiTextByLanguage = {
         platforms: '支持平台',
       },
       intlAiFeatures: {
-        title: '每个 WPS 应用，都能用 AI',
-        summary:
-          '写作、分析、演示、编辑 —— 按应用浏览文字、表格、演示、PDF 等 WPS 内置 AI 能力。',
+        title: 'WPS Copilot',
+        summary: '贯穿整套 Office 的 Copilot',
         pillars: {
           copilot: {
             label: 'Copilot',
-            tagline: '套件级 AI 助手',
+            tagline: '贯穿整套 Office 的 Copilot',
+            suiteAppsLabel: '文字 · 表格 · 演示 · PDF',
+            hubLinkId: 'wps-ai-copilot-hub',
+            spotlightLead:
+              '一套 AI 助手覆盖文字、表格、演示与 PDF —— 起草、分析、演示与阅读，无需切换应用。',
+            featureItems: [
+              {
+                id: 'copilot-ai-writing',
+                label: 'AI 写作',
+                description: '即时起草与语气切换 —— 文字中的语义润色与专业改写。',
+              },
+              {
+                id: 'copilot-slide-designer',
+                label: '幻灯片设计',
+                description: '一键生成 PPT —— 演示中的自动化版式与结构。',
+              },
+              {
+                id: 'copilot-data-analyst',
+                label: '数据分析',
+                description: '与表格对话 —— 公式助手与 Sheet 内数据洞察。',
+              },
+              {
+                id: 'copilot-pdf-ai-reader',
+                label: 'PDF AI 阅读',
+                description: '与长 PDF 对话 —— 通过 Chat PDF 提取文档洞察。',
+              },
+            ],
             features: {
-              'wps-ai-copilot-hub': '在 WPS 各应用中起草、改写与摘要',
-              aipal: '通过 AIPal 使用网页版 Copilot 入口',
+              'wps-ai-copilot-hub': 'AI 写作、幻灯片设计、PDF AI 阅读等 Copilot 能力',
+              aipal: 'AIPal 网页版 Copilot 入口',
+            },
+            featureDetails: {
+              'wps-ai-copilot-hub':
+                '遇见你的下一代 Office Copilot —— 即时起草、一键 PPT、表格分析与 Chat PDF，套件级一体工作流。',
+              aipal: '在浏览器打开 AIPal，离开桌面客户端时也能使用网页版 Copilot。',
             },
           },
           docs: {
             label: '文字',
             tagline: '更聪明地写作与改写',
             spotlightLead:
-              'WPS 文字内置 AI：从空白页起草、改写语气与表达、一键摘要长文档 —— 全程不离开当前文档。',
+              '[WPS 文字 Writer](https://www.wps.com/office/writer/) 内置 AI：从空白页起草、改写语气与表达、[一键摘要长文档](https://www.wps.com/feature/ai-summarizer/) —— 全程不离开当前文档。',
             features: {
               'ai-writer': '用 AI Writer 生成初稿并润色语气',
               'ai-summarizer': '一键摘要长文档',
             },
             featureDetails: {
               'ai-writer':
-                '用自然语言生成文章、博客与商务文案，速度提升可达 10 倍；内置语法检查与 ChatGPT 级起草能力。',
+                '用自然语言生成文章、博客与商务文案，速度提升可达 10 倍；[AI Writer](https://www.wps.com/feature/ai-writer/) 内置语法检查与 ChatGPT 级起草能力。',
               'ai-summarizer':
-                '将报告、合同与研究材料压缩成精炼摘要，保留要点，省去通读时间。',
+                '将报告、合同与研究材料压缩成精炼摘要，[AI Summarizer](https://www.wps.com/feature/ai-summarizer/) 保留要点，省去通读时间。',
             },
           },
           sheets: {
             label: '表格',
             tagline: '少做手工，多做分析',
             spotlightLead:
-              '表格 AI 把口语化问题变成公式、洞察与结构化表格 —— 少记语法，多做决策。',
+              '[WPS 表格 Spreadsheet](https://www.wps.com/office/spreadsheet/) AI 把口语化问题变成公式、洞察与结构化表格 —— 少记语法，多做决策。',
             features: {
               'ai-excel-formula-generator': '用自然语言生成公式',
               'ai-in-excel-spreadsheets': '向数据提问，快速获得洞察',
             },
             featureDetails: {
               'ai-excel-formula-generator':
-                '用日常语言描述需求，即时生成准确 Excel 公式，减少出错，无需背诵函数。',
+                '用日常语言描述需求，[AI Excel 公式生成器](https://www.wps.com/feature/ai-excel-formula-generator/) 即时生成准确 Excel 公式，减少出错，无需背诵函数。',
               'ai-in-excel-spreadsheets':
-                '用自然语言向表格提问，在 Sheet 内直接获得 AI 驱动的分析、摘要与洞察。',
+                '用自然语言向表格提问，在 Sheet 内通过 [AI in Excel Spreadsheets](https://www.wps.com/feature/ai-in-excel-spreadsheets/) 直接获得 AI 驱动的分析、摘要与洞察。',
             },
           },
           slides: {
             label: '演示',
             tagline: '更快做出演示文稿',
             spotlightLead:
-              '演示 AI 可将大纲、主题或简报快速变成结构完整的幻灯片 —— 版式、层次与文案一并生成。',
+              '[WPS 演示 Presentation](https://www.wps.com/office/presentation/) AI 可将大纲、主题或简报快速变成结构完整的幻灯片 —— 版式、层次与文案一并生成。',
             features: {
               'ai-ppt-maker': '把大纲变成完整 PPT',
               'ai-powerpoint-generator': '根据主题或简报生成幻灯片',
             },
             featureDetails: {
               'ai-ppt-maker':
-                '粘贴大纲或要点列表，AI 自动生成结构清晰的完整演示，可逐页微调。',
+                '粘贴大纲或要点列表，[AI PPT Maker](https://www.wps.com/feature/ai-ppt-maker/) 自动生成结构清晰的完整演示，可逐页微调。',
               'ai-powerpoint-generator':
-                '从主题、提示词或简报出发，数秒内生成专业幻灯片，兼容 PowerPoint 工作流。',
+                '从主题、提示词或简报出发，[AI PowerPoint Generator](https://explore.wps.com/ppt/ai-powerpoint-generator) 数秒内生成专业幻灯片，兼容 PowerPoint 工作流。',
             },
           },
           pdf: {
             label: 'PDF',
             tagline: '阅读、对话、摘要 PDF',
             spotlightLead:
-              'PDF AI 支持文档对话、带出处引用的问答，以及长报告摘要 —— 在 WPS 内安全完成。',
+              '[WPS PDF](https://www.wps.com/office/pdf/) AI 支持文档对话、带出处引用的问答，以及长报告摘要 —— 在 WPS 内安全完成。',
             features: {
               'chat-with-pdf': '与 PDF 对话，即时找答案',
               'ai-pdf-summarizer': '无需通读即可摘要报告',
             },
             featureDetails: {
               'chat-with-pdf':
-                '对任意 PDF 提问并即时获得答案，附可点击的原文出处 —— 适合手册、论文与合同。',
+                '对任意 PDF 提问并即时获得答案，[Chat with PDF](https://explore.wps.com/pdf/chat-with-pdf) 附可点击的原文出处 —— 适合手册、论文与合同。',
               'ai-pdf-summarizer':
-                '数秒内摘要超长 PDF，支持 AI 分析与移动阅读，无需逐页滚动。',
+                '数秒内摘要超长 PDF，[AI PDF Summarizer](https://explore.wps.com/pdf/ai-pdf-summarizer) 支持 AI 分析与移动阅读，无需逐页滚动。',
             },
           },
           photos: {
@@ -1057,24 +1103,25 @@ export const uiTextByLanguage = {
       aboutText:
         'WPS Office 与 WPS AI 由金山办公（WPS / Kingsoft Office）提供，覆盖文档、表格、演示与 PDF，支持桌面端、移动端与网页端免费使用入口。',
       aboutLinkLabel: '产品百科',
-      intentLinksTitle: '热门 WPS 主题',
-      intentLinksSub: '前往下载、在线使用与 PDF 等高意图页面。',
+      intentLinksTitle: '热门 WPS 话题',
+      intentLinksSub:
+        '从用户最常探索的在线办公、AI 与 PDF 工具入手。',
       intentLinks: {
-        download: {
-          label: '下载 WPS Office',
-          desc: '免费下载电脑版、Mac、Linux 与移动端',
+        'pdf-extension': {
+          label: 'Chrome PDF 扩展',
+          desc: '在 Chrome 中阅读 PDF，支持 AI 摘要、翻译与 Chat PDF —— 高亮批注、浏览器内即时问答。',
         },
-        online: {
-          label: 'WPS 在线',
-          desc: '在浏览器中使用 WPS Office 工具',
+        'wps-office-web': {
+          label: 'WPS Office 网页版',
+          desc: '在浏览器在线编辑 Word、Excel、PPT 与 PDF，无需安装，多端同步。',
         },
-        pdf: {
-          label: 'WPS PDF',
-          desc: '编辑、转换与管理 PDF 文件',
+        'wps-ai-ppt': {
+          label: 'WPS AI PPT 与演示',
+          desc: '从主题、简报或大纲生成精美幻灯片 —— AI 演示制作，数秒出稿。',
         },
         'pdf-to-word': {
-          label: 'PDF 转 Word',
-          desc: '将 PDF 转为可编辑的 Word 文档',
+          label: 'PDF 转 Word 在线',
+          desc: '在线将 PDF 转为可编辑 Word —— 拖拽上传、转换并下载 DOCX。',
         },
       },
       compareTitle: 'WPS Office 对比 Microsoft 365、Google Workspace、Notion 与 Adobe',
@@ -1141,7 +1188,7 @@ export const uiTextByLanguage = {
       compareDisclaimer:
         '本表仅供信息参考，依据各产品公开的产品页与定价页整理。第三方产品名称为其各自权利人的商标。功能、价格与可用性因套餐、平台和地区而异。最后更新：2026 年 7 月。',
       // Key facts: 可验证属性
-      keyFactsTitle: '关键事实',
+      keyFactsTitle: 'WPS 关键数据',
       mediaProofTitle: '专家信赖 & 用户验证',
       mediaProofSummary:
         '从手工劳作到智能创作 —— WPS 软件是你每项任务的协同助手。',
@@ -1152,20 +1199,24 @@ export const uiTextByLanguage = {
       },
       keyFacts: [
         {
-          title: '免费下载与 WPS 在线',
-          desc: '可免费下载 WPS Office 到 Windows PC、Mac、Linux、Android 与 iOS，也可在浏览器使用 WPS 在线版，无需安装。',
+          title: '6 亿月活跃用户',
+          desc:
+            '全球 [6 亿月活跃用户](https://www.wps.com/about-us/)。金山办公 2026 年 3 月披露，WPS Office [全球月活跃设备数达 6.72 亿](https://ir.kingsoft.com/)。',
         },
         {
-          title: '兼容 Microsoft Office 格式',
-          desc: '可打开并编辑常见 DOC/DOCX、XLS/XLSX、PPT/PPTX 与 PDF 等 Word、Excel、PowerPoint 常用格式。',
+          title: '220+ 国家与地区',
+          desc:
+            'WPS Office 覆盖 [220+ 国家与地区](https://www.wps.com/about-us/) —— 在主流应用商店超过 21 个国家/地区排名第一。',
         },
         {
-          title: 'WPS PDF 与 PDF 转 Word',
-          desc: 'WPS PDF 支持 PDF 编辑、PDF 转 Word，以及转换、压缩等常见 PDF 工作流。',
+          title: '46 种语言',
+          desc:
+            '套件支持 [46 种语言](https://www.wps.com/about-us/) —— 文字、表格、演示与 PDF 面向全球用户与团队本地化。',
         },
         {
-          title: '20 种语言',
-          desc: 'WPS Office 提供 20 种语言本地化，面向多地区用户与团队。',
+          title: '20 万+ 企业客户',
+          desc:
+            '全球 [20 万+ 领先企业](https://www.wps.com/about-us/) 信任并使用 WPS —— [免费下载页](https://www.wps.com/download/) 亦标注 5 亿+ 用户规模。',
         },
       ],
       // FAQ: 按 SEO 主题分组，只回答检索型问题（定义在 Entity）
