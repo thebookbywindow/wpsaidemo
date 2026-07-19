@@ -1,6 +1,7 @@
 import { Fragment, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import DocsCenterPage from './components/DocsCenterPage'
 import HomePage from './components/HomePage'
+import IntlAiFeaturesPage from './components/IntlAiFeaturesPage'
 import {
   encyclopediaEntriesByLocale,
   encyclopediaUiTextByLocale,
@@ -1535,6 +1536,7 @@ const contentRootSet = new Set([
   'download',
   'all-products',
   'all-templates',
+  'ai-features',
   'worldwide',
   'answers',
 ])
@@ -1704,6 +1706,9 @@ function getPageType(pathname) {
   if (normalizedSegments[0] === 'all-templates') {
     return 'all-templates'
   }
+  if (normalizedSegments[0] === 'ai-features') {
+    return 'ai-features'
+  }
   if (normalizedSegments[0] === 'worldwide') {
     return 'worldwide'
   }
@@ -1776,6 +1781,10 @@ function getLocaleAllProductsPath(locale) {
 
 function getLocaleAllTemplatesPath(locale) {
   return joinPath(toUrlLocale(locale), 'all-templates')
+}
+
+function getLocaleAiFeaturesPath(locale) {
+  return joinPath(toUrlLocale(locale), 'ai-features')
 }
 
 function getLocaleWorldwidePath(locale) {
@@ -2961,6 +2970,7 @@ function App() {
   const localeAnswersPath = getLocaleAnswersPath(currentLocale)
   const localeAllProductsPath = getLocaleAllProductsPath(currentLocale)
   const localeAllTemplatesPath = getLocaleAllTemplatesPath(currentLocale)
+  const localeAiFeaturesPath = getLocaleAiFeaturesPath(currentLocale)
   const localeWorldwidePath = getLocaleWorldwidePath(currentLocale)
   const localeGuidesPath = getLocaleGuidesPath(currentLocale)
   const footerBlurb = isZhContent
@@ -3461,7 +3471,7 @@ function App() {
 
           {isProductsMenuOpen && (
             <div
-              className="fixed inset-x-0 top-[59px] z-40 home-nav-mega-panel"
+              className="fixed inset-x-0 top-[59px] z-[100] home-nav-mega-panel"
               onMouseEnter={() => openDesktopMenu('products')}
               onMouseLeave={() => scheduleDesktopMenuClose('products')}
             >
@@ -3584,7 +3594,7 @@ function App() {
 
           {isTemplatesMenuOpen && (
             <div
-              className="fixed inset-x-0 top-[59px] z-40 home-nav-mega-panel"
+              className="fixed inset-x-0 top-[59px] z-[100] home-nav-mega-panel"
               onMouseEnter={() => openDesktopMenu('templates')}
               onMouseLeave={() => scheduleDesktopMenuClose('templates')}
             >
@@ -3660,8 +3670,8 @@ function App() {
   const isDesktopMegaMenuOpen = isProductsMenuOpen || isTemplatesMenuOpen
 
   return (
-    <div className="home-figma-page min-h-screen overflow-x-clip bg-[#fffdfd] text-[#1a202c]">
-      <header className={`sticky top-0 z-20 border-b border-[#e2e8f0] bg-white/95 backdrop-blur-[12px] home-page-header${isDesktopMegaMenuOpen ? ' home-page-header--mega-open' : ''}`}>
+    <div className="home-figma-page min-h-screen overflow-x-clip text-[#1a202c]">
+      <header className={`sticky top-0 z-20 border-b border-[#e2e8f0] bg-transparent backdrop-blur-[12px] home-page-header${isDesktopMegaMenuOpen ? ' home-page-header--mega-open' : ''}`}>
         <div className="home-page-header-inner relative mx-auto flex h-[60px] w-full max-w-[1240px] items-center gap-4 px-6">
           <div className="flex shrink-0 items-center justify-start">
             <a
@@ -3742,7 +3752,7 @@ function App() {
                 </button>
                 {isResourcesMenuOpen && (
                   <div
-                    className="home-nav-floating-panel absolute left-1/2 top-full z-40 hidden w-[190px] -translate-x-1/2 p-2.5 md:block"
+                    className="home-nav-floating-panel absolute left-1/2 top-full z-[100] hidden w-[190px] -translate-x-1/2 p-2.5 md:block"
                     onMouseEnter={() => openDesktopMenu('resources')}
                     onMouseLeave={() => scheduleDesktopMenuClose('resources')}
                   >
@@ -3888,7 +3898,7 @@ function App() {
               className={`inline-flex h-9 w-9 items-center justify-center rounded-[8px] border border-[#e2e8f0] transition ${
                 isMobileMenuOpen
                   ? 'bg-[#f6f5ff] text-[#534ab7]'
-                  : 'bg-white text-[#4a5568] hover:border-[#afa9ec] hover:text-[#534ab7]'
+                  : 'bg-transparent text-[#4a5568] hover:border-[#afa9ec] hover:text-[#534ab7]'
               }`}
               type="button"
               onClick={() => setIsMobileMenuOpen((prev) => !prev)}
@@ -3919,7 +3929,7 @@ function App() {
       {isMobileMenuOpen && (
         <div
           ref={mobileMenuPanelRef}
-          className="fixed inset-x-0 bottom-0 top-[60px] z-30 border-t border-[#e2e8f0] bg-white shadow-[0_16px_36px_rgba(15,23,42,0.12)] min-[720px]:hidden"
+          className="fixed inset-x-0 bottom-0 top-[60px] z-30 border-t border-[#e2e8f0] bg-transparent shadow-[0_16px_36px_rgba(15,23,42,0.12)] backdrop-blur-[16px] min-[720px]:hidden"
         >
           <div className="h-full overflow-y-auto px-3 py-3">
             <div className="border-b border-[#eef1f6] px-2 pb-3">
@@ -3979,10 +3989,17 @@ function App() {
             uiText={uiText}
             localeDownloadPath={localeDownloadPath}
             localeAllProductsPath={localeAllProductsPath}
+            localeAiFeaturesPath={localeAiFeaturesPath}
             localeEncyclopediaPath={localeEncyclopediaPath}
             currentUrlLocale={currentUrlLocale}
             navigateTo={navigateTo}
             contentLanguage={contentLanguage}
+          />
+        ) : pageType === 'ai-features' ? (
+          <IntlAiFeaturesPage
+            copy={uiText.home.intlAiFeatures}
+            localeHomePath={localeHomePath}
+            navigateTo={navigateTo}
           />
         ) : pageType === 'docs-center' ? (
           <DocsCenterPage

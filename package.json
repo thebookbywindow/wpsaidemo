@@ -10,9 +10,17 @@
     "preview": "vite preview",
     "generate:content-phrases": "node scripts/generate-blog-encyclopedia-phrases.mjs",
     "build:phrase-json": "node scripts/jsonl-to-phrase-json.mjs",
-    "validate:intl-ai": "node scripts/validate-intl-ai-features.mjs"
+    "scrape:intl-ai-meta": "node scripts/scrape-intl-ai-feature-meta.mjs",
+    "retry:intl-ai-images": "node scripts/retry-intl-ai-feature-images.mjs",
+    "validate:intl-ai": "node scripts/validate-intl-ai-features.mjs",
+    "validate:home-hero-cycle": "node scripts/validate-home-hero-cycle.mjs",
+    "validate:home-trust-dock": "node scripts/validate-home-trust-dock.mjs"
   },
   "dependencies": {
+    "@king-design/react": "^3.8.0",
+    "@kingsoft-ai/design": "^0.2.6",
+    "@kingsoft-ai/icons": "^0.1.6",
+    "@kingsoft-ai/theme": "^0.2.3",
     "lucide-react": "^1.16.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",

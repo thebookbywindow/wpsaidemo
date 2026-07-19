@@ -1,10 +1,57 @@
+import { HOME_HERO_COMPONENTS } from './homeHeroComponents.js'
+import { INTL_AI_FEATURE_META } from './intlAiFeatureMeta.js'
+
+/**
+ * Merge catalog item with scraped page meta (product screenshot + description).
+ * uiText itemDescriptions can override scraped description per locale.
+ */
+export function resolveIntlAiFeatureItem(item, itemLabels = {}, itemDescriptions = {}) {
+  const meta = INTL_AI_FEATURE_META?.[item.id] ?? {}
+  return {
+    id: item.id,
+    url: item.url,
+    label: itemLabels[item.id] ?? item.id,
+    description: itemDescriptions[item.id] || meta.description || '',
+    imageSrc: meta.imageSrc || null,
+  }
+}
+
 /**
  * WPS International AI feature catalog (official AI feature landing URLs).
- * Component groups: Writer / Spreadsheet / Presentation / PDF / Photos.
+ * Component groups: Writer / Spreadsheet / Presentation / PDF / Photos /
+ * AirPage / AirSheet / Forms / DBSheet.
  * Suite-wide Copilot entry points live in INTL_AI_COPILOT_LINKS (not a peer component).
  * No product/suite homepages, no Academy, no /tools/ mini-tool pages.
  * Labels resolved via uiText; keep ids stable for i18n keys.
  */
+
+/** Capsule tab id → hero product id (Writer→Docs, Spreadsheet→Sheets, etc.). */
+export const INTL_AI_TAB_HERO_IDS = Object.freeze({
+  copilot: 'copilot',
+  writer: 'docs',
+  spreadsheet: 'sheets',
+  presentation: 'slides',
+  pdf: 'pdf',
+  photos: 'photos',
+  airpage: 'airpage',
+  airsheet: 'airsheet',
+  forms: 'forms',
+  dbsheet: 'dbsheet',
+})
+
+const HERO_ICON_BY_ID = Object.freeze(
+  Object.fromEntries(
+    HOME_HERO_COMPONENTS.map((item) => [item.id, item.iconSrc]),
+  ),
+)
+
+/** Resolve `/icons/wps/*.svg` for a capsule tab id; missing → null. */
+export function getIntlAiTabIconSrc(tabId) {
+  const heroId = INTL_AI_TAB_HERO_IDS[tabId]
+  if (!heroId) return null
+  return HERO_ICON_BY_ID[heroId] ?? null
+}
+
 export const INTL_AI_COPILOT_LINKS = [
   {
     id: 'wps-ai-copilot-hub',
@@ -302,6 +349,176 @@ export const INTL_AI_FEATURE_GROUPS = [
         kind: 'feature',
       },
     ],
+  },
+  {
+    id: 'airpage',
+    items: [
+      {
+        id: 'airpage-online-document-editor',
+        url: 'https://www.wps.com/feature/online-document-editor/',
+        kind: 'feature',
+      },
+      {
+        id: 'airpage-word-online',
+        url: 'https://www.wps.com/feature/word-online/',
+        kind: 'feature',
+      },
+      {
+        id: 'airpage-ai-writer',
+        url: 'https://explore.wps.com/ai/ai-writer',
+        kind: 'feature',
+      },
+      {
+        id: 'airpage-ai-writer-feature',
+        url: 'https://www.wps.com/feature/ai-writer/',
+        kind: 'feature',
+      },
+      {
+        id: 'airpage-ai-text-generator',
+        url: 'https://www.wps.com/feature/ai-text-generator/',
+        kind: 'feature',
+      },
+      {
+        id: 'airpage-ai-summarizer',
+        url: 'https://www.wps.com/feature/ai-summarizer/',
+        kind: 'feature',
+      },
+      {
+        id: 'airpage-ai-improve-writing',
+        url: 'https://explore.wps.com/ai/ai-improve-writing',
+        kind: 'feature',
+      },
+      {
+        id: 'airpage-ai-spell-check',
+        url: 'https://explore.wps.com/ai/ai-spell-check',
+        kind: 'feature',
+      },
+      {
+        id: 'airpage-grammar-checker',
+        url: 'https://www.wps.com/feature/grammar-checker/',
+        kind: 'feature',
+      },
+      {
+        id: 'airpage-ai-translator',
+        url: 'https://explore.wps.com/ai/ai-translator',
+        kind: 'feature',
+      },
+      {
+        id: 'airpage-ai-translator-feature',
+        url: 'https://www.wps.com/feature/ai-translator/',
+        kind: 'feature',
+      },
+    ],
+    noteId: 'airpageNote',
+  },
+  {
+    id: 'airsheet',
+    items: [
+      {
+        id: 'airsheet-excel-online',
+        url: 'https://www.wps.com/feature/excel-online/',
+        kind: 'feature',
+      },
+      {
+        id: 'airsheet-online-excel-editor',
+        url: 'https://explore.wps.com/excel/online-excel-sheet-editor',
+        kind: 'feature',
+      },
+      {
+        id: 'airsheet-ai-in-spreadsheets',
+        url: 'https://www.wps.com/feature/ai-in-excel-spreadsheets/',
+        kind: 'feature',
+      },
+      {
+        id: 'airsheet-ai-formula-generator',
+        url: 'https://www.wps.com/feature/ai-excel-formula-generator/',
+        kind: 'feature',
+      },
+      {
+        id: 'airsheet-ai-table-generator',
+        url: 'https://www.wps.com/feature/ai-table-generator/',
+        kind: 'feature',
+      },
+      {
+        id: 'airsheet-jpg-to-excel',
+        url: 'https://www.wps.com/feature/jpg-to-excel/',
+        kind: 'feature',
+      },
+      {
+        id: 'airsheet-data-analyst',
+        url: 'https://www.wps.com/feature/wps-ai-your-office-copilot/',
+        kind: 'feature',
+      },
+    ],
+    noteId: 'airsheetNote',
+  },
+  {
+    id: 'forms',
+    items: [
+      {
+        id: 'forms-online-form-builder',
+        // Official slug spelling on wps.com
+        url: 'https://www.wps.com/feature/online-form-bulider/',
+        kind: 'feature',
+      },
+      {
+        id: 'forms-smart-form',
+        url: 'https://explore.wps.com/docs/smart-form',
+        kind: 'feature',
+      },
+      {
+        id: 'forms-survey-creator',
+        url: 'https://explore.wps.com/docs/survey-creator',
+        kind: 'feature',
+      },
+      {
+        id: 'forms-google-forms-alt',
+        url: 'https://www.wps.com/topic/google-forms-alternative/',
+        kind: 'feature',
+      },
+      {
+        id: 'forms-fillable-forms',
+        url: 'https://www.wps.com/feature/free-file-fillable-forms/',
+        kind: 'feature',
+      },
+      {
+        id: 'forms-create-fillable',
+        url: 'https://explore.wps.com/docs/create-fillable-form',
+        kind: 'feature',
+      },
+    ],
+    noteId: 'formsNote',
+  },
+  {
+    id: 'dbsheet',
+    items: [
+      {
+        id: 'dbsheet-ai-table-generator',
+        url: 'https://www.wps.com/feature/ai-table-generator/',
+        kind: 'feature',
+      },
+      {
+        id: 'dbsheet-ai-in-spreadsheets',
+        url: 'https://www.wps.com/feature/ai-in-excel-spreadsheets/',
+        kind: 'feature',
+      },
+      {
+        id: 'dbsheet-excel-online',
+        url: 'https://www.wps.com/feature/excel-online/',
+        kind: 'feature',
+      },
+      {
+        id: 'dbsheet-copilot',
+        url: 'https://www.wps.com/feature/wps-ai-your-office-copilot/',
+        kind: 'feature',
+      },
+      {
+        id: 'dbsheet-aipal',
+        url: 'https://aipal.wps.com/',
+        kind: 'feature',
+      },
+    ],
+    noteId: 'dbsheetNote',
   },
 ]
 

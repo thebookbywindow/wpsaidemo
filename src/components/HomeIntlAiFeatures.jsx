@@ -1,22 +1,117 @@
-import { ExternalLink } from 'lucide-react'
+import { useEffect, useMemo, useState } from 'react'
+import { HOME_AI_CORE_PILLAR_IDS } from '../data/homeAiCapabilities'
+import { useHomeAiCapabilities } from '../hooks/useHomeAiCapabilities'
+import { useHomeTabsScrollPin } from '../hooks/useHomeTabsScrollPin'
+
+function HomeAiSpotlightPanel({ pillar, imageOnRight = false }) {
+  return (
+    <article
+      className={`home-ai-spotlight${imageOnRight ? ' home-ai-spotlight--image-right' : ''}`}
+    >
+      <div className="home-ai-spotlight-media">
+        {pillar.spotlightImageSrc ? (
+          <img
+            className="home-ai-spotlight-image"
+            src={pillar.spotlightImageSrc}
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+        ) : (
+          <div className="home-ai-spotlight-image home-ai-spotlight-image--empty" aria-hidden="true" />
+        )}
+      </div>
+
+      <div className="home-ai-spotlight-copy">
+        <header className="home-ai-spotlight-head">
+          {pillar.iconSrc ? (
+            <img
+              className="home-ai-spotlight-icon"
+              src={pillar.iconSrc}
+              alt=""
+              draggable={false}
+              decoding="async"
+            />
+          ) : null}
+          <div className="home-ai-spotlight-head-copy">
+            <h3 className="home-ai-spotlight-title">{pillar.label}</h3>
+            {pillar.tagline ? (
+              <p className="home-ai-spotlight-tagline">{pillar.tagline}</p>
+            ) : null}
+          </div>
+        </header>
+
+        {pillar.spotlightLead ? (
+          <p className="home-ai-spotlight-lead">{pillar.spotlightLead}</p>
+        ) : null}
+
+        <ul className="home-ai-spotlight-features">
+          {pillar.features.map((feature) => (
+            <li key={feature.id} className="home-ai-spotlight-feature">
+              <span className="home-ai-spotlight-feature-title">{feature.label}</span>
+              {feature.description ? (
+                <span className="home-ai-spotlight-feature-desc">{feature.description}</span>
+              ) : null}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </article>
+  )
+}
 
 /**
- * Homepage catalog of WPS International AI features with official external URLs.
- * Copilot is shown as suite-wide entry points; component groups are Writer → Photos.
+ * Homepage AI overview — capsule picks Docs / Sheets / Slides / PDF.
+ * Scroll advances tabs while the panel stays pinned under the nav.
  */
-export default function HomeIntlAiFeatures({
-  title,
-  summary,
-  groups,
-  copilotLinks,
-  copilotLabel,
-}) {
-  if (!groups?.length) return null
+export default function HomeIntlAiFeatures({ copy, title, summary }) {
+  const { pillars } = useHomeAiCapabilities(copy)
+  const [activePillarId, setActivePillarId] = useState(HOME_AI_CORE_PILLAR_IDS[0])
+
+  const corePillars = useMemo(() => {
+    const byId = Object.fromEntries(pillars.map((pillar) => [pillar.id, pillar]))
+    return HOME_AI_CORE_PILLAR_IDS.map((id) => byId[id]).filter(Boolean)
+  }, [pillars])
+
+  const scrollTabs = useMemo(
+    () => corePillars.map((pillar) => ({ id: pillar.id })),
+    [corePillars],
+  )
+
+  const { trackRef, panelRef, selectTab } = useHomeTabsScrollPin({
+    tabs: scrollTabs,
+    activeId: activePillarId,
+    setActiveId: setActivePillarId,
+    cssPrefix: 'home-intl-ai',
+    tabsSelector: '.home-intl-ai-tabs',
+    activeTabSelector: '.home-intl-ai-tab.is-active',
+  })
+
+  const activePillar = useMemo(() => {
+    return (
+      corePillars.find((pillar) => pillar.id === activePillarId) ??
+      corePillars[0] ??
+      null
+    )
+  }, [corePillars, activePillarId])
+
+  const activePillarIndex = useMemo(
+    () => corePillars.findIndex((pillar) => pillar.id === activePillarId),
+    [corePillars, activePillarId],
+  )
+
+  useEffect(() => {
+    if (!corePillars.some((pillar) => pillar.id === activePillarId)) {
+      setActivePillarId(corePillars[0]?.id ?? HOME_AI_CORE_PILLAR_IDS[0])
+    }
+  }, [corePillars, activePillarId])
+
+  if (!corePillars.length || !activePillar) return null
 
   return (
     <section
       id="home-intl-ai"
-      className="home-intl-ai-section px-6 py-12"
+      className="home-ai-capabilities-section px-6 py-12"
       aria-labelledby="home-intl-ai-title"
     >
       <div className="home-section-inner mx-auto w-full max-w-[1160px]">
@@ -26,53 +121,62 @@ export default function HomeIntlAiFeatures({
         >
           {title}
         </h2>
-        <p className="home-section-subtitle mx-auto mt-2 max-w-[760px] text-center text-[14px] leading-relaxed text-[#4a5568]">
+        <p className="home-section-subtitle mx-auto mt-2 max-w-[640px] text-center text-[14px] leading-relaxed text-[#4a5568]">
           {summary}
         </p>
 
-        {copilotLinks?.length ? (
-          <div className="home-intl-ai-copilot mt-8">
-            <p className="home-intl-ai-copilot-label">{copilotLabel}</p>
-            <ul className="home-intl-ai-copilot-list">
-              {copilotLinks.map((item) => (
-                <li key={item.id}>
-                  <a
-                    className="home-intl-ai-link"
-                    href={item.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <span className="home-intl-ai-link-label">{item.label}</span>
-                    <ExternalLink className="home-intl-ai-link-icon" size={14} aria-hidden="true" />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ) : null}
-
-        <div className="home-intl-ai-grid mt-6">
-          {groups.map((group) => (
-            <article key={group.id} className="home-intl-ai-group">
-              <h3 className="home-intl-ai-group-title">{group.title}</h3>
-              {group.note ? <p className="home-intl-ai-group-note">{group.note}</p> : null}
-              <ul className="home-intl-ai-list">
-                {group.items.map((item) => (
-                  <li key={item.id}>
-                    <a
-                      className="home-intl-ai-link"
-                      href={item.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
+        <div
+          ref={trackRef}
+          className="home-intl-ai-pin-track"
+          style={{ '--home-intl-ai-tab-count': String(scrollTabs.length) }}
+        >
+          <div ref={panelRef} className="home-intl-ai-pin-panel">
+            <div className="home-intl-ai-tabs-wrap">
+              <div
+                className="home-intl-ai-tabs"
+                role="tablist"
+                aria-label={copy?.coreTabsAriaLabel ?? title}
+              >
+                {corePillars.map((pillar) => {
+                  const selected = pillar.id === activePillarId
+                  return (
+                    <button
+                      key={pillar.id}
+                      type="button"
+                      role="tab"
+                      id={`home-intl-ai-tab-${pillar.id}`}
+                      aria-selected={selected}
+                      className={`home-intl-ai-tab${selected ? ' is-active' : ''}`}
+                      onClick={() => selectTab(pillar.id)}
                     >
-                      <span className="home-intl-ai-link-label">{item.label}</span>
-                      <ExternalLink className="home-intl-ai-link-icon" size={14} aria-hidden="true" />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </article>
-          ))}
+                      {pillar.iconSrc ? (
+                        <img
+                          className="home-intl-ai-tab-icon"
+                          src={pillar.iconSrc}
+                          alt=""
+                          draggable={false}
+                          decoding="async"
+                        />
+                      ) : null}
+                      <span className="home-intl-ai-tab-name">{pillar.label}</span>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
+            <div
+              className="home-ai-capabilities-stage"
+              role="tabpanel"
+              aria-labelledby={`home-intl-ai-tab-${activePillarId}`}
+            >
+              <HomeAiSpotlightPanel
+                key={activePillarId}
+                pillar={activePillar}
+                imageOnRight={activePillarIndex % 2 === 1}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </section>

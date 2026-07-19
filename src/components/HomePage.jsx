@@ -1,9 +1,15 @@
 import { useHomeEntityCatalog } from '../hooks/useHomeEntityCatalog'
 import { useHomeIntentLinks } from '../hooks/useHomeIntentLinks'
-import { useHomeIntlAiFeatures } from '../hooks/useHomeIntlAiFeatures'
 import { useHomePageSeo } from '../hooks/useHomePageSeo'
+import { useHomeScrollTopOnMount } from '../hooks/useHomeScrollTopOnMount'
+import HomeDownloadSection from './HomeDownloadSection'
 import HomeEntityCatalog from './HomeEntityCatalog'
+import HomeFaq from './HomeFaq'
+import HomeHeroCopilot from './HomeHeroCopilot'
+import HomeHeroTitle from './HomeHeroTitle'
 import HomeIntlAiFeatures from './HomeIntlAiFeatures'
+import HomeMediaProof from './HomeMediaProof'
+import HomeTrustBar from './HomeTrustBar'
 
 /**
  * SEO/GEO homepage — each section owns one job.
@@ -12,15 +18,13 @@ export default function HomePage({
   uiText,
   localeDownloadPath,
   localeAllProductsPath,
-  localeEncyclopediaPath,
+  localeAiFeaturesPath,
   currentUrlLocale,
   navigateTo,
   contentLanguage,
 }) {
   const home = uiText.home
   const entityCatalogGroups = useHomeEntityCatalog({
-    currentUrlLocale,
-    localeAllProductsPath,
     localeDownloadPath,
   })
   const intentLinks = useHomeIntentLinks({
@@ -28,8 +32,7 @@ export default function HomePage({
     localeDownloadPath,
     localeAllProductsPath,
   })
-  const intlAiFeatures = useHomeIntlAiFeatures(home.intlAiFeatures)
-
+  useHomeScrollTopOnMount()
   useHomePageSeo({
     enabled: true,
     title: home.seoTitle,
@@ -40,69 +43,44 @@ export default function HomePage({
 
   return (
     <>
-      <section className="home-hero-section px-6 py-[72px] text-center">
+      <section className="home-hero-section px-6 text-center">
         <div className="home-section-inner home-hero-inner mx-auto w-full max-w-[1160px]">
-          <h1 className="home-hero-title mx-auto max-w-4xl text-[clamp(22px,3.2vw,34px)] font-extrabold leading-[1.25] tracking-[-0.03em] text-[#1a202c]">
-            {home.heroTitle}
-          </h1>
+          <HomeHeroTitle
+            lead={home.heroTitleLead}
+            join={home.heroTitleJoin}
+            tail={home.heroTitleTail}
+            prefix={home.heroTitlePrefix}
+            title={home.heroTitle}
+          />
           <p className="home-hero-desc mx-auto mt-4 max-w-[720px] text-[15px] text-[#4a5568]">
             {home.heroDesc}
           </p>
-          <div className="home-hero-actions mt-7 flex flex-wrap items-center justify-center gap-3">
-            <button
-              className="home-primary-btn rounded-[10px] bg-[#534ab7] px-7 py-[13px] text-[16px] font-semibold text-white transition hover:bg-[#3c3489]"
-              type="button"
-              onClick={() => navigateTo(localeDownloadPath)}
-            >
-              {home.downloadCta}
-            </button>
+          <div className="home-hero-download mt-7">
+            <HomeEntityCatalog
+              variant="hero"
+              title={home.catalogTitle}
+              groupLabels={home.catalogGroups}
+              groups={entityCatalogGroups}
+              navigateTo={navigateTo}
+              ctaLabel={home.downloadCta}
+              onCtaClick={() => navigateTo(localeDownloadPath)}
+            />
           </div>
-          <p className="home-updated-meta mt-5 text-[12px] text-[#94a3b8]">
-            <time dateTime="2026-07">{`${home.updatedLabel}: ${home.updatedDate}`}</time>
-          </p>
         </div>
       </section>
 
-      <section id="home-entity" className="home-entity-section px-6 py-12">
-        <div className="home-section-inner home-entity-card mx-auto w-full max-w-[1160px]">
-          <h2 className="home-entity-label">{home.entityTitle}</h2>
-          <p className="home-entity-answer">{home.entityAnswer}</p>
-        </div>
-      </section>
+      <HomeTrustBar label={home.trustBarLabel} copy={home.trustBar} />
 
-      <section id="home-about" className="home-about-section px-6 pb-12">
-        <div className="home-section-inner home-about-card mx-auto w-full max-w-[1160px]">
-          <h2 className="home-about-title">{home.aboutTitle}</h2>
-          <p className="home-about-text">{home.aboutText}</p>
-          {localeEncyclopediaPath ? (
-            <a
-              className="home-about-link"
-              href={localeEncyclopediaPath}
-              onClick={(event) => {
-                event.preventDefault()
-                navigateTo(localeEncyclopediaPath)
-              }}
-            >
-              {home.aboutLinkLabel}
-            </a>
-          ) : null}
-        </div>
-      </section>
-
-      <HomeEntityCatalog
-        title={home.catalogTitle}
-        summary={home.catalogSummary}
-        groupLabels={home.catalogGroups}
-        groups={entityCatalogGroups}
+      <HomeHeroCopilot
+        copy={home.copilotSection}
+        localeAiFeaturesPath={localeAiFeaturesPath}
         navigateTo={navigateTo}
       />
 
       <HomeIntlAiFeatures
         title={home.intlAiFeatures?.title}
         summary={home.intlAiFeatures?.summary}
-        groups={intlAiFeatures.groups}
-        copilotLinks={intlAiFeatures.copilotLinks}
-        copilotLabel={intlAiFeatures.copilotLabel}
+        copy={home.intlAiFeatures}
       />
 
       <section className="home-intent-section px-6 py-12" aria-labelledby="home-intent-title">
@@ -157,21 +135,14 @@ export default function HomePage({
         </div>
       </section>
 
-      <section className="home-faq-section px-6 py-12 pb-20" id="home-faq">
-        <div className="home-section-inner mx-auto w-full max-w-[840px]">
-          <h2 className="home-section-title text-center text-[clamp(20px,2.5vw,26px)] font-semibold text-[#1a202c]">
-            {home.faqTitle}
-          </h2>
-          <div className="home-faq-list mt-8">
-            {(home.faqs ?? []).map((item) => (
-              <details key={item.question} className="home-faq-item">
-                <summary>{item.question}</summary>
-                <p>{item.answer}</p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
+      <HomeMediaProof title={home.mediaProofTitle} tabsCopy={home.mediaProofTabs} />
+
+      <HomeFaq title={home.faqTitle} faqs={home.faqs} />
+
+      <HomeDownloadSection
+        copy={home.downloadSection}
+        onDownloadClick={() => navigateTo(localeDownloadPath)}
+      />
     </>
   )
 }

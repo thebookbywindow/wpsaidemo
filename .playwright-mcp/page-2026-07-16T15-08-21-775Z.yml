@@ -1,0 +1,408 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "WPS AI" [ref=e7] [cursor=pointer]:
+        - /url: /en-US/
+      - navigation [ref=e11]:
+        - link "Products" [ref=e13] [cursor=pointer]:
+          - /url: /en-US/all-products/
+        - link "Templates" [ref=e18] [cursor=pointer]:
+          - /url: /en-US/all-templates/
+        - link "Download" [ref=e22] [cursor=pointer]:
+          - /url: /en-US/download/
+        - link "Pricing" [ref=e23] [cursor=pointer]:
+          - /url: /en-US/pricing/
+        - link "Docs Center" [ref=e24] [cursor=pointer]:
+          - /url: /en-US/docs/
+        - button "More navigation" [ref=e26]
+      - generic [ref=e30]:
+        - button "US English" [ref=e31]
+        - button "Get Started Free" [ref=e36]
+        - button "Sign In" [ref=e37]
+  - main [ref=e38]:
+    - generic [ref=e40]:
+      - heading "WPS Office — the AI office suite for Docs, Slides, Sheets, PDF" [level=1] [ref=e41]:
+        - generic [ref=e43]: WPS Office — the AI office suite for
+      - paragraph [ref=e44]: WPS AI (Office Copilot) is built into Writer, Spreadsheet, Presentation, PDF, and Photos — so drafting, analysis, slides, documents, and image edits stay in one free office suite.
+      - button "Free download" [ref=e46]
+      - paragraph [ref=e47]:
+        - time [ref=e48]: "Updated: July 2026"
+    - generic [ref=e50]:
+      - heading "What is WPS AI?" [level=2] [ref=e51]
+      - paragraph [ref=e52]: "WPS AI is the AI layer inside WPS Office (also called WPS or Kingsoft Office). It is not a separate suite: it adds AI drafting, rewriting, summarization, and formula help across the WPS Office apps."
+    - generic [ref=e54]:
+      - heading "About WPS" [level=2] [ref=e55]
+      - paragraph [ref=e56]: WPS Office and WPS AI are products of Kingsoft Office Software (WPS). The suite provides free office apps for documents, spreadsheets, presentations, and PDF across desktop, mobile, and web.
+      - link "Product encyclopedia" [ref=e57] [cursor=pointer]:
+        - /url: /en-US/encyclopedia/
+    - region [ref=e58]:
+      - generic [ref=e59]:
+        - heading "WPS Office apps and platforms" [level=2] [ref=e60]
+        - paragraph [ref=e61]: Product and platform inventory with links to downloads and tools.
+        - generic [ref=e62]:
+          - generic [ref=e64]:
+            - heading "Office apps" [level=3] [ref=e65]
+            - list [ref=e66]:
+              - listitem [ref=e67]:
+                - link "Docs" [ref=e68] [cursor=pointer]:
+                  - /url: /en-US/ai-writing/ai-writer/
+              - listitem [ref=e71]:
+                - link "Slides" [ref=e72] [cursor=pointer]:
+                  - /url: /en-US/ai-slides/ai-ppt/
+              - listitem [ref=e75]:
+                - link "Sheets" [ref=e76] [cursor=pointer]:
+                  - /url: /en-US/ai-sheets/ai-excel/
+              - listitem [ref=e79]:
+                - link "PDF" [ref=e80] [cursor=pointer]:
+                  - /url: /en-US/pdf-tools/edit-pdf/
+          - generic [ref=e85]:
+            - heading "AI features" [level=3] [ref=e86]
+            - list [ref=e87]:
+              - listitem [ref=e88]:
+                - link "WPS AI" [ref=e89] [cursor=pointer]:
+                  - /url: /en-US/all-products/
+                  - generic [ref=e90]: A
+              - listitem [ref=e92]:
+                - link "AI Slides" [ref=e93] [cursor=pointer]:
+                  - /url: /en-US/ai-slides/ai-ppt/
+                  - generic [ref=e94]: S
+          - generic [ref=e98]:
+            - heading "Platforms" [level=3] [ref=e99]
+            - list [ref=e100]:
+              - listitem [ref=e101]:
+                - link "Windows" [ref=e102] [cursor=pointer]:
+                  - /url: /en-US/download/
+              - listitem [ref=e107]:
+                - link "Mac" [ref=e108] [cursor=pointer]:
+                  - /url: /en-US/download/
+              - listitem [ref=e113]:
+                - link "iPad" [ref=e114] [cursor=pointer]:
+                  - /url: /en-US/download/
+              - listitem [ref=e119]:
+                - link "iOS" [ref=e120] [cursor=pointer]:
+                  - /url: /en-US/download/
+              - listitem [ref=e125]:
+                - link "Android" [ref=e126] [cursor=pointer]:
+                  - /url: /en-US/download/
+              - listitem [ref=e131]:
+                - link "Linux" [ref=e132] [cursor=pointer]:
+                  - /url: /en-US/download/
+    - region [ref=e137]:
+      - generic [ref=e138]:
+        - heading "WPS International AI features" [level=2] [ref=e139]
+        - paragraph [ref=e140]: Official international WPS AI feature landing pages by component — Writer, Spreadsheet, Presentation, PDF, and Photos. Office Copilot entry points sit above as the suite-wide AI layer. No product homepages, Academy tutorials, or /tools mini-tools.
+        - generic [ref=e141]:
+          - paragraph [ref=e142]: Office Copilot (suite-wide)
+          - list [ref=e143]:
+            - listitem [ref=e144]:
+              - link "WPS AI · Office Copilot" [ref=e145] [cursor=pointer]:
+                - /url: https://www.wps.com/feature/wps-ai-your-office-copilot/
+            - listitem [ref=e151]:
+              - link "AIPal (web Copilot)" [ref=e152] [cursor=pointer]:
+                - /url: https://aipal.wps.com/
+        - generic [ref=e158]:
+          - article [ref=e159]:
+            - heading "Writer" [level=3] [ref=e160]
+            - list [ref=e161]:
+              - listitem [ref=e162]:
+                - link "AI Writer" [ref=e163] [cursor=pointer]:
+                  - /url: https://explore.wps.com/ai/ai-writer
+              - listitem [ref=e169]:
+                - link "AI Writer (feature page)" [ref=e170] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/ai-writer/
+              - listitem [ref=e176]:
+                - link "AI Text Generator / Smart Create · Edit" [ref=e177] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/ai-text-generator/
+              - listitem [ref=e183]:
+                - link "AI Summarizer" [ref=e184] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/ai-summarizer/
+              - listitem [ref=e190]:
+                - link "AI Improve Writing" [ref=e191] [cursor=pointer]:
+                  - /url: https://explore.wps.com/ai/ai-improve-writing
+              - listitem [ref=e197]:
+                - link "AI Spell Check" [ref=e198] [cursor=pointer]:
+                  - /url: https://explore.wps.com/ai/ai-spell-check
+              - listitem [ref=e204]:
+                - link "AI Spell Check (alternate)" [ref=e205] [cursor=pointer]:
+                  - /url: https://www.wps.com/ai-spell-check
+              - listitem [ref=e211]:
+                - link "Spell Check (feature page)" [ref=e212] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/spell-check/
+              - listitem [ref=e218]:
+                - link "Grammar Checker" [ref=e219] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/grammar-checker/
+              - listitem [ref=e225]:
+                - link "AI Translator" [ref=e226] [cursor=pointer]:
+                  - /url: https://explore.wps.com/ai/ai-translator
+              - listitem [ref=e232]:
+                - link "AI Translator (feature page)" [ref=e233] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/ai-translator/
+              - listitem [ref=e239]:
+                - link "Document Translator" [ref=e240] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/document-translator/
+              - listitem [ref=e246]:
+                - link "AI Document Translator" [ref=e247] [cursor=pointer]:
+                  - /url: https://explore.wps.com/word/ai-document-translator
+              - listitem [ref=e253]:
+                - link "Extract Text with AI (OCR)" [ref=e254] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/extract-text-with-ai/
+          - article [ref=e260]:
+            - heading "Spreadsheet" [level=3] [ref=e261]
+            - paragraph [ref=e262]: Formula Assistant, Sheet Assistant, and =WPSAI() have no dedicated landing pages — open them in Spreadsheet → WPS AI.
+            - list [ref=e263]:
+              - listitem [ref=e264]:
+                - link "AI in Excel / Spreadsheets" [ref=e265] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/ai-in-excel-spreadsheets/
+              - listitem [ref=e271]:
+                - link "AI Excel Formula Generator" [ref=e272] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/ai-excel-formula-generator/
+              - listitem [ref=e278]:
+                - link "AI Table Generator" [ref=e279] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/ai-table-generator/
+              - listitem [ref=e285]:
+                - link "Data Analyst (Copilot overview)" [ref=e286] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/wps-ai-your-office-copilot/
+              - listitem [ref=e292]:
+                - link "JPG to Excel (AI OCR tables)" [ref=e293] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/jpg-to-excel/
+          - article [ref=e299]:
+            - heading "Presentation" [level=3] [ref=e300]
+            - list [ref=e301]:
+              - listitem [ref=e302]:
+                - link "AI PowerPoint Generator" [ref=e303] [cursor=pointer]:
+                  - /url: https://explore.wps.com/ppt/ai-powerpoint-generator
+              - listitem [ref=e309]:
+                - link "AI PPT Maker" [ref=e310] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/ai-ppt-maker/
+              - listitem [ref=e316]:
+                - link "Free Presentation Maker (AI)" [ref=e317] [cursor=pointer]:
+                  - /url: https://explore.wps.com/ppt/free-presentation-maker
+              - listitem [ref=e323]:
+                - link "AI Translate PowerPoint" [ref=e324] [cursor=pointer]:
+                  - /url: https://explore.wps.com/ppt/ai-translate-powerpoint
+              - listitem [ref=e330]:
+                - link "AI Slides Translator" [ref=e331] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/slides-translator/
+              - listitem [ref=e337]:
+                - link "Slides Designer (overview)" [ref=e338] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/wps-ai-your-office-copilot/
+          - article [ref=e344]:
+            - heading "PDF" [level=3] [ref=e345]
+            - list [ref=e346]:
+              - listitem [ref=e347]:
+                - link "Chat with PDF" [ref=e348] [cursor=pointer]:
+                  - /url: https://explore.wps.com/pdf/chat-with-pdf
+              - listitem [ref=e354]:
+                - link "Chat PDF (feature page)" [ref=e355] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/chat-pdf/
+              - listitem [ref=e361]:
+                - link "AI PDF Summarizer" [ref=e362] [cursor=pointer]:
+                  - /url: https://explore.wps.com/pdf/ai-pdf-summarizer
+              - listitem [ref=e368]:
+                - link "PDF Summarizer (feature page)" [ref=e369] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/pdf-summarizer/
+              - listitem [ref=e375]:
+                - link "AI Translate PDF" [ref=e376] [cursor=pointer]:
+                  - /url: https://explore.wps.com/pdf/ai-translate-pdf
+              - listitem [ref=e382]:
+                - link "PDF Document Translation (layout-preserving)" [ref=e383] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/pdf-document-translation/
+              - listitem [ref=e389]:
+                - link "Translate Scanned PDF" [ref=e390] [cursor=pointer]:
+                  - /url: https://explore.wps.com/pdf/translate-scanned-pdf
+              - listitem [ref=e396]:
+                - link "PDF OCR" [ref=e397] [cursor=pointer]:
+                  - /url: https://explore.wps.com/pdf/pdf-ocr
+              - listitem [ref=e403]:
+                - link "PDF OCR (feature page)" [ref=e404] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/pdf-ocr/
+              - listitem [ref=e410]:
+                - link "Convert Scanned PDF to Word" [ref=e411] [cursor=pointer]:
+                  - /url: https://explore.wps.com/pdf/convert-scanned-pdf-to-word
+              - listitem [ref=e417]:
+                - link "PDF Reader Extension (AI summary / translate)" [ref=e418] [cursor=pointer]:
+                  - /url: https://explore.wps.com/pdf/pdf-reader-extension
+              - listitem [ref=e424]:
+                - link "PDF Reader Extension (feature page)" [ref=e425] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/pdf-reader-extension/
+              - listitem [ref=e431]:
+                - link "Chrome PDF extension (AI summary / translate)" [ref=e432] [cursor=pointer]:
+                  - /url: https://chromewebstore.google.com/detail/wps-pdf/kdpelmjpfafjppnhbloffcjpeomlnpah
+          - article [ref=e438]:
+            - heading "Photos / Visual AI" [level=3] [ref=e439]
+            - list [ref=e440]:
+              - listitem [ref=e441]:
+                - link "AI Photo Editor" [ref=e442] [cursor=pointer]:
+                  - /url: https://explore.wps.com/ai/ai-photo-editor
+              - listitem [ref=e448]:
+                - link "AI Photo Editor (photo path)" [ref=e449] [cursor=pointer]:
+                  - /url: https://explore.wps.com/photo/ai-photo-editor
+              - listitem [ref=e455]:
+                - link "AI Photo Editor (feature page)" [ref=e456] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/ai-photo-editor/
+              - listitem [ref=e462]:
+                - link "AI Background Remover" [ref=e463] [cursor=pointer]:
+                  - /url: https://explore.wps.com/ai/ai-background-remover
+              - listitem [ref=e469]:
+                - link "AI Background Remover (feature page)" [ref=e470] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/ai-background-remover/
+              - listitem [ref=e476]:
+                - link "AI Photo Enhancer" [ref=e477] [cursor=pointer]:
+                  - /url: https://explore.wps.com/ai/ai-photo-enhancer
+              - listitem [ref=e483]:
+                - link "Photo Enhancer (feature page)" [ref=e484] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/photo-enhancer/
+              - listitem [ref=e490]:
+                - link "AI Image Upscaler" [ref=e491] [cursor=pointer]:
+                  - /url: https://explore.wps.com/ai/ai-image-upscaler
+              - listitem [ref=e497]:
+                - link "Image Upscaler (feature page)" [ref=e498] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/image-upscaler/
+              - listitem [ref=e504]:
+                - link "AI Photo Restoration" [ref=e505] [cursor=pointer]:
+                  - /url: https://explore.wps.com/ai/ai-photo-restoration
+              - listitem [ref=e511]:
+                - link "AI Photo Restoration (feature page)" [ref=e512] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/ai-photo-restoration/
+              - listitem [ref=e518]:
+                - link "AI Remove Object" [ref=e519] [cursor=pointer]:
+                  - /url: https://explore.wps.com/ai/ai-remove-object-from-photo
+              - listitem [ref=e525]:
+                - link "Magic Eraser" [ref=e526] [cursor=pointer]:
+                  - /url: https://www.wps.com/feature/magic-eraser/
+              - listitem [ref=e532]:
+                - link "AI Remove Text from Image" [ref=e533] [cursor=pointer]:
+                  - /url: https://explore.wps.com/ai/ai-remove-text-from-image
+              - listitem [ref=e539]:
+                - link "Extract Text from Image (OCR)" [ref=e540] [cursor=pointer]:
+                  - /url: https://explore.wps.com/photo/extract-text-from-image
+              - listitem [ref=e546]:
+                - link "Image Watermark Remover" [ref=e547] [cursor=pointer]:
+                  - /url: https://explore.wps.com/photo/image-watermark-remover
+    - region [ref=e553]:
+      - generic [ref=e554]:
+        - heading "Popular WPS topics" [level=2] [ref=e555]
+        - paragraph [ref=e556]: Jump to high-intent pages for download, online use, and PDF tools.
+        - list [ref=e557]:
+          - listitem [ref=e558]:
+            - link "Download WPS Office Free WPS Office download for PC, Mac, Linux, and mobile" [ref=e559] [cursor=pointer]:
+              - /url: /en-US/download/
+              - strong [ref=e560]: Download WPS Office
+              - generic [ref=e561]: Free WPS Office download for PC, Mac, Linux, and mobile
+          - listitem [ref=e562]:
+            - link "WPS Online Use WPS Office tools in the browser" [ref=e563] [cursor=pointer]:
+              - /url: /en-US/all-products/
+              - strong [ref=e564]: WPS Online
+              - generic [ref=e565]: Use WPS Office tools in the browser
+          - listitem [ref=e566]:
+            - link "WPS PDF Edit, convert, and manage PDF files" [ref=e567] [cursor=pointer]:
+              - /url: /en-US/pdf-tools/edit-pdf/
+              - strong [ref=e568]: WPS PDF
+              - generic [ref=e569]: Edit, convert, and manage PDF files
+          - listitem [ref=e570]:
+            - link "PDF to Word Convert PDF documents to editable Word files" [ref=e571] [cursor=pointer]:
+              - /url: /en-US/pdf-tools/pdf-to-word/
+              - strong [ref=e572]: PDF to Word
+              - generic [ref=e573]: Convert PDF documents to editable Word files
+    - generic [ref=e575]:
+      - heading "Key facts" [level=2] [ref=e576]
+      - generic [ref=e577]:
+        - article [ref=e578]:
+          - heading "Free download and WPS online" [level=3] [ref=e579]
+          - paragraph [ref=e580]: Download WPS Office free for Windows PC, Mac, Linux, Android, and iOS, or use WPS online in the browser with no install.
+        - article [ref=e581]:
+          - heading "Microsoft Office file compatibility" [level=3] [ref=e582]
+          - paragraph [ref=e583]: Open and edit common DOC/DOCX, XLS/XLSX, PPT/PPTX, and PDF formats used with Microsoft Word, Excel, and PowerPoint.
+        - article [ref=e584]:
+          - heading "WPS PDF and PDF to Word" [level=3] [ref=e585]
+          - paragraph [ref=e586]: WPS PDF supports edit PDF, PDF to Word, convert, compress, and related PDF workflows.
+        - article [ref=e587]:
+          - heading "20 languages" [level=3] [ref=e588]
+          - paragraph [ref=e589]: WPS Office is localized in 20 languages for users and teams across regions.
+    - generic [ref=e591]:
+      - heading "Frequently asked questions" [level=2] [ref=e592]
+      - generic [ref=e593]:
+        - group [ref=e594]:
+          - generic "Is WPS Office free to download?" [ref=e595] [cursor=pointer]
+        - group [ref=e596]:
+          - generic "Can I use WPS Office online?" [ref=e597] [cursor=pointer]
+        - group [ref=e598]:
+          - generic "Does WPS include PDF to Word and a PDF editor?" [ref=e599] [cursor=pointer]
+        - group [ref=e600]:
+          - generic "Does WPS Office work with Microsoft Office files?" [ref=e601] [cursor=pointer]
+        - group [ref=e602]:
+          - generic "Where can I download WPS Office for PC?" [ref=e603] [cursor=pointer]
+  - contentinfo [ref=e604]:
+    - generic [ref=e605]:
+      - generic [ref=e606]:
+        - generic [ref=e607]:
+          - link "WPS AI" [ref=e608] [cursor=pointer]:
+            - /url: /en-US/
+          - paragraph [ref=e612]: AI-powered office suite for everyone.
+          - generic [ref=e613]:
+            - link "X / Twitter" [ref=e614] [cursor=pointer]:
+              - /url: "#"
+            - link "YouTube" [ref=e617] [cursor=pointer]:
+              - /url: "#"
+            - link "LinkedIn" [ref=e620] [cursor=pointer]:
+              - /url: "#"
+        - generic [ref=e623]:
+          - heading "Products" [level=4] [ref=e624]
+          - generic [ref=e625]:
+            - link "PDF Tools" [ref=e626] [cursor=pointer]:
+              - /url: /en-US/pdf-tools/compress-pdf/
+            - link "AI Writing" [ref=e627] [cursor=pointer]:
+              - /url: /en-US/ai-writing/ai-summarizer/
+            - link "AI Slides" [ref=e628] [cursor=pointer]:
+              - /url: /en-US/ai-slides/ai-ppt/
+            - link "AI Sheets" [ref=e629] [cursor=pointer]:
+              - /url: /en-US/ai-sheets/ai-excel/
+            - link "AI Tools" [ref=e630] [cursor=pointer]:
+              - /url: /en-US/ai-tools/ai-detector/
+        - generic [ref=e631]:
+          - heading "Resources" [level=4] [ref=e632]
+          - generic [ref=e633]:
+            - link "Templates" [ref=e634] [cursor=pointer]:
+              - /url: /en-US/all-templates/
+            - link "Guides" [ref=e636] [cursor=pointer]:
+              - /url: /en-US/guides/
+            - link "Blog" [ref=e638] [cursor=pointer]:
+              - /url: /en-US/blog/
+            - generic [ref=e640]: API Docs
+        - generic [ref=e642]:
+          - heading "Company" [level=4] [ref=e643]
+          - generic [ref=e644]:
+            - generic [ref=e645]: About
+            - generic [ref=e646]: Careers
+            - generic [ref=e647]: Press
+            - generic [ref=e648]: Contact
+        - generic [ref=e649]:
+          - heading "Language" [level=4] [ref=e650]
+          - generic [ref=e651]:
+            - combobox [ref=e652]:
+              - option "US English" [selected]
+              - option "ES Español"
+              - option "DE Deutsch"
+              - option "FR Français"
+              - option "JP 日本語"
+              - option "KR 한국어"
+              - option "BR Português"
+              - option "SA العربية"
+              - option "IT Italiano"
+              - option "NL Nederlands"
+              - option "PL Polski"
+              - option "TR Türkçe"
+              - option "ID Bahasa Indonesia"
+              - option "TH ภาษาไทย"
+              - option "VN Tiếng Việt"
+              - option "MY Bahasa Melayu"
+              - option "CN 简体中文"
+              - option "TW 繁體中文"
+              - option "RU Русский"
+            - generic: ▾
+      - generic [ref=e653]:
+        - paragraph [ref=e654]: © 2026 WPS AI. All rights reserved.
+        - generic [ref=e655]:
+          - generic [ref=e656]: Privacy Policy
+          - generic [ref=e657]: Terms of Service
+          - generic [ref=e658]: Cookie Policy
