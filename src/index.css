@@ -3440,6 +3440,29 @@ body {
 .docs-detail-sidebar--popover .docs-detail-sidebar-platform {
   font-size: 13px;
   padding: 8px 10px;
+  border-right: 0;
+  color: var(--text-secondary);
+  font-weight: 500;
+  background: transparent;
+}
+
+.docs-detail-sidebar--popover .docs-detail-sidebar-platform:hover {
+  background: rgba(109, 93, 246, 0.06);
+  color: var(--text);
+}
+
+/* Popover：折叠态不沿用侧栏 is-active 紫底/右边线，避免 Common 折叠仍整行高亮 */
+.docs-detail-sidebar--popover .docs-detail-sidebar-platform.is-active,
+.docs-detail-sidebar--popover .docs-detail-sidebar-group:not(.is-expanded) .docs-detail-sidebar-platform.is-active {
+  background: transparent;
+  border-right-color: transparent;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.docs-detail-sidebar--popover .docs-detail-sidebar-platform.is-active .docs-detail-sidebar-platform-icon,
+.docs-detail-sidebar--popover .docs-detail-sidebar-group:not(.is-expanded) .docs-detail-sidebar-platform.is-active .docs-detail-sidebar-platform-icon {
+  background: #f4f6fb;
 }
 
 .docs-detail-sidebar--popover .docs-detail-sidebar-platform-icon {
@@ -3461,15 +3484,25 @@ body {
 .docs-detail-sidebar--popover .docs-detail-sidebar-group.is-expanded .docs-detail-sidebar-platform-chevron {
   transform: none;
   color: var(--purple-600);
+  opacity: 1;
 }
 
 .docs-detail-sidebar--popover .docs-detail-sidebar-group:not(.is-expanded) .docs-detail-sidebar-platform-chevron {
   opacity: 0;
 }
 
-.docs-detail-sidebar--popover .docs-detail-sidebar-group.is-expanded .docs-detail-sidebar-platform {
+/* 仅展开中的平台行用紫色标题，与截图一致 */
+.docs-detail-sidebar--popover .docs-detail-sidebar-group.is-expanded .docs-detail-sidebar-platform,
+.docs-detail-sidebar--popover .docs-detail-sidebar-group.is-expanded .docs-detail-sidebar-platform.is-active,
+.docs-detail-sidebar--popover .docs-detail-sidebar-group.is-expanded .docs-detail-sidebar-platform:hover {
   color: var(--purple-600);
   font-weight: 600;
+  background: transparent;
+  border-right-color: transparent;
+}
+
+.docs-detail-sidebar--popover .docs-detail-sidebar-group.is-expanded .docs-detail-sidebar-platform.is-active .docs-detail-sidebar-platform-icon {
+  background: #f4f6fb;
 }
 
 .docs-center-overlay-main.has-platform-popover-open {
