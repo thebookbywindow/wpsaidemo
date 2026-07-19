@@ -4,6 +4,7 @@ import { useHomePageSeo } from '../hooks/useHomePageSeo'
 import { useHomeScrollTopOnMount } from '../hooks/useHomeScrollTopOnMount'
 import HomeDownloadSection from './HomeDownloadSection'
 import HomeEntityCatalog from './HomeEntityCatalog'
+import { flattenHomeFaqs } from '../utils/homeFaq'
 import HomeFaq from './HomeFaq'
 import HomeHeroCopilot from './HomeHeroCopilot'
 import HomeHeroTitle from './HomeHeroTitle'
@@ -37,7 +38,7 @@ export default function HomePage({
     enabled: true,
     title: home.seoTitle,
     description: home.seoDescription,
-    faqs: home.faqs ?? [],
+    faqs: flattenHomeFaqs(home.faqTopics),
     locale: contentLanguage,
   })
 
@@ -137,7 +138,7 @@ export default function HomePage({
 
       <HomeMediaProof title={home.mediaProofTitle} tabsCopy={home.mediaProofTabs} />
 
-      <HomeFaq title={home.faqTitle} faqs={home.faqs} />
+      <HomeFaq title={home.faqTitle} faqTopics={home.faqTopics} />
 
       <HomeDownloadSection
         copy={home.downloadSection}

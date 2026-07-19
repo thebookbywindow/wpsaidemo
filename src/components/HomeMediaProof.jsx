@@ -20,7 +20,7 @@ function StarRow({ rating = 0 }) {
 }
 
 /**
- * Social-proof media strip — WPS-style left nav + review grid.
+ * Social-proof media strip — capsule tabs above review grid.
  */
 export default function HomeMediaProof({ title, tabsCopy }) {
   const titleId = useId()
@@ -31,6 +31,7 @@ export default function HomeMediaProof({ title, tabsCopy }) {
   const tabMeta =
     HOME_MEDIA_PROOF_TABS.find((tab) => tab.id === activeTab) ?? HOME_MEDIA_PROOF_TABS[0]
   const items = tabMeta?.items ?? []
+  const activeTabDesc = tabsCopy?.[activeTab]?.desc ?? tabsCopy?.[tabMeta?.id]?.desc
 
   useEffect(() => {
     const scroller = scrollerRef.current
@@ -66,58 +67,64 @@ export default function HomeMediaProof({ title, tabsCopy }) {
     <section
       id="home-media-proof"
       className="home-media-proof-section px-6 py-12"
-      aria-labelledby={titleId}
+      aria-labelledby={title ? titleId : undefined}
+      aria-label={title ? undefined : 'Media proof'}
     >
-      <div className="home-section-inner mx-auto w-full max-w-[1160px]">
-        {title ? (
-          <h2
-            id={titleId}
-            className="home-section-title text-center text-[clamp(20px,2.5vw,26px)] font-semibold text-[#1a202c]"
-          >
-            {title}
-          </h2>
-        ) : null}
+      {title ? (
+        <h2
+          id={titleId}
+          className="home-section-title text-center text-[clamp(20px,2.5vw,26px)] font-semibold text-[#1a202c]"
+        >
+          {title}
+        </h2>
+      ) : null}
 
+      <div className="home-section-inner mx-auto w-full max-w-[1160px]">
         <div className="home-media-content">
           <div className="home-media-layout">
-            <nav className="home-media-nav" role="tablist" aria-label={title}>
-              {HOME_MEDIA_PROOF_TABS.map((tab) => {
-                const copy = tabsCopy?.[tab.id]
-                const selected = tab.id === activeTab
-                return (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    role="tab"
-                    aria-selected={selected}
-                    className={`home-media-nav-item${selected ? ' is-active' : ''}`}
-                    onClick={() => setActiveTab(tab.id)}
-                  >
-                    <span className="home-media-nav-name">{copy?.name ?? tab.id}</span>
-                    {copy?.desc ? (
-                      <span className="home-media-nav-desc">{copy.desc}</span>
-                    ) : null}
-                  </button>
-                )
-              })}
-            </nav>
-
             <div className="home-media-slider-wrap">
-              <button
-                type="button"
-                className="home-media-slider-nav is-prev"
-                aria-label="Previous"
-                onClick={() => scrollByPage(-1)}
-              >
-                <ChevronLeft size={20} />
-              </button>
+              <div className="home-media-tabs-wrap">
+                <nav className="home-media-tabs" role="tablist" aria-label={title}>
+                  {HOME_MEDIA_PROOF_TABS.map((tab) => {
+                    const copy = tabsCopy?.[tab.id]
+                    const selected = tab.id === activeTab
+                    return (
+                      <button
+                        key={tab.id}
+                        type="button"
+                        role="tab"
+                        aria-selected={selected}
+                        className={`home-media-tab${selected ? ' is-active' : ''}`}
+                        onClick={() => setActiveTab(tab.id)}
+                      >
+                        <span className="home-media-tab-name">{copy?.name ?? tab.id}</span>
+                      </button>
+                    )
+                  })}
+                </nav>
+                {activeTabDesc ? (
+                  <p className="home-media-tab-desc" key={activeTab}>
+                    {activeTabDesc}
+                  </p>
+                ) : null}
+              </div>
 
-              <div
-                ref={scrollerRef}
-                className="home-media-grid"
-                role="tabpanel"
-                tabIndex={0}
-              >
+              <div className="home-media-slider-row">
+                <button
+                  type="button"
+                  className="home-media-slider-nav is-prev"
+                  aria-label="Previous"
+                  onClick={() => scrollByPage(-1)}
+                >
+                  <ChevronLeft size={20} />
+                </button>
+
+                <div
+                  ref={scrollerRef}
+                  className="home-media-grid"
+                  role="tabpanel"
+                  tabIndex={0}
+                >
                 {items.map((item) => {
                   const isVideo = Boolean(item.youtubeId)
                   const thumbInner = (
@@ -183,6 +190,7 @@ export default function HomeMediaProof({ title, tabsCopy }) {
               >
                 <ChevronRight size={20} />
               </button>
+              </div>
             </div>
           </div>
         </div>

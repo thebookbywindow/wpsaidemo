@@ -65,7 +65,14 @@ export const HOME_HERO_COMPONENTS = Object.freeze([
   }),
 ])
 
-export const HOME_HERO_COPILOT = HOME_HERO_COMPONENTS.find((item) => item.id === 'copilot') ?? null
+const COPILOT_HERO_COMPONENT = HOME_HERO_COMPONENTS.find((item) => item.id === 'copilot') ?? null
+
+export const HOME_HERO_COPILOT = COPILOT_HERO_COMPONENT
+  ? Object.freeze({
+      ...COPILOT_HERO_COMPONENT,
+      imageSrc: '/images/intl-ai-features/wps-ai-copilot-hub.jpg',
+    })
+  : null
 
 /** Hero typewriter cycle — Copilot has its own section below the fold. */
 export const HOME_HERO_TYPEWRITER_COMPONENTS = Object.freeze(

@@ -427,7 +427,7 @@ export const uiTextByLanguage = {
         'Informational comparison only, based on publicly available product and pricing pages. Third-party product names are trademarks of their respective owners. Features, pricing, and availability vary by plan, platform, and region. Last updated: July 2026.',
       // Key facts: verifiable attributes (not definitions, not inventory)
       keyFactsTitle: 'Key facts',
-      mediaProofTitle: 'Trusted by Experts. Proven by Users',
+      mediaProofTitle: 'Trusted by Experts & Proven by Users',
       mediaProofSummary:
         'Experience the shift from manual labor to intelligent creation. WPS software is your co-pilot for every task.',
       mediaProofTabs: {
@@ -453,35 +453,165 @@ export const uiTextByLanguage = {
           desc: 'WPS Office is localized in 20 languages for users and teams across regions.',
         },
       ],
-      // FAQ: query-shaped answers only (definition lives in Entity)
+      // FAQ: query-shaped answers grouped by SEO topic (definition lives in Entity)
       faqTitle: 'Frequently asked questions',
-      faqs: [
-        {
-          question: 'How do I download WPS Office free for PC?',
-          answer:
-            'Open the Download WPS Office page and pick your platform — Windows PC, Mac, or Linux — for a free installer that includes Writer, Spreadsheets, Presentation, and PDF. Android and iOS builds are available from the same page or your app store. No credit card is required to start.',
+      faqTopics: {
+        download: {
+          label: 'Download & install',
+          desc: 'WPS Office download for PC, Mac, Linux, and mobile',
+          faqs: [
+            {
+              question: 'How do I download WPS Office for PC?',
+              answer:
+                'On the official [WPS Office download page](https://www.wps.com/download/), click Free Download under Windows to get the PC installer for Windows 11, 10, or 8. Run the file to install Writer, Spreadsheets, Presentation, and PDF in one suite. Mac (Apple Silicon M1–M4 and Intel) and Linux (.deb / .rpm for Ubuntu, CentOS, and Deepin) use the same page.',
+            },
+            {
+              question: 'Is WPS Office free to download?',
+              answer:
+                'Yes. [WPS Standard](https://www.wps.com/pricing/) is free to download with no credit card required. You get the core Writer, Spreadsheet, Presentation, and PDF apps, 1 GB WPS Cloud space, basic PDF features, and support for 47 file formats in 46 languages. [WPS Pro+](https://www.wps.com/pricing/) is optional for advanced PDF conversion, more cloud storage, and higher AI limits.',
+            },
+            {
+              question: 'Where can I download WPS Office for Windows 10 or Windows 11?',
+              answer:
+                'Use the [WPS download center](https://www.wps.com/download/) and choose the Windows Free Download button — WPS lists Windows 11/10/8 support on that page. Save the installer, double-click to run it, and finish setup. After install, sign in with your WPS account to turn on [File Roaming](https://help.wps.com/articles/file-roaming-wps-cloud) and cloud sync.',
+            },
+            {
+              question: 'Does WPS Office have an offline installer?',
+              answer:
+                'Yes. The Windows, Mac, and Linux files from the [WPS download center](https://www.wps.com/download/) are full desktop installers you can save and run locally without staying online during setup. After installation, sign in to sync files through [WPS Cloud](https://drive.wps.com/); core editing still works offline on desktop.',
+            },
+            {
+              question: 'How do I download the WPS Office app (APK) for Android or iOS?',
+              answer:
+                'On the [WPS download page](https://www.wps.com/download/), use the Android or iPhone/iPad sections, or install “WPS Office” from Google Play or the App Store. The mobile app opens Word, Excel, PowerPoint, and PDF files and syncs with desktop and [WPS online](https://drive.wps.com/) when you sign in with the same WPS account.',
+            },
+          ],
         },
-        {
-          question: 'Can I use Word, Excel, and PowerPoint online with WPS?',
-          answer:
-            'Yes. WPS Office online (WPS web) runs in your browser — no install needed. Create and edit documents, spreadsheets, and slides online, sign in to sync with desktop and mobile, and open files from cloud storage or uploads.',
+        online: {
+          label: 'WPS online',
+          desc: 'Word, Excel, and PowerPoint online in your browser',
+          faqs: [
+            {
+              question: 'Can I use Word online free with WPS Office?',
+              answer:
+                'Yes. Sign in to your WPS account and open [WPS online office](https://drive.wps.com/) to create and edit Word documents without installing desktop apps — the same flow people search as “word online” or “word online free.” Save to WPS Cloud or download as DOCX when finished.',
+            },
+            {
+              question: 'Is Excel online available in WPS Office?',
+              answer:
+                'Yes. [WPS Spreadsheet](https://www.wps.com/office/spreadsheet/) runs in the browser through [WPS online office](https://drive.wps.com/) after you sign in. Open or upload XLSX/XLS files, edit formulas and tables online, and sync with the WPS Office app on PC or mobile via WPS Cloud.',
+            },
+            {
+              question: 'Can I use PowerPoint online without installing WPS?',
+              answer:
+                'Yes. Use WPS Presentation in [WPS online office](https://drive.wps.com/) in your browser to build and edit PPTX slides without a desktop install — similar to “powerpoint online” or “ppt online” workflows. Sign in so decks sync to WPS Cloud and your other devices.',
+            },
+            {
+              question: 'What is WPS Office online (WPS web)?',
+              answer:
+                'WPS Office online (WPS web / WPS 365 online) is Kingsoft’s browser-based office suite on [WPS Cloud](https://drive.wps.com/): Writer, Spreadsheet, Presentation, and PDF tools in one place, with sync across Web, Windows, Mac, and Android. Upload Office files up to 200 MB and access revision history in the cloud.',
+            },
+            {
+              question: 'Is WPS online free to use?',
+              answer:
+                'Yes. [WPS Cloud online office](https://drive.wps.com/) is listed as free to use for core browser editing. Sign in with your WPS account to save and sync files; optional [WPS Pro+](https://www.wps.com/pricing/) adds more cloud space (20 GB vs 1 GB on the free Standard plan) and advanced PDF/AI features.',
+            },
+          ],
         },
-        {
-          question: 'How do I convert PDF to Word in WPS Office?',
-          answer:
-            'Open the PDF in WPS PDF, choose Convert → PDF to Word, and save a DOCX you can edit in WPS Writer. WPS PDF also supports edit PDF, merge, compress, sign, and other everyday PDF tasks in the same app.',
+        pdf: {
+          label: 'WPS PDF',
+          desc: 'PDF to Word, PDF editor, Word to PDF, JPG convert',
+          faqs: [
+            {
+              question: 'How do I convert PDF to Word in WPS Office?',
+              answer:
+                'Desktop: open the PDF in WPS Office → Tools tab → PDF to Word → set page range and language → click Start ([WPS Academy guide](https://www.wps.com/academy/quickly-convert-pdf-to-editable-word-in-wps-office-quick-tutorials-1863094/)). [WPS Help](https://help.wps.com/articles/pdf-to-word-converter-qanda) notes free conversion for PDFs within 5 pages; longer files may need [WPS Pro+](https://www.wps.com/pricing/). Online: use the [free PDF to Word converter](https://pdf.wps.com/convert-pdf-to-word/) → Select File or drag the PDF → Download the Word file.',
+            },
+            {
+              question: 'What is WPS PDF editor and how do I edit PDF files?',
+              answer:
+                'WPS PDF is the PDF module built into WPS Office on desktop, mobile, and online. Open a PDF in WPS PDF to read, annotate, and edit text or images; [WPS Pro+](https://www.wps.com/pricing/) adds fuller edit/convert tools (PDF to Word/Excel/PPT, image to PDF, and related converters).',
+            },
+            {
+              question: 'How do I convert Word to PDF in WPS?',
+              answer:
+                'In WPS Writer, click Menu → Export to PDF ([step-by-step guide](https://www.wps.com/academy/wps-writer-save-as-pdf-quick-tutorials-1878874/)). In the dialog, name the file, set the page range, choose a save location, then click Export to PDF. Alternative: Menu → Save as → Other Formats → PDF Format (*.pdf) → Save.',
+            },
+            {
+              question: 'Can WPS convert JPG to Excel or JPG to Word?',
+              answer:
+                'Yes. On desktop, open WPS Office Home → Productivity Tools → Image to Text (OCR), add your JPG, then choose Convert to Excel ([JPG to Excel feature](https://www.wps.com/feature/jpg-to-excel/) / [OCR guide](https://www.wps.com/academy/convert-image-to-text-wps-guide-quick-tutorials-1898063/)). For text-heavy images, use the same OCR flow, then paste or save into Writer or Spreadsheet.',
+            },
+            {
+              question: 'Can WPS PDF merge, compress, and sign PDF files?',
+              answer:
+                'Yes. Use WPS PDF on desktop for merge, split, compress, protect, and sign workflows; advanced convert/edit features are included in [WPS Pro+](https://www.wps.com/pricing/). For quick compress online, WPS also lists a free Compress PDF tool on the [download page Online Tools](https://www.wps.com/download/) section.',
+            },
+          ],
         },
-        {
-          question: 'Does WPS Office open Microsoft Word, Excel, and PowerPoint files?',
-          answer:
-            'Yes. WPS Writer, Spreadsheets, and Presentation open common Microsoft formats — including DOC, DOCX, XLS, XLSX, PPT, and PPTX — so you can work with files from Word, Excel, and PowerPoint without reformatting.',
+        account: {
+          label: 'Login & WPS Cloud',
+          desc: 'WPS login, cloud sync, and WPS 365 plans',
+          faqs: [
+            {
+              question: 'How do I log in to WPS Office?',
+              answer:
+                'In WPS Writer, Spreadsheets, or Presentation, click Sign in at the top right ([WPS Help Center](https://help.wps.com/articles/file-roaming-wps-cloud)). You can also open Office Space → File Roaming → Use Now. Sign in with Google, Facebook, Twitter, or an email-registered WPS account — one login works on desktop, mobile, and [WPS online](https://drive.wps.com/).',
+            },
+            {
+              question: 'What is WPS Cloud and how does file sync work?',
+              answer:
+                'WPS Cloud stores and syncs your documents online. After you sign in, [File Roaming](https://help.wps.com/articles/file-roaming-wps-cloud) automatically uploads documents you open or edit; view them under Office → File Roaming or on the web at [account.wps.com](https://account.wps.com). For manual control, go to Home → Settings and turn on Cloud Sync ([sync guide](https://www.wps.com/academy/file-sync-in-wps-guide-quick-tutorials-1898105/)).',
+            },
+            {
+              question: 'What is WPS 365 and how is it different from free WPS Office?',
+              answer:
+                'WPS 365 is Kingsoft’s cloud-connected office experience ([WPS online](https://drive.wps.com/) + sync across devices). Free [WPS Standard](https://www.wps.com/pricing/) includes the desktop/mobile apps and 1 GB cloud. Paid [WPS Pro+](https://www.wps.com/pricing/) (from $5.83/month) adds 20 GB cloud, advanced PDF convert/edit, premium templates, and higher AI daily limits.',
+            },
+            {
+              question: 'Is WPS Office free or do I need a WPS subscription?',
+              answer:
+                '[WPS Standard](https://www.wps.com/pricing/) is free to download and use for core Writer, Spreadsheet, Presentation, and basic PDF tasks — no credit card required. [WPS Pro+](https://www.wps.com/pricing/) or Sharing Plan is optional when you need multi-page PDF conversion, 20 GB cloud per user, or advanced AI/PDF tools.',
+            },
+            {
+              question: 'How do I install WPS Office after downloading?',
+              answer:
+                'Windows/Mac/Linux: run the installer from the [WPS download center](https://www.wps.com/download/) and follow the setup wizard. Mobile: install from the store link on the same page. When setup finishes, sign in so [File Roaming](https://help.wps.com/articles/file-roaming-wps-cloud) and WPS Cloud sync start automatically.',
+            },
+          ],
         },
-        {
-          question: 'Is WPS Office free?',
-          answer:
-            'Yes. WPS Office is free to download and use on PC, Mac, Linux, mobile, and the web. Core document, spreadsheet, presentation, and PDF tools are included at no cost. WPS 365 paid plans add higher AI limits, cloud storage, and premium templates if you need more.',
+        compatibility: {
+          label: 'Office compatibility',
+          desc: 'Microsoft Office files, Writer, Excel, and free alternative',
+          faqs: [
+            {
+              question: 'Is WPS Office a free alternative to Microsoft Office download?',
+              answer:
+                'Yes. The [free WPS Office download](https://www.wps.com/download/) covers Writer (Word), Spreadsheets (Excel), Presentation (PowerPoint), and PDF in one suite — a common alternative to Microsoft Office free download searches. WPS states full compatibility with Microsoft .docx, .xlsx, and .pptx on its [download FAQ](https://www.wps.com/download/) and [pricing page](https://www.wps.com/pricing/).',
+            },
+            {
+              question: 'Does WPS Office open Microsoft Word, Excel, and PowerPoint files?',
+              answer:
+                'Yes. The [official WPS download FAQ](https://www.wps.com/download/) confirms you can open, edit, and save Microsoft Office formats including .docx, .xlsx, and .pptx without formatting loss. [WPS pricing](https://www.wps.com/pricing/) also lists “100% Compatible with Microsoft File Formats” for the free Standard plan.',
+            },
+            {
+              question: 'What is WPS Writer (WPS Word)?',
+              answer:
+                'WPS Writer is the word processor in WPS Office — the app behind “wps office writer” and “wps word” searches. Use it on desktop or in [WPS online](https://drive.wps.com/) to edit DOC/DOCX, [export to PDF](https://www.wps.com/academy/wps-writer-save-as-pdf-quick-tutorials-1878874/), and collaborate through WPS Cloud when signed in.',
+            },
+            {
+              question: 'Does WPS include Excel and spreadsheet tools?',
+              answer:
+                'Yes. [WPS Spreadsheets](https://www.wps.com/office/spreadsheet/) is the Excel-compatible app (“wps excel”). It opens .xlsx, .xls, and .csv, supports formulas and charts on desktop and [WPS online](https://drive.wps.com/), and connects to PDF to Excel and [JPG to Excel](https://www.wps.com/feature/jpg-to-excel/) tools.',
+            },
+            {
+              question: 'Can WPS replace Microsoft Word, Excel, and PowerPoint for everyday work?',
+              answer:
+                'For typical documents, spreadsheets, slides, and PDF tasks, WPS Writer, Spreadsheets, Presentation, and WPS PDF match everyday Word/Excel/PowerPoint workflows on PC, Mac, Linux, mobile, and browser — with free [WPS Standard](https://www.wps.com/pricing/) and optional [WPS Pro+](https://www.wps.com/pricing/) upgrades.',
+            },
+          ],
         },
-      ],
+      },
       seoTitle: 'WPS Office Free Download — WPS AI Online for PC | Docs, Slides, Sheets & PDF',
       seoDescription:
         'Download free WPS Office with WPS AI (Office Copilot) across Writer, Spreadsheet, Presentation, PDF, and Photos — on Windows, Mac, Linux, and mobile.',
@@ -1012,7 +1142,7 @@ export const uiTextByLanguage = {
         '本表仅供信息参考，依据各产品公开的产品页与定价页整理。第三方产品名称为其各自权利人的商标。功能、价格与可用性因套餐、平台和地区而异。最后更新：2026 年 7 月。',
       // Key facts: 可验证属性
       keyFactsTitle: '关键事实',
-      mediaProofTitle: '专家信赖，用户验证',
+      mediaProofTitle: '专家信赖 & 用户验证',
       mediaProofSummary:
         '从手工劳作到智能创作 —— WPS 软件是你每项任务的协同助手。',
       mediaProofTabs: {
@@ -1038,35 +1168,165 @@ export const uiTextByLanguage = {
           desc: 'WPS Office 提供 20 种语言本地化，面向多地区用户与团队。',
         },
       ],
-      // FAQ: 只回答检索型问题（定义在 Entity）
+      // FAQ: 按 SEO 主题分组，只回答检索型问题（定义在 Entity）
       faqTitle: '常见问题',
-      faqs: [
-        {
-          question: '如何免费下载 WPS Office 电脑版？',
-          answer:
-            '打开「下载 WPS Office」页面，选择 Windows PC、Mac 或 Linux 即可获取免费安装包，内含文字、表格、演示与 PDF 工具。Android、iOS 可在同页或应用商店下载，无需绑卡即可开始使用。',
+      faqTopics: {
+        download: {
+          label: '下载与安装',
+          desc: 'WPS Office 电脑版、Mac 与移动端下载',
+          faqs: [
+            {
+              question: '如何下载 WPS Office 电脑版（PC 版）？',
+              answer:
+                '打开 [WPS 官方下载页](https://www.wps.com/download/)，在 Windows 区域点击 Free Download 获取适用于 Windows 11/10/8 的安装包。双击运行即可安装文字（Writer）、表格（Spreadsheet）、演示（Presentation）与 PDF 模块。Mac（Apple Silicon M1–M4 与 Intel）及 Linux（Ubuntu/CentOS/Deepin 的 .deb / .rpm）也在同页下载。',
+            },
+            {
+              question: 'WPS Office 可以免费下载吗？',
+              answer:
+                '可以。[WPS Standard 免费方案](https://www.wps.com/pricing/)无需信用卡，含核心文字/表格/演示/PDF、1 GB WPS 云空间、基础 PDF 与 47 种文件格式、46 种语言。进阶 PDF 转换、20 GB 云空间与更高 AI 额度在 [WPS Pro+](https://www.wps.com/pricing/) 等付费方案中提供。',
+            },
+            {
+              question: 'Windows 10 / Windows 11 在哪里下载 WPS Office？',
+              answer:
+                '在 [WPS 下载中心](https://www.wps.com/download/) 点击 Windows 的 Free Download。官网标明支持 Windows 11/10/8。保存安装包并运行，按向导完成安装。安装后登录 WPS 账号，即可启用 [文档漫游 File Roaming](https://help.wps.com/articles/file-roaming-wps-cloud) 与云同步。',
+            },
+            {
+              question: 'WPS Office 有离线安装包吗？',
+              answer:
+                '有。从 [WPS 下载中心](https://www.wps.com/download/) 获取的 Windows/Mac/Linux 安装文件可在本地保存并离线运行安装程序，无需安装过程中保持联网。安装完成后登录账号即可通过 [WPS 云](https://drive.wps.com/) 同步；桌面端核心编辑可离线使用。',
+            },
+            {
+              question: 'Android / iOS 如何下载 WPS Office 应用（APK）？',
+              answer:
+                '在 [WPS 下载页](https://www.wps.com/download/) 选择 Android 或 iPhone/iPad，或在 Google Play / App Store 搜索「WPS Office」安装。手机版可打开 Word、Excel、PPT 与 PDF，使用同一 WPS 账号登录后与电脑版、[WPS 在线版](https://drive.wps.com/) 同步。',
+            },
+          ],
         },
-        {
-          question: '能否在线使用 Word、Excel、PowerPoint（WPS 在线版）？',
-          answer:
-            '可以。WPS Office 在线版（WPS web）在浏览器中即可使用，无需安装。可在线创建和编辑文档、表格与演示，登录后与电脑版、手机版同步，支持云端或本地上传打开文件。',
+        online: {
+          label: 'WPS 在线版',
+          desc: 'Word / Excel / PPT 在线编辑',
+          faqs: [
+            {
+              question: '能否免费在线使用 Word（WPS 在线版）？',
+              answer:
+                '可以。登录 WPS 账号后，在浏览器打开 [WPS 在线办公](https://drive.wps.com/) 即可在线编辑 Word 文档，无需安装桌面版，对应「word online」「word online free」等检索。完成后可保存到 WPS 云或下载 DOCX。',
+            },
+            {
+              question: 'WPS 有 Excel 在线版吗？',
+              answer:
+                '有。登录后在 [WPS 在线办公](https://drive.wps.com/) 中使用 [WPS 表格](https://www.wps.com/office/spreadsheet/)，可在浏览器打开/编辑 XLSX、XLS，编写公式与处理数据，并通过 WPS 云与 PC 或手机版 WPS 同步，覆盖「excel online」「online excel」等场景。',
+            },
+            {
+              question: '能否在线使用 PowerPoint，不安装 WPS？',
+              answer:
+                '可以。在 [WPS 在线办公](https://drive.wps.com/) 中使用 WPS 演示，在浏览器创建与编辑 PPTX，无需安装桌面程序，类似「powerpoint online」「ppt online」。登录后幻灯片会同步到 WPS 云及其他设备。',
+            },
+            {
+              question: '什么是 WPS Office 在线版（WPS web）？',
+              answer:
+                'WPS Office 在线版（WPS web / WPS 365 online）是金山浏览器端办公套件，入口为 [WPS Cloud 在线办公](https://drive.wps.com/)，含文字、表格、演示与 PDF，并在 Web、Windows、Mac、Android 间同步。云文档单文件最大支持 200 MB，并保留修订历史。',
+            },
+            {
+              question: 'WPS 在线版免费吗？',
+              answer:
+                '[WPS Cloud 在线办公](https://drive.wps.com/) 的核心浏览器编辑免费使用。登录 WPS 账号即可保存与同步；若需 20 GB 云空间（免费 Standard 为 1 GB）及进阶 PDF/AI 能力，可选购 [WPS Pro+](https://www.wps.com/pricing/) 等付费方案。',
+            },
+          ],
         },
-        {
-          question: 'WPS 怎么把 PDF 转成 Word？',
-          answer:
-            '用 WPS PDF 打开 PDF，选择「转换 → PDF 转 Word」，即可得到可在 WPS 文字中编辑的 DOCX。WPS PDF 还支持编辑 PDF、合并、压缩、签名等常见 PDF 操作。',
+        pdf: {
+          label: 'WPS PDF',
+          desc: 'PDF 转 Word、PDF 编辑、Word 转 PDF',
+          faqs: [
+            {
+              question: 'WPS 怎么把 PDF 转成 Word（pdf to word）？',
+              answer:
+                '电脑版：在 WPS 中打开 PDF →「工具」选项卡 → PDF 转 Word → 设置页码范围与语言 → 点击「开始」（[WPS Academy 教程](https://www.wps.com/academy/quickly-convert-pdf-to-editable-word-in-wps-office-quick-tutorials-1863094/)）。[WPS 帮助中心](https://help.wps.com/articles/pdf-to-word-converter-qanda) 说明 5 页以内 PDF 可免费转换，更长文档可能需要 [WPS Pro+](https://www.wps.com/pricing/)。在线版：使用 [免费 PDF 转 Word 工具](https://pdf.wps.com/convert-pdf-to-word/) → 选择文件或拖拽上传 → 转换完成后 Download 下载 Word 文件。',
+            },
+            {
+              question: '什么是 WPS PDF 编辑器，如何编辑 PDF？',
+              answer:
+                'WPS PDF 是 WPS Office 内置 PDF 模块，支持阅读、批注及在支持的方案下编辑文本/图片。[WPS Pro+ 定价页](https://www.wps.com/pricing/) 列出 PDF 转 Word/Excel/PPT、图片转 PDF 等进阶转换与编辑能力；免费 Standard 含基础 PDF 阅读与常用功能。',
+            },
+            {
+              question: 'WPS 如何把 Word 转成 PDF（word to pdf）？',
+              answer:
+                '在 WPS 文字中：点击「菜单」→「输出为 PDF」（[分步教程](https://www.wps.com/academy/wps-writer-save-as-pdf-quick-tutorials-1878874/)）。在对话框中设置文件名、输出范围与保存路径，点击「输出为 PDF」。也可使用「菜单」→「另存为」→「其他格式」→ 文件类型选「PDF 格式 (*.pdf)」→「保存」。',
+            },
+            {
+              question: 'WPS 能把 JPG 转成 Excel 或 Word 吗？',
+              answer:
+                '可以。桌面端：打开 WPS 首页 →「效率工具 / Productivity Tools」→「图片转文字（OCR）」→ 添加 JPG → 选择「转为 Excel」提取表格（[JPG 转 Excel 功能页](https://www.wps.com/feature/jpg-to-excel/) / [OCR 教程](https://www.wps.com/academy/convert-image-to-text-wps-guide-quick-tutorials-1898063/)）。文字为主的图片可用同一 OCR 流程提取后再粘贴到文字或表格中。',
+            },
+            {
+              question: 'WPS PDF 能合并、压缩、签名 PDF 吗？',
+              answer:
+                '可以。在桌面 WPS PDF 中进行合并、拆分、压缩、保护与签名；进阶转换/编辑见 [WPS Pro+ 功能对比](https://www.wps.com/pricing/)。快速在线压缩可使用 [WPS 下载页 Online Tools](https://www.wps.com/download/) 中的 Compress PDF 工具。',
+            },
+          ],
         },
-        {
-          question: 'WPS Office 能打开 Microsoft Word、Excel、PPT 文件吗？',
-          answer:
-            '可以。WPS 文字、表格、演示支持 DOC、DOCX、XLS、XLSX、PPT、PPTX 等常见 Microsoft Office 格式，可直接处理来自 Word、Excel、PowerPoint 的文件。',
+        account: {
+          label: '登录与 WPS 云',
+          desc: 'WPS login、云同步与 WPS 365',
+          faqs: [
+            {
+              question: '如何登录 WPS Office（WPS login）？',
+              answer:
+                '在 WPS 文字、表格或演示右上角点击「登录」（[WPS 帮助中心](https://help.wps.com/articles/file-roaming-wps-cloud)）。也可打开「Office Space / 办公空间」→「文档漫游（File Roaming）」→「立即使用」。支持 Google、Facebook、Twitter 或邮箱注册账号，同一账号可用于桌面、移动与 [WPS 在线版](https://drive.wps.com/)。',
+            },
+            {
+              question: '什么是 WPS 云（WPS Cloud），如何同步文件？',
+              answer:
+                'WPS 云用于在线存储与跨设备同步。登录后 [文档漫游](https://help.wps.com/articles/file-roaming-wps-cloud) 会自动上传您打开或编辑的文档；可在应用内「Office → File Roaming」或网页 [account.wps.com](https://account.wps.com) 查看。也可在「首页 → 设置」中开启 Cloud Sync（[云同步教程](https://www.wps.com/academy/file-sync-in-wps-guide-quick-tutorials-1898105/)）。',
+            },
+            {
+              question: '什么是 WPS 365，与免费版有何区别？',
+              answer:
+                'WPS 365 是金山云连接办公体验（[WPS 在线版](https://drive.wps.com/) + 多设备同步）。免费 [WPS Standard](https://www.wps.com/pricing/) 含桌面/移动应用与 1 GB 云空间。付费 [WPS Pro+](https://www.wps.com/pricing/)（定价页约 $5.83/月起）提供 20 GB 云空间、进阶 PDF 转换/编辑、premium 模板与更高 AI 日限额。',
+            },
+            {
+              question: 'WPS Office 免费吗，是否需要订阅？',
+              answer:
+                '[WPS Standard](https://www.wps.com/pricing/) 可免费下载使用，涵盖日常文字/表格/演示与基础 PDF，无需信用卡。若需多页 PDF 转换、每用户 20 GB 云空间或进阶 AI/PDF 工具，可选购 [WPS Pro+](https://www.wps.com/pricing/) 或 Sharing Plan，非安装与打开文件的必要条件。',
+            },
+            {
+              question: '下载后如何安装 WPS Office？',
+              answer:
+                'Windows/Mac/Linux：运行 [WPS 下载中心](https://www.wps.com/download/) 的安装包并按向导完成 setup。移动端：通过同页商店链接安装。安装完成后打开任意模块并登录，[文档漫游](https://help.wps.com/articles/file-roaming-wps-cloud) 会在登录后自动启用。',
+            },
+          ],
         },
-        {
-          question: 'WPS Office 是免费的吗？',
-          answer:
-            '是的。WPS Office 可在 PC、Mac、Linux、移动端与网页端免费下载和使用，核心文档、表格、演示与 PDF 功能均免费。若需更高 AI 额度、云空间或 premium 模板，可选购 WPS 365 付费方案。',
+        compatibility: {
+          label: 'Office 兼容',
+          desc: 'Microsoft Office 格式、Writer 与 Excel',
+          faqs: [
+            {
+              question: 'WPS Office 能否替代 Microsoft Office 免费下载？',
+              answer:
+                '可以。[WPS Office 免费下载](https://www.wps.com/download/) 包含文字（Word）、表格（Excel）、演示（PowerPoint）与 PDF，是常见的 Microsoft Office free download 替代方案。官网 [下载 FAQ](https://www.wps.com/download/) 与 [定价页](https://www.wps.com/pricing/) 均说明与 .docx、.xlsx、.pptx 高度兼容。',
+            },
+            {
+              question: 'WPS Office 能打开 Microsoft Word、Excel、PPT 文件吗？',
+              answer:
+                '可以。[WPS 官方下载 FAQ](https://www.wps.com/download/) 确认可打开、编辑并保存 .docx、.xlsx、.pptx 等 Microsoft Office 格式且尽量保持版式。[WPS 定价页](https://www.wps.com/pricing/) 的 WPS Standard 亦标注「100% Compatible with Microsoft File Formats」。',
+            },
+            {
+              question: '什么是 WPS Writer（WPS Word）？',
+              answer:
+                'WPS Writer 是 WPS Office 文字处理应用，对应「wps office writer」「wps word」等检索。可在桌面或 [WPS 在线版](https://drive.wps.com/) 编辑 DOC/DOCX，通过「菜单 → 输出为 PDF」[导出 PDF](https://www.wps.com/academy/wps-writer-save-as-pdf-quick-tutorials-1878874/)，登录 WPS 云后可协作与同步。',
+            },
+            {
+              question: 'WPS 有 Excel / 表格功能吗？',
+              answer:
+                '有。[WPS 表格 Spreadsheets](https://www.wps.com/office/spreadsheet/) 为 Excel 兼容应用（「wps excel」），支持 .xlsx、.xls、.csv 与公式图表，桌面与 [WPS 在线版](https://drive.wps.com/) 均可使用；并与 [JPG 转 Excel](https://www.wps.com/feature/jpg-to-excel/) 等工具衔接。',
+            },
+            {
+              question: 'WPS 能否替代 Word、Excel、PowerPoint 日常办公？',
+              answer:
+                '日常文档、表格、演示与 PDF 工作，WPS 文字、表格、演示与 WPS PDF 可覆盖 Word/Excel/PowerPoint 核心场景，支持 PC、Mac、Linux、移动与浏览器，免费 [WPS Standard](https://www.wps.com/pricing/) 可用，进阶能力见 [WPS Pro+](https://www.wps.com/pricing/)。',
+            },
+          ],
         },
-      ],
+      },
       seoTitle: 'WPS Office 免费下载 — WPS AI 在线办公 | PC 版与在线版',
       seoDescription:
         '免费下载 WPS Office，内置 WPS AI（Office Copilot）：覆盖 Writer、Spreadsheet、Presentation、PDF 与 Photos，支持 Windows、Mac、Linux 与移动端。',

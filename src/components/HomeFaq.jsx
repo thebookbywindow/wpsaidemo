@@ -1,13 +1,26 @@
-import { useState } from 'react'
+import { useEffect, useId, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
-
+import { HOME_FAQ_TOPIC_IDS } from '../data/homeFaqTopics'
+import { renderFaqAnswer } from '../utils/renderFaqAnswer'
 /**
- * Homepage FAQ — SEO query-shaped Q&A in a single accordion panel.
+ * Homepage FAQ — left topic nav + single-open accordion per topic.
  */
-export default function HomeFaq({ title, faqs = [] }) {
+export default function HomeFaq({ title, faqTopics = {} }) {
+  const titleId = useId()
+  const topics = HOME_FAQ_TOPIC_IDS.map((id) => ({ id, ...faqTopics[id] })).filter(
+    (topic) => topic.label && topic.faqs?.length,
+  )
+
+  const [activeTopicId, setActiveTopicId] = useState(topics[0]?.id ?? '')
   const [openIndex, setOpenIndex] = useState(0)
 
-  if (!faqs.length) return null
+  const activeTopic = topics.find((topic) => topic.id === activeTopicId) ?? topics[0]
+
+  useEffect(() => {
+    setOpenIndex(0)
+  }, [activeTopicId])
+
+  if (!topics.length || !activeTopic) return null
 
   const handleSummaryClick = (index, event) => {
     event.preventDefault()
@@ -16,42 +29,55 @@ export default function HomeFaq({ title, faqs = [] }) {
 
   return (
     <section className="home-faq-section px-6 py-12 pb-20" id="home-faq">
-      <div className="home-section-inner mx-auto w-full max-w-[920px]">
-        <h2
-          id="home-faq-title"
-          className="home-section-title text-center text-[#1a202c]"
-        >
+      <div className="home-section-inner mx-auto w-full max-w-[1160px]">
+        <h2 id={titleId} className="home-section-title text-center text-[#1a202c]">
           {title}
         </h2>
 
-        <div
-          className="home-faq-panel mt-8"
-          role="region"
-          aria-labelledby="home-faq-title"
-        >
-          {faqs.map((item, index) => {
-            const isOpen = openIndex === index
-            return (
-              <details
-                key={item.question}
-                className="home-faq-item"
-                open={isOpen}
-              >
-                <summary
-                  className="home-faq-summary"
-                  onClick={(event) => handleSummaryClick(index, event)}
+        <div className="home-faq-layout mt-8">
+          <nav className="home-faq-nav" role="tablist" aria-label={title}>
+            {topics.map((topic) => {
+              const selected = topic.id === activeTopicId
+              return (
+                <button
+                  key={topic.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={selected}
+                  className={`home-faq-nav-item${selected ? ' is-active' : ''}`}
+                  onClick={() => setActiveTopicId(topic.id)}
                 >
-                  <span className="home-faq-question">{item.question}</span>
-                  <span className="home-faq-icon" aria-hidden="true">
-                    <ChevronDown size={18} strokeWidth={2.25} />
-                  </span>
-                </summary>
-                <div className="home-faq-answer">
-                  <p>{item.answer}</p>
-                </div>
-              </details>
-            )
-          })}
+                  <span className="home-faq-nav-name">{topic.label}</span>
+                  {topic.desc ? <span className="home-faq-nav-desc">{topic.desc}</span> : null}
+                </button>
+              )
+            })}
+          </nav>
+
+          <div
+            className="home-faq-panel"
+            role="tabpanel"
+            aria-labelledby={titleId}
+          >
+            {activeTopic.faqs.map((item, index) => {
+              const isOpen = openIndex === index
+              return (
+                <details key={item.question} className="home-faq-item" open={isOpen}>
+                  <summary
+                    className="home-faq-summary"
+                    onClick={(event) => handleSummaryClick(index, event)}
+                  >
+                    <span className="home-faq-question">{item.question}</span>
+                    <span className="home-faq-icon" aria-hidden="true">
+                      <ChevronDown size={18} strokeWidth={2.25} />
+                    </span>
+                  </summary>
+                  <div className="home-faq-answer">
+                    <p>{renderFaqAnswer(item.answer)}</p>
+                  </div>                </details>
+              )
+            })}
+          </div>
         </div>
       </div>
     </section>

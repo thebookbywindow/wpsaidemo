@@ -9,6 +9,7 @@ export default function HomeHeroCopilot({ copy, localeAiFeaturesPath, navigateTo
 
   const href = getHomeAiPillarDirectoryHref(localeAiFeaturesPath, 'copilot')
   const features = copy.features ?? []
+  const imageAlt = copy.imageAlt ?? copy.title ?? HOME_HERO_COPILOT.name
 
   return (
     <section
@@ -18,7 +19,7 @@ export default function HomeHeroCopilot({ copy, localeAiFeaturesPath, navigateTo
     >
       <div className="home-section-inner mx-auto w-full max-w-[1160px]">
         <article className="home-hero-copilot-panel">
-          <div className="home-hero-copilot-copy">
+          <div className="home-hero-copilot-body">
             <div className="home-hero-copilot-head">
               <img
                 className="home-hero-copilot-icon"
@@ -38,12 +39,11 @@ export default function HomeHeroCopilot({ copy, localeAiFeaturesPath, navigateTo
                 </h2>
               </div>
             </div>
+
             {copy.summary ? (
               <p className="home-hero-copilot-summary">{copy.summary}</p>
             ) : null}
-          </div>
 
-          <div className="home-hero-copilot-side">
             {features.length ? (
               <ul className="home-hero-copilot-features">
                 {features.map((feature) => (
@@ -51,6 +51,7 @@ export default function HomeHeroCopilot({ copy, localeAiFeaturesPath, navigateTo
                 ))}
               </ul>
             ) : null}
+
             {href ? (
               <a
                 className="home-hero-copilot-link"
@@ -65,6 +66,21 @@ export default function HomeHeroCopilot({ copy, localeAiFeaturesPath, navigateTo
               </a>
             ) : null}
           </div>
+
+          {HOME_HERO_COPILOT.imageSrc ? (
+            <div className="home-hero-copilot-media">
+              <img
+                className="home-hero-copilot-image"
+                src={HOME_HERO_COPILOT.imageSrc}
+                alt={imageAlt}
+                width={1160}
+                height={652}
+                loading="lazy"
+                decoding="async"
+                draggable={false}
+              />
+            </div>
+          ) : null}
         </article>
       </div>
     </section>
