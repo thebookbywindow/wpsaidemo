@@ -176,11 +176,19 @@ export function useHomeTabsScrollPin({
         lockedPanelHeightRef.current || measuredH || 0,
       )
       const lockedH = lockedPanelHeightRef.current
+      const liveH = measuredH > 0 ? measuredH : lockedH
       if (lockedH > 0) {
         track.style.setProperty(panelHVar, `${lockedH}px`)
-        panel.style.minHeight = `${lockedH}px`
+        panel.style.minHeight = ''
         panel.style.maxHeight = `${viewportCap}px`
       }
+
+      const section = track.closest('.home-ai-capabilities-section')
+      const peekPx = Math.max(
+        0,
+        Math.min(140, Math.floor(window.innerHeight - stickyTop - liveH - 40)),
+      )
+      section?.style.setProperty('--home-intl-ai-peek', `${peekPx}px`)
 
       const trackHeight = track.offsetHeight
       const panelHeight = lockedH || panel.offsetHeight

@@ -112,7 +112,7 @@ export const uiTextByLanguage = {
             label: 'Sheets',
             tagline: 'Analyze data with less manual work',
             spotlightLead:
-              '[WPS Spreadsheet](https://www.wps.com/office/spreadsheet/) AI turns plain-language questions into formulas, insights, and tables — so you spend less time on syntax and more on decisions.',
+              '[WPS Spreadsheet](https://www.wps.com/office/spreadsheet/) AI turns plain-language questions into formulas, insights, and tables — so you spend less time on syntax and more on decisions across desktop and web.',
             features: {
               'ai-excel-formula-generator': 'Build formulas from plain language',
               'ai-in-excel-spreadsheets': 'Ask questions and get insights from your data',
@@ -128,7 +128,7 @@ export const uiTextByLanguage = {
             label: 'Slides',
             tagline: 'Create presentations faster',
             spotlightLead:
-              '[WPS Presentation](https://www.wps.com/office/presentation/) AI turns outlines, topics, and briefs into polished slide decks — layout, structure, and copy included.',
+              '[WPS Presentation](https://www.wps.com/office/presentation/) AI turns outlines, topics, and briefs into polished slide decks — layout, structure, and copy included, ready to present or export.',
             features: {
               'ai-ppt-maker': 'Turn an outline into a polished deck',
               'ai-powerpoint-generator': 'Generate slides from a topic or brief',
@@ -144,7 +144,7 @@ export const uiTextByLanguage = {
             label: 'PDF',
             tagline: 'Read, chat, and summarize PDFs',
             spotlightLead:
-              '[WPS PDF](https://www.wps.com/office/pdf/) AI lets you chat with documents, pull answers with source proof, and summarize long reports — securely inside WPS.',
+              '[WPS PDF](https://www.wps.com/office/pdf/) AI lets you chat with documents, pull answers with source proof, and [summarize long reports](https://explore.wps.com/pdf/ai-pdf-summarizer) — securely inside WPS, without switching apps.',
             features: {
               'chat-with-pdf': 'Chat with PDFs to find answers instantly',
               'ai-pdf-summarizer': 'Summarize reports without reading every page',
@@ -856,7 +856,7 @@ export const uiTextByLanguage = {
             label: '表格',
             tagline: '少做手工，多做分析',
             spotlightLead:
-              '[WPS 表格 Spreadsheet](https://www.wps.com/office/spreadsheet/) AI 把口语化问题变成公式、洞察与结构化表格 —— 少记语法，多做决策。',
+              '[WPS 表格 Spreadsheet](https://www.wps.com/office/spreadsheet/) AI 把口语化问题变成公式、洞察与结构化表格 —— 少记语法，多做决策，桌面与网页端均可使用。',
             features: {
               'ai-excel-formula-generator': '用自然语言生成公式',
               'ai-in-excel-spreadsheets': '向数据提问，快速获得洞察',
@@ -872,7 +872,7 @@ export const uiTextByLanguage = {
             label: '演示',
             tagline: '更快做出演示文稿',
             spotlightLead:
-              '[WPS 演示 Presentation](https://www.wps.com/office/presentation/) AI 可将大纲、主题或简报快速变成结构完整的幻灯片 —— 版式、层次与文案一并生成。',
+              '[WPS 演示 Presentation](https://www.wps.com/office/presentation/) AI 可将大纲、主题或简报快速变成结构完整的幻灯片 —— 版式、层次与文案一并生成，可直接演示或导出。',
             features: {
               'ai-ppt-maker': '把大纲变成完整 PPT',
               'ai-powerpoint-generator': '根据主题或简报生成幻灯片',
@@ -888,7 +888,7 @@ export const uiTextByLanguage = {
             label: 'PDF',
             tagline: '阅读、对话、摘要 PDF',
             spotlightLead:
-              '[WPS PDF](https://www.wps.com/office/pdf/) AI 支持文档对话、带出处引用的问答，以及长报告摘要 —— 在 WPS 内安全完成。',
+              '[WPS PDF](https://www.wps.com/office/pdf/) AI 支持文档对话、带出处引用的问答，以及[长报告摘要](https://explore.wps.com/pdf/ai-pdf-summarizer) —— 在 WPS 内安全完成，无需切换应用。',
             features: {
               'chat-with-pdf': '与 PDF 对话，即时找答案',
               'ai-pdf-summarizer': '无需通读即可摘要报告',
