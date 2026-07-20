@@ -2007,6 +2007,7 @@ function App() {
   const [isProductsMenuOpen, setIsProductsMenuOpen] = useState(false)
   const [isTemplatesMenuOpen, setIsTemplatesMenuOpen] = useState(false)
   const [isResourcesMenuOpen, setIsResourcesMenuOpen] = useState(false)
+  const [isOverflowMenuOpen, setIsOverflowMenuOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [visibleDesktopNavCount, setVisibleDesktopNavCount] = useState(0)
   const [allProductsTab, setAllProductsTab] = useState('category')
@@ -2037,6 +2038,7 @@ function App() {
     products: 0,
     templates: 0,
     resources: 0,
+    overflow: 0,
   })
 
   const clearDesktopMenuCloseTimeout = useCallback((menuKey) => {
@@ -2057,6 +2059,10 @@ function App() {
       setIsTemplatesMenuOpen(false)
       return
     }
+    if (menuKey === 'overflow') {
+      setIsOverflowMenuOpen(false)
+      return
+    }
     setIsResourcesMenuOpen(false)
   }, [])
 
@@ -2065,9 +2071,11 @@ function App() {
       clearDesktopMenuCloseTimeout('products')
       clearDesktopMenuCloseTimeout('templates')
       clearDesktopMenuCloseTimeout('resources')
+      clearDesktopMenuCloseTimeout('overflow')
       setIsProductsMenuOpen(menuKey === 'products')
       setIsTemplatesMenuOpen(menuKey === 'templates')
       setIsResourcesMenuOpen(menuKey === 'resources')
+      setIsOverflowMenuOpen(menuKey === 'overflow')
     },
     [clearDesktopMenuCloseTimeout],
   )
@@ -2135,6 +2143,7 @@ function App() {
       clearDesktopMenuCloseTimeout('products')
       clearDesktopMenuCloseTimeout('templates')
       clearDesktopMenuCloseTimeout('resources')
+      clearDesktopMenuCloseTimeout('overflow')
     },
     [clearDesktopMenuCloseTimeout],
   )
@@ -2909,6 +2918,7 @@ function App() {
     setIsProductsMenuOpen(false)
     setIsTemplatesMenuOpen(false)
     setIsResourcesMenuOpen(false)
+    setIsOverflowMenuOpen(false)
     setIsMobileMenuOpen(false)
   }
 
@@ -2929,6 +2939,7 @@ function App() {
       setIsProductsMenuOpen(false)
       setIsTemplatesMenuOpen(false)
       setIsResourcesMenuOpen(false)
+      setIsOverflowMenuOpen(false)
       setIsMobileMenuOpen(false)
       return
     }
@@ -2942,6 +2953,7 @@ function App() {
     setIsProductsMenuOpen(false)
     setIsTemplatesMenuOpen(false)
     setIsResourcesMenuOpen(false)
+    setIsOverflowMenuOpen(false)
     setIsMobileMenuOpen(false)
   }
 
@@ -2989,15 +3001,36 @@ function App() {
       { label: uiText.nav.templates, path: localeAllTemplatesPath },
       { label: uiText.nav.guides, path: localeGuidesPath },
       { label: uiText.nav.blog, path: localeBlogPath },
-      { label: localizeString('API Docs') },
+      { label: 'docs', path: localeDocsPath },
     ],
     [
       localeAllTemplatesPath,
       localeBlogPath,
+      localeDocsPath,
       localeGuidesPath,
-      localizeString,
       uiText.nav.blog,
       uiText.nav.guides,
+      uiText.nav.templates,
+    ],
+  )
+  const headerResourceNavLinks = useMemo(
+    () => [
+      { key: 'templates', label: uiText.nav.templates, path: localeAllTemplatesPath },
+      { key: 'guides', label: uiText.nav.guides, path: localeGuidesPath },
+      { key: 'blog', label: uiText.nav.blog, path: localeBlogPath },
+      { key: 'encyclopedia', label: uiText.nav.encyclopedia, path: localeEncyclopediaPath },
+      { key: 'answers', label: uiText.nav.qa, path: localeAnswersPath },
+    ],
+    [
+      localeAllTemplatesPath,
+      localeAnswersPath,
+      localeBlogPath,
+      localeEncyclopediaPath,
+      localeGuidesPath,
+      uiText.nav.blog,
+      uiText.nav.encyclopedia,
+      uiText.nav.guides,
+      uiText.nav.qa,
       uiText.nav.templates,
     ],
   )
@@ -3021,37 +3054,56 @@ function App() {
   const footerSocialItems = blogSocialLinks.slice(0, 3)
   const { normalizedSegments: currentSegments } = splitPath(currentPathname)
   const currentContentRoot = currentSegments[0] ?? ''
+  const isResourcesNavActive = useMemo(
+    () =>
+      isTemplatesPage
+      || pageType === 'all-templates'
+      || currentContentRoot === 'guides'
+      || currentContentRoot === 'blog'
+      || currentContentRoot === 'academy'
+      || currentContentRoot === 'encyclopedia'
+      || pageType === 'answers'
+      || pageType === 'answers-forum',
+    [currentContentRoot, isTemplatesPage, pageType],
+  )
+  const isHeaderResourceLinkCurrent = useCallback(
+    (key) => {
+      if (key === 'templates') {
+        return isTemplatesPage || pageType === 'all-templates'
+      }
+      if (key === 'guides') {
+        return currentContentRoot === 'guides'
+      }
+      if (key === 'blog') {
+        return currentContentRoot === 'blog'
+      }
+      if (key === 'encyclopedia') {
+        return currentContentRoot === 'encyclopedia' || currentContentRoot === 'academy'
+      }
+      if (key === 'answers') {
+        return pageType === 'answers' || pageType === 'answers-forum'
+      }
+      return false
+    },
+    [currentContentRoot, isTemplatesPage, pageType],
+  )
   const desktopOverflowMenuAriaLabel = isZhContent ? '更多导航' : localizeString('More navigation')
   const mobileMenuButtonAriaLabel = isMobileMenuOpen ? uiText.nav.closeMenu : uiText.nav.menu
   const desktopMainNavItems = useMemo(
     () => [
       {
+        key: 'wps-features',
+        type: 'link',
+        label: uiText.nav.wpsFeatures,
+        path: localeAiFeaturesPath,
+        isCurrent: pageType === 'ai-features',
+      },
+      {
         key: 'products',
         type: 'products',
-        label: uiText.nav.products,
+        label: uiText.nav.freeAiTools,
         path: localeAllProductsPath,
         isCurrent: isProductsPage,
-      },
-      {
-        key: 'templates',
-        type: 'templates',
-        label: uiText.nav.templates,
-        path: localeAllTemplatesPath,
-        isCurrent: isTemplatesPage || pageType === 'all-templates',
-      },
-      {
-        key: 'download',
-        type: 'link',
-        label: uiText.nav.download,
-        path: localeDownloadPath,
-        isCurrent: pageType === 'download',
-      },
-      {
-        key: 'pricing',
-        type: 'link',
-        label: uiText.nav.pricing,
-        path: localePricingPath,
-        isCurrent: pageType === 'pricing',
       },
       {
         key: 'docs',
@@ -3061,57 +3113,26 @@ function App() {
         isCurrent: currentContentRoot === 'docs',
       },
       {
-        key: 'guides',
-        type: 'link',
-        label: uiText.nav.guides,
+        key: 'resources',
+        type: 'resources',
+        label: uiText.nav.resources,
         path: localeGuidesPath,
-        isCurrent: currentContentRoot === 'guides',
-      },
-      {
-        key: 'blog',
-        type: 'link',
-        label: uiText.nav.blog,
-        path: localeBlogPath,
-        isCurrent: currentContentRoot === 'blog',
-      },
-      {
-        key: 'encyclopedia',
-        type: 'link',
-        label: uiText.nav.encyclopedia,
-        path: localeEncyclopediaPath,
-        isCurrent: currentContentRoot === 'academy' || currentContentRoot === 'encyclopedia',
-      },
-      {
-        key: 'answers',
-        type: 'link',
-        label: uiText.nav.qa,
-        path: localeAnswersPath,
-        isCurrent: pageType === 'answers' || pageType === 'answers-forum',
+        isCurrent: isResourcesNavActive,
       },
     ],
     [
       currentContentRoot,
       isProductsPage,
-      isTemplatesPage,
+      isResourcesNavActive,
+      localeAiFeaturesPath,
       localeAllProductsPath,
-      localeAllTemplatesPath,
-      localeAnswersPath,
-      localeBlogPath,
       localeDocsPath,
-      localeDownloadPath,
-      localeEncyclopediaPath,
       localeGuidesPath,
-      localePricingPath,
       pageType,
-      uiText.nav.blog,
       uiText.nav.docsCenter,
-      uiText.nav.download,
-      uiText.nav.encyclopedia,
-      uiText.nav.guides,
-      uiText.nav.pricing,
-      uiText.nav.products,
-      uiText.nav.qa,
-      uiText.nav.templates,
+      uiText.nav.freeAiTools,
+      uiText.nav.resources,
+      uiText.nav.wpsFeatures,
     ],
   )
   const visibleDesktopNavItems = desktopMainNavItems.slice(0, visibleDesktopNavCount)
@@ -3162,7 +3183,7 @@ function App() {
       }
 
       if (nextVisibleCount >= desktopMainNavItems.length) {
-        setIsResourcesMenuOpen(false)
+        setIsOverflowMenuOpen(false)
       }
 
       setVisibleDesktopNavCount((prev) => (prev === nextVisibleCount ? prev : nextVisibleCount))
@@ -3547,6 +3568,83 @@ function App() {
       )
     }
 
+    if (item.type === 'resources') {
+      return (
+        <div
+          key={item.key}
+          className="relative flex h-full shrink-0 items-center"
+          onMouseEnter={() => openDesktopMenu('resources')}
+          onMouseLeave={() => scheduleDesktopMenuClose('resources')}
+        >
+          <a
+            className={`home-page-header-link flex h-full items-center whitespace-nowrap border-x border-transparent px-[14px] text-[14px] font-medium transition ${
+              item.isCurrent
+                ? 'home-page-header-link--active'
+                : isResourcesMenuOpen
+                  ? 'home-page-header-link--open'
+                  : 'home-page-header-link--idle'
+            }`}
+            href={item.path}
+            onClick={(event) => {
+              event.preventDefault()
+              navigateTo(item.path)
+            }}
+          >
+            {item.label}
+            <span
+              className={`ml-1 inline-flex h-4 w-4 items-center justify-center transition ${
+                isResourcesMenuOpen ? 'rotate-180' : ''
+              }`}
+              aria-hidden="true"
+            >
+              <svg
+                className="h-[10px] w-[10px]"
+                viewBox="0 0 10 10"
+                fill="none"
+              >
+                <path
+                  d="M1.5 3.25L5 6.75L8.5 3.25"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+          </a>
+
+          {isResourcesMenuOpen && (
+            <div
+              className="home-nav-floating-panel absolute left-1/2 top-full z-[100] hidden w-[210px] -translate-x-1/2 p-2.5 md:block"
+              onMouseEnter={() => openDesktopMenu('resources')}
+              onMouseLeave={() => scheduleDesktopMenuClose('resources')}
+            >
+              {headerResourceNavLinks.map((resourceLink, index) => {
+                const isSubCurrent = isHeaderResourceLinkCurrent(resourceLink.key)
+                return (
+                  <a
+                    key={resourceLink.key}
+                    className={`${index === 0 ? '' : 'mt-1 '}flex px-3 py-2 text-[13px] transition ${
+                      isSubCurrent
+                        ? 'rounded-[12px] bg-[linear-gradient(135deg,rgba(255,255,255,0.96)_0%,rgba(244,236,255,0.96)_100%)] text-[#8f5bff] shadow-[inset_0_1px_0_rgba(255,255,255,0.92)]'
+                        : 'home-nav-floating-item'
+                    }`}
+                    href={resourceLink.path}
+                    onClick={(event) => {
+                      event.preventDefault()
+                      navigateTo(resourceLink.path)
+                    }}
+                  >
+                    {resourceLink.label}
+                  </a>
+                )
+              })}
+            </div>
+          )}
+        </div>
+      )
+    }
+
     if (item.type === 'templates') {
       return (
         <div
@@ -3712,26 +3810,26 @@ function App() {
             {overflowDesktopNavItems.length > 0 && (
               <div
                 className="relative flex h-full shrink-0 items-center"
-                onMouseEnter={() => openDesktopMenu('resources')}
-                onMouseLeave={() => scheduleDesktopMenuClose('resources')}
+                onMouseEnter={() => openDesktopMenu('overflow')}
+                onMouseLeave={() => scheduleDesktopMenuClose('overflow')}
               >
                 <button
                   className={`home-page-header-link flex h-full w-[42px] items-center justify-center border-x border-transparent transition ${
                     isDesktopNavOverflowActive
                       ? 'home-page-header-link--active'
-                      : isResourcesMenuOpen
+                      : isOverflowMenuOpen
                         ? 'home-page-header-link--open'
                         : 'home-page-header-link--idle'
                   }`}
                   type="button"
-                  onClick={() => openDesktopMenu('resources')}
-                  aria-expanded={isResourcesMenuOpen}
+                  onClick={() => openDesktopMenu('overflow')}
+                  aria-expanded={isOverflowMenuOpen}
                   aria-haspopup="menu"
                   aria-label={desktopOverflowMenuAriaLabel}
                 >
                   <span
                     className={`inline-flex h-4 w-4 items-center justify-center transition ${
-                      isResourcesMenuOpen ? 'rotate-180' : ''
+                      isOverflowMenuOpen ? 'rotate-180' : ''
                     }`}
                     aria-hidden="true"
                   >
@@ -3750,11 +3848,11 @@ function App() {
                     </svg>
                   </span>
                 </button>
-                {isResourcesMenuOpen && (
+                {isOverflowMenuOpen && (
                   <div
                     className="home-nav-floating-panel absolute left-1/2 top-full z-[100] hidden w-[190px] -translate-x-1/2 p-2.5 md:block"
-                    onMouseEnter={() => openDesktopMenu('resources')}
-                    onMouseLeave={() => scheduleDesktopMenuClose('resources')}
+                    onMouseEnter={() => openDesktopMenu('overflow')}
+                    onMouseLeave={() => scheduleDesktopMenuClose('overflow')}
                   >
                     {overflowDesktopNavItems.map((item, index) => (
                       <a
@@ -3936,24 +4034,68 @@ function App() {
               <p className="text-[15px] font-semibold text-[#1a202c]">{uiText.nav.menu}</p>
             </div>
             <nav className="mt-3 flex flex-col gap-1">
-              {desktopMainNavItems.map((item) => (
-                <a
-                  key={`mobile-${item.key}`}
-                  className={`rounded-[10px] px-4 py-3 text-[15px] font-medium transition ${
-                    item.isCurrent
-                      ? 'bg-[#ece9fd] text-[#534ab7]'
-                      : 'text-[#4a5568] hover:bg-[#f6f5ff] hover:text-[#1a202c]'
-                  }`}
-                  href={item.path}
-                  onClick={(event) => {
-                    event.preventDefault()
-                    setIsMobileMenuOpen(false)
-                    navigateTo(item.path)
-                  }}
-                >
-                  {item.label}
-                </a>
-              ))}
+              {desktopMainNavItems.map((item) => {
+                if (item.type === 'resources') {
+                  return (
+                    <div key={`mobile-${item.key}`} className="flex flex-col gap-1">
+                      <a
+                        className={`rounded-[10px] px-4 py-3 text-[15px] font-medium transition ${
+                          item.isCurrent
+                            ? 'bg-[#ece9fd] text-[#534ab7]'
+                            : 'text-[#4a5568] hover:bg-[#f6f5ff] hover:text-[#1a202c]'
+                        }`}
+                        href={item.path}
+                        onClick={(event) => {
+                          event.preventDefault()
+                          setIsMobileMenuOpen(false)
+                          navigateTo(item.path)
+                        }}
+                      >
+                        {item.label}
+                      </a>
+                      <div className="ml-2 flex flex-col gap-0.5 border-l border-[#e8ecf2] pl-3">
+                        {headerResourceNavLinks.map((resourceLink) => (
+                          <a
+                            key={`mobile-resource-${resourceLink.key}`}
+                            className={`rounded-[8px] px-3 py-2 text-[14px] transition ${
+                              isHeaderResourceLinkCurrent(resourceLink.key)
+                                ? 'bg-[#f6f5ff] font-medium text-[#534ab7]'
+                                : 'text-[#64748b] hover:bg-[#f6f5ff] hover:text-[#1a202c]'
+                            }`}
+                            href={resourceLink.path}
+                            onClick={(event) => {
+                              event.preventDefault()
+                              setIsMobileMenuOpen(false)
+                              navigateTo(resourceLink.path)
+                            }}
+                          >
+                            {resourceLink.label}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  )
+                }
+
+                return (
+                  <a
+                    key={`mobile-${item.key}`}
+                    className={`rounded-[10px] px-4 py-3 text-[15px] font-medium transition ${
+                      item.isCurrent
+                        ? 'bg-[#ece9fd] text-[#534ab7]'
+                        : 'text-[#4a5568] hover:bg-[#f6f5ff] hover:text-[#1a202c]'
+                    }`}
+                    href={item.path}
+                    onClick={(event) => {
+                      event.preventDefault()
+                      setIsMobileMenuOpen(false)
+                      navigateTo(item.path)
+                    }}
+                  >
+                    {item.label}
+                  </a>
+                )
+              })}
             </nav>
             <div className="mt-4 border-t border-[#eef1f6] px-1 pt-4">
               <p className="mb-3 text-[12px] font-semibold uppercase tracking-[0.06em] text-[#98a2b3]">

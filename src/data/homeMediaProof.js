@@ -99,6 +99,7 @@ export const HOME_MEDIA_PROOF_TABS = [
         thumb:
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/6ac44531b242c87961a753239ab355fc.jpg',
         rating: 5,
+        href: 'https://www.techradar.com/reviews/wps-office-free',
       },
       {
         id: 'cnet',
@@ -107,6 +108,7 @@ export const HOME_MEDIA_PROOF_TABS = [
         thumb:
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/fea99d4494a2418409feae81662e5e4b.jpg',
         rating: 4,
+        href: 'https://www.cnet.com/reviews/wps-office-review/',
       },
       {
         id: 'capterra',
@@ -116,6 +118,7 @@ export const HOME_MEDIA_PROOF_TABS = [
         thumb:
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/d9666a190595509612dcd083896b0b26.jpg',
         rating: 5,
+        href: 'https://www.capterra.com/p/126794/WPS-Office/',
       },
       {
         id: 'toms-guide',
@@ -124,6 +127,7 @@ export const HOME_MEDIA_PROOF_TABS = [
         thumb:
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/a29baa299f6dc015cee1c2eb99029d47.jpg',
         rating: 5,
+        href: 'https://www.tomsguide.com/round-up/best-pdf-reader',
       },
       {
         id: 'android-authority',
@@ -132,6 +136,7 @@ export const HOME_MEDIA_PROOF_TABS = [
         thumb:
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/87cad798b62afa9224dcf8f4e17ccb03.jpg',
         rating: 5,
+        href: 'https://www.androidauthority.com/best-office-apps-for-android-281250/',
       },
       {
         id: 'macworld',
@@ -140,6 +145,7 @@ export const HOME_MEDIA_PROOF_TABS = [
         thumb:
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/e309e9fac309c780b144f8caa1ca637b.jpg',
         rating: 3.5,
+        href: 'https://www.macworld.com/article/233430/wps-office-review-full-featured-microsoft-style-productivity-suite-for-less.html',
       },
       {
         id: 'pcworld',
@@ -148,6 +154,7 @@ export const HOME_MEDIA_PROOF_TABS = [
         thumb:
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/c20e35a9c3dbdf204cf9c2bb787070f7.jpg',
         rating: 5,
+        href: 'https://www.pcworld.com/article/407383/wps-office-2016-review-office-alternative.html',
       },
       {
         id: 'laptop-mag',
@@ -157,6 +164,7 @@ export const HOME_MEDIA_PROOF_TABS = [
         thumb:
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/36ae98c4babfe843458a5803b11e178f.jpg',
         rating: 5,
+        href: 'https://www.laptopmag.com/reviews/software/wps-office',
       },
     ],
   },
@@ -170,6 +178,7 @@ export const HOME_MEDIA_PROOF_TABS = [
         thumb:
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/0cd3d410ccab322ca6298317a5760289.jpg',
         rating: 5,
+        href: 'https://www.g2.com/products/wps-office/reviews/wps-office-review-12381286',
       },
       {
         id: 'lokesh-n',
@@ -178,6 +187,7 @@ export const HOME_MEDIA_PROOF_TABS = [
         thumb:
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/bb534e8a30fc774b4ba7962e7cae4f49.jpg',
         rating: 4,
+        href: 'https://www.g2.com/products/wps-office/reviews/wps-office-review-8594677',
       },
       {
         id: 'harinadhasankar-m',
@@ -186,6 +196,7 @@ export const HOME_MEDIA_PROOF_TABS = [
         thumb:
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/369dff779d8df8dc220a3dd30e22f71a.jpg',
         rating: 5,
+        href: 'https://www.g2.com/products/wps-office/reviews/wps-office-review-11977250',
       },
       {
         id: 'neha-y',
@@ -194,6 +205,7 @@ export const HOME_MEDIA_PROOF_TABS = [
         thumb:
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/0b1834d6b9b43499932153e05072263f.jpg',
         rating: 4.5,
+        href: 'https://www.g2.com/products/wps-writer/reviews/wps-writer-review-6482418',
       },
       {
         id: 'bilal-d',
@@ -203,6 +215,7 @@ export const HOME_MEDIA_PROOF_TABS = [
         thumb:
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/78d95328c936971c48d332241b025855.jpg',
         rating: 4.5,
+        href: 'https://www.g2.com/products/wps-office/reviews/wps-office-review-10775063',
       },
       {
         id: 'shivam-m',
@@ -211,6 +224,7 @@ export const HOME_MEDIA_PROOF_TABS = [
         thumb:
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/f568191688d3745a7ebc03e061a63c3f.jpg',
         rating: 5,
+        href: 'https://www.g2.com/products/wps-office/reviews/wps-office-review-9051024',
       },
       {
         id: 'nayanjyoti-g',
@@ -219,6 +233,7 @@ export const HOME_MEDIA_PROOF_TABS = [
         thumb:
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/ad953909fb6f518a81503a97908269ba.jpg',
         rating: 5,
+        href: 'https://www.g2.com/products/wps-office/reviews/wps-office-review-8562179',
       },
       {
         id: 'sudhira-p',
@@ -227,6 +242,7 @@ export const HOME_MEDIA_PROOF_TABS = [
         thumb:
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/aa4282279d103df5e23049421aa7d53e.jpg',
         rating: 4.5,
+        href: 'https://www.g2.com/products/wps-office/reviews/wps-office-review-9180811',
       },
     ],
   },

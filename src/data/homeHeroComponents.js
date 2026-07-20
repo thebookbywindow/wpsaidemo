@@ -147,8 +147,7 @@ export function shouldShowHeroIcon(visibleCount) {
 }
 
 /**
- * Slice label for progressive letter reveal (Notion-style).
- * Icon consumes slot 1; text letters start at slot 2.
+ * Progressive label reveal — icon slot then full word (width animates in UI).
  * @param {string} text
  * @param {number} visibleCount
  */
@@ -156,8 +155,8 @@ export function getTypedHeroLabel(text, visibleCount) {
   const source = typeof text === 'string' ? text : ''
   const totalSlots = getHeroTypewriterSlotCount(source)
   const clamped = clampVisibleCharCount(visibleCount, totalSlots)
-  const textSlots = Math.max(0, clamped - HERO_TYPEWRITER_ICON_SLOTS)
-  return source.slice(0, textSlots)
+  if (clamped <= HERO_TYPEWRITER_ICON_SLOTS) return ''
+  return source
 }
 
 /**
@@ -190,10 +189,10 @@ export function stepHeroTypewriter(state) {
   if (phase === 'typing') {
     if (visibleCount < textLength) {
       return {
-        phase: 'typing',
-        visibleCount: visibleCount + 1,
+        phase: 'hold',
+        visibleCount: textLength,
         index,
-        delayMs: 'char',
+        delayMs: 'hold',
       }
     }
     return { phase: 'hold', visibleCount: textLength, index, delayMs: 'hold' }

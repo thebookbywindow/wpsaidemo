@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { ChevronRight, LayoutGrid } from 'lucide-react'
 import { HOME_AI_CORE_PILLAR_IDS } from '../data/homeAiCapabilities'
 import { HOME_HERO_COPILOT } from '../data/homeHeroComponents'
 import { useHomeAiCapabilities } from '../hooks/useHomeAiCapabilities'
@@ -131,7 +130,6 @@ function HomeAiSpotlightPanel({ pillar, imageOnRight = false }) {
 export default function HomeIntlAiFeatures({ copy, title, summary }) {
   const { pillars } = useHomeAiCapabilities(copy)
   const [activePillarId, setActivePillarId] = useState(HOME_AI_CORE_PILLAR_IDS[0])
-  const [isMobileTabsOpen, setIsMobileTabsOpen] = useState(false)
 
   const corePillars = useMemo(() => {
     const byId = Object.fromEntries(pillars.map((pillar) => [pillar.id, pillar]))
@@ -153,23 +151,7 @@ export default function HomeIntlAiFeatures({ copy, title, summary }) {
     }
   }, [corePillars, activePillarId])
 
-  useEffect(() => {
-    if (!isMobileTabsOpen) return undefined
-    const onKeyDown = (event) => {
-      if (event.key === 'Escape') setIsMobileTabsOpen(false)
-    }
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
-  }, [isMobileTabsOpen])
-
-  const activePillar =
-    corePillars.find((pillar) => pillar.id === activePillarId) ?? corePillars[0]
-  const mobileTabsLabel = copy?.coreTabsAriaLabel ?? title
-
-  const handleMobileTabSelect = (pillarId) => {
-    setIsMobileTabsOpen(false)
-    scrollToPillar(pillarId)
-  }
+  const coreTabsLabel = copy?.coreTabsAriaLabel ?? title
 
   if (!corePillars.length) return null
 
@@ -207,14 +189,11 @@ export default function HomeIntlAiFeatures({ copy, title, summary }) {
           </div>
         </header>
 
-        <div
-          ref={tabsDockRef}
-          className={`home-intl-ai-tabs-dock${isMobileTabsOpen ? ' is-mobile-tabs-open' : ''}`}
-        >
+        <div ref={tabsDockRef} className="home-intl-ai-tabs-dock">
           <div className="home-intl-ai-tabs-wrap">
             <nav
               className="home-intl-ai-tabs home-intl-ai-tabs--desktop"
-              aria-label={mobileTabsLabel}
+              aria-label={coreTabsLabel}
             >
               {corePillars.map((pillar) => {
                 const selected = pillar.id === activePillarId
@@ -242,96 +221,6 @@ export default function HomeIntlAiFeatures({ copy, title, summary }) {
               })}
             </nav>
           </div>
-
-          <button
-            type="button"
-            className="home-intl-ai-mobile-tabs-trigger"
-            aria-expanded={isMobileTabsOpen}
-            aria-controls="home-intl-ai-mobile-tabs-drawer"
-            aria-label={mobileTabsLabel}
-            onClick={() => setIsMobileTabsOpen((open) => !open)}
-          >
-            {activePillar?.iconSrc ? (
-              <img
-                className="home-intl-ai-tab-icon"
-                src={activePillar.iconSrc}
-                alt=""
-                draggable={false}
-                decoding="async"
-              />
-            ) : (
-              <LayoutGrid size={16} strokeWidth={2.1} aria-hidden="true" />
-            )}
-            <span className="home-intl-ai-mobile-tabs-trigger-label">
-              {activePillar?.label}
-            </span>
-            <ChevronRight
-              size={16}
-              strokeWidth={2.25}
-              className="home-intl-ai-mobile-tabs-trigger-chevron"
-              aria-hidden="true"
-            />
-          </button>
-        </div>
-
-        {isMobileTabsOpen ? (
-          <button
-            type="button"
-            className="home-intl-ai-mobile-tabs-backdrop"
-            aria-label={copy?.mobileTabsCloseLabel ?? 'Close app menu'}
-            onClick={() => setIsMobileTabsOpen(false)}
-          />
-        ) : null}
-
-        <div
-          id="home-intl-ai-mobile-tabs-drawer"
-          className={`home-intl-ai-mobile-tabs-drawer${isMobileTabsOpen ? ' is-open' : ''}`}
-          role="dialog"
-          aria-modal="true"
-          aria-label={mobileTabsLabel}
-          aria-hidden={!isMobileTabsOpen}
-        >
-          <div className="home-intl-ai-mobile-tabs-drawer-head">
-            <span className="home-intl-ai-mobile-tabs-drawer-title">{mobileTabsLabel}</span>
-            <button
-              type="button"
-              className="home-intl-ai-mobile-tabs-drawer-close"
-              aria-label={copy?.mobileTabsCloseLabel ?? 'Close app menu'}
-              onClick={() => setIsMobileTabsOpen(false)}
-            >
-              <ChevronRight size={16} strokeWidth={2.25} aria-hidden="true" />
-            </button>
-          </div>
-          <nav className="home-intl-ai-mobile-tabs-list" aria-label={mobileTabsLabel}>
-            {corePillars.map((pillar) => {
-              const selected = pillar.id === activePillarId
-              return (
-                <button
-                  key={pillar.id}
-                  type="button"
-                  aria-current={selected ? 'true' : undefined}
-                  className={`home-intl-ai-mobile-tabs-item${selected ? ' is-active' : ''}`}
-                  onClick={() => handleMobileTabSelect(pillar.id)}
-                >
-                  {pillar.iconSrc ? (
-                    <img
-                      className="home-intl-ai-tab-icon"
-                      src={pillar.iconSrc}
-                      alt=""
-                      draggable={false}
-                      decoding="async"
-                    />
-                  ) : null}
-                  <span className="home-intl-ai-mobile-tabs-item-copy">
-                    <span className="home-intl-ai-mobile-tabs-item-name">{pillar.label}</span>
-                    {pillar.tagline ? (
-                      <span className="home-intl-ai-mobile-tabs-item-desc">{pillar.tagline}</span>
-                    ) : null}
-                  </span>
-                </button>
-              )
-            })}
-          </nav>
         </div>
 
         <div className="home-intl-ai-pillars-stack">

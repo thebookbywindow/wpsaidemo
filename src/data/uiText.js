@@ -1,6 +1,8 @@
 export const uiTextByLanguage = {
   en: {
     nav: {
+      wpsFeatures: 'WPS features',
+      freeAiTools: 'free AI tools',
       products: 'Products',
       templates: 'Templates',
       download: 'Download',
@@ -22,10 +24,10 @@ export const uiTextByLanguage = {
       // Hero: SEO lead + typewriter + tail (download lives in desc/CTA, not H1)
       heroTitleLead: 'Create smarter & faster ',
       heroTitleJoin: 'across',
-      heroTitleTail: 'With an AI-powered agentic free office',
+      heroTitleTail: 'With WPS AI — agentic AI for free office',
       heroTitlePrefix: 'Create smarter & faster across ',
       heroTitle:
-        'Create smarter & faster across Copilot, Docs, Slides, Sheets, PDF, Photos, AirPage, AirSheet, Forms, DBSheet With an AI-powered agentic free office',
+        'Create smarter & faster across Copilot, Docs, Slides, Sheets, PDF, Photos, AirPage, AirSheet, Forms, DBSheet With WPS AI — agentic AI for free office',
       heroDesc:
         'Meet WPS Office — a better way to work, all in one place. Collaborate in real time and stay in sync across PC, mobile, and online.',
       // Entity: brand relationship only (not a product list)
@@ -349,9 +351,8 @@ export const uiTextByLanguage = {
       trustBar: {
         brands: [
           'UNESCO',
-          'FICCI',
-          'AWS',
           'G2',
+          'AWS',
           'CNET',
           'Trustpilot',
           'TechRadar',
@@ -752,6 +753,8 @@ export const uiTextByLanguage = {
   },
   zh: {
     nav: {
+      wpsFeatures: 'WPS features',
+      freeAiTools: 'free AI tools',
       products: '产品',
       templates: '模板',
       download: '下载',
@@ -773,10 +776,10 @@ export const uiTextByLanguage = {
       // Hero: H1 讲价值，免费下载放 desc / CTA / seoTitle
       heroTitleLead: '更聪明、更高效地创作，',
       heroTitleJoin: '尽在',
-      heroTitleTail: ' — 搭配 Agentic AI 驱动的 free office',
+      heroTitleTail: ' — WPS AI 赋能免费 office',
       heroTitlePrefix: '更聪明、更高效地创作，尽在 ',
       heroTitle:
-        '更聪明、更高效地创作，尽在 Copilot, Docs, Slides, Sheets, PDF, Photos, AirPage, AirSheet, Forms, DBSheet — 搭配 Agentic AI 驱动的 free office',
+        '更聪明、更高效地创作，尽在 Copilot, Docs, Slides, Sheets, PDF, Photos, AirPage, AirSheet, Forms, DBSheet — WPS AI 赋能免费 office',
       heroDesc:
         '遇见 WPS Office —— 更好的工作方式，一站到位。实时协作，多端同步，PC、移动端与在线版随时衔接。',
       // Entity: 只讲品牌关系
@@ -1092,9 +1095,8 @@ export const uiTextByLanguage = {
       trustBar: {
         brands: [
           'UNESCO',
-          'FICCI',
-          'AWS',
           'G2',
+          'AWS',
           'CNET',
           'Trustpilot',
           'TechRadar',

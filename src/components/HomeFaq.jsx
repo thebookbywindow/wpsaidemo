@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { HOME_FAQ_TOPIC_IDS } from '../data/homeFaqTopics'
 import { renderFaqAnswer } from '../utils/renderFaqAnswer'
@@ -7,6 +7,7 @@ import { renderFaqAnswer } from '../utils/renderFaqAnswer'
  */
 export default function HomeFaq({ title, faqTopics = {} }) {
   const titleId = useId()
+  const navRef = useRef(null)
   const topics = HOME_FAQ_TOPIC_IDS.map((id) => ({ id, ...faqTopics[id] })).filter(
     (topic) => topic.label && topic.faqs?.length,
   )
@@ -18,6 +19,13 @@ export default function HomeFaq({ title, faqTopics = {} }) {
 
   useEffect(() => {
     setOpenIndex(0)
+  }, [activeTopicId])
+
+  useEffect(() => {
+    const nav = navRef.current
+    if (!nav) return
+    const activeTab = nav.querySelector('.home-faq-nav-item.is-active')
+    activeTab?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' })
   }, [activeTopicId])
 
   if (!topics.length || !activeTopic) return null
@@ -35,7 +43,8 @@ export default function HomeFaq({ title, faqTopics = {} }) {
         </h2>
 
         <div className="home-faq-layout mt-8">
-          <nav className="home-faq-nav" role="tablist" aria-label={title}>
+          <div className="home-faq-nav-wrap">
+            <nav className="home-faq-nav" role="tablist" aria-label={title} ref={navRef}>
             {topics.map((topic) => {
               const selected = topic.id === activeTopicId
               return (
@@ -52,7 +61,8 @@ export default function HomeFaq({ title, faqTopics = {} }) {
                 </button>
               )
             })}
-          </nav>
+            </nav>
+          </div>
 
           <div
             className="home-faq-panel"

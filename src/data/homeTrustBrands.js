@@ -4,9 +4,8 @@
 
 export const HOME_TRUST_BRANDS = [
   'UNESCO',
-  'FICCI',
-  'AWS',
   'G2',
+  'AWS',
   'CNET',
   'Trustpilot',
   'TechRadar',

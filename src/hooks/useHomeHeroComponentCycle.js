@@ -9,15 +9,13 @@ import {
   stepHeroTypewriter,
 } from '../data/homeHeroComponents'
 
-/** Per-letter delay so P → PD → PDF is clearly visible */
-const CHAR_MS = 70
-const HOLD_MS = 1600
-const GAP_MS = 140
+const HOLD_MS = 2200
+const GAP_MS = 80
 
 function resolveDelay(kind) {
   if (kind === 'hold') return HOLD_MS
   if (kind === 'gap') return GAP_MS
-  return CHAR_MS
+  return GAP_MS
 }
 
 function readPrefersReducedMotion() {
@@ -26,9 +24,7 @@ function readPrefersReducedMotion() {
 }
 
 /**
- * Letter-by-letter reveal: Docs / Slides / Sheets / PDF.
- * Typewriter always runs (Cursor / Electron often force prefers-reduced-motion).
- * Reduced-motion only softens CSS transitions via `prefersReducedMotion` flag.
+ * Rotates hero product labels — full word per item; pill width slides in CSS (Notion-style).
  */
 export function useHomeHeroComponentCycle({
   items = HOME_HERO_TYPEWRITER_COMPONENTS,
@@ -93,7 +89,7 @@ export function useHomeHeroComponentCycle({
       timerId = window.setTimeout(run, resolveDelay(next.delayMs))
     }
 
-    timerId = window.setTimeout(run, CHAR_MS)
+    run()
 
     return () => {
       cancelled = true
@@ -105,9 +101,9 @@ export function useHomeHeroComponentCycle({
     active,
     index,
     phase,
-    typedName,
+    typedName: fullName,
     visibleCount,
-    showIcon: shouldShowHeroIcon(visibleCount),
+    showIcon: Boolean(active),
     measureText,
     prefersReducedMotion,
     items,

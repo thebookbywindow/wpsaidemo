@@ -72,27 +72,33 @@ assert(
   HOME_HERO_TYPEWRITER_COMPONENTS[0].id === 'docs',
 )
 
-// Letter reveal — icon is slot 1, text follows
+// Letter reveal — icon slot then full label (no per-letter typing)
 assert('icon slot only', getTypedHeroLabel('Writer', 1) === '' && shouldShowHeroIcon(1))
-assert('icon + first letter', getTypedHeroLabel('Writer', 2) === 'W' && shouldShowHeroIcon(2))
-assert('icon + full word', getTypedHeroLabel('Writer', 7) === 'Writer')
+assert(
+  'icon + text slots show full word',
+  getTypedHeroLabel('Writer', 2) === 'Writer' && shouldShowHeroIcon(2),
+)
+assert('full word', getTypedHeroLabel('Writer', 7) === 'Writer')
 assert('type overflow clamps', getTypedHeroLabel('PDF', 99) === 'PDF')
 assert('type empty / negative', getTypedHeroLabel('Writer', 0) === '' && !shouldShowHeroIcon(0))
 assert('slot count includes icon', getHeroTypewriterSlotCount('PDF') === 4)
 assert('clamp NaN → 0', clampVisibleCharCount(Number.NaN, 5) === 0)
 
-// Typewriter state machine — normal typing path (6 letters + 1 icon slot)
+// Typewriter state machine — instant full reveal
 {
   let state = { phase: 'typing', visibleCount: 0, index: 0, textLength: 7, itemCount: 4 }
   state = { ...state, ...stepHeroTypewriter(state) }
-  assert('typing reveals icon slot first', state.phase === 'typing' && state.visibleCount === 1 && state.delayMs === 'char')
+  assert(
+    'typing → hold with full label',
+    state.phase === 'hold' && state.visibleCount === 7 && state.delayMs === 'hold',
+  )
 
   state = { phase: 'typing', visibleCount: 7, index: 0, textLength: 7, itemCount: 4 }
   const held = stepHeroTypewriter(state)
   assert('typing complete → hold', held.phase === 'hold' && held.delayMs === 'hold')
 }
 
-// Hold → next word typing (icon → P → PD → PDF is one round)
+// Hold → next word typing from empty
 {
   const pdfIndex = HOME_HERO_TYPEWRITER_NAMES.indexOf('PDF')
   const state = stepHeroTypewriter({
@@ -112,19 +118,20 @@ assert('clamp NaN → 0', clampVisibleCharCount(Number.NaN, 5) === 0)
   )
 }
 
-// Progressive reveal sequence for PDF (icon + letters)
+// Full reveal in one step for PDF
 {
-  const frames = []
-  const icons = []
-  let state = { phase: 'typing', visibleCount: 0, index: 3, textLength: 4, itemCount: 4 }
-  for (let i = 0; i < 4; i += 1) {
-    state = { ...state, ...stepHeroTypewriter(state) }
-    frames.push(getTypedHeroLabel('PDF', state.visibleCount))
-    icons.push(shouldShowHeroIcon(state.visibleCount))
-  }
+  const state = stepHeroTypewriter({
+    phase: 'typing',
+    visibleCount: 0,
+    index: 3,
+    textLength: 4,
+    itemCount: 4,
+  })
   assert(
-    'PDF types icon → P → PD → PDF',
-    frames.join('|') === '|P|PD|PDF' && icons.join('|') === 'true|true|true|true',
+    'PDF reveals full label in one step',
+    state.phase === 'hold' &&
+      state.visibleCount === 4 &&
+      getTypedHeroLabel('PDF', state.visibleCount) === 'PDF',
   )
 }
 

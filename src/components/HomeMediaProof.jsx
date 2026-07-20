@@ -1,6 +1,16 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { ChevronLeft, ChevronRight, Play, X } from 'lucide-react'
 import { HOME_MEDIA_PROOF_TABS } from '../data/homeMediaProof'
+
+function resolveMediaItemHref(item) {
+  if (item.href) {
+    return item.href
+  }
+  if (item.youtubeId) {
+    return `https://www.youtube.com/watch?v=${item.youtubeId}`
+  }
+  return null
+}
 
 function StarRow({ rating = 0 }) {
   const stars = Array.from({ length: 5 }, (_, index) => {
@@ -19,6 +29,44 @@ function StarRow({ rating = 0 }) {
   )
 }
 
+function MediaCardContent({ item }) {
+  const isVideo = Boolean(item.youtubeId)
+
+  return (
+    <>
+      <div className="home-media-card-thumb">
+        <img
+          src={item.thumb}
+          alt=""
+          className="home-media-card-thumb-img"
+          loading="lazy"
+          decoding="async"
+          width={320}
+          height={180}
+        />
+        {isVideo ? (
+          <>
+            <span className="home-media-card-play" aria-hidden="true">
+              <Play size={22} fill="currentColor" />
+            </span>
+            {item.duration ? (
+              <span className="home-media-card-duration">{item.duration}</span>
+            ) : null}
+          </>
+        ) : null}
+      </div>
+
+      <div className="home-media-card-body">
+        {typeof item.rating === 'number' ? <StarRow rating={item.rating} /> : null}
+        <p className="home-media-card-quote">
+          {item.quote.startsWith('"') ? item.quote : `"${item.quote}"`}
+        </p>
+        <span className="home-media-card-author">{item.author}</span>
+      </div>
+    </>
+  )
+}
+
 /**
  * Social-proof media strip — capsule tabs above review grid.
  */
@@ -27,11 +75,52 @@ export default function HomeMediaProof({ title, tabsCopy }) {
   const scrollerRef = useRef(null)
   const [activeTab, setActiveTab] = useState(HOME_MEDIA_PROOF_TABS[0]?.id ?? 'kol')
   const [activeVideo, setActiveVideo] = useState(null)
+  const [sliderOverflow, setSliderOverflow] = useState(false)
 
   const tabMeta =
     HOME_MEDIA_PROOF_TABS.find((tab) => tab.id === activeTab) ?? HOME_MEDIA_PROOF_TABS[0]
   const items = tabMeta?.items ?? []
   const activeTabDesc = tabsCopy?.[activeTab]?.desc ?? tabsCopy?.[tabMeta?.id]?.desc
+
+  const updateSliderOverflow = useCallback(() => {
+    const scroller = scrollerRef.current
+    if (!scroller) {
+      setSliderOverflow(false)
+      return
+    }
+    setSliderOverflow(scroller.scrollWidth - scroller.clientWidth > 1)
+  }, [])
+
+  useLayoutEffect(() => {
+    updateSliderOverflow()
+  }, [activeTab, items, updateSliderOverflow])
+
+  useEffect(() => {
+    const scroller = scrollerRef.current
+    if (!scroller) return undefined
+
+    const resizeObserver = new ResizeObserver(() => updateSliderOverflow())
+    resizeObserver.observe(scroller)
+
+    const mutationObserver = new MutationObserver(() => updateSliderOverflow())
+    mutationObserver.observe(scroller, { childList: true, subtree: true })
+
+    const onWindowResize = () => updateSliderOverflow()
+    window.addEventListener('resize', onWindowResize)
+
+    const images = scroller.querySelectorAll('img')
+    images.forEach((img) => {
+      if (!img.complete) {
+        img.addEventListener('load', updateSliderOverflow, { once: true })
+      }
+    })
+
+    return () => {
+      resizeObserver.disconnect()
+      mutationObserver.disconnect()
+      window.removeEventListener('resize', onWindowResize)
+    }
+  }, [activeTab, items, updateSliderOverflow])
 
   useEffect(() => {
     const scroller = scrollerRef.current
@@ -110,86 +199,77 @@ export default function HomeMediaProof({ title, tabsCopy }) {
               </div>
 
               <div className="home-media-slider-row">
-                <button
-                  type="button"
-                  className="home-media-slider-nav is-prev"
-                  aria-label="Previous"
-                  onClick={() => scrollByPage(-1)}
-                >
-                  <ChevronLeft size={20} />
-                </button>
+                {sliderOverflow ? (
+                  <button
+                    type="button"
+                    className="home-media-slider-nav is-prev"
+                    aria-label="Previous"
+                    onClick={() => scrollByPage(-1)}
+                  >
+                    <ChevronLeft size={20} />
+                  </button>
+                ) : null}
 
                 <div
                   ref={scrollerRef}
-                  className="home-media-grid"
+                  className={`home-media-grid${sliderOverflow ? '' : ' is-fits-viewport'}`}
                   role="tabpanel"
-                  tabIndex={0}
+                  tabIndex={sliderOverflow ? 0 : -1}
                 >
-                {items.map((item) => {
-                  const isVideo = Boolean(item.youtubeId)
-                  const thumbInner = (
-                    <>
-                      <img
-                        src={item.thumb}
-                        alt={item.author}
-                        className="home-media-card-thumb-img"
-                        loading="lazy"
-                        decoding="async"
-                        width={320}
-                        height={180}
-                      />
-                      {isVideo ? (
-                        <>
-                          <span className="home-media-card-play" aria-hidden="true">
-                            <Play size={22} fill="currentColor" />
-                          </span>
-                          {item.duration ? (
-                            <span className="home-media-card-duration">
-                              {item.duration}
-                            </span>
-                          ) : null}
-                        </>
-                      ) : null}
-                    </>
-                  )
+                  {items.map((item) => {
+                    const href = resolveMediaItemHref(item)
+                    const isVideo = Boolean(item.youtubeId)
+                    const linkLabel = isVideo
+                      ? `Play video by ${item.author}`
+                      : `Read review from ${item.author}`
 
-                  return (
-                    <article key={item.id} className="home-media-card">
-                      {isVideo ? (
+                    if (isVideo) {
+                      return (
                         <button
+                          key={item.id}
                           type="button"
-                          className="home-media-card-thumb"
+                          className="home-media-card home-media-card--interactive"
                           onClick={() => setActiveVideo(item)}
-                          aria-label={`Play video by ${item.author}`}
+                          aria-label={linkLabel}
                         >
-                          {thumbInner}
+                          <MediaCardContent item={item} />
                         </button>
-                      ) : (
-                        <div className="home-media-card-thumb">{thumbInner}</div>
-                      )}
+                      )
+                    }
 
-                      <div className="home-media-card-body">
-                        {typeof item.rating === 'number' ? (
-                          <StarRow rating={item.rating} />
-                        ) : null}
-                        <p className="home-media-card-quote">
-                          {item.quote.startsWith('"') ? item.quote : `"${item.quote}"`}
-                        </p>
-                        <span className="home-media-card-author">{item.author}</span>
-                      </div>
-                    </article>
-                  )
-                })}
-              </div>
+                    if (href) {
+                      return (
+                        <a
+                          key={item.id}
+                          className="home-media-card home-media-card--interactive"
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={linkLabel}
+                        >
+                          <MediaCardContent item={item} />
+                        </a>
+                      )
+                    }
 
-              <button
-                type="button"
-                className="home-media-slider-nav is-next"
-                aria-label="Next"
-                onClick={() => scrollByPage(1)}
-              >
-                <ChevronRight size={20} />
-              </button>
+                    return (
+                      <article key={item.id} className="home-media-card">
+                        <MediaCardContent item={item} />
+                      </article>
+                    )
+                  })}
+                </div>
+
+                {sliderOverflow ? (
+                  <button
+                    type="button"
+                    className="home-media-slider-nav is-next"
+                    aria-label="Next"
+                    onClick={() => scrollByPage(1)}
+                  >
+                    <ChevronRight size={20} />
+                  </button>
+                ) : null}
               </div>
             </div>
           </div>

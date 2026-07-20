@@ -53,7 +53,7 @@ assert(
 assert('css disables pin under 720px', css.includes('@media (max-width: 720px)') && css.includes('.home-trust-dock.is-pinned'))
 
 assert('no Microsoft', !HOME_TRUST_BRANDS.includes('Microsoft'))
-assert('eight brand names', HOME_TRUST_BRANDS.length === 8)
+assert('seven brand names', HOME_TRUST_BRANDS.length === 7)
 
 const failed = cases.filter((c) => !c.ok)
 for (const c of cases) {
