@@ -1,4 +1,5 @@
 import { DOC_DETAIL_TOC_SECTIONS_EN, DOC_DETAIL_TOC_SECTIONS_ZH } from '../data/docDetailTocData'
+import { DOCS_CENTER_CATALOG_COMPACT_MEDIA_QUERY } from '../constants/docsCenterLayout'
 
 export const STRUCTURED_DOC_ROUTE_SLUGS = new Set([
   'wps-writer',
@@ -319,7 +320,7 @@ export function scrollToDocDetailSection(sectionId, attempt = 0) {
 export function scrollDocDetailPanelToTop(attempt = 0) {
   const panel = document.querySelector('.docs-detail-article-panel')
   const isMobileDrawerLayout = Boolean(
-    window.matchMedia('(max-width: 980px)').matches
+    window.matchMedia(DOCS_CENTER_CATALOG_COMPACT_MEDIA_QUERY).matches
     && document.querySelector('.docs-center-overlay-main--mobile-drawers'),
   )
 

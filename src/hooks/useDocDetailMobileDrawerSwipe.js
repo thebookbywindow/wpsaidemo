@@ -16,12 +16,13 @@ function isSwipeIgnoredTarget(target) {
   )
 }
 
+/** 移动端：右滑打开左侧目录，左滑关闭 */
 export function useDocDetailMobileDrawerSwipe({
   enabled = false,
   isMobile = false,
-  rightOpen = false,
-  showRight = true,
-  openRight,
+  leftOpen = false,
+  showLeft = true,
+  openLeft,
   closeAll,
 }) {
   const touchStartRef = useRef(null)
@@ -76,15 +77,17 @@ export function useDocDetailMobileDrawerSwipe({
         return
       }
 
-      if (deltaX > 0) {
-        if (rightOpen) {
+      // 左滑：关闭已打开的目录
+      if (deltaX < 0) {
+        if (leftOpen) {
           closeAll()
         }
         return
       }
 
-      if (!rightOpen && showRight) {
-        openRight()
+      // 右滑：打开左侧目录
+      if (!leftOpen && showLeft) {
+        openLeft()
       }
     }
 
@@ -99,8 +102,8 @@ export function useDocDetailMobileDrawerSwipe({
     closeAll,
     enabled,
     isMobile,
-    openRight,
-    rightOpen,
-    showRight,
+    leftOpen,
+    openLeft,
+    showLeft,
   ])
 }

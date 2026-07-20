@@ -364,23 +364,27 @@ export default function DocDetailOverlayMain({
   })
 
   const {
-    isMobile,
+    isTocCompact,
+    isCatalogCompact,
     leftOpen,
     rightOpen,
     toggleLeft,
     toggleRight,
-    openRight,
+    openLeft,
     closeAll,
   } = useDocDetailMobileDrawers()
 
   const showDetailTocSidebar = usesStructuredSections && showDetailContent
+  // leftOpen = 功能目录抽屉（Catalog 收敛档）；rightOpen = 平台/章节弹层（TOC 收敛档）
+  const catalogDrawerOpen = leftOpen
+  const platformPopoverOpen = rightOpen
 
   useDocDetailMobileDrawerSwipe({
     enabled: usesStructuredSections,
-    isMobile,
-    rightOpen,
-    showRight: true,
-    openRight,
+    isMobile: isCatalogCompact,
+    leftOpen: catalogDrawerOpen,
+    showLeft: true,
+    openLeft,
     closeAll,
   })
 
@@ -430,12 +434,12 @@ export default function DocDetailOverlayMain({
   return (
     <div
       className={`docs-center-overlay-main${
-        isMobile ? ' docs-center-overlay-main--mobile-drawers' : ''
-      }${rightOpen ? ' has-mobile-drawer-open' : ''}${
-        leftOpen ? ' has-platform-popover-open' : ''
-      }`}
+        isTocCompact ? ' docs-center-overlay-main--toc-compact' : ''
+      }${isCatalogCompact ? ' docs-center-overlay-main--mobile-drawers' : ''}${
+        catalogDrawerOpen ? ' has-mobile-drawer-open' : ''
+      }${platformPopoverOpen ? ' has-platform-popover-open' : ''}`}
     >
-      {isMobile && rightOpen ? (
+      {isCatalogCompact && catalogDrawerOpen ? (
         <button
           type="button"
           className="docs-detail-mobile-drawer-backdrop"
@@ -444,9 +448,9 @@ export default function DocDetailOverlayMain({
         />
       ) : null}
       <DocDetailMobileDrawer
-        side="right"
-        isOpen={rightOpen}
-        isMobile={isMobile}
+        side="left"
+        isOpen={catalogDrawerOpen}
+        isMobile={isCatalogCompact}
         onClose={closeAll}
         panelLabel={catalogDirectoryTitle || leftDrawerLabel}
         showPanelHead={false}
@@ -461,9 +465,9 @@ export default function DocDetailOverlayMain({
           searchEmptyText={catalogSearchEmptyText}
           limitToActiveSection
           onSectionNavigate={handleCatalogSectionNavigate}
-          onDrawerClose={isMobile ? closeAll : undefined}
-          drawerCloseLabel={isMobile ? leftDrawerCloseLabel : ''}
-          drawerCloseSide="right"
+          onDrawerClose={isCatalogCompact ? closeAll : undefined}
+          drawerCloseLabel={isCatalogCompact ? leftDrawerCloseLabel : ''}
+          drawerCloseSide="left"
           onLeafClick={handleCatalogLeafClick}
         />
       </DocDetailMobileDrawer>
@@ -481,13 +485,13 @@ export default function DocDetailOverlayMain({
               ariaLabel={articleBreadcrumbAriaLabel}
               leadingAction={null}
               trailingAction={
-                isMobile && showDetailTocSidebar ? (
+                isTocCompact && showDetailTocSidebar ? (
                   <DocDetailMobilePlatformPopover
                     label={rightDrawerLabel}
                     hint={rightDrawerHint}
                     icon={rightDrawerIcon}
-                    isOpen={leftOpen}
-                    onToggle={toggleLeft}
+                    isOpen={platformPopoverOpen}
+                    onToggle={toggleRight}
                     onClose={closeAll}
                     sidebarTitle={docTitle || sidebarTitle}
                     isZhContent={isZhContent}
@@ -507,7 +511,7 @@ export default function DocDetailOverlayMain({
           ) : null}
           <div
             className={`docs-detail-article-layout${
-              showDetailTocSidebar ? ' docs-detail-article-layout--with-toc' : ''
+              showDetailTocSidebar && !isTocCompact ? ' docs-detail-article-layout--with-toc' : ''
             }`}
           >
             <div className="docs-detail-article-content">
@@ -547,7 +551,7 @@ export default function DocDetailOverlayMain({
                 <div dangerouslySetInnerHTML={{ __html: docHtml }} />
               )}
             </div>
-            {showDetailTocSidebar && !isMobile ? (
+            {showDetailTocSidebar && !isTocCompact ? (
               <DocDetailTocPanel
                 sidebarTitle={docTitle || sidebarTitle}
                 isZhContent={isZhContent}
@@ -568,14 +572,14 @@ export default function DocDetailOverlayMain({
       </div>
 
       <div className="docs-center-float-actions docs-detail-float-actions">
-        {isMobile ? (
+        {isCatalogCompact ? (
           <button
             type="button"
-            className={`docs-center-float-catalog-btn${rightOpen ? ' is-active' : ''}`}
+            className={`docs-center-float-catalog-btn${catalogDrawerOpen ? ' is-active' : ''}`}
             aria-label={`${leftDrawerHint}: ${leftDrawerLabel}`}
-            aria-expanded={rightOpen}
+            aria-expanded={catalogDrawerOpen}
             title={`${leftDrawerHint}: ${leftDrawerLabel}`}
-            onClick={toggleRight}
+            onClick={toggleLeft}
           >
             <ListTree size={20} strokeWidth={2.2} aria-hidden="true" />
           </button>

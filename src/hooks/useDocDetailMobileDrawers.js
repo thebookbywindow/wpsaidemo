@@ -1,28 +1,51 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
+import {
+  DOCS_CENTER_CATALOG_COMPACT_MEDIA_QUERY,
+  DOCS_CENTER_TOC_COMPACT_MEDIA_QUERY,
+} from '../constants/docsCenterLayout'
 
-const MOBILE_DRAWER_MEDIA_QUERY = '(max-width: 980px)'
+function createMatchMediaStore(query) {
+  const subscribe = (onStoreChange) => {
+    const mediaQuery = window.matchMedia(query)
+    mediaQuery.addEventListener('change', onStoreChange)
+    return () => mediaQuery.removeEventListener('change', onStoreChange)
+  }
+  const getSnapshot = () => window.matchMedia(query).matches
+  const getServerSnapshot = () => false
+  return { subscribe, getSnapshot, getServerSnapshot }
+}
+
+const tocCompactStore = createMatchMediaStore(DOCS_CENTER_TOC_COMPACT_MEDIA_QUERY)
+const catalogCompactStore = createMatchMediaStore(DOCS_CENTER_CATALOG_COMPACT_MEDIA_QUERY)
 
 export function useDocDetailMobileDrawers() {
+  const isTocCompact = useSyncExternalStore(
+    tocCompactStore.subscribe,
+    tocCompactStore.getSnapshot,
+    tocCompactStore.getServerSnapshot,
+  )
+  const isCatalogCompact = useSyncExternalStore(
+    catalogCompactStore.subscribe,
+    catalogCompactStore.getSnapshot,
+    catalogCompactStore.getServerSnapshot,
+  )
+  /** 列表页/旧调用：两侧都收拢时的「全移动端」 */
+  const isMobile = isCatalogCompact
+
   const [leftOpen, setLeftOpen] = useState(false)
   const [rightOpen, setRightOpen] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia(MOBILE_DRAWER_MEDIA_QUERY)
-
-    const syncMobileState = () => {
-      const matches = mediaQuery.matches
-      setIsMobile(matches)
-      if (!matches) {
-        setLeftOpen(false)
-        setRightOpen(false)
-      }
+    if (!isCatalogCompact) {
+      setLeftOpen(false)
     }
+  }, [isCatalogCompact])
 
-    syncMobileState()
-    mediaQuery.addEventListener('change', syncMobileState)
-    return () => mediaQuery.removeEventListener('change', syncMobileState)
-  }, [])
+  useEffect(() => {
+    if (!isTocCompact) {
+      setRightOpen(false)
+    }
+  }, [isTocCompact])
 
   const closeAll = useCallback(() => {
     setLeftOpen(false)
@@ -50,6 +73,8 @@ export function useDocDetailMobileDrawers() {
   }, [])
 
   return {
+    isTocCompact,
+    isCatalogCompact,
     isMobile,
     leftOpen,
     rightOpen,

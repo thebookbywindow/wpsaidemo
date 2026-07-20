@@ -25,6 +25,9 @@ import {
   resolveContentLanguage,
 } from './data/siteLocaleData'
 import { translateOfflinePhrase } from './data/offlinePhraseTranslations'
+import {
+  resolveWpsFeaturesHeaderMegaMenu,
+} from './data/wpsFeaturesHeaderMegaMenu.js'
 import { uiTextByLanguage } from './data/uiText'
 import { resolveWorldwideText } from './data/worldwideText'
 import { getLocaleDocsPath } from './utils/docsRoute'
@@ -2005,6 +2008,7 @@ function localizeNestedStrings(value, localizeString) {
 function App() {
   const [isLangOpen, setIsLangOpen] = useState(false)
   const [isProductsMenuOpen, setIsProductsMenuOpen] = useState(false)
+  const [isWpsFeaturesMenuOpen, setIsWpsFeaturesMenuOpen] = useState(false)
   const [isTemplatesMenuOpen, setIsTemplatesMenuOpen] = useState(false)
   const [isResourcesMenuOpen, setIsResourcesMenuOpen] = useState(false)
   const [isOverflowMenuOpen, setIsOverflowMenuOpen] = useState(false)
@@ -2036,6 +2040,7 @@ function App() {
   const desktopNavMeasureRef = useRef(null)
   const desktopMenuCloseTimeoutRef = useRef({
     products: 0,
+    'wps-features': 0,
     templates: 0,
     resources: 0,
     overflow: 0,
@@ -2055,6 +2060,10 @@ function App() {
       setIsProductsMenuOpen(false)
       return
     }
+    if (menuKey === 'wps-features') {
+      setIsWpsFeaturesMenuOpen(false)
+      return
+    }
     if (menuKey === 'templates') {
       setIsTemplatesMenuOpen(false)
       return
@@ -2069,10 +2078,12 @@ function App() {
   const openDesktopMenu = useCallback(
     (menuKey) => {
       clearDesktopMenuCloseTimeout('products')
+      clearDesktopMenuCloseTimeout('wps-features')
       clearDesktopMenuCloseTimeout('templates')
       clearDesktopMenuCloseTimeout('resources')
       clearDesktopMenuCloseTimeout('overflow')
       setIsProductsMenuOpen(menuKey === 'products')
+      setIsWpsFeaturesMenuOpen(menuKey === 'wps-features')
       setIsTemplatesMenuOpen(menuKey === 'templates')
       setIsResourcesMenuOpen(menuKey === 'resources')
       setIsOverflowMenuOpen(menuKey === 'overflow')
@@ -2178,6 +2189,10 @@ function App() {
   const uiText = useMemo(
     () => (isZhCnContent ? uiTextBase : localizeNestedStrings(uiTextBase, localizeString)),
     [isZhCnContent, localizeString, uiTextBase],
+  )
+  const wpsFeaturesHeaderMegaMenu = useMemo(
+    () => resolveWpsFeaturesHeaderMegaMenu(uiText.nav.wpsFeaturesMega),
+    [uiText.nav.wpsFeaturesMega],
   )
   const worldwideText = useMemo(() => resolveWorldwideText(contentLanguage), [contentLanguage])
 
@@ -2916,6 +2931,7 @@ function App() {
     setCurrentLocale(resolveLocaleFromPath(canonicalPathname))
     setIsLangOpen(false)
     setIsProductsMenuOpen(false)
+    setIsWpsFeaturesMenuOpen(false)
     setIsTemplatesMenuOpen(false)
     setIsResourcesMenuOpen(false)
     setIsOverflowMenuOpen(false)
@@ -2937,6 +2953,7 @@ function App() {
       }
       setIsLangOpen(false)
       setIsProductsMenuOpen(false)
+      setIsWpsFeaturesMenuOpen(false)
       setIsTemplatesMenuOpen(false)
       setIsResourcesMenuOpen(false)
       setIsOverflowMenuOpen(false)
@@ -2951,6 +2968,7 @@ function App() {
     setCurrentLocale(resolveLocaleFromPath(canonicalPathname))
     setIsLangOpen(false)
     setIsProductsMenuOpen(false)
+    setIsWpsFeaturesMenuOpen(false)
     setIsTemplatesMenuOpen(false)
     setIsResourcesMenuOpen(false)
     setIsOverflowMenuOpen(false)
@@ -3093,7 +3111,7 @@ function App() {
     () => [
       {
         key: 'wps-features',
-        type: 'link',
+        type: 'wps-features',
         label: uiText.nav.wpsFeatures,
         path: localeAiFeaturesPath,
         isCurrent: pageType === 'ai-features',
@@ -3445,6 +3463,171 @@ function App() {
     (item) => activeGuideCategory === 'all' || item.category === activeGuideCategory,
   )
   const renderDesktopMainNavItem = (item) => {
+    if (item.type === 'wps-features') {
+      return (
+        <div
+          key={item.key}
+          className="relative flex h-full shrink-0 items-center"
+          onMouseEnter={() => openDesktopMenu('wps-features')}
+          onMouseLeave={() => scheduleDesktopMenuClose('wps-features')}
+        >
+          <a
+            className={`home-page-header-link flex h-full items-center whitespace-nowrap border-x border-transparent px-[14px] text-[14px] font-medium transition ${
+              item.isCurrent
+                ? 'home-page-header-link--active'
+                : isWpsFeaturesMenuOpen
+                  ? 'home-page-header-link--open'
+                  : 'home-page-header-link--idle'
+            }`}
+            href={item.path}
+            onClick={(event) => {
+              event.preventDefault()
+              navigateTo(item.path)
+            }}
+          >
+            {item.label}
+            <span
+              className={`ml-1 inline-flex h-4 w-4 items-center justify-center transition ${
+                isWpsFeaturesMenuOpen ? 'rotate-180' : ''
+              }`}
+              aria-hidden="true"
+            >
+              <svg
+                className="h-[10px] w-[10px]"
+                viewBox="0 0 10 10"
+                fill="none"
+              >
+                <path
+                  d="M1.5 3.25L5 6.75L8.5 3.25"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+          </a>
+
+          {isWpsFeaturesMenuOpen && (
+            <div
+              className="fixed inset-x-0 top-[59px] z-[100] home-nav-mega-panel"
+              onMouseEnter={() => openDesktopMenu('wps-features')}
+              onMouseLeave={() => scheduleDesktopMenuClose('wps-features')}
+            >
+              <div className="mx-auto w-full max-w-[1200px]">
+                <div className="home-nav-wps-features-mega home-nav-mega-grid grid w-full">
+                  <section className="home-nav-wps-features-mega-column home-nav-mega-card min-w-0">
+                    <div className="flex items-center gap-2.5">
+                      <span
+                        className="home-nav-wps-features-ai-badge inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-[6px] text-[11px] font-bold text-white"
+                        aria-hidden="true"
+                      >
+                        AI
+                      </span>
+                      <h3 className="text-[16px] font-semibold leading-tight text-[#261f38]">
+                        {wpsFeaturesHeaderMegaMenu.aiFeatures.title}
+                      </h3>
+                    </div>
+                    <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-0">
+                      {wpsFeaturesHeaderMegaMenu.aiFeatures.linkColumns.map((column, columnIndex) => (
+                        <div
+                          key={`wps-features-ai-col-${columnIndex}`}
+                          className="flex min-w-0 flex-col gap-0.5"
+                        >
+                          {column.map((linkItem) => (
+                            <a
+                              key={linkItem.id}
+                              href={linkItem.url}
+                              className="home-nav-mega-link truncate text-[13px]"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={() => setIsWpsFeaturesMenuOpen(false)}
+                            >
+                              {linkItem.label}
+                            </a>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+
+                  <section className="home-nav-wps-features-mega-column home-nav-mega-card min-w-0">
+                    <div className="flex items-center gap-2.5">
+                      <span
+                        className="home-nav-wps-features-suite-icon inline-flex h-7 w-7 shrink-0 items-center justify-center"
+                        aria-hidden="true"
+                      >
+                        <img src="/icons/wps/docs.svg" alt="" className="h-5 w-5" />
+                      </span>
+                      <h3 className="text-[16px] font-semibold leading-tight text-[#261f38]">
+                        {wpsFeaturesHeaderMegaMenu.officeFeatures.title}
+                      </h3>
+                    </div>
+                    <div className="mt-4 flex flex-col gap-0.5">
+                      {wpsFeaturesHeaderMegaMenu.officeFeatures.items.map((linkItem) => (
+                        <a
+                          key={linkItem.id}
+                          href={linkItem.url}
+                          className="home-nav-mega-link truncate text-[13px]"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => setIsWpsFeaturesMenuOpen(false)}
+                        >
+                          {linkItem.label}
+                        </a>
+                      ))}
+                    </div>
+                  </section>
+
+                  <section className="home-nav-wps-features-mega-column home-nav-mega-card min-w-0">
+                    <div className="flex items-center gap-2.5">
+                      <span
+                        className="home-nav-wps-features-audience-icon inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-[6px] bg-[#f3edff] text-[#8f5bff]"
+                        aria-hidden="true"
+                      >
+                        <svg className="h-4 w-4" viewBox="0 0 16 16" fill="currentColor">
+                          <path d="M8 8a2.667 2.667 0 1 0 0-5.333A2.667 2.667 0 0 0 8 8Zm0 1.333c-2.667 0-5.333 1.333-5.333 3.334V14h10.666v-1.333c0-2.001-2.666-3.334-5.333-3.334Z" />
+                        </svg>
+                      </span>
+                      <h3 className="text-[16px] font-semibold leading-tight text-[#261f38]">
+                        {wpsFeaturesHeaderMegaMenu.audienceFeatures.title}
+                      </h3>
+                    </div>
+                    <div className="mt-4 flex flex-col gap-0.5">
+                      {wpsFeaturesHeaderMegaMenu.audienceFeatures.items.map((linkItem) => (
+                        <a
+                          key={linkItem.id}
+                          href={linkItem.url}
+                          className="home-nav-mega-link truncate text-[13px]"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => setIsWpsFeaturesMenuOpen(false)}
+                        >
+                          {linkItem.label}
+                        </a>
+                      ))}
+                    </div>
+                  </section>
+                </div>
+                <div className="flex justify-end px-[18px] pb-4">
+                  <a
+                    href={item.path}
+                    className="home-nav-mega-cta inline-flex text-[12.5px] font-semibold"
+                    onClick={(event) => {
+                      event.preventDefault()
+                      navigateTo(item.path)
+                    }}
+                  >
+                    {uiText.nav.seeAllFeatures}
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )
+    }
+
     if (item.type === 'products') {
       return (
         <div
@@ -3765,7 +3948,8 @@ function App() {
     )
   }
 
-  const isDesktopMegaMenuOpen = isProductsMenuOpen || isTemplatesMenuOpen
+  const isDesktopMegaMenuOpen =
+    isProductsMenuOpen || isWpsFeaturesMenuOpen || isTemplatesMenuOpen
 
   return (
     <div className="home-figma-page min-h-screen overflow-x-clip text-[#1a202c]">
