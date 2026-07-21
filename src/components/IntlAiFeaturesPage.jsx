@@ -1,16 +1,10 @@
-import { useEffect } from 'react'
+import { useMemo } from 'react'
 import { useHomeIntlAiFeatures } from '../hooks/useHomeIntlAiFeatures'
 import { useHomeIntlAiGroupTabs } from '../hooks/useHomeIntlAiGroupTabs'
+import { useHomeIntlAiStickyAnchorTabs } from '../hooks/useHomeIntlAiStickyAnchorTabs'
 import { useIntlAiFeaturesPageSeo } from '../hooks/useIntlAiFeaturesPageSeo'
 
-const INTL_AI_GROUP_HASH_PREFIX = '#intl-ai-group-'
-
-function readIntlAiGroupHash() {
-  if (typeof window === 'undefined') return ''
-  const hash = window.location.hash
-  if (!hash.startsWith(INTL_AI_GROUP_HASH_PREFIX)) return ''
-  return hash.slice(INTL_AI_GROUP_HASH_PREFIX.length)
-}
+const INTL_AI_GROUP_ID_PREFIX = 'intl-ai-group-'
 
 function IntlAiFeatureLink({ item }) {
   return (
@@ -30,10 +24,9 @@ function IntlAiFeatureGroup({ group, isFirst }) {
 
   return (
     <article
-      id={`intl-ai-group-${group.id}`}
-      className={`intl-ai-dir-group scroll-mt-[calc(var(--nav-height)+120px)]${
-        isFirst ? '' : ' is-divided'
-      }`}
+      id={`${INTL_AI_GROUP_ID_PREFIX}${group.id}`}
+      data-pillar-id={group.id}
+      className={`intl-ai-dir-group${isFirst ? '' : ' is-divided'}`}
     >
       <h2 className="intl-ai-dir-group-title">
         {group.iconSrc ? (
@@ -62,37 +55,19 @@ function IntlAiFeatureGroup({ group, isFirst }) {
 export default function IntlAiFeaturesPage({ copy }) {
   const { groups, tabLabels } = useHomeIntlAiFeatures(copy)
   const { tabs, activeId, setActiveId } = useHomeIntlAiGroupTabs(groups, tabLabels)
+  const pillarIds = useMemo(() => groups.map((group) => group.id), [groups])
+  const { tabsDockRef, scrollToPillar } = useHomeIntlAiStickyAnchorTabs({
+    pillarIds,
+    activeId,
+    setActiveId,
+    blockIdPrefix: INTL_AI_GROUP_ID_PREFIX,
+  })
 
   useIntlAiFeaturesPageSeo({
     enabled: true,
     title: copy?.seoTitle ?? copy?.pageTitle ?? 'WPS AI Features',
     description: copy?.seoDescription ?? copy?.pageDesc ?? '',
   })
-
-  const jumpToGroup = (groupId, { behavior = 'smooth' } = {}) => {
-    if (!groupId) return
-    setActiveId(groupId)
-    window.requestAnimationFrame(() => {
-      document.getElementById(`intl-ai-group-${groupId}`)?.scrollIntoView({
-        behavior,
-        block: 'start',
-      })
-    })
-  }
-
-  useEffect(() => {
-    if (!groups.length) return undefined
-
-    const syncHash = () => {
-      const groupId = readIntlAiGroupHash()
-      if (!groupId || !groups.some((group) => group.id === groupId)) return
-      jumpToGroup(groupId, { behavior: 'auto' })
-    }
-
-    syncHash()
-    window.addEventListener('hashchange', syncHash)
-    return () => window.removeEventListener('hashchange', syncHash)
-  }, [groups])
 
   if (!groups.length) return null
 
@@ -113,7 +88,7 @@ export default function IntlAiFeaturesPage({ copy }) {
         aria-label={copy?.pageTitle ?? 'WPS AI features'}
       >
         <div className="mx-auto w-full max-w-[1160px]">
-          <div className="home-intl-ai-tabs-dock intl-ai-dir-tabs-dock">
+          <div ref={tabsDockRef} className="home-intl-ai-tabs-dock intl-ai-dir-tabs-dock">
             <div className="home-intl-ai-tabs-wrap">
               <nav
                 className="home-intl-ai-tabs"
@@ -128,7 +103,7 @@ export default function IntlAiFeaturesPage({ copy }) {
                       id={`intl-ai-tab-${tab.id}`}
                       aria-current={selected ? 'true' : undefined}
                       className={`home-intl-ai-tab${selected ? ' is-active' : ''}`}
-                      onClick={() => jumpToGroup(tab.id)}
+                      onClick={() => scrollToPillar(tab.id)}
                     >
                       {tab.iconSrc ? (
                         <img
@@ -147,16 +122,14 @@ export default function IntlAiFeaturesPage({ copy }) {
             </div>
           </div>
 
-          <div className="site-page-overlap-panel overflow-hidden rounded-[16px] border border-[#e2e8f0] bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)]">
-            <div className="intl-ai-dir-panel p-4 md:p-6">
-              {groups.map((group, index) => (
-                <IntlAiFeatureGroup
-                  key={group.id}
-                  group={group}
-                  isFirst={index === 0}
-                />
-              ))}
-            </div>
+          <div className="intl-ai-dir-panel">
+            {groups.map((group, index) => (
+              <IntlAiFeatureGroup
+                key={group.id}
+                group={group}
+                isFirst={index === 0}
+              />
+            ))}
           </div>
         </div>
       </section>

@@ -1,4 +1,8 @@
-import { useAllProductsDirectory } from '../hooks/useAllProductsDirectory'
+import {
+  ALL_PRODUCTS_GROUP_ID_PREFIX,
+  useAllProductsDirectory,
+} from '../hooks/useAllProductsDirectory'
+import { useHomeIntlAiStickyAnchorTabs } from '../hooks/useHomeIntlAiStickyAnchorTabs'
 import { joinPath } from '../utils/pathUrl'
 
 function AllProductsLink({ item, currentUrlLocale, navigateTo }) {
@@ -23,10 +27,9 @@ function AllProductsGroup({ group, isFirst, currentUrlLocale, navigateTo }) {
 
   return (
     <article
-      id={`all-products-group-${group.id}`}
-      className={`intl-ai-dir-group scroll-mt-[calc(var(--nav-height)+120px)]${
-        isFirst ? '' : ' is-divided'
-      }`}
+      id={`${ALL_PRODUCTS_GROUP_ID_PREFIX}${group.id}`}
+      data-pillar-id={group.id}
+      className={`intl-ai-dir-group${isFirst ? '' : ' is-divided'}`}
     >
       <h2 className="intl-ai-dir-group-title">
         {group.iconSrc ? (
@@ -63,7 +66,13 @@ export default function AllProductsPage({
   currentUrlLocale,
   navigateTo,
 }) {
-  const { groups, activeId, jumpToGroup } = useAllProductsDirectory(sections)
+  const { groups, pillarIds, activeId, setActiveId } = useAllProductsDirectory(sections)
+  const { tabsDockRef, scrollToPillar } = useHomeIntlAiStickyAnchorTabs({
+    pillarIds,
+    activeId,
+    setActiveId,
+    blockIdPrefix: ALL_PRODUCTS_GROUP_ID_PREFIX,
+  })
 
   if (!groups.length) return null
 
@@ -84,7 +93,7 @@ export default function AllProductsPage({
         aria-label={copy?.title ?? 'Free AI Tools'}
       >
         <div className="mx-auto w-full max-w-[1160px]">
-          <div className="home-intl-ai-tabs-dock intl-ai-dir-tabs-dock">
+          <div ref={tabsDockRef} className="home-intl-ai-tabs-dock intl-ai-dir-tabs-dock">
             <div className="home-intl-ai-tabs-wrap">
               <nav
                 className="home-intl-ai-tabs"
@@ -99,7 +108,7 @@ export default function AllProductsPage({
                       id={`all-products-tab-${group.id}`}
                       aria-current={selected ? 'true' : undefined}
                       className={`home-intl-ai-tab${selected ? ' is-active' : ''}`}
-                      onClick={() => jumpToGroup(group.id)}
+                      onClick={() => scrollToPillar(group.id)}
                     >
                       {group.iconSrc ? (
                         <img
@@ -118,18 +127,16 @@ export default function AllProductsPage({
             </div>
           </div>
 
-          <div className="site-page-overlap-panel overflow-hidden rounded-[16px] border border-[#e2e8f0] bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)]">
-            <div className="intl-ai-dir-panel p-4 md:p-6">
-              {groups.map((group, index) => (
-                <AllProductsGroup
-                  key={group.id}
-                  group={group}
-                  isFirst={index === 0}
-                  currentUrlLocale={currentUrlLocale}
-                  navigateTo={navigateTo}
-                />
-              ))}
-            </div>
+          <div className="intl-ai-dir-panel">
+            {groups.map((group, index) => (
+              <AllProductsGroup
+                key={group.id}
+                group={group}
+                isFirst={index === 0}
+                currentUrlLocale={currentUrlLocale}
+                navigateTo={navigateTo}
+              />
+            ))}
           </div>
         </div>
       </section>

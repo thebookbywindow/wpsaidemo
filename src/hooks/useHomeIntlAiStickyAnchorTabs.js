@@ -104,6 +104,25 @@ export function getPillarIdFromScroll(blocks, stickyOffset) {
   return activeId
 }
 
+function resolveHashPillarId(hash, pillarIds, blockIdPrefix) {
+  const raw = `${hash ?? ''}`
+  if (!raw) return ''
+
+  const patterns = [
+    new RegExp(`^#${blockIdPrefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}([\\w-]+)$`),
+    /^#home-intl-ai-(?:pillar-|tab-)([\w-]+)$/,
+  ]
+
+  for (const pattern of patterns) {
+    const match = raw.match(pattern)
+    const pillarId = match?.[1]
+    if (pillarId && pillarIds.includes(pillarId)) {
+      return pillarId
+    }
+  }
+  return ''
+}
+
 /**
  * Sticky capsule tabs + stacked pillar sections.
  * Click tab → scroll to section; scroll → update active tab.
@@ -112,6 +131,7 @@ export function useHomeIntlAiStickyAnchorTabs({
   pillarIds,
   activeId,
   setActiveId,
+  blockIdPrefix = 'home-intl-ai-pillar-',
   tabsSelector = '.home-intl-ai-tabs',
   activeTabSelector = '.home-intl-ai-tab.is-active',
   stickyGapPx = HOME_TABS_SCROLL_PIN_GAP_PX,
@@ -122,6 +142,7 @@ export function useHomeIntlAiStickyAnchorTabs({
   const ignoreSpyUntilRef = useRef(0)
   const tabScrollBehaviorRef = useRef('auto')
   const scrollAnimationCancelRef = useRef(null)
+  const blockIdPrefixRef = useRef(blockIdPrefix)
 
   useEffect(() => {
     setActiveIdRef.current = setActiveId
@@ -130,6 +151,10 @@ export function useHomeIntlAiStickyAnchorTabs({
   useEffect(() => {
     activeIdRef.current = activeId
   }, [activeId])
+
+  useEffect(() => {
+    blockIdPrefixRef.current = blockIdPrefix
+  }, [blockIdPrefix])
 
   useEffect(
     () => () => {
@@ -147,7 +172,7 @@ export function useHomeIntlAiStickyAnchorTabs({
   const scrollToPillar = useCallback(
     (id) => {
       if (!id) return
-      const block = document.getElementById(`home-intl-ai-pillar-${id}`)
+      const block = document.getElementById(`${blockIdPrefixRef.current}${id}`)
       if (!block) return
 
       scrollAnimationCancelRef.current?.()
@@ -184,7 +209,7 @@ export function useHomeIntlAiStickyAnchorTabs({
 
   useEffect(() => {
     const blocks = pillarIds
-      .map((id) => document.getElementById(`home-intl-ai-pillar-${id}`))
+      .map((id) => document.getElementById(`${blockIdPrefix}${id}`))
       .filter(Boolean)
     if (!blocks.length) return undefined
 
@@ -214,7 +239,7 @@ export function useHomeIntlAiStickyAnchorTabs({
       window.removeEventListener('scroll', onScrollOrResize)
       window.removeEventListener('resize', onScrollOrResize)
     }
-  }, [pillarIds, readScrollOffset])
+  }, [blockIdPrefix, pillarIds, readScrollOffset])
 
   useEffect(() => {
     const dock = tabsDockRef.current
@@ -230,16 +255,14 @@ export function useHomeIntlAiStickyAnchorTabs({
   }, [activeId, tabsSelector, activeTabSelector])
 
   useEffect(() => {
-    const hash = window.location.hash
-    const match = hash.match(/^#home-intl-ai-(?:pillar-|tab-)([\w-]+)$/)
-    const pillarId = match?.[1]
-    if (!pillarId || !pillarIds.includes(pillarId)) return undefined
+    const pillarId = resolveHashPillarId(window.location.hash, pillarIds, blockIdPrefix)
+    if (!pillarId) return undefined
 
     const timer = window.setTimeout(() => {
       scrollToPillar(pillarId)
     }, 160)
     return () => window.clearTimeout(timer)
-  }, [pillarIds, scrollToPillar])
+  }, [blockIdPrefix, pillarIds, scrollToPillar])
 
   return { tabsDockRef, scrollToPillar }
 }

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 
-const ALL_PRODUCTS_GROUP_HASH_PREFIX = '#all-products-group-'
+export const ALL_PRODUCTS_GROUP_ID_PREFIX = 'all-products-group-'
 
 const SECTION_ICON_BY_TITLE = Object.freeze({
   'AI Tools': '/icons/wps/copilot.svg',
@@ -16,13 +16,6 @@ export function toAllProductsGroupId(title) {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
-}
-
-export function readAllProductsGroupHash() {
-  if (typeof window === 'undefined') return ''
-  const hash = window.location.hash
-  if (!hash.startsWith(ALL_PRODUCTS_GROUP_HASH_PREFIX)) return ''
-  return hash.slice(ALL_PRODUCTS_GROUP_HASH_PREFIX.length)
 }
 
 export function getAllProductsSectionIconSrc(title) {
@@ -46,6 +39,7 @@ export function useAllProductsDirectory(sections) {
 
   const defaultId = groups[0]?.id ?? ''
   const [activeId, setActiveId] = useState(defaultId)
+  const pillarIds = useMemo(() => groups.map((group) => group.id), [groups])
 
   useEffect(() => {
     if (!groups.some((group) => group.id === activeId)) {
@@ -53,35 +47,10 @@ export function useAllProductsDirectory(sections) {
     }
   }, [groups, activeId])
 
-  const jumpToGroup = (groupId, { behavior = 'smooth' } = {}) => {
-    if (!groupId) return
-    setActiveId(groupId)
-    window.requestAnimationFrame(() => {
-      document.getElementById(`all-products-group-${groupId}`)?.scrollIntoView({
-        behavior,
-        block: 'start',
-      })
-    })
-  }
-
-  useEffect(() => {
-    if (!groups.length) return undefined
-
-    const syncHash = () => {
-      const groupId = readAllProductsGroupHash()
-      if (!groupId || !groups.some((group) => group.id === groupId)) return
-      jumpToGroup(groupId, { behavior: 'auto' })
-    }
-
-    syncHash()
-    window.addEventListener('hashchange', syncHash)
-    return () => window.removeEventListener('hashchange', syncHash)
-  }, [groups])
-
   return {
     groups,
+    pillarIds,
     activeId,
     setActiveId,
-    jumpToGroup,
   }
 }

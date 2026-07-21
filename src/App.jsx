@@ -3719,62 +3719,48 @@ function App() {
 
           {isResourcesMenuOpen && (
             <div
-              className="fixed inset-x-0 top-[59px] z-[100] home-nav-mega-panel"
+              className="home-nav-resources-dropdown"
               onMouseEnter={() => openDesktopMenu('resources')}
               onMouseLeave={() => scheduleDesktopMenuClose('resources')}
             >
-              <div className="mx-auto w-full max-w-[1200px]">
-                <div className="home-nav-resources-mega home-nav-mega-grid grid w-full">
-                  <section className="home-nav-resources-mega-hub home-nav-mega-card min-w-0">
+              <a
+                href={localeDocsPath}
+                className="home-nav-resources-hub-link"
+                onClick={(event) => {
+                  event.preventDefault()
+                  navigateTo(localeDocsPath)
+                }}
+              >
+                <span className="home-nav-resources-hub-title">
+                  {resourcesHeaderMegaMenu.docsCenter.title}
+                </span>
+              </a>
+              <div className="home-nav-resources-apps-list">
+                {resourcesHeaderMegaMenu.coreApps.map((app) => {
+                  const targetPath = getLocaleDocsPath(currentLocale, app.sectionSlug)
+                  return (
                     <a
-                      href={localeDocsPath}
-                      className={`home-nav-resources-hub-link${
-                        isHeaderResourceLinkCurrent('docs') ? ' is-current' : ''
-                      }`}
+                      key={app.key}
+                      href={targetPath}
+                      className="home-nav-mega-link home-nav-resources-app-link truncate text-[13px]"
                       onClick={(event) => {
                         event.preventDefault()
-                        navigateTo(localeDocsPath)
+                        navigateToDocsSection(app.sectionSlug)
                       }}
                     >
-                      <span className="home-nav-resources-hub-badge" aria-hidden="true">
-                        <img src="/icons/wps/mega-features.png" alt="" />
-                      </span>
-                      <span className="home-nav-resources-hub-title">
-                        {resourcesHeaderMegaMenu.docsCenter.title}
-                      </span>
+                      {app.iconSrc ? (
+                        <img
+                          className="home-nav-resources-app-icon"
+                          src={app.iconSrc}
+                          alt=""
+                          draggable={false}
+                          decoding="async"
+                        />
+                      ) : null}
+                      <span>{app.label}</span>
                     </a>
-                    <div className="home-nav-resources-apps-list">
-                      {resourcesHeaderMegaMenu.coreApps.map((app) => {
-                        const targetPath = getLocaleDocsPath(currentLocale, app.sectionSlug)
-                        const isCurrent = isHeaderResourceLinkCurrent(app.key)
-                        return (
-                          <a
-                            key={app.key}
-                            href={targetPath}
-                            className={`home-nav-mega-link home-nav-resources-app-link truncate text-[13px]${
-                              isCurrent ? ' is-current' : ''
-                            }`}
-                            onClick={(event) => {
-                              event.preventDefault()
-                              navigateToDocsSection(app.sectionSlug)
-                            }}
-                          >
-                            {app.iconSrc ? (
-                              <img
-                                className="home-nav-resources-app-icon"
-                                src={app.iconSrc}
-                                alt=""
-                                draggable={false}
-                                decoding="async"
-                              />
-                            ) : null}
-                            <span>{app.label}</span>
-                          </a>
-                        )
-                      })}
-                    </div>
-                  </section>
-                </div>
+                  )
+                })}
               </div>
             </div>
           )}
@@ -4171,57 +4157,27 @@ function App() {
             <nav className="mt-3 flex flex-col gap-1">
               {desktopMainNavItems.map((item) => {
                 if (item.type === 'resources') {
+                  const docsCenterLink = headerResourceNavLinks.find((link) => link.key === 'docs')
+                  const docsCenterPath = docsCenterLink?.path ?? localeDocsPath
+                  const docsCenterLabel =
+                    docsCenterLink?.label ?? resourcesHeaderMegaMenu.docsCenter.title
                   return (
-                    <div key={`mobile-${item.key}`} className="flex flex-col gap-1">
-                      <a
-                        className={`rounded-[10px] px-4 py-3 text-[15px] font-medium transition ${
-                          item.isCurrent
-                            ? 'bg-[#ece9fd] text-[#534ab7]'
-                            : 'text-[#4a5568] hover:bg-[#f6f5ff] hover:text-[#1a202c]'
-                        }`}
-                        href={item.path}
-                        onClick={(event) => {
-                          event.preventDefault()
-                          setIsMobileMenuOpen(false)
-                          navigateTo(item.path)
-                        }}
-                      >
-                        {item.label}
-                      </a>
-                      <div className="ml-2 flex flex-col gap-0.5 border-l border-[#e8ecf2] pl-3">
-                        {headerResourceNavLinks.map((resourceLink) => (
-                          <a
-                            key={`mobile-resource-${resourceLink.key}`}
-                            className={`inline-flex items-center gap-2 rounded-[8px] px-3 py-2 text-[14px] transition ${
-                              isHeaderResourceLinkCurrent(resourceLink.key)
-                                ? 'bg-[#f6f5ff] font-medium text-[#534ab7]'
-                                : 'text-[#64748b] hover:bg-[#f6f5ff] hover:text-[#1a202c]'
-                            }`}
-                            href={resourceLink.path}
-                            onClick={(event) => {
-                              event.preventDefault()
-                              setIsMobileMenuOpen(false)
-                              if (resourceLink.key === 'docs') {
-                                navigateTo(resourceLink.path)
-                                return
-                              }
-                              navigateToDocsSection(resourceLink.key)
-                            }}
-                          >
-                            {resourceLink.iconSrc ? (
-                              <img
-                                src={resourceLink.iconSrc}
-                                alt=""
-                                className="h-4 w-4 shrink-0"
-                                draggable={false}
-                                decoding="async"
-                              />
-                            ) : null}
-                            {resourceLink.label}
-                          </a>
-                        ))}
-                      </div>
-                    </div>
+                    <a
+                      key={`mobile-${item.key}`}
+                      className={`rounded-[10px] px-4 py-3 text-[15px] font-medium transition ${
+                        isHeaderResourceLinkCurrent('docs') || item.isCurrent
+                          ? 'bg-[#ece9fd] text-[#534ab7]'
+                          : 'text-[#4a5568] hover:bg-[#f6f5ff] hover:text-[#1a202c]'
+                      }`}
+                      href={docsCenterPath}
+                      onClick={(event) => {
+                        event.preventDefault()
+                        setIsMobileMenuOpen(false)
+                        navigateTo(docsCenterPath)
+                      }}
+                    >
+                      {docsCenterLabel}
+                    </a>
                   )
                 }
 
