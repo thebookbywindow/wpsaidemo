@@ -15,6 +15,22 @@ export const LEGACY_FLAT_DOC_ROUTE_MAP = {
   'wps-writer': { sectionSlug: 'getting-started', itemSlug: 'wps-writer' },
 }
 
+/** Dispatched when header/nav asks Docs Center to scroll to an L1 section. */
+export const DOCS_CENTER_SCROLL_TO_SECTION_EVENT = 'docs-center:scroll-to-section'
+
+export function requestDocsCenterScrollToSection(sectionSlug = '') {
+  const slug = `${sectionSlug ?? ''}`.trim()
+  if (!slug || typeof window === 'undefined') {
+    return
+  }
+
+  window.dispatchEvent(
+    new CustomEvent(DOCS_CENTER_SCROLL_TO_SECTION_EVENT, {
+      detail: { sectionSlug: slug },
+    }),
+  )
+}
+
 function createEmptyDocsRoute() {
   return {
     sectionSlug: '',

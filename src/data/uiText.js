@@ -1,7 +1,7 @@
 export const uiTextByLanguage = {
   en: {
     nav: {
-      wpsFeatures: 'WPS Features',
+      wpsFeatures: 'WPS AI Features',
       freeAiTools: 'Free AI Tools',
       products: 'Products',
       templates: 'Templates',
@@ -17,24 +17,32 @@ export const uiTextByLanguage = {
       seeAllFeatures: 'See all features →',
       wpsFeaturesMega: {
         aiFeaturesTitle: 'WPS AI Features',
-        officeFeaturesTitle: 'WPS Features',
-        audienceTitle: 'Features for',
+        groups: {
+          copilot: 'Copilot',
+          writer: 'Writer',
+          spreadsheet: 'Sheets',
+          presentation: 'Slides',
+          pdf: 'PDF',
+        },
         links: {
-          aiSpellCheck: 'AI Spell Check',
-          aiParallelTranslate: 'AI Parallel Translate',
-          aiSlides: 'AI Slides',
+          officeCopilot: 'Office Copilot',
+          aipal: 'AIPal',
           aiWriter: 'AI Writer',
+          aiSummarizer: 'AI Summarizer',
+          aiImproveWriting: 'AI Improve Writing',
+          aiTranslator: 'AI Translator',
+          aiInSpreadsheets: 'AI in Spreadsheets',
+          aiFormulaGenerator: 'AI Formula Generator',
+          aiTableGenerator: 'AI Table Generator',
+          jpgToExcel: 'JPG to Excel',
+          aiPptMaker: 'AI PPT Maker',
+          aiPowerpointGenerator: 'AI PowerPoint Generator',
+          freePresentationMaker: 'Free Presentation Maker',
+          aiSlidesTranslator: 'AI Slides Translator',
           chatPdf: 'Chat PDF',
-          aiTranslatePdf: 'AI Translate PDF',
-          aiPdfSummarizer: 'AI PDF Summarizer',
-          aiPhotoEditor: 'AI Photo Editor',
-          aiBackgroundRemover: 'AI Background Remover',
-          wpsWriter: 'WPS Writer',
-          wpsSpreadsheet: 'WPS Spreadsheet',
-          wpsPresentation: 'WPS Presentation',
-          wpsPdf: 'WPS PDF',
-          students: 'Students',
-          teachers: 'Teachers',
+          aiPdfSummarizer: 'PDF Summarizer',
+          aiTranslatePdf: 'PDF Translation',
+          pdfOcr: 'PDF OCR',
         },
       },
       docsCenter: 'Docs Center',
@@ -42,6 +50,16 @@ export const uiTextByLanguage = {
       blog: 'Blog',
       encyclopedia: 'Encyclopedia',
       qa: 'Q&A',
+      resourcesMega: {
+        docsCenterTitle: 'Docs Center',
+        coreAppsTitle: 'Core apps',
+        apps: {
+          writer: 'Writer',
+          spreadsheet: 'Spreadsheet',
+          presentation: 'Presentation',
+          pdf: 'PDF',
+        },
+      },
     },
     home: {
       // Hero: SEO lead + typewriter + tail (download lives in desc/CTA, not H1)
@@ -70,7 +88,7 @@ export const uiTextByLanguage = {
       },
       // International AI feature directory (external official URLs)
       intlAiFeatures: {
-        title: 'WPS Copilot',
+        title: 'WPS AI',
         summary: 'Your suite-wide Office Copilot',
         pillars: {
           copilot: {
@@ -123,11 +141,11 @@ export const uiTextByLanguage = {
             spotlightLead:
               'WPS AI inside [WPS Writer](https://www.wps.com/office/writer/) helps you draft from a blank page, rewrite tone and clarity, and [summarize long documents](https://www.wps.com/feature/ai-summarizer/) — all without leaving your doc.',
             features: {
-              'ai-writer': 'Generate drafts and polish tone with AI Writer',
+              'ai-writer-feature': 'Generate drafts and polish tone with AI Writer',
               'ai-summarizer': 'Summarize long documents in one click',
             },
             featureDetails: {
-              'ai-writer':
+              'ai-writer-feature':
                 'Generate essays, blogs, and business copy up to 10× faster. [AI Writer](https://www.wps.com/feature/ai-writer/) includes grammar checking and ChatGPT-powered drafting inside Word.',
               'ai-summarizer':
                 'Turn reports, contracts, and research into concise summaries with [AI Summarizer](https://www.wps.com/feature/ai-summarizer/) — keep the key points and skip the manual read-through.',
@@ -169,40 +187,40 @@ export const uiTextByLanguage = {
             label: 'PDF',
             tagline: 'Read, chat, and summarize PDFs',
             spotlightLead:
-              '[WPS PDF](https://www.wps.com/office/pdf/) AI lets you chat with documents, pull answers with source proof, and [summarize long reports](https://explore.wps.com/pdf/ai-pdf-summarizer) — securely inside WPS, without switching apps.',
+              '[WPS PDF](https://www.wps.com/office/pdf/) AI lets you chat with documents, pull answers with source proof, and [summarize long reports](https://www.wps.com/feature/pdf-summarizer/) — securely inside WPS, without switching apps.',
             features: {
-              'chat-with-pdf': 'Chat with PDFs to find answers instantly',
-              'ai-pdf-summarizer': 'Summarize reports without reading every page',
+              'chat-pdf-feature': 'Chat with PDFs to find answers instantly',
+              'pdf-summarizer-feature': 'Summarize reports without reading every page',
             },
             featureDetails: {
-              'chat-with-pdf':
-                'Ask questions about any PDF and get instant answers with [Chat with PDF](https://explore.wps.com/pdf/chat-with-pdf) — clickable source references for manuals, papers, and contracts.',
-              'ai-pdf-summarizer':
-                'Summarize lengthy PDFs in seconds with the [AI PDF Summarizer](https://explore.wps.com/pdf/ai-pdf-summarizer) — no need to scroll every page yourself.',
+              'chat-pdf-feature':
+                'Ask questions about any PDF and get instant answers with [Chat PDF](https://www.wps.com/feature/chat-pdf/) — clickable source references for manuals, papers, and contracts.',
+              'pdf-summarizer-feature':
+                'Summarize lengthy PDFs in seconds with the [PDF Summarizer](https://www.wps.com/feature/pdf-summarizer/) — no need to scroll every page yourself.',
             },
           },
           photos: {
             label: 'Photos',
             tagline: 'Edit images with AI',
             features: {
-              'ai-photo-editor': 'Enhance and retouch photos in one click',
-              'ai-background-remover': 'Remove backgrounds instantly',
+              'ai-photo-editor-feature': 'Enhance and retouch photos in one click',
+              'ai-background-remover-feature': 'Remove backgrounds instantly',
             },
           },
           airpage: {
             label: 'AirPage',
             tagline: 'Collaborative docs online',
             features: {
-              'airpage-ai-writer': 'Draft and rewrite in online documents',
-              'airpage-ai-summarizer': 'Summarize shared docs for the team',
+              'airpage-online-document-editor': 'Edit and collaborate on docs online',
+              'airpage-word-online': 'Real-time Word Online collaboration',
             },
           },
           airsheet: {
             label: 'AirSheet',
             tagline: 'Online spreadsheets with AI',
             features: {
-              'airsheet-ai-formula-generator': 'Build formulas without memorizing syntax',
-              'airsheet-ai-in-spreadsheets': 'Analyze collaborative sheets with AI',
+              'airsheet-excel-online': 'Collaborate in Excel Online',
+              'airsheet-online-excel-editor': 'Edit spreadsheets in the browser',
             },
           },
           forms: {
@@ -217,8 +235,8 @@ export const uiTextByLanguage = {
             label: 'DBSheet',
             tagline: 'Multidimensional tables with AI',
             features: {
-              'dbsheet-ai-table-generator': 'Generate structured tables from a prompt',
-              'dbsheet-ai-in-spreadsheets': 'Use AI inside multidimensional workflows',
+              'ai-table-generator': 'Generate structured tables from a prompt',
+              'ai-in-excel-spreadsheets': 'Use AI inside multidimensional workflows',
             },
           },
         },
@@ -228,18 +246,13 @@ export const uiTextByLanguage = {
         explorePillarCta: 'Explore {app} AI features',
         coreTabsAriaLabel: 'Core WPS apps',
         mobileTabsCloseLabel: 'Close app menu',
-        homeCrumb: 'Home',
-        pageCrumb: 'AI features',
-        pageBadge: 'AI Feature Directory',
-        pageTitle: 'WPS AI features across every app',
-        pageDesc:
-          'Official landing pages for Copilot, Writer, Spreadsheet, Presentation, PDF, Photos, AirPage, AirSheet, Forms, and DBSheet — grouped by WPS app.',
-        itemCountLabel: '{count} official links',
+        pageTitle: 'WPS AI features',
+        pageDesc: 'Official WPS AI pages for Docs, Sheets, Slides, PDF & more.',
         externalHint: 'Links open official WPS international feature pages in a new tab.',
         tabsAriaLabel: 'AI feature categories',
-        seoTitle: 'WPS AI Features — Official Capability Directory | WPS Office',
+        seoTitle: 'WPS AI Features | Official Directory',
         seoDescription:
-          'Browse official WPS AI feature pages for Copilot, Docs, Sheets, Slides, PDF, Photos, and more. External links to WPS international AI landing pages.',
+          'Browse official WPS AI features for Docs, Sheets, Slides, PDF, Photos & Copilot.',
         tabs: {
           copilot: 'Copilot',
           writer: 'Writer',
@@ -281,89 +294,53 @@ export const uiTextByLanguage = {
         items: {
           'wps-ai-copilot-hub': 'WPS AI · Office Copilot',
           aipal: 'AIPal (web Copilot)',
-          'ai-writer': 'AI Writer',
-          'ai-writer-feature': 'AI Writer (feature page)',
-          'ai-text-generator': 'AI Text Generator / Smart Create · Edit',
+          'ai-writer-feature': 'AI Writer',
+          'ai-text-generator': 'AI Text Generator',
           'ai-summarizer': 'AI Summarizer',
           'ai-improve-writing': 'AI Improve Writing',
-          'ai-spell-check': 'AI Spell Check',
-          'ai-spell-check-alt': 'AI Spell Check (alternate)',
-          'spell-check-feature': 'Spell Check (feature page)',
+          'spell-check-feature': 'Spell Check',
           'grammar-checker': 'Grammar Checker',
-          'ai-translator': 'AI Translator',
-          'ai-translator-feature': 'AI Translator (feature page)',
+          'ai-translator-feature': 'AI Translator',
           'document-translator': 'Document Translator',
           'ai-document-translator': 'AI Document Translator',
-          'extract-text-with-ai': 'Extract Text with AI (OCR)',
-          'data-analyst': 'Data Analyst (Copilot overview)',
+          'extract-text-with-ai': 'Extract Text with AI',
           'ai-in-excel-spreadsheets': 'AI in Excel / Spreadsheets',
           'ai-excel-formula-generator': 'AI Excel Formula Generator',
           'ai-table-generator': 'AI Table Generator',
-          'jpg-to-excel': 'JPG to Excel (AI OCR tables)',
+          'jpg-to-excel': 'JPG to Excel',
           'ai-powerpoint-generator': 'AI PowerPoint Generator',
           'ai-ppt-maker': 'AI PPT Maker',
-          'free-presentation-maker': 'Free Presentation Maker (AI)',
+          'free-presentation-maker': 'Free Presentation Maker',
           'ai-translate-powerpoint': 'AI Translate PowerPoint',
           'slides-translator': 'AI Slides Translator',
-          'slides-designer': 'Slides Designer (overview)',
-          'chat-with-pdf': 'Chat with PDF',
-          'chat-pdf-feature': 'Chat PDF (feature page)',
-          'ai-pdf-summarizer': 'AI PDF Summarizer',
-          'pdf-summarizer-feature': 'PDF Summarizer (feature page)',
-          'ai-translate-pdf': 'AI Translate PDF',
-          'pdf-document-translation': 'PDF Document Translation (layout-preserving)',
+          'chat-pdf-feature': 'Chat PDF',
+          'pdf-summarizer-feature': 'PDF Summarizer',
+          'pdf-document-translation': 'PDF Document Translation',
           'translate-scanned-pdf': 'Translate Scanned PDF',
-          'pdf-ocr': 'PDF OCR',
-          'pdf-ocr-feature': 'PDF OCR (feature page)',
+          'pdf-ocr-feature': 'PDF OCR',
           'convert-scanned-pdf-to-word': 'Convert Scanned PDF to Word',
-          'pdf-reader-extension': 'PDF Reader Extension (AI summary / translate)',
-          'pdf-reader-extension-feature': 'PDF Reader Extension (feature page)',
-          'chrome-pdf-extension': 'Chrome PDF extension (AI summary / translate)',
-          'ai-photo-editor': 'AI Photo Editor',
-          'ai-photo-editor-alt': 'AI Photo Editor (photo path)',
-          'ai-photo-editor-feature': 'AI Photo Editor (feature page)',
-          'ai-background-remover': 'AI Background Remover',
-          'ai-background-remover-feature': 'AI Background Remover (feature page)',
-          'ai-photo-enhancer': 'AI Photo Enhancer',
-          'photo-enhancer-feature': 'Photo Enhancer (feature page)',
-          'ai-image-upscaler': 'AI Image Upscaler',
-          'image-upscaler-feature': 'Image Upscaler (feature page)',
-          'ai-photo-restoration': 'AI Photo Restoration',
-          'ai-photo-restoration-feature': 'AI Photo Restoration (feature page)',
+          'pdf-reader-extension-feature': 'PDF Reader Extension',
+          'chrome-pdf-extension': 'Chrome PDF Extension',
+          'ai-photo-editor-feature': 'AI Photo Editor',
+          'ai-background-remover-feature': 'AI Background Remover',
+          'photo-enhancer-feature': 'Photo Enhancer',
+          'image-upscaler-feature': 'Image Upscaler',
+          'ai-photo-restoration-feature': 'AI Photo Restoration',
           'ai-remove-object': 'AI Remove Object',
           'magic-eraser': 'Magic Eraser',
           'ai-remove-text': 'AI Remove Text from Image',
-          'extract-text-from-image': 'Extract Text from Image (OCR)',
+          'extract-text-from-image': 'Extract Text from Image',
           'image-watermark-remover': 'Image Watermark Remover',
-          'airpage-online-document-editor': 'Online Document Editor (AI-assisted collab)',
-          'airpage-word-online': 'Word Online (real-time collab)',
-          'airpage-ai-writer': 'AI Writer (in AirPage workflows)',
-          'airpage-ai-writer-feature': 'AI Writer (feature page)',
-          'airpage-ai-text-generator': 'AI Text Generator',
-          'airpage-ai-summarizer': 'AI Summarizer',
-          'airpage-ai-improve-writing': 'AI Improve Writing / Rewrite',
-          'airpage-ai-spell-check': 'AI Spell Check',
-          'airpage-grammar-checker': 'Grammar Checker',
-          'airpage-ai-translator': 'AI Translator',
-          'airpage-ai-translator-feature': 'AI Translator (feature page)',
-          'airsheet-excel-online': 'Excel Online (AirSheet collab)',
+          'airpage-online-document-editor': 'Online Document Editor',
+          'airpage-word-online': 'Word Online',
+          'airsheet-excel-online': 'Excel Online',
           'airsheet-online-excel-editor': 'Online Excel Sheet Editor',
-          'airsheet-ai-in-spreadsheets': 'AI in Excel / Spreadsheets',
-          'airsheet-ai-formula-generator': 'AI Excel Formula Generator',
-          'airsheet-ai-table-generator': 'AI Table Generator',
-          'airsheet-jpg-to-excel': 'JPG to Excel (AI OCR tables)',
-          'airsheet-data-analyst': 'Data Analyst (Copilot overview)',
           'forms-online-form-builder': 'Online Form Builder',
           'forms-smart-form': 'Smart Form',
           'forms-survey-creator': 'Survey Creator',
           'forms-google-forms-alt': 'WPS Forms (Google Forms alternative)',
           'forms-fillable-forms': 'Free File Fillable Forms',
           'forms-create-fillable': 'Create Fillable Form',
-          'dbsheet-ai-table-generator': 'AI Table Generator',
-          'dbsheet-ai-in-spreadsheets': 'AI in Excel / Spreadsheets',
-          'dbsheet-excel-online': 'Excel Online (data collab)',
-          'dbsheet-copilot': 'WPS AI · Office Copilot',
-          'dbsheet-aipal': 'AIPal (web Copilot)',
         },
       },
       // Freshness signal
@@ -488,7 +465,7 @@ export const uiTextByLanguage = {
         {
           title: '600 million monthly active users',
           desc:
-            'Trusted by [600 million monthly active users](https://www.wps.com/about-us/) worldwide. Kingsoft Office reported [672 million global monthly active devices](https://ir.kingsoft.com/) for WPS Office as of March 2026.',
+            'Trusted by [600 million monthly active users](https://www.wps.com/about-us/) worldwide. Kingsoft Office reported [672 million global monthly active devices](https://www.wps.com/about-us/) for WPS Office as of March 2026.',
         },
         {
           title: '220+ countries & regions',
@@ -521,7 +498,7 @@ export const uiTextByLanguage = {
             {
               question: 'Is WPS Office free to download?',
               answer:
-                'Yes. [WPS Standard](https://www.wps.com/pricing/) is free to download with no credit card required. You get the core Writer, Spreadsheet, Presentation, and PDF apps, 1 GB WPS Cloud space, basic PDF features, and support for 47 file formats in 46 languages. [WPS Pro+](https://www.wps.com/pricing/) is optional for advanced PDF conversion, more cloud storage, and higher AI limits.',
+                'Yes. [WPS Standard](https://www.wps.com/buy/) is free to download with no credit card required. You get the core Writer, Spreadsheet, Presentation, and PDF apps, 1 GB WPS Cloud space, basic PDF features, and support for 47 file formats in 46 languages. [WPS Pro+](https://www.wps.com/buy/) is optional for advanced PDF conversion, more cloud storage, and higher AI limits.',
             },
             {
               question: 'Where can I download WPS Office for Windows 10 or Windows 11?',
@@ -567,7 +544,7 @@ export const uiTextByLanguage = {
             {
               question: 'Is WPS online free to use?',
               answer:
-                'Yes. [WPS Cloud online office](https://drive.wps.com/) is listed as free to use for core browser editing. Sign in with your WPS account to save and sync files; optional [WPS Pro+](https://www.wps.com/pricing/) adds more cloud space (20 GB vs 1 GB on the free Standard plan) and advanced PDF/AI features.',
+                'Yes. [WPS Cloud online office](https://drive.wps.com/) is listed as free to use for core browser editing. Sign in with your WPS account to save and sync files; optional [WPS Pro+](https://www.wps.com/buy/) adds more cloud space (20 GB vs 1 GB on the free Standard plan) and advanced PDF/AI features.',
             },
           ],
         },
@@ -578,12 +555,12 @@ export const uiTextByLanguage = {
             {
               question: 'How do I convert PDF to Word in WPS Office?',
               answer:
-                'Desktop: open the PDF in WPS Office → Tools tab → PDF to Word → set page range and language → click Start ([WPS Academy guide](https://www.wps.com/academy/quickly-convert-pdf-to-editable-word-in-wps-office-quick-tutorials-1863094/)). [WPS Help](https://help.wps.com/articles/pdf-to-word-converter-qanda) notes free conversion for PDFs within 5 pages; longer files may need [WPS Pro+](https://www.wps.com/pricing/). Online: use the [free PDF to Word converter](https://pdf.wps.com/convert-pdf-to-word/) → Select File or drag the PDF → Download the Word file.',
+                'Desktop: open the PDF in WPS Office → Tools tab → PDF to Word → set page range and language → click Start ([WPS Academy guide](https://www.wps.com/academy/quickly-convert-pdf-to-editable-word-in-wps-office-quick-tutorials-1863094/)). [WPS Help](https://help.wps.com/articles/pdf-to-word-converter-qanda) notes free conversion for PDFs within 5 pages; longer files may need [WPS Pro+](https://www.wps.com/buy/). Online: use the [free PDF to Word converter](https://pdf.wps.com/convert-pdf-to-word/) → Select File or drag the PDF → Download the Word file.',
             },
             {
               question: 'What is WPS PDF editor and how do I edit PDF files?',
               answer:
-                'WPS PDF is the PDF module built into WPS Office on desktop, mobile, and online. Open a PDF in WPS PDF to read, annotate, and edit text or images; [WPS Pro+](https://www.wps.com/pricing/) adds fuller edit/convert tools (PDF to Word/Excel/PPT, image to PDF, and related converters).',
+                'WPS PDF is the PDF module built into WPS Office on desktop, mobile, and online. Open a PDF in WPS PDF to read, annotate, and edit text or images; [WPS Pro+](https://www.wps.com/buy/) adds fuller edit/convert tools (PDF to Word/Excel/PPT, image to PDF, and related converters).',
             },
             {
               question: 'How do I convert Word to PDF in WPS?',
@@ -598,7 +575,7 @@ export const uiTextByLanguage = {
             {
               question: 'Can WPS PDF merge, compress, and sign PDF files?',
               answer:
-                'Yes. Use WPS PDF on desktop for merge, split, compress, protect, and sign workflows; advanced convert/edit features are included in [WPS Pro+](https://www.wps.com/pricing/). For quick compress online, WPS also lists a free Compress PDF tool on the [download page Online Tools](https://www.wps.com/download/) section.',
+                'Yes. Use WPS PDF on desktop for merge, split, compress, protect, and sign workflows; advanced convert/edit features are included in [WPS Pro+](https://www.wps.com/buy/). For quick compress online, WPS also lists a free Compress PDF tool on the [download page Online Tools](https://www.wps.com/download/) section.',
             },
           ],
         },
@@ -619,12 +596,12 @@ export const uiTextByLanguage = {
             {
               question: 'What is WPS 365 and how is it different from free WPS Office?',
               answer:
-                'WPS 365 is Kingsoft’s cloud-connected office experience ([WPS online](https://drive.wps.com/) + sync across devices). Free [WPS Standard](https://www.wps.com/pricing/) includes the desktop/mobile apps and 1 GB cloud. Paid [WPS Pro+](https://www.wps.com/pricing/) (from $5.83/month) adds 20 GB cloud, advanced PDF convert/edit, premium templates, and higher AI daily limits.',
+                'WPS 365 is Kingsoft’s cloud-connected office experience ([WPS online](https://drive.wps.com/) + sync across devices). Free [WPS Standard](https://www.wps.com/buy/) includes the desktop/mobile apps and 1 GB cloud. Paid [WPS Pro+](https://www.wps.com/buy/) (from $5.83/month) adds 20 GB cloud, advanced PDF convert/edit, premium templates, and higher AI daily limits.',
             },
             {
               question: 'Is WPS Office free or do I need a WPS subscription?',
               answer:
-                '[WPS Standard](https://www.wps.com/pricing/) is free to download and use for core Writer, Spreadsheet, Presentation, and basic PDF tasks — no credit card required. [WPS Pro+](https://www.wps.com/pricing/) or Sharing Plan is optional when you need multi-page PDF conversion, 20 GB cloud per user, or advanced AI/PDF tools.',
+                '[WPS Standard](https://www.wps.com/buy/) is free to download and use for core Writer, Spreadsheet, Presentation, and basic PDF tasks — no credit card required. [WPS Pro+](https://www.wps.com/buy/) or Sharing Plan is optional when you need multi-page PDF conversion, 20 GB cloud per user, or advanced AI/PDF tools.',
             },
             {
               question: 'How do I install WPS Office after downloading?',
@@ -640,12 +617,12 @@ export const uiTextByLanguage = {
             {
               question: 'Is WPS Office a free alternative to Microsoft Office download?',
               answer:
-                'Yes. The [free WPS Office download](https://www.wps.com/download/) covers Writer (Word), Spreadsheets (Excel), Presentation (PowerPoint), and PDF in one suite — a common alternative to Microsoft Office free download searches. WPS states full compatibility with Microsoft .docx, .xlsx, and .pptx on its [download FAQ](https://www.wps.com/download/) and [pricing page](https://www.wps.com/pricing/).',
+                'Yes. The [free WPS Office download](https://www.wps.com/download/) covers Writer (Word), Spreadsheets (Excel), Presentation (PowerPoint), and PDF in one suite — a common alternative to Microsoft Office free download searches. WPS states full compatibility with Microsoft .docx, .xlsx, and .pptx on its [download FAQ](https://www.wps.com/download/) and [pricing page](https://www.wps.com/buy/).',
             },
             {
               question: 'Does WPS Office open Microsoft Word, Excel, and PowerPoint files?',
               answer:
-                'Yes. The [official WPS download FAQ](https://www.wps.com/download/) confirms you can open, edit, and save Microsoft Office formats including .docx, .xlsx, and .pptx without formatting loss. [WPS pricing](https://www.wps.com/pricing/) also lists “100% Compatible with Microsoft File Formats” for the free Standard plan.',
+                'Yes. The [official WPS download FAQ](https://www.wps.com/download/) confirms you can open, edit, and save Microsoft Office formats including .docx, .xlsx, and .pptx without formatting loss. [WPS pricing](https://www.wps.com/buy/) also lists “100% Compatible with Microsoft File Formats” for the free Standard plan.',
             },
             {
               question: 'What is WPS Writer (WPS Word)?',
@@ -660,7 +637,7 @@ export const uiTextByLanguage = {
             {
               question: 'Can WPS replace Microsoft Word, Excel, and PowerPoint for everyday work?',
               answer:
-                'For typical documents, spreadsheets, slides, and PDF tasks, WPS Writer, Spreadsheets, Presentation, and WPS PDF match everyday Word/Excel/PowerPoint workflows on PC, Mac, Linux, mobile, and browser — with free [WPS Standard](https://www.wps.com/pricing/) and optional [WPS Pro+](https://www.wps.com/pricing/) upgrades.',
+                'For typical documents, spreadsheets, slides, and PDF tasks, WPS Writer, Spreadsheets, Presentation, and WPS PDF match everyday Word/Excel/PowerPoint workflows on PC, Mac, Linux, mobile, and browser — with free [WPS Standard](https://www.wps.com/buy/) and optional [WPS Pro+](https://www.wps.com/buy/) upgrades.',
             },
           ],
         },
@@ -729,11 +706,13 @@ export const uiTextByLanguage = {
       free: 'Free',
     },
     allProducts: {
-      title: 'All Products & Tools',
-      desc: 'Explore our complete suite of AI-powered office tools.',
+      title: 'Free AI Tools',
+      desc: 'AI writing, sheets, slides, PDF tools & more.',
       catalogBadge: 'Product Catalog',
-      viewByCategory: 'View by Category',
-      viewAZ: 'View A-Z',
+      viewByCategory: 'Category',
+      viewAZ: 'A–Z',
+      tabsAriaLabel: 'Product categories',
+      viewModeAriaLabel: 'Catalog view',
     },
     worldwide: {
       badge: 'Global Language Map',
@@ -776,7 +755,7 @@ export const uiTextByLanguage = {
   },
   zh: {
     nav: {
-      wpsFeatures: 'WPS Features',
+      wpsFeatures: 'WPS AI 功能',
       freeAiTools: 'Free AI Tools',
       products: '产品',
       templates: '模板',
@@ -792,24 +771,32 @@ export const uiTextByLanguage = {
       seeAllFeatures: '查看全部功能 →',
       wpsFeaturesMega: {
         aiFeaturesTitle: 'WPS AI 功能',
-        officeFeaturesTitle: 'WPS 功能',
-        audienceTitle: '面向',
+        groups: {
+          copilot: 'Copilot',
+          writer: '文字',
+          spreadsheet: '表格',
+          presentation: '演示',
+          pdf: 'PDF',
+        },
         links: {
-          aiSpellCheck: 'AI 拼写检查',
-          aiParallelTranslate: 'AI 对照翻译',
-          aiSlides: 'AI 演示',
-          aiWriter: 'AI 写作',
+          officeCopilot: 'Office Copilot',
+          aipal: 'AIPal',
+          aiWriter: 'AI Writer',
+          aiSummarizer: 'AI Summarizer',
+          aiImproveWriting: 'AI 改写润色',
+          aiTranslator: 'AI Translator',
+          aiInSpreadsheets: '表格 AI',
+          aiFormulaGenerator: 'AI 公式生成',
+          aiTableGenerator: 'AI 建表',
+          jpgToExcel: 'JPG 转 Excel',
+          aiPptMaker: 'AI PPT Maker',
+          aiPowerpointGenerator: 'AI 演示生成',
+          freePresentationMaker: '免费演示生成',
+          aiSlidesTranslator: 'AI 幻灯片翻译',
           chatPdf: 'Chat PDF',
-          aiTranslatePdf: 'AI 翻译 PDF',
-          aiPdfSummarizer: 'AI PDF 摘要',
-          aiPhotoEditor: 'AI 图片编辑',
-          aiBackgroundRemover: 'AI 去背景',
-          wpsWriter: 'WPS 文字',
-          wpsSpreadsheet: 'WPS 表格',
-          wpsPresentation: 'WPS 演示',
-          wpsPdf: 'WPS PDF',
-          students: '学生',
-          teachers: '教师',
+          aiPdfSummarizer: 'PDF 摘要',
+          aiTranslatePdf: 'PDF 翻译',
+          pdfOcr: 'PDF OCR',
         },
       },
       docsCenter: '文档中心',
@@ -817,6 +804,16 @@ export const uiTextByLanguage = {
       blog: '博客',
       encyclopedia: '百科',
       qa: '问答',
+      resourcesMega: {
+        docsCenterTitle: '文档中心',
+        coreAppsTitle: '四大组件',
+        apps: {
+          writer: '文字',
+          spreadsheet: '表格',
+          presentation: '演示',
+          pdf: 'PDF',
+        },
+      },
     },
     home: {
       // Hero: H1 讲价值，免费下载放 desc / CTA / seoTitle
@@ -844,7 +841,7 @@ export const uiTextByLanguage = {
         platforms: '支持平台',
       },
       intlAiFeatures: {
-        title: 'WPS Copilot',
+        title: 'WPS AI',
         summary: '贯穿整套 Office 的 Copilot',
         pillars: {
           copilot: {
@@ -892,11 +889,11 @@ export const uiTextByLanguage = {
             spotlightLead:
               '[WPS 文字 Writer](https://www.wps.com/office/writer/) 内置 AI：从空白页起草、改写语气与表达、[一键摘要长文档](https://www.wps.com/feature/ai-summarizer/) —— 全程不离开当前文档。',
             features: {
-              'ai-writer': '用 AI Writer 生成初稿并润色语气',
+              'ai-writer-feature': '用 AI Writer 生成初稿并润色语气',
               'ai-summarizer': '一键摘要长文档',
             },
             featureDetails: {
-              'ai-writer':
+              'ai-writer-feature':
                 '用自然语言生成文章、博客与商务文案，速度提升可达 10 倍；[AI Writer](https://www.wps.com/feature/ai-writer/) 内置语法检查与 ChatGPT 级起草能力。',
               'ai-summarizer':
                 '将报告、合同与研究材料压缩成精炼摘要，[AI Summarizer](https://www.wps.com/feature/ai-summarizer/) 保留要点，省去通读时间。',
@@ -938,40 +935,40 @@ export const uiTextByLanguage = {
             label: 'PDF',
             tagline: '阅读、对话、摘要 PDF',
             spotlightLead:
-              '[WPS PDF](https://www.wps.com/office/pdf/) AI 支持文档对话、带出处引用的问答，以及[长报告摘要](https://explore.wps.com/pdf/ai-pdf-summarizer) —— 在 WPS 内安全完成，无需切换应用。',
+              '[WPS PDF](https://www.wps.com/office/pdf/) AI 支持文档对话、带出处引用的问答，以及[长报告摘要](https://www.wps.com/feature/pdf-summarizer/) —— 在 WPS 内安全完成，无需切换应用。',
             features: {
-              'chat-with-pdf': '与 PDF 对话，即时找答案',
-              'ai-pdf-summarizer': '无需通读即可摘要报告',
+              'chat-pdf-feature': '与 PDF 对话，即时找答案',
+              'pdf-summarizer-feature': '无需通读即可摘要报告',
             },
             featureDetails: {
-              'chat-with-pdf':
-                '对任意 PDF 提问并即时获得答案，[Chat with PDF](https://explore.wps.com/pdf/chat-with-pdf) 附可点击的原文出处 —— 适合手册、论文与合同。',
-              'ai-pdf-summarizer':
-                '数秒内摘要超长 PDF，[AI PDF Summarizer](https://explore.wps.com/pdf/ai-pdf-summarizer) 支持 AI 分析与移动阅读，无需逐页滚动。',
+              'chat-pdf-feature':
+                '对任意 PDF 提问并即时获得答案，[Chat PDF](https://www.wps.com/feature/chat-pdf/) 附可点击的原文出处 —— 适合手册、论文与合同。',
+              'pdf-summarizer-feature':
+                '数秒内摘要超长 PDF，[PDF Summarizer](https://www.wps.com/feature/pdf-summarizer/) 支持 AI 分析与移动阅读，无需逐页滚动。',
             },
           },
           photos: {
             label: 'Photos',
             tagline: 'AI 图片编辑',
             features: {
-              'ai-photo-editor': '一键增强与修图',
-              'ai-background-remover': '瞬间去除图片背景',
+              'ai-photo-editor-feature': '一键增强与修图',
+              'ai-background-remover-feature': '瞬间去除图片背景',
             },
           },
           airpage: {
             label: 'AirPage',
             tagline: '在线协作文档',
             features: {
-              'airpage-ai-writer': '在线文档中起草与改写',
-              'airpage-ai-summarizer': '为团队摘要共享文档',
+              'airpage-online-document-editor': '在线编辑与协作文档',
+              'airpage-word-online': 'Word Online 实时协作',
             },
           },
           airsheet: {
             label: 'AirSheet',
             tagline: '在线表格 + AI',
             features: {
-              'airsheet-ai-formula-generator': '不用背语法，自然语言生成公式',
-              'airsheet-ai-in-spreadsheets': '在协作表格中用 AI 做分析',
+              'airsheet-excel-online': 'Excel Online 协作',
+              'airsheet-online-excel-editor': '浏览器内编辑表格',
             },
           },
           forms: {
@@ -986,8 +983,8 @@ export const uiTextByLanguage = {
             label: 'DBSheet',
             tagline: '多维表 + AI',
             features: {
-              'dbsheet-ai-table-generator': '用一句话生成结构化表格',
-              'dbsheet-ai-in-spreadsheets': '在多维表工作流中使用 AI',
+              'ai-table-generator': '用一句话生成结构化表格',
+              'ai-in-excel-spreadsheets': '在多维表工作流中使用 AI',
             },
           },
         },
@@ -997,18 +994,12 @@ export const uiTextByLanguage = {
         explorePillarCta: '查看 {app} AI 功能',
         coreTabsAriaLabel: '四大核心组件',
         mobileTabsCloseLabel: '关闭组件菜单',
-        homeCrumb: '首页',
-        pageCrumb: 'AI 功能',
-        pageBadge: 'AI 功能目录',
-        pageTitle: '覆盖每个 WPS 应用的 AI 功能',
-        pageDesc:
-          'Copilot、文字、表格、演示、PDF、Photos、AirPage、AirSheet、Forms、DBSheet 的官方落地页，按应用分组浏览。',
-        itemCountLabel: '共 {count} 条官方链接',
+        pageTitle: 'WPS AI 功能',
+        pageDesc: '文字、表格、演示、PDF 等官方 WPS AI 功能页。',
         externalHint: '以下链接将在新标签页打开 WPS 国际站官方功能页。',
         tabsAriaLabel: 'AI 功能分类',
-        seoTitle: 'WPS AI 功能目录 — 官方能力落地页 | WPS Office',
-        seoDescription:
-          '浏览 WPS AI 官方功能页：Copilot、文字、表格、演示、PDF、Photos 等，外链至 WPS 国际站 AI 落地页。',
+        seoTitle: 'WPS AI 功能 | 官方目录',
+        seoDescription: '浏览 WPS AI 官方功能：文字、表格、演示、PDF、Photos 与 Copilot。',
         tabs: {
           copilot: 'Copilot',
           writer: 'Writer',
@@ -1050,89 +1041,53 @@ export const uiTextByLanguage = {
         items: {
           'wps-ai-copilot-hub': 'WPS AI · Office Copilot',
           aipal: 'AIPal（网页 Copilot）',
-          'ai-writer': 'AI Writer',
-          'ai-writer-feature': 'AI Writer（功能页）',
-          'ai-text-generator': 'AI Text Generator / Smart Create · Edit',
+          'ai-writer-feature': 'AI Writer',
+          'ai-text-generator': 'AI Text Generator',
           'ai-summarizer': 'AI Summarizer',
           'ai-improve-writing': 'AI Improve Writing',
-          'ai-spell-check': 'AI Spell Check',
-          'ai-spell-check-alt': 'AI Spell Check（备用）',
-          'spell-check-feature': 'Spell Check（功能页）',
+          'spell-check-feature': 'Spell Check',
           'grammar-checker': 'Grammar Checker',
-          'ai-translator': 'AI Translator',
-          'ai-translator-feature': 'AI Translator（功能页）',
+          'ai-translator-feature': 'AI Translator',
           'document-translator': 'Document Translator',
           'ai-document-translator': 'AI Document Translator',
-          'extract-text-with-ai': 'Extract Text with AI（OCR）',
-          'data-analyst': 'Data Analyst（Copilot 总页）',
+          'extract-text-with-ai': 'Extract Text with AI',
           'ai-in-excel-spreadsheets': 'AI in Excel / Spreadsheets',
           'ai-excel-formula-generator': 'AI Excel Formula Generator',
           'ai-table-generator': 'AI Table Generator',
-          'jpg-to-excel': 'JPG to Excel（AI OCR 抽表）',
+          'jpg-to-excel': 'JPG to Excel',
           'ai-powerpoint-generator': 'AI PowerPoint Generator',
           'ai-ppt-maker': 'AI PPT Maker',
-          'free-presentation-maker': 'Free Presentation Maker（含 AI）',
+          'free-presentation-maker': 'Free Presentation Maker',
           'ai-translate-powerpoint': 'AI Translate PowerPoint',
           'slides-translator': 'AI Slides Translator',
-          'slides-designer': 'Slides Designer（总页）',
-          'chat-with-pdf': 'Chat with PDF',
-          'chat-pdf-feature': 'Chat PDF（功能页）',
-          'ai-pdf-summarizer': 'AI PDF Summarizer',
-          'pdf-summarizer-feature': 'PDF Summarizer（功能页）',
-          'ai-translate-pdf': 'AI Translate PDF',
-          'pdf-document-translation': 'PDF Document Translation（保版式）',
+          'chat-pdf-feature': 'Chat PDF',
+          'pdf-summarizer-feature': 'PDF Summarizer',
+          'pdf-document-translation': 'PDF Document Translation',
           'translate-scanned-pdf': 'Translate Scanned PDF',
-          'pdf-ocr': 'PDF OCR',
-          'pdf-ocr-feature': 'PDF OCR（功能页）',
+          'pdf-ocr-feature': 'PDF OCR',
           'convert-scanned-pdf-to-word': 'Convert Scanned PDF to Word',
-          'pdf-reader-extension': 'PDF Reader Extension（AI 摘要/翻译）',
-          'pdf-reader-extension-feature': 'PDF Reader Extension（功能页）',
-          'chrome-pdf-extension': 'Chrome PDF 扩展（含 AI 摘要/对照译）',
-          'ai-photo-editor': 'AI Photo Editor',
-          'ai-photo-editor-alt': 'AI Photo Editor（photo 路径）',
-          'ai-photo-editor-feature': 'AI Photo Editor（功能页）',
-          'ai-background-remover': 'AI Background Remover',
-          'ai-background-remover-feature': 'AI Background Remover（功能页）',
-          'ai-photo-enhancer': 'AI Photo Enhancer',
-          'photo-enhancer-feature': 'Photo Enhancer（功能页）',
-          'ai-image-upscaler': 'AI Image Upscaler',
-          'image-upscaler-feature': 'Image Upscaler（功能页）',
-          'ai-photo-restoration': 'AI Photo Restoration',
-          'ai-photo-restoration-feature': 'AI Photo Restoration（功能页）',
+          'pdf-reader-extension-feature': 'PDF Reader Extension',
+          'chrome-pdf-extension': 'Chrome PDF 扩展',
+          'ai-photo-editor-feature': 'AI Photo Editor',
+          'ai-background-remover-feature': 'AI Background Remover',
+          'photo-enhancer-feature': 'Photo Enhancer',
+          'image-upscaler-feature': 'Image Upscaler',
+          'ai-photo-restoration-feature': 'AI Photo Restoration',
           'ai-remove-object': 'AI Remove Object',
           'magic-eraser': 'Magic Eraser',
           'ai-remove-text': 'AI Remove Text from Image',
-          'extract-text-from-image': 'Extract Text from Image（OCR）',
+          'extract-text-from-image': 'Extract Text from Image',
           'image-watermark-remover': 'Image Watermark Remover',
-          'airpage-online-document-editor': 'Online Document Editor（含 AI 协作）',
-          'airpage-word-online': 'Word Online（实时协作）',
-          'airpage-ai-writer': 'AI Writer（AirPage 场景）',
-          'airpage-ai-writer-feature': 'AI Writer（功能页）',
-          'airpage-ai-text-generator': 'AI Text Generator',
-          'airpage-ai-summarizer': 'AI Summarizer',
-          'airpage-ai-improve-writing': 'AI Improve Writing / 改写',
-          'airpage-ai-spell-check': 'AI Spell Check',
-          'airpage-grammar-checker': 'Grammar Checker',
-          'airpage-ai-translator': 'AI Translator',
-          'airpage-ai-translator-feature': 'AI Translator（功能页）',
-          'airsheet-excel-online': 'Excel Online（AirSheet 协作）',
+          'airpage-online-document-editor': 'Online Document Editor',
+          'airpage-word-online': 'Word Online',
+          'airsheet-excel-online': 'Excel Online',
           'airsheet-online-excel-editor': 'Online Excel Sheet Editor',
-          'airsheet-ai-in-spreadsheets': 'AI in Excel / Spreadsheets',
-          'airsheet-ai-formula-generator': 'AI Excel Formula Generator',
-          'airsheet-ai-table-generator': 'AI Table Generator',
-          'airsheet-jpg-to-excel': 'JPG to Excel（AI OCR 抽表）',
-          'airsheet-data-analyst': 'Data Analyst（Copilot 总页）',
           'forms-online-form-builder': 'Online Form Builder',
           'forms-smart-form': 'Smart Form',
           'forms-survey-creator': 'Survey Creator',
           'forms-google-forms-alt': 'WPS Forms（Google Forms 替代）',
           'forms-fillable-forms': 'Free File Fillable Forms',
           'forms-create-fillable': 'Create Fillable Form',
-          'dbsheet-ai-table-generator': 'AI Table Generator',
-          'dbsheet-ai-in-spreadsheets': 'AI in Excel / Spreadsheets',
-          'dbsheet-excel-online': 'Excel Online（数据协作）',
-          'dbsheet-copilot': 'WPS AI · Office Copilot',
-          'dbsheet-aipal': 'AIPal（网页 Copilot）',
         },
       },
       updatedLabel: '更新于',
@@ -1251,7 +1206,7 @@ export const uiTextByLanguage = {
         {
           title: '6 亿月活跃用户',
           desc:
-            '全球 [6 亿月活跃用户](https://www.wps.com/about-us/)。金山办公 2026 年 3 月披露，WPS Office [全球月活跃设备数达 6.72 亿](https://ir.kingsoft.com/)。',
+            '全球 [6 亿月活跃用户](https://www.wps.com/about-us/)。金山办公 2026 年 3 月披露，WPS Office [全球月活跃设备数达 6.72 亿](https://www.wps.com/about-us/)。',
         },
         {
           title: '220+ 国家与地区',
@@ -1284,7 +1239,7 @@ export const uiTextByLanguage = {
             {
               question: 'WPS Office 可以免费下载吗？',
               answer:
-                '可以。[WPS Standard 免费方案](https://www.wps.com/pricing/)无需信用卡，含核心文字/表格/演示/PDF、1 GB WPS 云空间、基础 PDF 与 47 种文件格式、46 种语言。进阶 PDF 转换、20 GB 云空间与更高 AI 额度在 [WPS Pro+](https://www.wps.com/pricing/) 等付费方案中提供。',
+                '可以。[WPS Standard 免费方案](https://www.wps.com/buy/)无需信用卡，含核心文字/表格/演示/PDF、1 GB WPS 云空间、基础 PDF 与 47 种文件格式、46 种语言。进阶 PDF 转换、20 GB 云空间与更高 AI 额度在 [WPS Pro+](https://www.wps.com/buy/) 等付费方案中提供。',
             },
             {
               question: 'Windows 10 / Windows 11 在哪里下载 WPS Office？',
@@ -1330,7 +1285,7 @@ export const uiTextByLanguage = {
             {
               question: 'WPS 在线版免费吗？',
               answer:
-                '[WPS Cloud 在线办公](https://drive.wps.com/) 的核心浏览器编辑免费使用。登录 WPS 账号即可保存与同步；若需 20 GB 云空间（免费 Standard 为 1 GB）及进阶 PDF/AI 能力，可选购 [WPS Pro+](https://www.wps.com/pricing/) 等付费方案。',
+                '[WPS Cloud 在线办公](https://drive.wps.com/) 的核心浏览器编辑免费使用。登录 WPS 账号即可保存与同步；若需 20 GB 云空间（免费 Standard 为 1 GB）及进阶 PDF/AI 能力，可选购 [WPS Pro+](https://www.wps.com/buy/) 等付费方案。',
             },
           ],
         },
@@ -1341,12 +1296,12 @@ export const uiTextByLanguage = {
             {
               question: 'WPS 怎么把 PDF 转成 Word（pdf to word）？',
               answer:
-                '电脑版：在 WPS 中打开 PDF →「工具」选项卡 → PDF 转 Word → 设置页码范围与语言 → 点击「开始」（[WPS Academy 教程](https://www.wps.com/academy/quickly-convert-pdf-to-editable-word-in-wps-office-quick-tutorials-1863094/)）。[WPS 帮助中心](https://help.wps.com/articles/pdf-to-word-converter-qanda) 说明 5 页以内 PDF 可免费转换，更长文档可能需要 [WPS Pro+](https://www.wps.com/pricing/)。在线版：使用 [免费 PDF 转 Word 工具](https://pdf.wps.com/convert-pdf-to-word/) → 选择文件或拖拽上传 → 转换完成后 Download 下载 Word 文件。',
+                '电脑版：在 WPS 中打开 PDF →「工具」选项卡 → PDF 转 Word → 设置页码范围与语言 → 点击「开始」（[WPS Academy 教程](https://www.wps.com/academy/quickly-convert-pdf-to-editable-word-in-wps-office-quick-tutorials-1863094/)）。[WPS 帮助中心](https://help.wps.com/articles/pdf-to-word-converter-qanda) 说明 5 页以内 PDF 可免费转换，更长文档可能需要 [WPS Pro+](https://www.wps.com/buy/)。在线版：使用 [免费 PDF 转 Word 工具](https://pdf.wps.com/convert-pdf-to-word/) → 选择文件或拖拽上传 → 转换完成后 Download 下载 Word 文件。',
             },
             {
               question: '什么是 WPS PDF 编辑器，如何编辑 PDF？',
               answer:
-                'WPS PDF 是 WPS Office 内置 PDF 模块，支持阅读、批注及在支持的方案下编辑文本/图片。[WPS Pro+ 定价页](https://www.wps.com/pricing/) 列出 PDF 转 Word/Excel/PPT、图片转 PDF 等进阶转换与编辑能力；免费 Standard 含基础 PDF 阅读与常用功能。',
+                'WPS PDF 是 WPS Office 内置 PDF 模块，支持阅读、批注及在支持的方案下编辑文本/图片。[WPS Pro+ 定价页](https://www.wps.com/buy/) 列出 PDF 转 Word/Excel/PPT、图片转 PDF 等进阶转换与编辑能力；免费 Standard 含基础 PDF 阅读与常用功能。',
             },
             {
               question: 'WPS 如何把 Word 转成 PDF（word to pdf）？',
@@ -1361,7 +1316,7 @@ export const uiTextByLanguage = {
             {
               question: 'WPS PDF 能合并、压缩、签名 PDF 吗？',
               answer:
-                '可以。在桌面 WPS PDF 中进行合并、拆分、压缩、保护与签名；进阶转换/编辑见 [WPS Pro+ 功能对比](https://www.wps.com/pricing/)。快速在线压缩可使用 [WPS 下载页 Online Tools](https://www.wps.com/download/) 中的 Compress PDF 工具。',
+                '可以。在桌面 WPS PDF 中进行合并、拆分、压缩、保护与签名；进阶转换/编辑见 [WPS Pro+ 功能对比](https://www.wps.com/buy/)。快速在线压缩可使用 [WPS 下载页 Online Tools](https://www.wps.com/download/) 中的 Compress PDF 工具。',
             },
           ],
         },
@@ -1382,12 +1337,12 @@ export const uiTextByLanguage = {
             {
               question: '什么是 WPS 365，与免费版有何区别？',
               answer:
-                'WPS 365 是金山云连接办公体验（[WPS 在线版](https://drive.wps.com/) + 多设备同步）。免费 [WPS Standard](https://www.wps.com/pricing/) 含桌面/移动应用与 1 GB 云空间。付费 [WPS Pro+](https://www.wps.com/pricing/)（定价页约 $5.83/月起）提供 20 GB 云空间、进阶 PDF 转换/编辑、premium 模板与更高 AI 日限额。',
+                'WPS 365 是金山云连接办公体验（[WPS 在线版](https://drive.wps.com/) + 多设备同步）。免费 [WPS Standard](https://www.wps.com/buy/) 含桌面/移动应用与 1 GB 云空间。付费 [WPS Pro+](https://www.wps.com/buy/)（定价页约 $5.83/月起）提供 20 GB 云空间、进阶 PDF 转换/编辑、premium 模板与更高 AI 日限额。',
             },
             {
               question: 'WPS Office 免费吗，是否需要订阅？',
               answer:
-                '[WPS Standard](https://www.wps.com/pricing/) 可免费下载使用，涵盖日常文字/表格/演示与基础 PDF，无需信用卡。若需多页 PDF 转换、每用户 20 GB 云空间或进阶 AI/PDF 工具，可选购 [WPS Pro+](https://www.wps.com/pricing/) 或 Sharing Plan，非安装与打开文件的必要条件。',
+                '[WPS Standard](https://www.wps.com/buy/) 可免费下载使用，涵盖日常文字/表格/演示与基础 PDF，无需信用卡。若需多页 PDF 转换、每用户 20 GB 云空间或进阶 AI/PDF 工具，可选购 [WPS Pro+](https://www.wps.com/buy/) 或 Sharing Plan，非安装与打开文件的必要条件。',
             },
             {
               question: '下载后如何安装 WPS Office？',
@@ -1403,12 +1358,12 @@ export const uiTextByLanguage = {
             {
               question: 'WPS Office 能否替代 Microsoft Office 免费下载？',
               answer:
-                '可以。[WPS Office 免费下载](https://www.wps.com/download/) 包含文字（Word）、表格（Excel）、演示（PowerPoint）与 PDF，是常见的 Microsoft Office free download 替代方案。官网 [下载 FAQ](https://www.wps.com/download/) 与 [定价页](https://www.wps.com/pricing/) 均说明与 .docx、.xlsx、.pptx 高度兼容。',
+                '可以。[WPS Office 免费下载](https://www.wps.com/download/) 包含文字（Word）、表格（Excel）、演示（PowerPoint）与 PDF，是常见的 Microsoft Office free download 替代方案。官网 [下载 FAQ](https://www.wps.com/download/) 与 [定价页](https://www.wps.com/buy/) 均说明与 .docx、.xlsx、.pptx 高度兼容。',
             },
             {
               question: 'WPS Office 能打开 Microsoft Word、Excel、PPT 文件吗？',
               answer:
-                '可以。[WPS 官方下载 FAQ](https://www.wps.com/download/) 确认可打开、编辑并保存 .docx、.xlsx、.pptx 等 Microsoft Office 格式且尽量保持版式。[WPS 定价页](https://www.wps.com/pricing/) 的 WPS Standard 亦标注「100% Compatible with Microsoft File Formats」。',
+                '可以。[WPS 官方下载 FAQ](https://www.wps.com/download/) 确认可打开、编辑并保存 .docx、.xlsx、.pptx 等 Microsoft Office 格式且尽量保持版式。[WPS 定价页](https://www.wps.com/buy/) 的 WPS Standard 亦标注「100% Compatible with Microsoft File Formats」。',
             },
             {
               question: '什么是 WPS Writer（WPS Word）？',
@@ -1423,7 +1378,7 @@ export const uiTextByLanguage = {
             {
               question: 'WPS 能否替代 Word、Excel、PowerPoint 日常办公？',
               answer:
-                '日常文档、表格、演示与 PDF 工作，WPS 文字、表格、演示与 WPS PDF 可覆盖 Word/Excel/PowerPoint 核心场景，支持 PC、Mac、Linux、移动与浏览器，免费 [WPS Standard](https://www.wps.com/pricing/) 可用，进阶能力见 [WPS Pro+](https://www.wps.com/pricing/)。',
+                '日常文档、表格、演示与 PDF 工作，WPS 文字、表格、演示与 WPS PDF 可覆盖 Word/Excel/PowerPoint 核心场景，支持 PC、Mac、Linux、移动与浏览器，免费 [WPS Standard](https://www.wps.com/buy/) 可用，进阶能力见 [WPS Pro+](https://www.wps.com/buy/)。',
             },
           ],
         },
@@ -1490,11 +1445,13 @@ export const uiTextByLanguage = {
       free: '免费',
     },
     allProducts: {
-      title: '所有产品与工具',
-      desc: '探索我们完整的 AI 驱动办公工具套件。',
+      title: '免费 AI 工具',
+      desc: 'AI 写作、表格、演示、PDF 工具等。',
       catalogBadge: '产品目录',
-      viewByCategory: '按分类查看',
-      viewAZ: '按 A-Z 查看',
+      viewByCategory: '分类',
+      viewAZ: 'A–Z',
+      tabsAriaLabel: '产品分类',
+      viewModeAriaLabel: '目录视图',
     },
     worldwide: {
       badge: '全球语言地图',

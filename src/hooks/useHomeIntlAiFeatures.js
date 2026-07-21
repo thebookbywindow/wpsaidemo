@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import {
   INTL_AI_COPILOT_LINKS,
   INTL_AI_FEATURE_GROUPS,
+  getIntlAiTabIconSrc,
   resolveIntlAiFeatureItem,
 } from '../data/intlAiFeatures'
 
@@ -25,6 +26,7 @@ export function useHomeIntlAiFeatures(copy) {
     const copilotGroup = {
       id: INTL_AI_COPILOT_GROUP_ID,
       title: groupLabels.copilot ?? copy.copilotLabel ?? 'Office Copilot',
+      iconSrc: getIntlAiTabIconSrc(INTL_AI_COPILOT_GROUP_ID),
       note: notes.copilotNote ?? null,
       items: INTL_AI_COPILOT_LINKS.map((item) =>
         resolveIntlAiFeatureItem(item, itemLabels, itemDescriptions),
@@ -34,6 +36,7 @@ export function useHomeIntlAiFeatures(copy) {
     const componentGroups = INTL_AI_FEATURE_GROUPS.map((group) => ({
       id: group.id,
       title: groupLabels[group.id] ?? group.id,
+      iconSrc: getIntlAiTabIconSrc(group.id),
       note: group.noteId ? notes[group.noteId] ?? null : null,
       items: group.items.map((item) =>
         resolveIntlAiFeatureItem(item, itemLabels, itemDescriptions),

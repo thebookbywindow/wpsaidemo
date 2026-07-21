@@ -1,6 +1,7 @@
 import { Fragment, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import DocsCenterPage from './components/DocsCenterPage'
 import HomePage from './components/HomePage'
+import AllProductsPage from './components/AllProductsPage'
 import IntlAiFeaturesPage from './components/IntlAiFeaturesPage'
 import {
   encyclopediaEntriesByLocale,
@@ -26,11 +27,18 @@ import {
 } from './data/siteLocaleData'
 import { translateOfflinePhrase } from './data/offlinePhraseTranslations'
 import {
+  resolveResourcesHeaderMegaMenu,
+} from './data/resourcesHeaderMegaMenu.js'
+import {
   resolveWpsFeaturesHeaderMegaMenu,
 } from './data/wpsFeaturesHeaderMegaMenu.js'
 import { uiTextByLanguage } from './data/uiText'
 import { resolveWorldwideText } from './data/worldwideText'
-import { getLocaleDocsPath } from './utils/docsRoute'
+import {
+  getLocaleDocsPath,
+  parseDocsRoute,
+  requestDocsCenterScrollToSection,
+} from './utils/docsRoute'
 import { ensureTrailingSlash, joinPath } from './utils/pathUrl'
 import { normalizeLocaleCode, toUrlLocale } from './utils/localeUrl'
 
@@ -2014,7 +2022,6 @@ function App() {
   const [isOverflowMenuOpen, setIsOverflowMenuOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [visibleDesktopNavCount, setVisibleDesktopNavCount] = useState(0)
-  const [allProductsTab, setAllProductsTab] = useState('category')
   const [allTemplatesTab, setAllTemplatesTab] = useState('category')
   const [activeGuideCategory, setActiveGuideCategory] = useState('all')
   const [activeTemplateFilter, setActiveTemplateFilter] = useState('All')
@@ -2461,40 +2468,6 @@ function App() {
         .filter(Boolean),
     }))
   }, [localizedWorldwideGroups])
-
-  const allProductsAlphabetGroups = useMemo(() => {
-    const deduped = new Map()
-    localizedAllProductsSections.forEach((section) => {
-      section.items.forEach((item) => {
-        if (!deduped.has(item.name)) {
-          deduped.set(item.name, item)
-        }
-      })
-    })
-
-    const groups = new Map()
-    deduped.forEach((item) => {
-      const firstChar = item.name.trim().charAt(0).toUpperCase()
-      const letter = /^[A-Z]$/.test(firstChar) ? firstChar : '#'
-      if (!groups.has(letter)) {
-        groups.set(letter, [])
-      }
-      groups.get(letter).push(item)
-    })
-
-    return Array.from(groups.entries())
-      .sort(([a], [b]) => {
-        if (a === '#') return 1
-        if (b === '#') return -1
-        return a.localeCompare(b)
-      })
-      .map(([letter, items]) => ({
-        letter,
-        items: items.sort((a, b) =>
-          a.name.localeCompare(b.name, 'en', { sensitivity: 'base' }),
-        ),
-      }))
-  }, [localizedAllProductsSections])
 
   const allTemplatesSections = useMemo(
     () =>
@@ -3031,25 +3004,33 @@ function App() {
       uiText.nav.templates,
     ],
   )
+  const resourcesHeaderMegaMenu = useMemo(
+    () => resolveResourcesHeaderMegaMenu(uiText.nav.resourcesMega),
+    [uiText.nav.resourcesMega],
+  )
+  const currentDocsRoute = useMemo(
+    () => parseDocsRoute(currentPathname),
+    [currentPathname],
+  )
   const headerResourceNavLinks = useMemo(
     () => [
-      { key: 'templates', label: uiText.nav.templates, path: localeAllTemplatesPath },
-      { key: 'guides', label: uiText.nav.guides, path: localeGuidesPath },
-      { key: 'blog', label: uiText.nav.blog, path: localeBlogPath },
-      { key: 'encyclopedia', label: uiText.nav.encyclopedia, path: localeEncyclopediaPath },
-      { key: 'answers', label: uiText.nav.qa, path: localeAnswersPath },
+      {
+        key: 'docs',
+        label: resourcesHeaderMegaMenu.docsCenter.title,
+        path: localeDocsPath,
+      },
+      ...resourcesHeaderMegaMenu.coreApps.map((app) => ({
+        key: app.key,
+        label: app.label,
+        path: getLocaleDocsPath(currentLocale, app.sectionSlug),
+        iconSrc: app.iconSrc,
+      })),
     ],
     [
-      localeAllTemplatesPath,
-      localeAnswersPath,
-      localeBlogPath,
-      localeEncyclopediaPath,
-      localeGuidesPath,
-      uiText.nav.blog,
-      uiText.nav.encyclopedia,
-      uiText.nav.guides,
-      uiText.nav.qa,
-      uiText.nav.templates,
+      currentLocale,
+      localeDocsPath,
+      resourcesHeaderMegaMenu.coreApps,
+      resourcesHeaderMegaMenu.docsCenter.title,
     ],
   )
   const footerCompanyLinks = useMemo(
@@ -3073,37 +3054,46 @@ function App() {
   const { normalizedSegments: currentSegments } = splitPath(currentPathname)
   const currentContentRoot = currentSegments[0] ?? ''
   const isResourcesNavActive = useMemo(
-    () =>
-      isTemplatesPage
-      || pageType === 'all-templates'
-      || currentContentRoot === 'guides'
-      || currentContentRoot === 'blog'
-      || currentContentRoot === 'academy'
-      || currentContentRoot === 'encyclopedia'
-      || pageType === 'answers'
-      || pageType === 'answers-forum',
-    [currentContentRoot, isTemplatesPage, pageType],
+    () => currentContentRoot === 'docs',
+    [currentContentRoot],
   )
   const isHeaderResourceLinkCurrent = useCallback(
     (key) => {
-      if (key === 'templates') {
-        return isTemplatesPage || pageType === 'all-templates'
+      if (currentContentRoot !== 'docs') return false
+      if (key === 'docs') {
+        return !currentDocsRoute.sectionSlug
       }
-      if (key === 'guides') {
-        return currentContentRoot === 'guides'
-      }
-      if (key === 'blog') {
-        return currentContentRoot === 'blog'
-      }
-      if (key === 'encyclopedia') {
-        return currentContentRoot === 'encyclopedia' || currentContentRoot === 'academy'
-      }
-      if (key === 'answers') {
-        return pageType === 'answers' || pageType === 'answers-forum'
-      }
-      return false
+      return currentDocsRoute.sectionSlug === key
     },
-    [currentContentRoot, isTemplatesPage, pageType],
+    [currentContentRoot, currentDocsRoute.sectionSlug],
+  )
+  const navigateToDocsSection = useCallback(
+    (sectionSlug) => {
+      const slug = `${sectionSlug ?? ''}`.trim()
+      if (!slug) {
+        navigateTo(getLocaleDocsPath(currentLocale), { scrollToTop: true })
+        return
+      }
+
+      const targetPath = getLocaleDocsPath(currentLocale, slug)
+      const alreadyOnSection =
+        currentContentRoot === 'docs'
+        && currentDocsRoute.sectionSlug === slug
+        && !currentDocsRoute.itemSlug
+        && !currentDocsRoute.blockSlug
+
+      navigateTo(targetPath, { scrollToTop: false })
+      if (alreadyOnSection) {
+        requestDocsCenterScrollToSection(slug)
+      }
+    },
+    [
+      currentContentRoot,
+      currentDocsRoute.blockSlug,
+      currentDocsRoute.itemSlug,
+      currentDocsRoute.sectionSlug,
+      currentLocale,
+    ],
   )
   const desktopOverflowMenuAriaLabel = isZhContent ? '更多导航' : localizeString('More navigation')
   const mobileMenuButtonAriaLabel = isMobileMenuOpen ? uiText.nav.closeMenu : uiText.nav.menu
@@ -3124,30 +3114,20 @@ function App() {
         isCurrent: isProductsPage,
       },
       {
-        key: 'docs',
-        type: 'link',
-        label: uiText.nav.docsCenter,
-        path: localeDocsPath,
-        isCurrent: currentContentRoot === 'docs',
-      },
-      {
         key: 'resources',
         type: 'resources',
         label: uiText.nav.resources,
-        path: localeGuidesPath,
+        path: localeDocsPath,
         isCurrent: isResourcesNavActive,
       },
     ],
     [
-      currentContentRoot,
       isProductsPage,
       isResourcesNavActive,
       localeAiFeaturesPath,
       localeAllProductsPath,
       localeDocsPath,
-      localeGuidesPath,
       pageType,
-      uiText.nav.docsCenter,
       uiText.nav.freeAiTools,
       uiText.nav.resources,
       uiText.nav.wpsFeatures,
@@ -3516,98 +3496,39 @@ function App() {
             >
               <div className="mx-auto w-full max-w-[1200px]">
                 <div className="home-nav-wps-features-mega home-nav-mega-grid grid w-full">
-                  <section className="home-nav-wps-features-mega-column home-nav-mega-card min-w-0">
-                    <div className="flex items-center gap-2.5">
-                      <span
-                        className="home-nav-wps-features-ai-badge inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-[6px] text-[11px] font-bold text-white"
-                        aria-hidden="true"
-                      >
-                        AI
-                      </span>
-                      <h3 className="text-[16px] font-semibold leading-tight text-[#261f38]">
-                        {wpsFeaturesHeaderMegaMenu.aiFeatures.title}
-                      </h3>
-                    </div>
-                    <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-0">
-                      {wpsFeaturesHeaderMegaMenu.aiFeatures.linkColumns.map((column, columnIndex) => (
-                        <div
-                          key={`wps-features-ai-col-${columnIndex}`}
-                          className="flex min-w-0 flex-col gap-0.5"
-                        >
-                          {column.map((linkItem) => (
-                            <a
-                              key={linkItem.id}
-                              href={linkItem.url}
-                              className="home-nav-mega-link truncate text-[13px]"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={() => setIsWpsFeaturesMenuOpen(false)}
-                            >
-                              {linkItem.label}
-                            </a>
-                          ))}
-                        </div>
-                      ))}
-                    </div>
-                  </section>
-
-                  <section className="home-nav-wps-features-mega-column home-nav-mega-card min-w-0">
-                    <div className="flex items-center gap-2.5">
-                      <span
-                        className="home-nav-wps-features-suite-icon inline-flex h-7 w-7 shrink-0 items-center justify-center"
-                        aria-hidden="true"
-                      >
-                        <img src="/icons/wps/docs.svg" alt="" className="h-5 w-5" />
-                      </span>
-                      <h3 className="text-[16px] font-semibold leading-tight text-[#261f38]">
-                        {wpsFeaturesHeaderMegaMenu.officeFeatures.title}
-                      </h3>
-                    </div>
-                    <div className="mt-4 flex flex-col gap-0.5">
-                      {wpsFeaturesHeaderMegaMenu.officeFeatures.items.map((linkItem) => (
-                        <a
-                          key={linkItem.id}
-                          href={linkItem.url}
-                          className="home-nav-mega-link truncate text-[13px]"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={() => setIsWpsFeaturesMenuOpen(false)}
-                        >
-                          {linkItem.label}
-                        </a>
-                      ))}
-                    </div>
-                  </section>
-
-                  <section className="home-nav-wps-features-mega-column home-nav-mega-card min-w-0">
-                    <div className="flex items-center gap-2.5">
-                      <span
-                        className="home-nav-wps-features-audience-icon inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-[6px] bg-[#f3edff] text-[#8f5bff]"
-                        aria-hidden="true"
-                      >
-                        <svg className="h-4 w-4" viewBox="0 0 16 16" fill="currentColor">
-                          <path d="M8 8a2.667 2.667 0 1 0 0-5.333A2.667 2.667 0 0 0 8 8Zm0 1.333c-2.667 0-5.333 1.333-5.333 3.334V14h10.666v-1.333c0-2.001-2.666-3.334-5.333-3.334Z" />
-                        </svg>
-                      </span>
-                      <h3 className="text-[16px] font-semibold leading-tight text-[#261f38]">
-                        {wpsFeaturesHeaderMegaMenu.audienceFeatures.title}
-                      </h3>
-                    </div>
-                    <div className="mt-4 flex flex-col gap-0.5">
-                      {wpsFeaturesHeaderMegaMenu.audienceFeatures.items.map((linkItem) => (
-                        <a
-                          key={linkItem.id}
-                          href={linkItem.url}
-                          className="home-nav-mega-link truncate text-[13px]"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={() => setIsWpsFeaturesMenuOpen(false)}
-                        >
-                          {linkItem.label}
-                        </a>
-                      ))}
-                    </div>
-                  </section>
+                  {wpsFeaturesHeaderMegaMenu.groups.map((group) => (
+                    <section
+                      key={group.id}
+                      className="home-nav-wps-features-mega-column home-nav-mega-card min-w-0"
+                    >
+                      <div className="flex items-center gap-2">
+                        {group.iconSrc ? (
+                          <img
+                            className="h-4 w-4 shrink-0"
+                            src={group.iconSrc}
+                            alt=""
+                            draggable={false}
+                            decoding="async"
+                          />
+                        ) : null}
+                        <h4 className="text-[13px] font-semibold text-[#261f38]">{group.title}</h4>
+                      </div>
+                      <div className="mt-2.5 flex flex-col gap-0.5">
+                        {group.items.map((linkItem) => (
+                          <a
+                            key={linkItem.id}
+                            href={linkItem.url}
+                            className="home-nav-mega-link truncate text-[13px]"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => setIsWpsFeaturesMenuOpen(false)}
+                          >
+                            {linkItem.label}
+                          </a>
+                        ))}
+                      </div>
+                    </section>
+                  ))}
                 </div>
                 <div className="flex justify-end px-[18px] pb-4">
                   <a
@@ -3798,30 +3719,63 @@ function App() {
 
           {isResourcesMenuOpen && (
             <div
-              className="home-nav-floating-panel absolute left-1/2 top-full z-[100] hidden w-[210px] -translate-x-1/2 p-2.5 md:block"
+              className="fixed inset-x-0 top-[59px] z-[100] home-nav-mega-panel"
               onMouseEnter={() => openDesktopMenu('resources')}
               onMouseLeave={() => scheduleDesktopMenuClose('resources')}
             >
-              {headerResourceNavLinks.map((resourceLink, index) => {
-                const isSubCurrent = isHeaderResourceLinkCurrent(resourceLink.key)
-                return (
-                  <a
-                    key={resourceLink.key}
-                    className={`${index === 0 ? '' : 'mt-1 '}flex px-3 py-2 text-[13px] transition ${
-                      isSubCurrent
-                        ? 'rounded-[12px] bg-[linear-gradient(135deg,rgba(255,255,255,0.96)_0%,rgba(244,236,255,0.96)_100%)] text-[#8f5bff] shadow-[inset_0_1px_0_rgba(255,255,255,0.92)]'
-                        : 'home-nav-floating-item'
-                    }`}
-                    href={resourceLink.path}
-                    onClick={(event) => {
-                      event.preventDefault()
-                      navigateTo(resourceLink.path)
-                    }}
-                  >
-                    {resourceLink.label}
-                  </a>
-                )
-              })}
+              <div className="mx-auto w-full max-w-[1200px]">
+                <div className="home-nav-resources-mega home-nav-mega-grid grid w-full">
+                  <section className="home-nav-resources-mega-hub home-nav-mega-card min-w-0">
+                    <a
+                      href={localeDocsPath}
+                      className={`home-nav-resources-hub-link${
+                        isHeaderResourceLinkCurrent('docs') ? ' is-current' : ''
+                      }`}
+                      onClick={(event) => {
+                        event.preventDefault()
+                        navigateTo(localeDocsPath)
+                      }}
+                    >
+                      <span className="home-nav-resources-hub-badge" aria-hidden="true">
+                        <img src="/icons/wps/mega-features.png" alt="" />
+                      </span>
+                      <span className="home-nav-resources-hub-title">
+                        {resourcesHeaderMegaMenu.docsCenter.title}
+                      </span>
+                    </a>
+                    <div className="home-nav-resources-apps-list">
+                      {resourcesHeaderMegaMenu.coreApps.map((app) => {
+                        const targetPath = getLocaleDocsPath(currentLocale, app.sectionSlug)
+                        const isCurrent = isHeaderResourceLinkCurrent(app.key)
+                        return (
+                          <a
+                            key={app.key}
+                            href={targetPath}
+                            className={`home-nav-mega-link home-nav-resources-app-link truncate text-[13px]${
+                              isCurrent ? ' is-current' : ''
+                            }`}
+                            onClick={(event) => {
+                              event.preventDefault()
+                              navigateToDocsSection(app.sectionSlug)
+                            }}
+                          >
+                            {app.iconSrc ? (
+                              <img
+                                className="home-nav-resources-app-icon"
+                                src={app.iconSrc}
+                                alt=""
+                                draggable={false}
+                                decoding="async"
+                              />
+                            ) : null}
+                            <span>{app.label}</span>
+                          </a>
+                        )
+                      })}
+                    </div>
+                  </section>
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -3949,7 +3903,10 @@ function App() {
   }
 
   const isDesktopMegaMenuOpen =
-    isProductsMenuOpen || isWpsFeaturesMenuOpen || isTemplatesMenuOpen
+    isProductsMenuOpen
+    || isWpsFeaturesMenuOpen
+    || isResourcesMenuOpen
+    || isTemplatesMenuOpen
 
   return (
     <div className="home-figma-page min-h-screen overflow-x-clip text-[#1a202c]">
@@ -3965,25 +3922,19 @@ function App() {
                 navigateTo(localeHomePath)
               }}
             >
-              <svg
-                width="93"
-                height="24"
-                viewBox="0 0 93 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+              <img
+                className="home-page-header-logo"
+                src="/icons/wps/copilot.svg"
+                alt=""
+                width={28}
+                height={28}
+                draggable={false}
+                decoding="async"
                 aria-hidden="true"
-              >
-                <path
-                  d="M15.3541 1.62434L15.6535 2.32936C15.6817 2.39582 15.6818 2.47088 15.6537 2.53739L13.9407 6.59147C13.8493 6.80773 13.5432 6.8089 13.4502 6.59334L12.4005 4.161C12.3583 4.06328 12.262 4 12.1556 4H4.76417C4.57392 4 4.44487 4.19351 4.51799 4.36915L10.4187 18.5433C10.5097 18.762 10.8195 18.7622 10.9109 18.5436L17.9794 1.63798C18.3943 0.645877 19.3644 0 20.4397 0H30.6694C32.571 0 33.8615 1.93328 33.1322 3.68939L25.4145 22.2739C24.9805 23.3189 23.9601 24 22.8286 24H22.5676C21.4356 24 20.4149 23.3184 19.9812 22.2727L17.7399 16.8686C17.7128 16.8033 17.7128 16.73 17.7397 16.6647L19.4213 12.589C19.5116 12.3702 19.8208 12.3687 19.9133 12.5865L22.4176 18.4856C22.5098 18.7026 22.8176 18.7021 22.9089 18.4847L28.8421 4.37C28.916 4.19425 28.7869 4 28.5963 4H21.2088C21.1011 4 21.004 4.06473 20.9626 4.1641L13.4156 22.2769C12.9808 23.3203 11.9613 24 10.831 24H10.5619C9.43276 24 8.4141 23.3218 7.97858 22.28L0.209113 3.69522C-0.525361 1.93834 0.765209 0 2.66944 0H12.8996C13.9695 0 14.9359 0.639506 15.3541 1.62434Z"
-                  fill="black"
-                />
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M50.1393 13.1765C50.2962 13.0197 50.5129 12.9227 50.7522 12.9227C51.0081 12.9227 51.2381 13.0335 51.3967 13.2097L51.3968 13.2079L54.5341 16.3442L54.5343 5.0669C54.5343 4.47767 55.0119 4 55.6012 4C56.1904 4 56.6681 4.47767 56.6681 5.0669V18.9331C56.6681 19.5223 56.1904 20 55.6012 20C55.2552 20 54.9477 19.8353 54.7528 19.5801L49.2426 14.0707L50.1393 13.1765ZM43.7055 18.4718L43.7085 18.4753L42.5367 19.6481C42.4966 19.6882 42.4542 19.7244 42.4098 19.7567C42.2253 19.9087 41.989 20 41.7315 20C41.1422 20 40.6646 19.5223 40.6646 18.9331V5.0669C40.6646 4.47767 41.1422 4 41.7315 4C42.3207 4 42.7984 4.47767 42.7984 5.0669L42.7975 16.3702L47.9119 11.2571C48.1234 11.0456 48.4017 10.9415 48.6789 10.9447C48.9564 10.9415 49.2346 11.0456 49.4461 11.2571L50.359 12.1695C50.0711 12.239 49.7982 12.3861 49.5735 12.6108L43.7055 18.4718ZM61.4691 18.9331C61.4691 19.5223 60.9915 20 60.4022 20C59.813 20 59.3353 19.5223 59.3353 18.9331V12.8C59.3353 11.6218 60.2905 10.6667 61.4687 10.6667L61.8038 10.6666C61.5928 10.969 61.4691 11.3367 61.4691 11.7333V18.9331ZM70.9379 4C73.3685 4 75.3388 5.96995 75.3388 8.4C75.3388 10.8301 73.3685 12.8 70.9379 12.8L62.2685 12.7996L62.2693 11.7333C62.2693 11.1835 62.6854 10.7308 63.22 10.6729L63.3362 10.6667H70.9379C72.19 10.6667 73.205 9.65184 73.205 8.4C73.205 7.16254 72.2132 6.15669 70.981 6.13373L60.402 6.13333C59.8129 6.13333 59.3353 5.65577 59.3353 5.06667C59.3353 4.47756 59.8129 4 60.402 4H70.9379ZM88.0169 10.9319L88.1417 10.9333C90.6459 10.9333 92.676 12.963 92.676 15.4667C92.676 17.9704 90.6459 20 88.1417 20H77.7391C77.15 20 76.6725 19.5224 76.6725 18.9333C76.6725 18.3442 77.15 17.8667 77.7391 17.8667H88.1417C89.4527 17.8667 90.5183 16.8159 90.5418 15.5108L90.5422 15.4667L90.5382 15.2572C90.4676 13.4298 89.4773 11.8381 88.0169 10.9319ZM91.6093 4C92.1984 4 92.676 4.47756 92.676 5.06667C92.676 5.65577 92.1984 6.13333 91.6093 6.13333H81.2068C79.8958 6.13333 78.8302 7.1841 78.8067 8.48924L78.8063 8.53333C78.8063 9.84409 79.8573 10.9094 81.1627 10.9329L85.2077 10.9333C86.931 10.9333 88.4298 11.8945 89.197 13.3099C88.8905 13.1603 88.5479 13.0736 88.1858 13.0671L81.2068 13.0667C78.7026 13.0667 76.6725 11.037 76.6725 8.53333C76.6725 6.02964 78.7026 4 81.2068 4H91.6093Z"
-                  fill="black"
-                />
-              </svg>
+              />
+              <span className="home-page-header-brand-name" aria-hidden="true">
+                WPS AI
+              </span>
             </a>
           </div>
           <nav
@@ -4241,7 +4192,7 @@ function App() {
                         {headerResourceNavLinks.map((resourceLink) => (
                           <a
                             key={`mobile-resource-${resourceLink.key}`}
-                            className={`rounded-[8px] px-3 py-2 text-[14px] transition ${
+                            className={`inline-flex items-center gap-2 rounded-[8px] px-3 py-2 text-[14px] transition ${
                               isHeaderResourceLinkCurrent(resourceLink.key)
                                 ? 'bg-[#f6f5ff] font-medium text-[#534ab7]'
                                 : 'text-[#64748b] hover:bg-[#f6f5ff] hover:text-[#1a202c]'
@@ -4250,9 +4201,22 @@ function App() {
                             onClick={(event) => {
                               event.preventDefault()
                               setIsMobileMenuOpen(false)
-                              navigateTo(resourceLink.path)
+                              if (resourceLink.key === 'docs') {
+                                navigateTo(resourceLink.path)
+                                return
+                              }
+                              navigateToDocsSection(resourceLink.key)
                             }}
                           >
+                            {resourceLink.iconSrc ? (
+                              <img
+                                src={resourceLink.iconSrc}
+                                alt=""
+                                className="h-4 w-4 shrink-0"
+                                draggable={false}
+                                decoding="async"
+                              />
+                            ) : null}
                             {resourceLink.label}
                           </a>
                         ))}
@@ -4322,11 +4286,7 @@ function App() {
             contentLanguage={contentLanguage}
           />
         ) : pageType === 'ai-features' ? (
-          <IntlAiFeaturesPage
-            copy={uiText.home.intlAiFeatures}
-            localeHomePath={localeHomePath}
-            navigateTo={navigateTo}
-          />
+          <IntlAiFeaturesPage copy={uiText.home.intlAiFeatures} />
         ) : pageType === 'docs-center' ? (
           <DocsCenterPage
             currentLocale={currentLocale}
@@ -5611,124 +5571,12 @@ function App() {
             </section>
           </div>
         ) : pageType === 'all-products' ? (
-          <div className="bg-transparent">
-            <section className="site-page-hero site-page-hero--aurora px-6 py-14">
-              <div className="mx-auto w-full max-w-[1160px] text-center">
-                <p className="mx-auto inline-flex rounded-[20px] bg-[#cecbf6] px-3 py-1 text-[12px] font-semibold text-[#3c3489]">
-                  {uiText.allProducts.catalogBadge}
-                </p>
-                <h1 className="mt-4 text-[clamp(30px,4.5vw,48px)] font-extrabold tracking-[-0.03em] text-[#1a202c]">
-                  {uiText.allProducts.title}
-                </h1>
-                <p className="mx-auto mt-3 max-w-[860px] text-[15px] leading-7 text-[#4a5568]">
-                  {uiText.allProducts.desc}
-                </p>
-              </div>
-            </section>
-
-            <section className="site-page-transition-section site-page-transition-section--aurora px-6 py-8">
-              <div className="site-page-overlap-panel mx-auto w-full max-w-[1160px] overflow-hidden rounded-[16px] border border-[#e2e8f0] bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)]">
-                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#e2e8f0] bg-[#fafbfc] px-5 py-4">
-                  <p className="text-[14px] font-semibold text-[#2f3542]">
-                    {allProductsTab === 'category'
-                      ? `${localizeString('Product Matrix')} (${localizedAllProductsSections.length} ${localizeString('categories')})`
-                      : `${localizeString('A-Z Index')} (${allProductsAlphabetGroups.length} ${localizeString('letters')})`}
-                  </p>
-                  <div className="inline-flex overflow-hidden rounded-[10px] border border-[#d8dcef] bg-white">
-                    <button
-                      type="button"
-                      onClick={() => setAllProductsTab('category')}
-                      className={`px-4 py-2 text-[12px] font-semibold transition ${
-                        allProductsTab === 'category'
-                          ? 'bg-[#534ab7] text-white'
-                          : 'text-[#6a7080] hover:bg-[#f3f4f8] hover:text-[#2f3542]'
-                      }`}
-                    >
-                      {uiText.allProducts.viewByCategory}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setAllProductsTab('alphabet')}
-                      className={`border-l border-[#d8dde3] px-4 py-2 text-[12px] font-semibold transition ${
-                        allProductsTab === 'alphabet'
-                          ? 'bg-[#534ab7] text-white'
-                          : 'text-[#6a7080] hover:bg-[#f3f4f8] hover:text-[#2f3542]'
-                      }`}
-                    >
-                      {uiText.allProducts.viewAZ}
-                    </button>
-                  </div>
-                </div>
-
-                  {allProductsTab === 'category'
-                    ? (
-                        <div className="p-4 md:p-6">
-                          {localizedAllProductsSections.map((section, sectionIndex) => (
-                            <Fragment key={section.title}>
-                              <h2
-                                className={`text-[14px] font-semibold text-[#2f3542]${
-                                  sectionIndex > 0 ? ' mt-6 border-t border-[#eef2f7] pt-6' : ''
-                                }`}
-                              >
-                                {section.displayTitle ?? section.title}
-                              </h2>
-                              <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                                {section.items.map((item) => {
-                                  const targetPath = joinPath(currentUrlLocale, item.path)
-                                  return (
-                                    <a
-                                      key={item.name}
-                                      href={targetPath}
-                                      className="rounded-[8px] px-3 py-1.5 text-[12.5px] text-[#4f5666] transition hover:bg-[#f5f3ff] hover:text-[#534ab7]"
-                                      onClick={(event) => {
-                                        event.preventDefault()
-                                        navigateTo(targetPath)
-                                      }}
-                                    >
-                                      {item.displayName ?? item.name}
-                                    </a>
-                                  )
-                                })}
-                              </div>
-                            </Fragment>
-                          ))}
-                        </div>
-                      )
-                    : (
-                        <div className="grid gap-4 p-4 md:grid-cols-2 md:p-6 lg:grid-cols-3">
-                          {allProductsAlphabetGroups.map((group) => (
-                            <section
-                              key={group.letter}
-                              className="rounded-[12px] border border-[#e2e8f0] bg-[#fafbfc] p-4"
-                            >
-                              <h2 className="inline-flex rounded-[8px] bg-[#eeedfe] px-3 py-1 text-[12px] font-semibold tracking-wide text-[#3c3489]">
-                                {group.letter}
-                              </h2>
-                              <div className="mt-3 grid gap-2">
-                                {group.items.map((item) => {
-                                  const targetPath = joinPath(currentUrlLocale, item.path)
-                                  return (
-                                    <a
-                                      key={item.name}
-                                      href={targetPath}
-                                      className="rounded-[8px] px-3 py-1.5 text-[12.5px] text-[#4f5666] transition hover:bg-[#f5f3ff] hover:text-[#534ab7]"
-                                      onClick={(event) => {
-                                        event.preventDefault()
-                                        navigateTo(targetPath)
-                                      }}
-                                    >
-                                      {item.displayName ?? item.name}
-                                    </a>
-                                  )
-                                })}
-                              </div>
-                            </section>
-                          ))}
-                        </div>
-                      )}
-              </div>
-            </section>
-          </div>
+          <AllProductsPage
+            copy={uiText.allProducts}
+            sections={localizedAllProductsSections}
+            currentUrlLocale={currentUrlLocale}
+            navigateTo={navigateTo}
+          />
         ) : pageType === 'answers' ? (
           <div className="bg-transparent">
             <section className="site-page-hero site-page-hero--warm relative overflow-hidden px-6 py-10">
@@ -6090,26 +5938,19 @@ function App() {
                   navigateTo(localeHomePath)
                 }}
               >
-                <svg
+                <img
                   className="site-footer-brand-logo"
-                  width="93"
-                  height="24"
-                  viewBox="0 0 93 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+                  src="/icons/wps/copilot.svg"
+                  alt=""
+                  width={24}
+                  height={24}
+                  draggable={false}
+                  decoding="async"
                   aria-hidden="true"
-                >
-                  <path
-                    d="M15.3541 1.62434L15.6535 2.32936C15.6817 2.39582 15.6818 2.47088 15.6537 2.53739L13.9407 6.59147C13.8493 6.80773 13.5432 6.8089 13.4502 6.59334L12.4005 4.161C12.3583 4.06328 12.262 4 12.1556 4H4.76417C4.57392 4 4.44487 4.19351 4.51799 4.36915L10.4187 18.5433C10.5097 18.762 10.8195 18.7622 10.9109 18.5436L17.9794 1.63798C18.3943 0.645877 19.3644 0 20.4397 0H30.6694C32.571 0 33.8615 1.93328 33.1322 3.68939L25.4145 22.2739C24.9805 23.3189 23.9601 24 22.8286 24H22.5676C21.4356 24 20.4149 23.3184 19.9812 22.2727L17.7399 16.8686C17.7128 16.8033 17.7128 16.73 17.7397 16.6647L19.4213 12.589C19.5116 12.3702 19.8208 12.3687 19.9133 12.5865L22.4176 18.4856C22.5098 18.7026 22.8176 18.7021 22.9089 18.4847L28.8421 4.37C28.916 4.19425 28.7869 4 28.5963 4H21.2088C21.1011 4 21.004 4.06473 20.9626 4.1641L13.4156 22.2769C12.9808 23.3203 11.9613 24 10.831 24H10.5619C9.43276 24 8.4141 23.3218 7.97858 22.28L0.209113 3.69522C-0.525361 1.93834 0.765209 0 2.66944 0H12.8996C13.9695 0 14.9359 0.639506 15.3541 1.62434Z"
-                    fill="currentColor"
-                  />
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M50.1393 13.1765C50.2962 13.0197 50.5129 12.9227 50.7522 12.9227C51.0081 12.9227 51.2381 13.0335 51.3967 13.2097L51.3968 13.2079L54.5341 16.3442L54.5343 5.0669C54.5343 4.47767 55.0119 4 55.6012 4C56.1904 4 56.6681 4.47767 56.6681 5.0669V18.9331C56.6681 19.5223 56.1904 20 55.6012 20C55.2552 20 54.9477 19.8353 54.7528 19.5801L49.2426 14.0707L50.1393 13.1765ZM43.7055 18.4718L43.7085 18.4753L42.5367 19.6481C42.4966 19.6882 42.4542 19.7244 42.4098 19.7567C42.2253 19.9087 41.989 20 41.7315 20C41.1422 20 40.6646 19.5223 40.6646 18.9331V5.0669C40.6646 4.47767 41.1422 4 41.7315 4C42.3207 4 42.7984 4.47767 42.7984 5.0669L42.7975 16.3702L47.9119 11.2571C48.1234 11.0456 48.4017 10.9415 48.6789 10.9447C48.9564 10.9415 49.2346 11.0456 49.4461 11.2571L50.359 12.1695C50.0711 12.239 49.7982 12.3861 49.5735 12.6108L43.7055 18.4718ZM61.4691 18.9331C61.4691 19.5223 60.9915 20 60.4022 20C59.813 20 59.3353 19.5223 59.3353 18.9331V12.8C59.3353 11.6218 60.2905 10.6667 61.4687 10.6667L61.8038 10.6666C61.5928 10.969 61.4691 11.3367 61.4691 11.7333V18.9331ZM70.9379 4C73.3685 4 75.3388 5.96995 75.3388 8.4C75.3388 10.8301 73.3685 12.8 70.9379 12.8L62.2685 12.7996L62.2693 11.7333C62.2693 11.1835 62.6854 10.7308 63.22 10.6729L63.3362 10.6667H70.9379C72.19 10.6667 73.205 9.65184 73.205 8.4C73.205 7.16254 72.2132 6.15669 70.981 6.13373L60.402 6.13333C59.8129 6.13333 59.3353 5.65577 59.3353 5.06667C59.3353 4.47756 59.8129 4 60.402 4H70.9379ZM88.0169 10.9319L88.1417 10.9333C90.6459 10.9333 92.676 12.963 92.676 15.4667C92.676 17.9704 90.6459 20 88.1417 20H77.7391C77.15 20 76.6725 19.5224 76.6725 18.9333C76.6725 18.3442 77.15 17.8667 77.7391 17.8667H88.1417C89.4527 17.8667 90.5183 16.8159 90.5418 15.5108L90.5422 15.4667L90.5382 15.2572C90.4676 13.4298 89.4773 11.8381 88.0169 10.9319ZM91.6093 4C92.1984 4 92.676 4.47756 92.676 5.06667C92.676 5.65577 92.1984 6.13333 91.6093 6.13333H81.2068C79.8958 6.13333 78.8302 7.1841 78.8067 8.48924L78.8063 8.53333C78.8063 9.84409 79.8573 10.9094 81.1627 10.9329L85.2077 10.9333C86.931 10.9333 88.4298 11.8945 89.197 13.3099C88.8905 13.1603 88.5479 13.0736 88.1858 13.0671L81.2068 13.0667C78.7026 13.0667 76.6725 11.037 76.6725 8.53333C76.6725 6.02964 78.7026 4 81.2068 4H91.6093Z"
-                    fill="currentColor"
-                  />
-                </svg>
+                />
+                <span className="site-footer-brand-name" aria-hidden="true">
+                  WPS AI
+                </span>
               </a>
               <p className="site-footer-brand-text">{footerBlurb}</p>
               <div className="site-footer-social-row">

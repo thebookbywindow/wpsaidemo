@@ -18,7 +18,18 @@ import {
   filterSectionsForLeafKeyword,
   resolveHeroSearchScrollTarget,
 } from '../utils/docsCenterSearch'
-import { getLocaleDocsPath, parseDocsRoute, normalizeDocsRoute, buildCanonicalDocPath, resolveDocRouteSlug, resolveDocSectionSlug, resolveDocBlockSlug, buildHelpDocRouteLookupKey, isValidDocDetailPlatformId } from '../utils/docsRoute'
+import {
+  getLocaleDocsPath,
+  parseDocsRoute,
+  normalizeDocsRoute,
+  buildCanonicalDocPath,
+  resolveDocRouteSlug,
+  resolveDocSectionSlug,
+  resolveDocBlockSlug,
+  buildHelpDocRouteLookupKey,
+  isValidDocDetailPlatformId,
+  DOCS_CENTER_SCROLL_TO_SECTION_EVENT,
+} from '../utils/docsRoute'
 import {
   DOC_DETAIL_COMMON_SCOPE_SLUG,
   isDocDetailCommonScopeId,
@@ -45,13 +56,23 @@ const DOC_LANGUAGE_LABELS = {
 }
 
 const HELP_CENTER_SECTION_SLUG_MAP = {
-  WPS文字: 'wps-docs',
-  WPS表格: 'wps-sheets',
+  WPS文字: 'writer',
+  WPS表格: 'spreadsheet',
+  WPS演示: 'presentation',
+  'WPS PDF': 'pdf',
 }
 
 const HELP_CENTER_BLOCK_SLUG_MAP = {
   快速入门: 'quick-start',
   快速上手: 'quick-start',
+  审阅与批注: 'review-and-comments',
+  文档协作: 'document-collaboration',
+  公式与函数: 'formulas-and-functions',
+  协作模式: 'collaboration-mode',
+  幻灯片设计: 'slide-design',
+  放映与分享: 'present-and-share',
+  编辑与批注: 'edit-and-annotate',
+  转换与导出: 'convert-and-export',
 }
 
 function getDocLanguageFromLocale(locale) {
@@ -487,7 +508,6 @@ export default function DocsCenterPage({
   const isZhContent = `${currentLocale}`.toLowerCase().startsWith('zh')
   const activeBlockTitle = currentDocDisplayParts?.length === 3 ? currentDocDisplayParts[1] : ''
   const [scrollLinkedTarget, setScrollLinkedTarget] = useState(null)
-  const [mobileCollapsedSections, setMobileCollapsedSections] = useState(() => new Set())
   const [mobileCollapsedBlocks, setMobileCollapsedBlocks] = useState(() => new Set())
   const sidebarRef = useRef(null)
   const scrollSpyFrameRef = useRef(0)
@@ -730,7 +750,27 @@ export default function DocsCenterPage({
     navigateTo(targetPath, { scrollToTop: false })
   }, [navigateTo])
 
-  const handleScrollToSection = (sectionTitle, blockTitle = '') => {
+  const resolveSectionTitleFromSlug = useCallback(
+    (sectionSlug) => {
+      const sourceSectionTitle = Object.entries(catalogSectionSlugMap).find(
+        ([, slug]) => slug === sectionSlug,
+      )?.[0]
+      const sectionTitle =
+        sectionModels.find((section) => section.sourceTitle === sourceSectionTitle)?.title
+        ?? sourceSectionTitle
+        ?? docSectionRouteReverseMap.get(sectionSlug)
+        ?? ''
+
+      if (!sectionTitle) {
+        return ''
+      }
+
+      return sectionModels.some((section) => section.title === sectionTitle) ? sectionTitle : ''
+    },
+    [catalogSectionSlugMap, docSectionRouteReverseMap, sectionModels],
+  )
+
+  const handleScrollToSection = useCallback((sectionTitle, blockTitle = '') => {
     const targetId = blockTitle
       ? `docs-block-${safeIdSegment(sectionTitle)}-${safeIdSegment(blockTitle)}`
       : `docs-section-${safeIdSegment(sectionTitle)}`
@@ -757,18 +797,40 @@ export default function DocsCenterPage({
       blockTitle,
     })
 
-    scrollToSectionTimeoutRef.current = window.setTimeout(() => {
+    const attemptScroll = (attempt = 0) => {
       scrollToSectionTimeoutRef.current = 0
       const target = document.getElementById(targetId)
       if (!target) {
+        if (attempt < 12) {
+          scrollToSectionTimeoutRef.current = window.setTimeout(() => {
+            attemptScroll(attempt + 1)
+          }, 40)
+          return
+        }
         scrollSpyLockRef.current = null
         return
       }
       const scrollTop = target.getBoundingClientRect().top + window.scrollY - getDocsScrollOffset()
       window.scrollTo({ top: Math.max(0, scrollTop), behavior: 'smooth' })
       requestScrollSpyUpdateRef.current()
+    }
+
+    scrollToSectionTimeoutRef.current = window.setTimeout(() => {
+      attemptScroll(0)
     }, 40)
-  }
+  }, [])
+
+  const scrollToSectionBySlug = useCallback(
+    (sectionSlug) => {
+      const sectionTitle = resolveSectionTitleFromSlug(sectionSlug)
+      if (!sectionTitle) {
+        return false
+      }
+      handleScrollToSection(sectionTitle)
+      return true
+    },
+    [handleScrollToSection, resolveSectionTitleFromSlug],
+  )
 
   const handleCatalogSectionNavigate = (sectionTitle) => {
     const section = sectionModels.find((item) => item.title === sectionTitle)
@@ -800,24 +862,23 @@ export default function DocsCenterPage({
       return
     }
 
-    const sourceSectionTitle = Object.entries(catalogSectionSlugMap).find(
-      ([, slug]) => slug === routeSectionSlug,
-    )?.[0]
-    const sectionTitle =
-      sectionModels.find((section) => section.sourceTitle === sourceSectionTitle)?.title
-      ?? sourceSectionTitle
-      ?? docSectionRouteReverseMap.get(routeSectionSlug)
-    if (!sectionTitle) {
-      return
+    scrollToSectionBySlug(routeSectionSlug)
+  }, [routeSectionSlug, routeItemSlug, currentDocMeta, scrollToSectionBySlug])
+
+  useEffect(() => {
+    const handleScrollRequest = (event) => {
+      const sectionSlug = `${event?.detail?.sectionSlug ?? ''}`.trim() || routeSectionSlug
+      if (!sectionSlug || routeItemSlug || currentDocMeta) {
+        return
+      }
+      scrollToSectionBySlug(sectionSlug)
     }
 
-    const sectionExists = sectionModels.some((section) => section.title === sectionTitle)
-    if (!sectionExists) {
-      return
+    window.addEventListener(DOCS_CENTER_SCROLL_TO_SECTION_EVENT, handleScrollRequest)
+    return () => {
+      window.removeEventListener(DOCS_CENTER_SCROLL_TO_SECTION_EVENT, handleScrollRequest)
     }
-
-    handleScrollToSection(sectionTitle)
-  }, [routeSectionSlug, routeItemSlug, currentDocMeta, sectionModels, docSectionRouteReverseMap])
+  }, [currentDocMeta, routeItemSlug, routeSectionSlug, scrollToSectionBySlug])
 
   const handleDocDetailRouteChange = useCallback(({ platformId = '', detailSectionId = '' } = {}) => {
     if (!currentDocRouteSlug) {
@@ -916,11 +977,6 @@ export default function DocsCenterPage({
   }, [closeAll, currentDocMeta])
 
   const handleCatalogBlockNavigateMobile = useCallback((sectionTitle, blockTitle) => {
-    setMobileCollapsedSections((previous) => {
-      const next = new Set(previous)
-      next.delete(sectionTitle)
-      return next
-    })
     if (blockTitle) {
       setMobileCollapsedBlocks((previous) => {
         const next = new Set(previous)
@@ -931,18 +987,6 @@ export default function DocsCenterPage({
     handleCatalogBlockNavigate(sectionTitle, blockTitle)
     closeAll()
   }, [closeAll, handleCatalogBlockNavigate])
-
-  const toggleMobileSection = useCallback((sectionTitle) => {
-    setMobileCollapsedSections((previous) => {
-      const next = new Set(previous)
-      if (next.has(sectionTitle)) {
-        next.delete(sectionTitle)
-      } else {
-        next.add(sectionTitle)
-      }
-      return next
-    })
-  }, [])
 
   const toggleMobileBlock = useCallback((sectionTitle, blockTitle) => {
     const blockKey = buildMobileCatalogBlockKey(sectionTitle, blockTitle)
@@ -1049,48 +1093,15 @@ export default function DocsCenterPage({
 
         <section className="docs-center-content">
           {visibleSections.length ? (
-            visibleSections.map((section) => {
-              const isMobileSectionExpanded =
-                !showMobileCatalogDrawer || !mobileCollapsedSections.has(section.title)
-
-              return (
+            visibleSections.map((section) => (
               <article
                 key={`catalog-${section.title}`}
                 id={`docs-section-${safeIdSegment(section.title)}`}
-                className={`docs-center-section${
-                  showMobileCatalogDrawer && !isMobileSectionExpanded ? ' is-collapsed' : ''
-                }`}
+                className="docs-center-section"
               >
                 <header className="docs-center-section-head">
-                  {showMobileCatalogDrawer ? (
-                    <button
-                      type="button"
-                      className="docs-center-section-head-btn"
-                      aria-expanded={isMobileSectionExpanded}
-                      onClick={() => toggleMobileSection(section.title)}
-                    >
-                      <h2>{section.title}</h2>
-                      {isMobileSectionExpanded ? (
-                        <ChevronUp
-                          size={18}
-                          strokeWidth={2}
-                          className="docs-center-section-collapse-icon"
-                          aria-hidden="true"
-                        />
-                      ) : (
-                        <ChevronDown
-                          size={18}
-                          strokeWidth={2}
-                          className="docs-center-section-collapse-icon"
-                          aria-hidden="true"
-                        />
-                      )}
-                    </button>
-                  ) : (
-                    <h2>{section.title}</h2>
-                  )}
+                  <h2>{section.title}</h2>
                 </header>
-                {isMobileSectionExpanded ? (
                 <div className="docs-center-section-body">
                   {section.blocks.map((block, blockIndex) => {
                     const hasTitledGroup = Boolean(block.title)
@@ -1202,9 +1213,8 @@ export default function DocsCenterPage({
                     )
                   })}
                 </div>
-                ) : null}
               </article>
-            )})
+            ))
           ) : (
             <article className="docs-center-section">
               <header className="docs-center-section-head">

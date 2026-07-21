@@ -9,7 +9,7 @@ export const HOME_AI_PILLARS = Object.freeze([
     directoryGroupId: 'writer',
     productPageUrl: 'https://www.wps.com/office/writer/',
     spotlightImageId: 'ai-writer-feature',
-    featureIds: ['ai-writer', 'ai-summarizer'],
+    featureIds: ['ai-writer-feature', 'ai-summarizer'],
   }),
   Object.freeze({
     id: 'sheets',
@@ -32,26 +32,26 @@ export const HOME_AI_PILLARS = Object.freeze([
     iconId: 'pdf',
     directoryGroupId: 'pdf',
     productPageUrl: 'https://www.wps.com/office/pdf/',
-    spotlightImageId: 'chat-with-pdf',
-    featureIds: ['chat-with-pdf', 'ai-pdf-summarizer'],
+    spotlightImageId: 'chat-pdf-feature',
+    featureIds: ['chat-pdf-feature', 'pdf-summarizer-feature'],
   }),
   Object.freeze({
     id: 'photos',
     iconId: 'photos',
     directoryGroupId: 'photos',
-    featureIds: ['ai-photo-editor', 'ai-background-remover'],
+    featureIds: ['ai-photo-editor-feature', 'ai-background-remover-feature'],
   }),
   Object.freeze({
     id: 'airpage',
     iconId: 'airpage',
     directoryGroupId: 'airpage',
-    featureIds: ['airpage-ai-writer', 'airpage-ai-summarizer'],
+    featureIds: ['airpage-online-document-editor', 'airpage-word-online'],
   }),
   Object.freeze({
     id: 'airsheet',
     iconId: 'airsheet',
     directoryGroupId: 'airsheet',
-    featureIds: ['airsheet-ai-formula-generator', 'airsheet-ai-in-spreadsheets'],
+    featureIds: ['airsheet-excel-online', 'airsheet-online-excel-editor'],
   }),
   Object.freeze({
     id: 'forms',
@@ -62,8 +62,9 @@ export const HOME_AI_PILLARS = Object.freeze([
   Object.freeze({
     id: 'dbsheet',
     iconId: 'dbsheet',
-    directoryGroupId: 'dbsheet',
-    featureIds: ['dbsheet-ai-table-generator', 'dbsheet-ai-in-spreadsheets'],
+    // No unique EN AI landing pages — point directory deep-link to Spreadsheet AI.
+    directoryGroupId: 'spreadsheet',
+    featureIds: ['ai-table-generator', 'ai-in-excel-spreadsheets'],
   }),
 ])
 

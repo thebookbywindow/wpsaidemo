@@ -61,11 +61,16 @@ export const INTL_AI_COPILOT_LINKS = [
   { id: 'aipal', url: 'https://aipal.wps.com/', kind: 'feature' },
 ]
 
+/**
+ * One canonical landing URL per capability.
+ * Prefer www.wps.com/feature/ over explore twins; never repeat the same URL across groups.
+ * AirPage / AirSheet keep only product-unique links (shared Writer/Sheets AI lives in those groups).
+ * DBSheet had no unique EN AI landing pages — omitted from the directory map.
+ */
 export const INTL_AI_FEATURE_GROUPS = [
   {
     id: 'writer',
     items: [
-      { id: 'ai-writer', url: 'https://explore.wps.com/ai/ai-writer', kind: 'feature' },
       {
         id: 'ai-writer-feature',
         url: 'https://www.wps.com/feature/ai-writer/',
@@ -87,16 +92,6 @@ export const INTL_AI_FEATURE_GROUPS = [
         kind: 'feature',
       },
       {
-        id: 'ai-spell-check',
-        url: 'https://explore.wps.com/ai/ai-spell-check',
-        kind: 'feature',
-      },
-      {
-        id: 'ai-spell-check-alt',
-        url: 'https://www.wps.com/ai-spell-check',
-        kind: 'feature',
-      },
-      {
         id: 'spell-check-feature',
         url: 'https://www.wps.com/feature/spell-check/',
         kind: 'feature',
@@ -104,11 +99,6 @@ export const INTL_AI_FEATURE_GROUPS = [
       {
         id: 'grammar-checker',
         url: 'https://www.wps.com/feature/grammar-checker/',
-        kind: 'feature',
-      },
-      {
-        id: 'ai-translator',
-        url: 'https://explore.wps.com/ai/ai-translator',
         kind: 'feature',
       },
       {
@@ -152,11 +142,6 @@ export const INTL_AI_FEATURE_GROUPS = [
         kind: 'feature',
       },
       {
-        id: 'data-analyst',
-        url: 'https://www.wps.com/feature/wps-ai-your-office-copilot/',
-        kind: 'feature',
-      },
-      {
         id: 'jpg-to-excel',
         url: 'https://www.wps.com/feature/jpg-to-excel/',
         kind: 'feature',
@@ -192,39 +177,19 @@ export const INTL_AI_FEATURE_GROUPS = [
         url: 'https://www.wps.com/feature/slides-translator/',
         kind: 'feature',
       },
-      {
-        id: 'slides-designer',
-        url: 'https://www.wps.com/feature/wps-ai-your-office-copilot/',
-        kind: 'feature',
-      },
     ],
   },
   {
     id: 'pdf',
     items: [
       {
-        id: 'chat-with-pdf',
-        url: 'https://explore.wps.com/pdf/chat-with-pdf',
-        kind: 'feature',
-      },
-      {
         id: 'chat-pdf-feature',
         url: 'https://www.wps.com/feature/chat-pdf/',
         kind: 'feature',
       },
       {
-        id: 'ai-pdf-summarizer',
-        url: 'https://explore.wps.com/pdf/ai-pdf-summarizer',
-        kind: 'feature',
-      },
-      {
         id: 'pdf-summarizer-feature',
         url: 'https://www.wps.com/feature/pdf-summarizer/',
-        kind: 'feature',
-      },
-      {
-        id: 'ai-translate-pdf',
-        url: 'https://explore.wps.com/pdf/ai-translate-pdf',
         kind: 'feature',
       },
       {
@@ -237,7 +202,6 @@ export const INTL_AI_FEATURE_GROUPS = [
         url: 'https://explore.wps.com/pdf/translate-scanned-pdf',
         kind: 'feature',
       },
-      { id: 'pdf-ocr', url: 'https://explore.wps.com/pdf/pdf-ocr', kind: 'feature' },
       {
         id: 'pdf-ocr-feature',
         url: 'https://www.wps.com/feature/pdf-ocr/',
@@ -246,11 +210,6 @@ export const INTL_AI_FEATURE_GROUPS = [
       {
         id: 'convert-scanned-pdf-to-word',
         url: 'https://explore.wps.com/pdf/convert-scanned-pdf-to-word',
-        kind: 'feature',
-      },
-      {
-        id: 'pdf-reader-extension',
-        url: 'https://explore.wps.com/pdf/pdf-reader-extension',
         kind: 'feature',
       },
       {
@@ -269,23 +228,8 @@ export const INTL_AI_FEATURE_GROUPS = [
     id: 'photos',
     items: [
       {
-        id: 'ai-photo-editor',
-        url: 'https://explore.wps.com/ai/ai-photo-editor',
-        kind: 'feature',
-      },
-      {
-        id: 'ai-photo-editor-alt',
-        url: 'https://explore.wps.com/photo/ai-photo-editor',
-        kind: 'feature',
-      },
-      {
         id: 'ai-photo-editor-feature',
         url: 'https://www.wps.com/feature/ai-photo-editor/',
-        kind: 'feature',
-      },
-      {
-        id: 'ai-background-remover',
-        url: 'https://explore.wps.com/ai/ai-background-remover',
         kind: 'feature',
       },
       {
@@ -294,28 +238,13 @@ export const INTL_AI_FEATURE_GROUPS = [
         kind: 'feature',
       },
       {
-        id: 'ai-photo-enhancer',
-        url: 'https://explore.wps.com/ai/ai-photo-enhancer',
-        kind: 'feature',
-      },
-      {
         id: 'photo-enhancer-feature',
         url: 'https://www.wps.com/feature/photo-enhancer/',
         kind: 'feature',
       },
       {
-        id: 'ai-image-upscaler',
-        url: 'https://explore.wps.com/ai/ai-image-upscaler',
-        kind: 'feature',
-      },
-      {
         id: 'image-upscaler-feature',
         url: 'https://www.wps.com/feature/image-upscaler/',
-        kind: 'feature',
-      },
-      {
-        id: 'ai-photo-restoration',
-        url: 'https://explore.wps.com/ai/ai-photo-restoration',
         kind: 'feature',
       },
       {
@@ -363,51 +292,6 @@ export const INTL_AI_FEATURE_GROUPS = [
         url: 'https://www.wps.com/feature/word-online/',
         kind: 'feature',
       },
-      {
-        id: 'airpage-ai-writer',
-        url: 'https://explore.wps.com/ai/ai-writer',
-        kind: 'feature',
-      },
-      {
-        id: 'airpage-ai-writer-feature',
-        url: 'https://www.wps.com/feature/ai-writer/',
-        kind: 'feature',
-      },
-      {
-        id: 'airpage-ai-text-generator',
-        url: 'https://www.wps.com/feature/ai-text-generator/',
-        kind: 'feature',
-      },
-      {
-        id: 'airpage-ai-summarizer',
-        url: 'https://www.wps.com/feature/ai-summarizer/',
-        kind: 'feature',
-      },
-      {
-        id: 'airpage-ai-improve-writing',
-        url: 'https://explore.wps.com/ai/ai-improve-writing',
-        kind: 'feature',
-      },
-      {
-        id: 'airpage-ai-spell-check',
-        url: 'https://explore.wps.com/ai/ai-spell-check',
-        kind: 'feature',
-      },
-      {
-        id: 'airpage-grammar-checker',
-        url: 'https://www.wps.com/feature/grammar-checker/',
-        kind: 'feature',
-      },
-      {
-        id: 'airpage-ai-translator',
-        url: 'https://explore.wps.com/ai/ai-translator',
-        kind: 'feature',
-      },
-      {
-        id: 'airpage-ai-translator-feature',
-        url: 'https://www.wps.com/feature/ai-translator/',
-        kind: 'feature',
-      },
     ],
     noteId: 'airpageNote',
   },
@@ -422,31 +306,6 @@ export const INTL_AI_FEATURE_GROUPS = [
       {
         id: 'airsheet-online-excel-editor',
         url: 'https://explore.wps.com/excel/online-excel-sheet-editor',
-        kind: 'feature',
-      },
-      {
-        id: 'airsheet-ai-in-spreadsheets',
-        url: 'https://www.wps.com/feature/ai-in-excel-spreadsheets/',
-        kind: 'feature',
-      },
-      {
-        id: 'airsheet-ai-formula-generator',
-        url: 'https://www.wps.com/feature/ai-excel-formula-generator/',
-        kind: 'feature',
-      },
-      {
-        id: 'airsheet-ai-table-generator',
-        url: 'https://www.wps.com/feature/ai-table-generator/',
-        kind: 'feature',
-      },
-      {
-        id: 'airsheet-jpg-to-excel',
-        url: 'https://www.wps.com/feature/jpg-to-excel/',
-        kind: 'feature',
-      },
-      {
-        id: 'airsheet-data-analyst',
-        url: 'https://www.wps.com/feature/wps-ai-your-office-copilot/',
         kind: 'feature',
       },
     ],
@@ -489,37 +348,6 @@ export const INTL_AI_FEATURE_GROUPS = [
     ],
     noteId: 'formsNote',
   },
-  {
-    id: 'dbsheet',
-    items: [
-      {
-        id: 'dbsheet-ai-table-generator',
-        url: 'https://www.wps.com/feature/ai-table-generator/',
-        kind: 'feature',
-      },
-      {
-        id: 'dbsheet-ai-in-spreadsheets',
-        url: 'https://www.wps.com/feature/ai-in-excel-spreadsheets/',
-        kind: 'feature',
-      },
-      {
-        id: 'dbsheet-excel-online',
-        url: 'https://www.wps.com/feature/excel-online/',
-        kind: 'feature',
-      },
-      {
-        id: 'dbsheet-copilot',
-        url: 'https://www.wps.com/feature/wps-ai-your-office-copilot/',
-        kind: 'feature',
-      },
-      {
-        id: 'dbsheet-aipal',
-        url: 'https://aipal.wps.com/',
-        kind: 'feature',
-      },
-    ],
-    noteId: 'dbsheetNote',
-  },
 ]
 
 export function listIntlAiFeatureItems() {
@@ -536,7 +364,12 @@ export function listIntlAiFeatureItems() {
   return [...copilotItems, ...groupItems]
 }
 
-function validateFeatureItem(item, scope, seenIds, errors) {
+function normalizeFeatureUrl(url) {
+  if (!url || typeof url !== 'string') return ''
+  return url.replace(/\/$/, '').toLowerCase()
+}
+
+function validateFeatureItem(item, scope, seenIds, seenUrls, errors) {
   if (!item?.id) {
     errors.push(`${scope} has item without id`)
     return
@@ -560,6 +393,13 @@ function validateFeatureItem(item, scope, seenIds, errors) {
     /explore\.wps\.com\/ai\/?$/i.test(item.url)
   ) {
     errors.push(`item ${item.id} must not be a suite/AI homepage`)
+  } else {
+    const normalizedUrl = normalizeFeatureUrl(item.url)
+    if (seenUrls.has(normalizedUrl)) {
+      errors.push(`duplicate feature url: ${item.url} (${item.id})`)
+    } else {
+      seenUrls.add(normalizedUrl)
+    }
   }
 
   if (item.kind !== 'feature') {
@@ -573,12 +413,13 @@ export function validateIntlAiFeatures(
 ) {
   const errors = []
   const seenIds = new Set()
+  const seenUrls = new Set()
 
   if (!Array.isArray(copilotLinks) || copilotLinks.length === 0) {
     errors.push('copilot links must be a non-empty array')
   } else {
     for (const item of copilotLinks) {
-      validateFeatureItem(item, 'copilot', seenIds, errors)
+      validateFeatureItem(item, 'copilot', seenIds, seenUrls, errors)
     }
   }
 
@@ -595,7 +436,7 @@ export function validateIntlAiFeatures(
     }
 
     for (const item of group.items) {
-      validateFeatureItem(item, `group ${group.id}`, seenIds, errors)
+      validateFeatureItem(item, `group ${group.id}`, seenIds, seenUrls, errors)
     }
   }
 

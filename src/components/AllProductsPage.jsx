@@ -1,36 +1,29 @@
-import { useEffect } from 'react'
-import { useHomeIntlAiFeatures } from '../hooks/useHomeIntlAiFeatures'
-import { useHomeIntlAiGroupTabs } from '../hooks/useHomeIntlAiGroupTabs'
-import { useIntlAiFeaturesPageSeo } from '../hooks/useIntlAiFeaturesPageSeo'
+import { useAllProductsDirectory } from '../hooks/useAllProductsDirectory'
+import { joinPath } from '../utils/pathUrl'
 
-const INTL_AI_GROUP_HASH_PREFIX = '#intl-ai-group-'
+function AllProductsLink({ item, currentUrlLocale, navigateTo }) {
+  const targetPath = joinPath(currentUrlLocale, item.path)
 
-function readIntlAiGroupHash() {
-  if (typeof window === 'undefined') return ''
-  const hash = window.location.hash
-  if (!hash.startsWith(INTL_AI_GROUP_HASH_PREFIX)) return ''
-  return hash.slice(INTL_AI_GROUP_HASH_PREFIX.length)
-}
-
-function IntlAiFeatureLink({ item }) {
   return (
     <a
       className="intl-ai-dir-link"
-      href={item.url}
-      target="_blank"
-      rel="noopener noreferrer"
+      href={targetPath}
+      onClick={(event) => {
+        event.preventDefault()
+        navigateTo(targetPath)
+      }}
     >
-      {item.label}
+      {item.displayName ?? item.name}
     </a>
   )
 }
 
-function IntlAiFeatureGroup({ group, isFirst }) {
+function AllProductsGroup({ group, isFirst, currentUrlLocale, navigateTo }) {
   if (!group?.items?.length) return null
 
   return (
     <article
-      id={`intl-ai-group-${group.id}`}
+      id={`all-products-group-${group.id}`}
       className={`intl-ai-dir-group scroll-mt-[calc(var(--nav-height)+120px)]${
         isFirst ? '' : ' is-divided'
       }`}
@@ -49,7 +42,12 @@ function IntlAiFeatureGroup({ group, isFirst }) {
       </h2>
       <div className="intl-ai-dir-list">
         {group.items.map((item) => (
-          <IntlAiFeatureLink key={item.id} item={item} />
+          <AllProductsLink
+            key={item.path ?? item.name}
+            item={item}
+            currentUrlLocale={currentUrlLocale}
+            navigateTo={navigateTo}
+          />
         ))}
       </div>
     </article>
@@ -57,52 +55,25 @@ function IntlAiFeatureGroup({ group, isFirst }) {
 }
 
 /**
- * Dedicated directory of official WPS International AI feature landing pages.
+ * Free AI Tools / all-products catalog — category sitemap only.
  */
-export default function IntlAiFeaturesPage({ copy }) {
-  const { groups, tabLabels } = useHomeIntlAiFeatures(copy)
-  const { tabs, activeId, setActiveId } = useHomeIntlAiGroupTabs(groups, tabLabels)
-
-  useIntlAiFeaturesPageSeo({
-    enabled: true,
-    title: copy?.seoTitle ?? copy?.pageTitle ?? 'WPS AI Features',
-    description: copy?.seoDescription ?? copy?.pageDesc ?? '',
-  })
-
-  const jumpToGroup = (groupId, { behavior = 'smooth' } = {}) => {
-    if (!groupId) return
-    setActiveId(groupId)
-    window.requestAnimationFrame(() => {
-      document.getElementById(`intl-ai-group-${groupId}`)?.scrollIntoView({
-        behavior,
-        block: 'start',
-      })
-    })
-  }
-
-  useEffect(() => {
-    if (!groups.length) return undefined
-
-    const syncHash = () => {
-      const groupId = readIntlAiGroupHash()
-      if (!groupId || !groups.some((group) => group.id === groupId)) return
-      jumpToGroup(groupId, { behavior: 'auto' })
-    }
-
-    syncHash()
-    window.addEventListener('hashchange', syncHash)
-    return () => window.removeEventListener('hashchange', syncHash)
-  }, [groups])
+export default function AllProductsPage({
+  copy,
+  sections,
+  currentUrlLocale,
+  navigateTo,
+}) {
+  const { groups, activeId, jumpToGroup } = useAllProductsDirectory(sections)
 
   if (!groups.length) return null
 
   return (
-    <div className="intl-ai-features-page bg-transparent">
+    <div className="all-products-page bg-transparent">
       <section className="site-page-hero site-page-hero--aurora px-6 pt-12 pb-4">
         <div className="mx-auto w-full max-w-[1160px]">
           <div className="text-center">
             <h1 className="text-[clamp(30px,4.5vw,48px)] font-extrabold tracking-[-0.03em] text-[#1a202c]">
-              {copy?.pageTitle}
+              {copy?.title}
             </h1>
           </div>
         </div>
@@ -110,36 +81,36 @@ export default function IntlAiFeaturesPage({ copy }) {
 
       <section
         className="site-page-transition-section site-page-transition-section--aurora px-6 pt-2 pb-8"
-        aria-label={copy?.pageTitle ?? 'WPS AI features'}
+        aria-label={copy?.title ?? 'Free AI Tools'}
       >
         <div className="mx-auto w-full max-w-[1160px]">
           <div className="home-intl-ai-tabs-dock intl-ai-dir-tabs-dock">
             <div className="home-intl-ai-tabs-wrap">
               <nav
                 className="home-intl-ai-tabs"
-                aria-label={copy?.tabsAriaLabel ?? 'AI feature categories'}
+                aria-label={copy?.tabsAriaLabel ?? 'Product categories'}
               >
-                {tabs.map((tab) => {
-                  const selected = tab.id === activeId
+                {groups.map((group) => {
+                  const selected = group.id === activeId
                   return (
                     <button
-                      key={tab.id}
+                      key={group.id}
                       type="button"
-                      id={`intl-ai-tab-${tab.id}`}
+                      id={`all-products-tab-${group.id}`}
                       aria-current={selected ? 'true' : undefined}
                       className={`home-intl-ai-tab${selected ? ' is-active' : ''}`}
-                      onClick={() => jumpToGroup(tab.id)}
+                      onClick={() => jumpToGroup(group.id)}
                     >
-                      {tab.iconSrc ? (
+                      {group.iconSrc ? (
                         <img
                           className="home-intl-ai-tab-icon"
-                          src={tab.iconSrc}
+                          src={group.iconSrc}
                           alt=""
                           draggable={false}
                           decoding="async"
                         />
                       ) : null}
-                      <span className="home-intl-ai-tab-name">{tab.label}</span>
+                      <span className="home-intl-ai-tab-name">{group.title}</span>
                     </button>
                   )
                 })}
@@ -150,10 +121,12 @@ export default function IntlAiFeaturesPage({ copy }) {
           <div className="site-page-overlap-panel overflow-hidden rounded-[16px] border border-[#e2e8f0] bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)]">
             <div className="intl-ai-dir-panel p-4 md:p-6">
               {groups.map((group, index) => (
-                <IntlAiFeatureGroup
+                <AllProductsGroup
                   key={group.id}
                   group={group}
                   isFirst={index === 0}
+                  currentUrlLocale={currentUrlLocale}
+                  navigateTo={navigateTo}
                 />
               ))}
             </div>

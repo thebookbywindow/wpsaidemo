@@ -2998,5 +2998,725 @@
         "source_type": "help_center"
       }
     ]
+  },
+  {
+    "l1": "WPS演示",
+    "l2": "快速入门",
+    "feature": "新建演示",
+    "platform": "win",
+    "ID": 720,
+    "path": "wps-slides/create-presentation/win",
+    "documents": [
+      {
+        "name": "如何新建 WPS 演示文稿",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS演示",
+    "l2": "快速入门",
+    "feature": "新建演示",
+    "platform": "mac",
+    "ID": 721,
+    "path": "wps-slides/create-presentation/mac",
+    "documents": [
+      {
+        "name": "Mac 端如何新建 WPS 演示文稿",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS演示",
+    "l2": "快速入门",
+    "feature": "AI生成PPT",
+    "platform": "win",
+    "ID": 722,
+    "path": "wps-slides/ai-generate-ppt/win",
+    "documents": [
+      {
+        "name": "如何用 AI 生成 PPT",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS演示",
+    "l2": "快速入门",
+    "feature": "AI生成PPT",
+    "platform": "mac",
+    "ID": 723,
+    "path": "wps-slides/ai-generate-ppt/mac",
+    "documents": [
+      {
+        "name": "Mac 端如何用 AI 生成 PPT",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS演示",
+    "l2": "快速入门",
+    "feature": "保存与另存为",
+    "platform": "win",
+    "ID": 724,
+    "path": "wps-slides/save-and-save-as/win",
+    "documents": [
+      {
+        "name": "如何保存与另存演示文稿",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS演示",
+    "l2": "快速入门",
+    "feature": "保存与另存为",
+    "platform": "mac",
+    "ID": 725,
+    "path": "wps-slides/save-and-save-as/mac",
+    "documents": [
+      {
+        "name": "Mac 端如何保存与另存演示文稿",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS演示",
+    "l2": "快速入门",
+    "feature": "输出为PDF",
+    "platform": "win",
+    "ID": 726,
+    "path": "wps-slides/export-as-pdf/win",
+    "documents": [
+      {
+        "name": "如何将演示输出为 PDF",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS演示",
+    "l2": "快速入门",
+    "feature": "输出为PDF",
+    "platform": "mac",
+    "ID": 727,
+    "path": "wps-slides/export-as-pdf/mac",
+    "documents": [
+      {
+        "name": "Mac 端如何将演示输出为 PDF",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS演示",
+    "l2": "幻灯片设计",
+    "feature": "应用主题",
+    "platform": "win",
+    "ID": 728,
+    "path": "wps-slides/apply-theme/win",
+    "documents": [
+      {
+        "name": "如何应用演示主题",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS演示",
+    "l2": "幻灯片设计",
+    "feature": "应用主题",
+    "platform": "mac",
+    "ID": 729,
+    "path": "wps-slides/apply-theme/mac",
+    "documents": [
+      {
+        "name": "Mac 端如何应用演示主题",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS演示",
+    "l2": "幻灯片设计",
+    "feature": "插入图片",
+    "platform": "win",
+    "ID": 730,
+    "path": "wps-slides/insert-image/win",
+    "documents": [
+      {
+        "name": "如何在演示中插入图片",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS演示",
+    "l2": "幻灯片设计",
+    "feature": "插入图片",
+    "platform": "mac",
+    "ID": 731,
+    "path": "wps-slides/insert-image/mac",
+    "documents": [
+      {
+        "name": "Mac 端如何在演示中插入图片",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS演示",
+    "l2": "幻灯片设计",
+    "feature": "添加动画",
+    "platform": "win",
+    "ID": 732,
+    "path": "wps-slides/add-animation/win",
+    "documents": [
+      {
+        "name": "如何为幻灯片添加动画",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS演示",
+    "l2": "幻灯片设计",
+    "feature": "添加动画",
+    "platform": "mac",
+    "ID": 733,
+    "path": "wps-slides/add-animation/mac",
+    "documents": [
+      {
+        "name": "Mac 端如何为幻灯片添加动画",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS演示",
+    "l2": "幻灯片设计",
+    "feature": "切换效果",
+    "platform": "win",
+    "ID": 734,
+    "path": "wps-slides/slide-transition/win",
+    "documents": [
+      {
+        "name": "如何设置幻灯片切换效果",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS演示",
+    "l2": "幻灯片设计",
+    "feature": "切换效果",
+    "platform": "mac",
+    "ID": 735,
+    "path": "wps-slides/slide-transition/mac",
+    "documents": [
+      {
+        "name": "Mac 端如何设置幻灯片切换效果",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS演示",
+    "l2": "放映与分享",
+    "feature": "开始放映",
+    "platform": "win",
+    "ID": 736,
+    "path": "wps-slides/start-slideshow/win",
+    "documents": [
+      {
+        "name": "如何开始放映演示",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS演示",
+    "l2": "放映与分享",
+    "feature": "开始放映",
+    "platform": "mac",
+    "ID": 737,
+    "path": "wps-slides/start-slideshow/mac",
+    "documents": [
+      {
+        "name": "Mac 端如何开始放映演示",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS演示",
+    "l2": "放映与分享",
+    "feature": "演讲者视图",
+    "platform": "win",
+    "ID": 738,
+    "path": "wps-slides/presenter-view/win",
+    "documents": [
+      {
+        "name": "如何使用演讲者视图",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS演示",
+    "l2": "放映与分享",
+    "feature": "演讲者视图",
+    "platform": "mac",
+    "ID": 739,
+    "path": "wps-slides/presenter-view/mac",
+    "documents": [
+      {
+        "name": "Mac 端如何使用演讲者视图",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS演示",
+    "l2": "放映与分享",
+    "feature": "导出为视频",
+    "platform": "win",
+    "ID": 740,
+    "path": "wps-slides/export-as-video/win",
+    "documents": [
+      {
+        "name": "如何将演示导出为视频",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS演示",
+    "l2": "放映与分享",
+    "feature": "导出为视频",
+    "platform": "mac",
+    "ID": 741,
+    "path": "wps-slides/export-as-video/mac",
+    "documents": [
+      {
+        "name": "Mac 端如何将演示导出为视频",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS演示",
+    "l2": "放映与分享",
+    "feature": "分享演示",
+    "platform": "win",
+    "ID": 742,
+    "path": "wps-slides/share-presentation/win",
+    "documents": [
+      {
+        "name": "如何分享演示文稿",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS演示",
+    "l2": "放映与分享",
+    "feature": "分享演示",
+    "platform": "mac",
+    "ID": 743,
+    "path": "wps-slides/share-presentation/mac",
+    "documents": [
+      {
+        "name": "Mac 端如何分享演示文稿",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS PDF",
+    "l2": "快速入门",
+    "feature": "打开PDF",
+    "platform": "win",
+    "ID": 744,
+    "path": "wps-pdf/open-pdf/win",
+    "documents": [
+      {
+        "name": "如何打开 PDF 文件",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS PDF",
+    "l2": "快速入门",
+    "feature": "打开PDF",
+    "platform": "mac",
+    "ID": 745,
+    "path": "wps-pdf/open-pdf/mac",
+    "documents": [
+      {
+        "name": "Mac 端如何打开 PDF 文件",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS PDF",
+    "l2": "快速入门",
+    "feature": "AI总结",
+    "platform": "win",
+    "ID": 746,
+    "path": "wps-pdf/ai-summarize/win",
+    "documents": [
+      {
+        "name": "如何用 AI 总结 PDF",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS PDF",
+    "l2": "快速入门",
+    "feature": "AI总结",
+    "platform": "mac",
+    "ID": 747,
+    "path": "wps-pdf/ai-summarize/mac",
+    "documents": [
+      {
+        "name": "Mac 端如何用 AI 总结 PDF",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS PDF",
+    "l2": "快速入门",
+    "feature": "另存为",
+    "platform": "win",
+    "ID": 748,
+    "path": "wps-pdf/save-as/win",
+    "documents": [
+      {
+        "name": "如何另存 PDF",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS PDF",
+    "l2": "快速入门",
+    "feature": "另存为",
+    "platform": "mac",
+    "ID": 749,
+    "path": "wps-pdf/save-as/mac",
+    "documents": [
+      {
+        "name": "Mac 端如何另存 PDF",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS PDF",
+    "l2": "快速入门",
+    "feature": "打印",
+    "platform": "win",
+    "ID": 750,
+    "path": "wps-pdf/print/win",
+    "documents": [
+      {
+        "name": "如何打印 PDF",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS PDF",
+    "l2": "快速入门",
+    "feature": "打印",
+    "platform": "mac",
+    "ID": 751,
+    "path": "wps-pdf/print/mac",
+    "documents": [
+      {
+        "name": "Mac 端如何打印 PDF",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS PDF",
+    "l2": "编辑与批注",
+    "feature": "添加批注",
+    "platform": "win",
+    "ID": 752,
+    "path": "wps-pdf/add-comment/win",
+    "documents": [
+      {
+        "name": "如何在 PDF 中添加批注",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS PDF",
+    "l2": "编辑与批注",
+    "feature": "添加批注",
+    "platform": "mac",
+    "ID": 753,
+    "path": "wps-pdf/add-comment/mac",
+    "documents": [
+      {
+        "name": "Mac 端如何在 PDF 中添加批注",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS PDF",
+    "l2": "编辑与批注",
+    "feature": "高亮标注",
+    "platform": "win",
+    "ID": 754,
+    "path": "wps-pdf/highlight/win",
+    "documents": [
+      {
+        "name": "如何高亮标注 PDF",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS PDF",
+    "l2": "编辑与批注",
+    "feature": "高亮标注",
+    "platform": "mac",
+    "ID": 755,
+    "path": "wps-pdf/highlight/mac",
+    "documents": [
+      {
+        "name": "Mac 端如何高亮标注 PDF",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS PDF",
+    "l2": "编辑与批注",
+    "feature": "签名",
+    "platform": "win",
+    "ID": 756,
+    "path": "wps-pdf/sign/win",
+    "documents": [
+      {
+        "name": "如何在 PDF 中签名",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS PDF",
+    "l2": "编辑与批注",
+    "feature": "签名",
+    "platform": "mac",
+    "ID": 757,
+    "path": "wps-pdf/sign/mac",
+    "documents": [
+      {
+        "name": "Mac 端如何在 PDF 中签名",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS PDF",
+    "l2": "编辑与批注",
+    "feature": "填写表单",
+    "platform": "win",
+    "ID": 758,
+    "path": "wps-pdf/fill-form/win",
+    "documents": [
+      {
+        "name": "如何填写 PDF 表单",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS PDF",
+    "l2": "编辑与批注",
+    "feature": "填写表单",
+    "platform": "mac",
+    "ID": 759,
+    "path": "wps-pdf/fill-form/mac",
+    "documents": [
+      {
+        "name": "Mac 端如何填写 PDF 表单",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS PDF",
+    "l2": "转换与导出",
+    "feature": "PDF转Word",
+    "platform": "win",
+    "ID": 760,
+    "path": "wps-pdf/pdf-to-word/win",
+    "documents": [
+      {
+        "name": "如何将 PDF 转为 Word",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS PDF",
+    "l2": "转换与导出",
+    "feature": "PDF转Word",
+    "platform": "mac",
+    "ID": 761,
+    "path": "wps-pdf/pdf-to-word/mac",
+    "documents": [
+      {
+        "name": "Mac 端如何将 PDF 转为 Word",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS PDF",
+    "l2": "转换与导出",
+    "feature": "PDF转Excel",
+    "platform": "win",
+    "ID": 762,
+    "path": "wps-pdf/pdf-to-excel/win",
+    "documents": [
+      {
+        "name": "如何将 PDF 转为 Excel",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS PDF",
+    "l2": "转换与导出",
+    "feature": "PDF转Excel",
+    "platform": "mac",
+    "ID": 763,
+    "path": "wps-pdf/pdf-to-excel/mac",
+    "documents": [
+      {
+        "name": "Mac 端如何将 PDF 转为 Excel",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS PDF",
+    "l2": "转换与导出",
+    "feature": "PDF转PPT",
+    "platform": "win",
+    "ID": 764,
+    "path": "wps-pdf/pdf-to-ppt/win",
+    "documents": [
+      {
+        "name": "如何将 PDF 转为 PPT",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS PDF",
+    "l2": "转换与导出",
+    "feature": "PDF转PPT",
+    "platform": "mac",
+    "ID": 765,
+    "path": "wps-pdf/pdf-to-ppt/mac",
+    "documents": [
+      {
+        "name": "Mac 端如何将 PDF 转为 PPT",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS PDF",
+    "l2": "转换与导出",
+    "feature": "压缩PDF",
+    "platform": "win",
+    "ID": 766,
+    "path": "wps-pdf/compress-pdf/win",
+    "documents": [
+      {
+        "name": "如何压缩 PDF",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
+  },
+  {
+    "l1": "WPS PDF",
+    "l2": "转换与导出",
+    "feature": "压缩PDF",
+    "platform": "mac",
+    "ID": 767,
+    "path": "wps-pdf/compress-pdf/mac",
+    "documents": [
+      {
+        "name": "Mac 端如何压缩 PDF",
+        "link_url": "https://www.wps.com/",
+        "source_type": "help_center_demo"
+      }
+    ]
   }
 ]
