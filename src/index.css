@@ -4320,8 +4320,11 @@ body {
   font-style: italic;
   line-height: 28px;
   letter-spacing: 0.03em;
-  color: #1a202c;
   white-space: nowrap;
+  background: linear-gradient(120deg, #7c3aed 0%, #534ab7 45%, #8f5bff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .home-page-header-inner {
