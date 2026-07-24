@@ -70,7 +70,6 @@ export default function HomePage({
               groups={entityCatalogGroups}
               navigateTo={navigateTo}
               ctaLabel={home.downloadCta}
-              onCtaClick={() => navigateTo(localeDownloadPath)}
             />
           </div>
         </div>
@@ -87,7 +86,7 @@ export default function HomePage({
       <section className="home-intent-section px-6 py-12" aria-labelledby="home-intent-title">
         <div className="home-section-inner mx-auto w-full max-w-[1160px]">
           <div className="home-intent-header">
-            <h2 id="home-intent-title" className="home-section-title text-center text-[#1a202c]">
+            <h2 id="home-intent-title" className="home-section-title text-[#1a202c]">
               {home.intentLinksTitle}
             </h2>
             {home.intentLinksSub ? (
@@ -175,10 +174,7 @@ export default function HomePage({
 
       <HomeFaq title={home.faqTitle} faqTopics={home.faqTopics} />
 
-      <HomeDownloadSection
-        copy={home.downloadSection}
-        onDownloadClick={() => navigateTo(localeDownloadPath)}
-      />
+      <HomeDownloadSection copy={home.downloadSection} />
     </>
   )
 }

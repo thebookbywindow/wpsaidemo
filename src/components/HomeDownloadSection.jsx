@@ -1,9 +1,10 @@
 import { ShieldCheck } from 'lucide-react'
+import { detectAndAlertPlatformDownload } from '../utils/detectClientPlatform'
 
 /**
  * Closing download CTA — below FAQ, drives wps office download intent.
  */
-export default function HomeDownloadSection({ copy, onDownloadClick }) {
+export default function HomeDownloadSection({ copy }) {
   if (!copy?.title || !copy?.ctaLabel) return null
 
   return (
@@ -24,7 +25,9 @@ export default function HomeDownloadSection({ copy, onDownloadClick }) {
             <button
               className="home-download-cta"
               type="button"
-              onClick={onDownloadClick}
+              onClick={() => {
+                detectAndAlertPlatformDownload()
+              }}
             >
               <span>{copy.ctaLabel}</span>
               <ShieldCheck

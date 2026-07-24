@@ -1,5 +1,9 @@
-import { ShieldCheck } from 'lucide-react'
+import { ArrowUpRight, ShieldCheck } from 'lucide-react'
 import { FaAndroid, FaApple, FaLinux, FaMobileAlt, FaTabletAlt, FaWindows } from 'react-icons/fa'
+import {
+  alertPlatformDownload,
+  detectAndAlertPlatformDownload,
+} from '../utils/detectClientPlatform'
 
 const PLATFORM_ICON_MAP = {
   windows: FaWindows,
@@ -72,7 +76,6 @@ export default function HomeEntityCatalog({
   navigateTo,
   variant = 'section',
   ctaLabel,
-  onCtaClick,
 }) {
   if (variant === 'hero') {
     const platformItems = groups.flatMap((group) => group.items ?? [])
@@ -82,7 +85,13 @@ export default function HomeEntityCatalog({
         <div className="home-entity-catalog-panel home-entity-catalog-panel--hero">
           {ctaLabel ? (
             <div className="home-hero-actions">
-              <button className="home-hero-download-btn" type="button" onClick={onCtaClick}>
+              <button
+                className="home-hero-download-btn"
+                type="button"
+                onClick={() => {
+                  detectAndAlertPlatformDownload()
+                }}
+              >
                 <span>{ctaLabel}</span>
                 <ShieldCheck
                   className="home-hero-download-btn-shield"
@@ -99,22 +108,21 @@ export default function HomeEntityCatalog({
             <ul className="home-hero-platform-list">
               {platformItems.map((item) => (
                 <li key={item.id}>
-                  {item.path ? (
-                    <a
-                      className="home-hero-platform-link"
-                      href={item.path}
-                      onClick={(event) => {
-                        event.preventDefault()
-                        navigateTo(item.path)
-                      }}
-                    >
-                      <span>{item.label}</span>
-                    </a>
-                  ) : (
-                    <span className="home-hero-platform-link is-static">
-                      <span>{item.label}</span>
-                    </span>
-                  )}
+                  <button
+                    type="button"
+                    className="home-hero-platform-link"
+                    onClick={() => {
+                      alertPlatformDownload(item.platform || item.label)
+                    }}
+                  >
+                    <span className="home-hero-platform-label">{item.label}</span>
+                    <ArrowUpRight
+                      className="home-hero-platform-arrow"
+                      size={12}
+                      strokeWidth={2.25}
+                      aria-hidden="true"
+                    />
+                  </button>
                 </li>
               ))}
             </ul>

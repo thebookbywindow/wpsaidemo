@@ -933,10 +933,12 @@ const blogCategoryAccentClassMap = {
   company: 'blog-card-accent--company',
 }
 
+/** Official WPS social profiles — keep in sync with useHomePageSeo Organization.sameAs. */
 const blogSocialLinks = [
   {
     id: 'twitter',
     label: 'X / Twitter',
+    url: 'https://x.com/WPSOffice',
     icon: (
       <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
         <path d="M14.36 4.47c.01.16.01.32.01.47 0 4.8-3.65 10.33-10.33 10.33-2.05 0-3.96-.6-5.57-1.63.29.03.57.05.87.05 1.7 0 3.27-.58 4.51-1.55a3.64 3.64 0 01-3.4-2.52c.23.03.45.05.69.05.33 0 .65-.04.96-.12A3.64 3.64 0 01.6 5.96v-.05c.54.3 1.16.48 1.82.5A3.64 3.64 0 011.3 3.3a10.32 10.32 0 007.49 3.8 4.1 4.1 0 01-.1-.83 3.63 3.63 0 016.28-2.48 7.14 7.14 0 002.31-.88 3.64 3.64 0 01-1.6 2.01 7.26 7.26 0 002.09-.57 7.83 7.83 0 01-1.81 1.12z" />
@@ -946,6 +948,7 @@ const blogSocialLinks = [
   {
     id: 'youtube',
     label: 'YouTube',
+    url: 'https://www.youtube.com/@WPSOffice',
     icon: (
       <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
         <path d="M15.6 4.2a2 2 0 00-1.41-1.41C12.9 2.4 8 2.4 8 2.4s-4.9 0-6.19.38A2 2 0 00.4 4.2C0 5.5 0 8 0 8s0 2.5.4 3.8a2 2 0 001.41 1.41C3.1 13.6 8 13.6 8 13.6s4.9 0 6.19-.38a2 2 0 001.41-1.41C16 10.5 16 8 16 8s0-2.5-.4-3.8zM6.4 10.4V5.6l4.4 2.4-4.4 2.4z" />
@@ -955,6 +958,7 @@ const blogSocialLinks = [
   {
     id: 'linkedin',
     label: 'LinkedIn',
+    url: 'https://www.linkedin.com/company/wps-office',
     icon: (
       <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
         <path d="M14.82 0H1.18C.53 0 0 .53 0 1.18v13.64C0 15.47.53 16 1.18 16h13.64c.65 0 1.18-.53 1.18-1.18V1.18C16 .53 15.47 0 14.82 0zM4.74 13.62H2.37V6h2.37v7.62zm-1.19-8.66A1.37 1.37 0 112 3.6a1.37 1.37 0 011.55 1.36zM13.62 13.62h-2.37V9.9c0-.88-.02-2.02-1.23-2.02-1.23 0-1.42.96-1.42 1.95v3.8H6.24V6h2.27v1.04h.03c.32-.6 1.09-1.23 2.24-1.23 2.39 0 2.84 1.57 2.84 3.62v4.19z" />
@@ -4239,10 +4243,11 @@ function App() {
               {blogSocialLinks.map((social) => (
                 <a
                   key={`social-${social.id}`}
-                  href="#"
+                  href={social.url}
                   className="blog-social"
                   aria-label={social.label}
-                  onClick={(event) => event.preventDefault()}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   {social.icon}
                 </a>
@@ -5708,10 +5713,11 @@ function App() {
                 {footerSocialItems.map((social) => (
                   <a
                     key={social.id}
-                    href="#"
+                    href={social.url}
                     aria-label={social.label}
                     className="site-footer-social-link"
-                    onClick={(event) => event.preventDefault()}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     {social.icon}
                   </a>

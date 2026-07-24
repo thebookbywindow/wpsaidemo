@@ -178,7 +178,8 @@ export const HOME_MEDIA_PROOF_TABS = [
         thumb:
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/0cd3d410ccab322ca6298317a5760289.jpg',
         rating: 5,
-        href: 'https://www.g2.com/products/wps-office/reviews/wps-office-review-12381286',
+        // Prefer durable product review hubs over per-review deep links (IDs churn / 404).
+        href: 'https://www.g2.com/products/wps-office/reviews',
       },
       {
         id: 'lokesh-n',
@@ -187,7 +188,7 @@ export const HOME_MEDIA_PROOF_TABS = [
         thumb:
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/bb534e8a30fc774b4ba7962e7cae4f49.jpg',
         rating: 4,
-        href: 'https://www.g2.com/products/wps-office/reviews/wps-office-review-8594677',
+        href: 'https://www.g2.com/products/wps-office/reviews',
       },
       {
         id: 'harinadhasankar-m',
@@ -196,7 +197,7 @@ export const HOME_MEDIA_PROOF_TABS = [
         thumb:
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/369dff779d8df8dc220a3dd30e22f71a.jpg',
         rating: 5,
-        href: 'https://www.g2.com/products/wps-office/reviews/wps-office-review-11977250',
+        href: 'https://www.g2.com/products/wps-office/reviews',
       },
       {
         id: 'neha-y',
@@ -205,7 +206,7 @@ export const HOME_MEDIA_PROOF_TABS = [
         thumb:
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/0b1834d6b9b43499932153e05072263f.jpg',
         rating: 4.5,
-        href: 'https://www.g2.com/products/wps-writer/reviews/wps-writer-review-6482418',
+        href: 'https://www.g2.com/products/wps-writer/reviews',
       },
       {
         id: 'bilal-d',
@@ -215,7 +216,7 @@ export const HOME_MEDIA_PROOF_TABS = [
         thumb:
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/78d95328c936971c48d332241b025855.jpg',
         rating: 4.5,
-        href: 'https://www.g2.com/products/wps-office/reviews/wps-office-review-10775063',
+        href: 'https://www.g2.com/products/wps-office/reviews',
       },
       {
         id: 'shivam-m',
@@ -224,7 +225,7 @@ export const HOME_MEDIA_PROOF_TABS = [
         thumb:
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/f568191688d3745a7ebc03e061a63c3f.jpg',
         rating: 5,
-        href: 'https://www.g2.com/products/wps-office/reviews/wps-office-review-9051024',
+        href: 'https://www.g2.com/products/wps-office/reviews',
       },
       {
         id: 'nayanjyoti-g',
@@ -233,7 +234,7 @@ export const HOME_MEDIA_PROOF_TABS = [
         thumb:
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/ad953909fb6f518a81503a97908269ba.jpg',
         rating: 5,
-        href: 'https://www.g2.com/products/wps-office/reviews/wps-office-review-8562179',
+        href: 'https://www.g2.com/products/wps-office/reviews',
       },
       {
         id: 'sudhira-p',
@@ -242,7 +243,7 @@ export const HOME_MEDIA_PROOF_TABS = [
         thumb:
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/aa4282279d103df5e23049421aa7d53e.jpg',
         rating: 4.5,
-        href: 'https://www.g2.com/products/wps-office/reviews/wps-office-review-9180811',
+        href: 'https://www.g2.com/products/wps-office/reviews',
       },
     ],
   },

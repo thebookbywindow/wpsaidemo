@@ -90,8 +90,9 @@ export const uiTextByLanguage = {
       },
       // International AI feature directory (external official URLs)
       intlAiFeatures: {
-        title: 'WPS AI',
-        summary: 'Your suite-wide Office Copilot',
+        title: 'WPS AI connected workflow',
+        summary:
+          'The suite-wide Office Copilot inside free WPS Office for Docs, Spreadsheet, Presentation, and PDF.',
         pillars: {
           copilot: {
             label: 'Copilot',
@@ -138,7 +139,7 @@ export const uiTextByLanguage = {
             },
           },
           docs: {
-            label: 'Docs',
+            label: 'WPS Docs',
             tagline: 'Write and rewrite smarter',
             spotlightLead:
               'WPS AI inside [WPS Writer](https://www.wps.com/office/writer/) helps you draft from a blank page, rewrite tone and clarity, and [summarize long documents](https://www.wps.com/feature/ai-summarizer/) — all without leaving your doc.',
@@ -160,7 +161,7 @@ export const uiTextByLanguage = {
             },
           },
           sheets: {
-            label: 'Sheets',
+            label: 'WPS Sheets',
             tagline: 'Analyze data with less manual work',
             spotlightLead:
               '[WPS Spreadsheet](https://www.wps.com/office/spreadsheet/) AI turns plain-language questions into formulas, insights, and tables — so you spend less time on syntax and more on decisions across desktop and web.',
@@ -182,7 +183,7 @@ export const uiTextByLanguage = {
             },
           },
           slides: {
-            label: 'Slides',
+            label: 'WPS Slides',
             tagline: 'Create presentations faster',
             spotlightLead:
               '[WPS Presentation](https://www.wps.com/office/presentation/) AI turns outlines, topics, and briefs into polished slide decks — layout, structure, and copy included, ready to present or export.',
@@ -204,7 +205,7 @@ export const uiTextByLanguage = {
             },
           },
           pdf: {
-            label: 'PDF',
+            label: 'WPS PDF',
             tagline: 'Read, chat, and summarize PDFs',
             spotlightLead:
               '[WPS PDF](https://www.wps.com/office/pdf/) AI lets you chat with documents, pull answers with source proof, and [summarize long reports](https://www.wps.com/feature/pdf-summarizer/) — securely inside WPS, without switching apps.',
@@ -394,7 +395,7 @@ export const uiTextByLanguage = {
       // High-intent internal links
       intentLinksTitle: 'Popular WPS topics',
       intentLinksSub:
-        'Start with the online office, AI, and PDF tools WPS users explore most.',
+        'A shortlist of the WPS workflows people come back to most — pick a topic and go.',
       intentLinks: {
         'pdf-extension': {
           label: 'PDF Extension for Chrome',
@@ -520,17 +521,17 @@ export const uiTextByLanguage = {
             {
               question: 'What is WPS AI?',
               answer:
-                'WPS AI is the AI layer inside WPS Office (also called WPS or Kingsoft Office). It is not a separate suite: it adds AI drafting, rewriting, summarization, and formula help across the WPS Office apps.',
+                'WPS AI is the AI layer inside [WPS Office](https://www.wps.com/) (also called WPS or Kingsoft Office). It is not a separate suite: it adds AI drafting, rewriting, summarization, and formula help across the WPS Office apps — see [WPS AI · Office Copilot](https://www.wps.com/feature/wps-ai-your-office-copilot/).',
             },
             {
               question: 'Is WPS AI an Office Copilot?',
               answer:
-                'Yes. WPS AI is your suite-wide Office Copilot inside free WPS Office. One AI assistant covers Writer, Spreadsheet, Presentation, and PDF — draft, analyze, present, and read without switching apps.',
+                'Yes. WPS AI is your suite-wide [Office Copilot](https://www.wps.com/feature/wps-ai-your-office-copilot/) inside free [WPS Office](https://www.wps.com/download/). One AI assistant covers Writer, Spreadsheet, Presentation, and PDF — draft, analyze, present, and read without switching apps.',
             },
             {
               question: 'What can WPS AI do in Word, Excel, PowerPoint, and PDF?',
               answer:
-                'In Writer (Word): AI Writing for instant drafts and tone switching. In Presentation (PowerPoint): Slide Designer for one-click PPT generation. In Spreadsheet (Excel): Data Analyst to chat with spreadsheets and get formula help. In PDF: PDF AI Reader / Chat PDF for insight extraction from long documents.',
+                'In Writer (Word): [AI Writer](https://www.wps.com/feature/ai-writer/) for instant drafts and tone switching. In Presentation (PowerPoint): [AI PPT Maker](https://www.wps.com/feature/ai-ppt-maker/) for one-click PPT generation. In Spreadsheet (Excel): [AI in Excel Spreadsheets](https://www.wps.com/feature/ai-in-excel-spreadsheets/) to chat with spreadsheets and get [formula help](https://www.wps.com/feature/ai-excel-formula-generator/). In PDF: [Chat PDF](https://www.wps.com/feature/chat-pdf/) for insight extraction from long documents.',
             },
             {
               question: 'Is WPS AI free?',
@@ -587,7 +588,7 @@ export const uiTextByLanguage = {
             {
               question: 'Can I use PowerPoint online without installing WPS?',
               answer:
-                'Yes. Use WPS Presentation in [WPS online office](https://drive.wps.com/) in your browser to build and edit PPTX slides without a desktop install — similar to “powerpoint online” or “ppt online” workflows. Sign in so decks sync to WPS Cloud and your other devices.',
+                'Yes. Use [WPS Presentation](https://www.wps.com/office/presentation/) in [WPS online office](https://drive.wps.com/) in your browser to build and edit PPTX slides without a desktop install — similar to “powerpoint online” or “ppt online” workflows. Sign in so decks sync to WPS Cloud and your other devices.',
             },
             {
               question: 'What is WPS Office online (WPS web)?',
@@ -613,12 +614,12 @@ export const uiTextByLanguage = {
             {
               question: 'What is WPS PDF editor and how do I edit PDF files?',
               answer:
-                'WPS PDF is the PDF module built into WPS Office on desktop, mobile, and online. Open a PDF in WPS PDF to read, annotate, and edit text or images; [WPS Pro+](https://www.wps.com/buy/) adds fuller edit/convert tools (PDF to Word/Excel/PPT, image to PDF, and related converters).',
+                '[WPS PDF](https://www.wps.com/office/pdf/) is the PDF module built into WPS Office on desktop, mobile, and online. Open a PDF in WPS PDF to read, annotate, and edit text or images; [WPS Pro+](https://www.wps.com/buy/) adds fuller edit/convert tools (PDF to Word/Excel/PPT, image to PDF, and related converters).',
             },
             {
               question: 'How do I convert Word to PDF in WPS?',
               answer:
-                'In WPS Writer, click Menu → Export to PDF ([step-by-step guide](https://www.wps.com/academy/wps-writer-save-as-pdf-quick-tutorials-1878874/)). In the dialog, name the file, set the page range, choose a save location, then click Export to PDF. Alternative: Menu → Save as → Other Formats → PDF Format (*.pdf) → Save.',
+                'In [WPS Writer](https://www.wps.com/office/writer/), click Menu → Export to PDF ([step-by-step guide](https://www.wps.com/academy/wps-writer-save-as-pdf-quick-tutorials-1878874/)). In the dialog, name the file, set the page range, choose a save location, then click Export to PDF. Alternative: Menu → Save as → Other Formats → PDF Format (*.pdf) → Save.',
             },
             {
               question: 'Can WPS convert JPG to Excel or JPG to Word?',
@@ -895,8 +896,9 @@ export const uiTextByLanguage = {
         platforms: '支持平台',
       },
       intlAiFeatures: {
-        title: 'WPS AI',
-        summary: '贯穿整套 Office 的 Copilot',
+        title: 'WPS AI 连通工作流',
+        summary:
+          '免费 WPS Office 中的整套 Office Copilot，覆盖文字、表格、演示与 PDF。',
         pillars: {
           copilot: {
             label: 'Copilot',
@@ -938,7 +940,7 @@ export const uiTextByLanguage = {
             },
           },
           docs: {
-            label: '文字',
+            label: 'WPS 文字',
             tagline: '更聪明地写作与改写',
             spotlightLead:
               '[WPS 文字 Writer](https://www.wps.com/office/writer/) 内置 AI：从空白页起草、改写语气与表达、[一键摘要长文档](https://www.wps.com/feature/ai-summarizer/) —— 全程不离开当前文档。',
@@ -960,7 +962,7 @@ export const uiTextByLanguage = {
             },
           },
           sheets: {
-            label: '表格',
+            label: 'WPS 表格',
             tagline: '少做手工，多做分析',
             spotlightLead:
               '[WPS 表格 Spreadsheet](https://www.wps.com/office/spreadsheet/) AI 把口语化问题变成公式、洞察与结构化表格 —— 少记语法，多做决策，桌面与网页端均可使用。',
@@ -982,7 +984,7 @@ export const uiTextByLanguage = {
             },
           },
           slides: {
-            label: '演示',
+            label: 'WPS 演示',
             tagline: '更快做出演示文稿',
             spotlightLead:
               '[WPS 演示 Presentation](https://www.wps.com/office/presentation/) AI 可将大纲、主题或简报快速变成结构完整的幻灯片 —— 版式、层次与文案一并生成，可直接演示或导出。',
@@ -1004,7 +1006,7 @@ export const uiTextByLanguage = {
             },
           },
           pdf: {
-            label: 'PDF',
+            label: 'WPS PDF',
             tagline: '阅读、对话、摘要 PDF',
             spotlightLead:
               '[WPS PDF](https://www.wps.com/office/pdf/) AI 支持文档对话、带出处引用的问答，以及[长报告摘要](https://www.wps.com/feature/pdf-summarizer/) —— 在 WPS 内安全完成，无需切换应用。',
@@ -1189,7 +1191,7 @@ export const uiTextByLanguage = {
       aboutLinkLabel: '产品百科',
       intentLinksTitle: '热门 WPS 话题',
       intentLinksSub:
-        '从用户最常探索的在线办公、AI 与 PDF 工具入手。',
+        '精选大家最常回来的 WPS 工作流 —— 挑一个话题，直接开始。',
       intentLinks: {
         'pdf-extension': {
           label: 'Chrome PDF 扩展',
@@ -1313,17 +1315,17 @@ export const uiTextByLanguage = {
             {
               question: '什么是 WPS AI？',
               answer:
-                'WPS AI 是 WPS Office（又称 WPS / 金山办公）内部的 AI 能力层，不是另一套独立办公软件；它为 WPS 各应用提供起草、改写、摘要与公式辅助等 AI 功能。',
+                'WPS AI 是 [WPS Office](https://www.wps.com/)（又称 WPS / 金山办公）内部的 AI 能力层，不是另一套独立办公软件；它为 WPS 各应用提供起草、改写、摘要与公式辅助等 AI 功能 —— 详见 [WPS AI · Office Copilot](https://www.wps.com/feature/wps-ai-your-office-copilot/)。',
             },
             {
               question: 'WPS AI 是 Office Copilot 吗？',
               answer:
-                '是。WPS AI 是免费 WPS Office 内贯穿整套 Office 的 Copilot。一套 AI 助手覆盖文字、表格、演示与 PDF —— 起草、分析、演示与阅读，无需切换应用。',
+                '是。WPS AI 是免费 [WPS Office](https://www.wps.com/download/) 内贯穿整套 Office 的 [Office Copilot](https://www.wps.com/feature/wps-ai-your-office-copilot/)。一套 AI 助手覆盖文字、表格、演示与 PDF —— 起草、分析、演示与阅读，无需切换应用。',
             },
             {
               question: 'WPS AI 在 Word、Excel、PowerPoint 和 PDF 里能做什么？',
               answer:
-                '在 Writer（Word）：AI 写作，即时起草与语气切换。在 Presentation（PowerPoint）：幻灯片设计，一键生成 PPT。在 Spreadsheet（Excel）：数据分析，与表格对话并获得公式辅助。在 PDF：PDF AI 阅读 / Chat PDF，从长文档中提取洞察。',
+                '在 Writer（Word）：[AI Writer](https://www.wps.com/feature/ai-writer/) 即时起草与语气切换。在 Presentation（PowerPoint）：[AI PPT Maker](https://www.wps.com/feature/ai-ppt-maker/) 一键生成 PPT。在 Spreadsheet（Excel）：[AI in Excel Spreadsheets](https://www.wps.com/feature/ai-in-excel-spreadsheets/) 与表格对话，并用 [公式生成器](https://www.wps.com/feature/ai-excel-formula-generator/) 获得公式辅助。在 PDF：[Chat PDF](https://www.wps.com/feature/chat-pdf/) 从长文档中提取洞察。',
             },
             {
               question: 'WPS AI 免费吗？',
@@ -1380,7 +1382,7 @@ export const uiTextByLanguage = {
             {
               question: '能否在线使用 PowerPoint，不安装 WPS？',
               answer:
-                '可以。在 [WPS 在线办公](https://drive.wps.com/) 中使用 WPS 演示，在浏览器创建与编辑 PPTX，无需安装桌面程序，类似「powerpoint online」「ppt online」。登录后幻灯片会同步到 WPS 云及其他设备。',
+                '可以。在 [WPS 在线办公](https://drive.wps.com/) 中使用 [WPS 演示](https://www.wps.com/office/presentation/)，在浏览器创建与编辑 PPTX，无需安装桌面程序，类似「powerpoint online」「ppt online」。登录后幻灯片会同步到 WPS 云及其他设备。',
             },
             {
               question: '什么是 WPS Office 在线版（WPS web）？',
@@ -1406,12 +1408,12 @@ export const uiTextByLanguage = {
             {
               question: '什么是 WPS PDF 编辑器，如何编辑 PDF？',
               answer:
-                'WPS PDF 是 WPS Office 内置 PDF 模块，支持阅读、批注及在支持的方案下编辑文本/图片。[WPS Pro+ 定价页](https://www.wps.com/buy/) 列出 PDF 转 Word/Excel/PPT、图片转 PDF 等进阶转换与编辑能力；免费 Standard 含基础 PDF 阅读与常用功能。',
+                '[WPS PDF](https://www.wps.com/office/pdf/) 是 WPS Office 内置 PDF 模块，支持阅读、批注及在支持的方案下编辑文本/图片。[WPS Pro+ 定价页](https://www.wps.com/buy/) 列出 PDF 转 Word/Excel/PPT、图片转 PDF 等进阶转换与编辑能力；免费 Standard 含基础 PDF 阅读与常用功能。',
             },
             {
               question: 'WPS 如何把 Word 转成 PDF（word to pdf）？',
               answer:
-                '在 WPS 文字中：点击「菜单」→「输出为 PDF」（[分步教程](https://www.wps.com/academy/wps-writer-save-as-pdf-quick-tutorials-1878874/)）。在对话框中设置文件名、输出范围与保存路径，点击「输出为 PDF」。也可使用「菜单」→「另存为」→「其他格式」→ 文件类型选「PDF 格式 (*.pdf)」→「保存」。',
+                '在 [WPS 文字 Writer](https://www.wps.com/office/writer/) 中：点击「菜单」→「输出为 PDF」（[分步教程](https://www.wps.com/academy/wps-writer-save-as-pdf-quick-tutorials-1878874/)）。在对话框中设置文件名、输出范围与保存路径，点击「输出为 PDF」。也可使用「菜单」→「另存为」→「其他格式」→ 文件类型选「PDF 格式 (*.pdf)」→「保存」。',
             },
             {
               question: 'WPS 能把 JPG 转成 Excel 或 Word 吗？',

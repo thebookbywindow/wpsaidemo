@@ -120,7 +120,17 @@ export default function HomeIntlAiFeatures({ copy, title, summary }) {
       <div className="home-section-inner mx-auto w-full max-w-[1160px]">
         <header className="home-ai-deck-head">
           <h2 id="home-intl-ai-title" className="home-ai-deck-title">
-            {title}
+            <img
+              className="home-ai-deck-title-icon"
+              src="/icons/wps/copilot.svg"
+              alt=""
+              width={36}
+              height={36}
+              draggable={false}
+              decoding="async"
+              aria-hidden="true"
+            />
+            <span>{title}</span>
           </h2>
           {summary ? <p className="home-ai-deck-summary">{summary}</p> : null}
         </header>

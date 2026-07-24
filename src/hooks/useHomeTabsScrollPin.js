@@ -9,8 +9,9 @@ export const HOME_INTL_AI_STICKY_GAP_PX = HOME_TABS_SCROLL_PIN_GAP_PX
 /**
  * Dead-zone around a tab's progress center so tiny height/progress
  * noise cannot flip the active tab back and forth.
+ * Higher = need more scroll past the midpoint before switching.
  */
-export const HOME_INTL_AI_TAB_HYSTERESIS = 0.28
+export const HOME_INTL_AI_TAB_HYSTERESIS = 0.32
 
 /**
  * Move active capsule tab by delta (-1 prev / +1 next). Clamps at ends.
