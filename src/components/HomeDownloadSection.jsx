@@ -1,3 +1,5 @@
+import { ShieldCheck } from 'lucide-react'
+
 /**
  * Closing download CTA — below FAQ, drives wps office download intent.
  */
@@ -7,21 +9,30 @@ export default function HomeDownloadSection({ copy, onDownloadClick }) {
   return (
     <section
       id="home-download"
-      className="home-download-section px-6 pb-24 pt-4"
+      className="home-download-section px-6"
       aria-labelledby="home-download-title"
     >
-      <div className="home-section-inner mx-auto w-full max-w-[920px]">
+      <div className="home-section-inner home-download-inner mx-auto w-full max-w-[920px]">
         <div className="home-download-panel">
           <h2 id="home-download-title" className="home-download-title">
             {copy.title}
           </h2>
+          {copy.description ? (
+            <p className="home-download-desc">{copy.description}</p>
+          ) : null}
           <div className="home-download-actions">
             <button
               className="home-download-cta"
               type="button"
               onClick={onDownloadClick}
             >
-              {copy.ctaLabel}
+              <span>{copy.ctaLabel}</span>
+              <ShieldCheck
+                className="home-download-cta-shield"
+                size={18}
+                strokeWidth={2.25}
+                aria-hidden="true"
+              />
             </button>
           </div>
         </div>

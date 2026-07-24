@@ -1,9 +1,11 @@
 import { useEffect, useId, useRef, useState } from 'react'
-import { ChevronDown } from 'lucide-react'
+import { Minus, Plus } from 'lucide-react'
 import { HOME_FAQ_TOPIC_IDS } from '../data/homeFaqTopics'
 import { renderFaqAnswer } from '../utils/renderFaqAnswer'
+
 /**
- * Homepage FAQ — left topic nav + single-open accordion per topic.
+ * Homepage FAQ — topic pills + single-open accordion.
+ * Copy comes from uiText; layout matches the pill / ± accordion pattern.
  */
 export default function HomeFaq({ title, faqTopics = {} }) {
   const titleId = useId()
@@ -45,30 +47,25 @@ export default function HomeFaq({ title, faqTopics = {} }) {
         <div className="home-faq-layout mt-8">
           <div className="home-faq-nav-wrap">
             <nav className="home-faq-nav" role="tablist" aria-label={title} ref={navRef}>
-            {topics.map((topic) => {
-              const selected = topic.id === activeTopicId
-              return (
-                <button
-                  key={topic.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={selected}
-                  className={`home-faq-nav-item${selected ? ' is-active' : ''}`}
-                  onClick={() => setActiveTopicId(topic.id)}
-                >
-                  <span className="home-faq-nav-name">{topic.label}</span>
-                  {topic.desc ? <span className="home-faq-nav-desc">{topic.desc}</span> : null}
-                </button>
-              )
-            })}
+              {topics.map((topic) => {
+                const selected = topic.id === activeTopicId
+                return (
+                  <button
+                    key={topic.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={selected}
+                    className={`home-faq-nav-item${selected ? ' is-active' : ''}`}
+                    onClick={() => setActiveTopicId(topic.id)}
+                  >
+                    <span className="home-faq-nav-name">{topic.label}</span>
+                  </button>
+                )
+              })}
             </nav>
           </div>
 
-          <div
-            className="home-faq-panel"
-            role="tabpanel"
-            aria-labelledby={titleId}
-          >
+          <div className="home-faq-panel" role="tabpanel" aria-labelledby={titleId}>
             {activeTopic.faqs.map((item, index) => {
               const isOpen = openIndex === index
               return (
@@ -79,12 +76,17 @@ export default function HomeFaq({ title, faqTopics = {} }) {
                   >
                     <span className="home-faq-question">{item.question}</span>
                     <span className="home-faq-icon" aria-hidden="true">
-                      <ChevronDown size={18} strokeWidth={2.25} />
+                      {isOpen ? (
+                        <Minus size={18} strokeWidth={2.25} />
+                      ) : (
+                        <Plus size={18} strokeWidth={2.25} />
+                      )}
                     </span>
                   </summary>
                   <div className="home-faq-answer">
                     <p>{renderFaqAnswer(item.answer)}</p>
-                  </div>                </details>
+                  </div>
+                </details>
               )
             })}
           </div>

@@ -78,9 +78,14 @@ export const HOME_HERO_COPILOT = COPILOT_HERO_COMPONENT
     })
   : null
 
-/** Hero typewriter cycle — Copilot has its own section below the fold. */
+/** Core apps shown in the hero product pill (四大组件). */
+export const HOME_HERO_TYPEWRITER_IDS = Object.freeze(['docs', 'slides', 'sheets', 'pdf'])
+
+/** Hero typewriter cycle — Docs / Slides / Sheets / PDF only. */
 export const HOME_HERO_TYPEWRITER_COMPONENTS = Object.freeze(
-  HOME_HERO_COMPONENTS.filter((item) => item.id !== 'copilot'),
+  HOME_HERO_TYPEWRITER_IDS.map((id) => HOME_HERO_COMPONENTS.find((item) => item.id === id)).filter(
+    Boolean,
+  ),
 )
 
 export const HOME_HERO_COMPONENT_NAMES = HOME_HERO_COMPONENTS.map((item) => item.name)

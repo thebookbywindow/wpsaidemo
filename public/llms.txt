@@ -1,0 +1,33 @@
+# WPS AI
+
+> WPS AI is the suite-wide Office Copilot inside free WPS Office — agentic AI for writing, slides, sheets, PDF, and photos.
+
+WPS AI is the AI layer in WPS Office (also called WPS / Kingsoft Office), not a separate suite. One assistant covers Writer, Spreadsheet, Presentation, and PDF: draft and rewrite, generate decks, analyze data, and chat with documents.
+
+Key terms: WPS AI, Office Copilot, agentic AI, AI Writing, Slide Designer, Data Analyst, Chat PDF, AI Summarizer, Writer, Spreadsheet, Presentation, WPS PDF, Photos, AirPage, AirSheet, Forms, DBSheet, free WPS Office
+
+## Product
+
+- [WPS AI Home](https://www.wps.ai/en-US/): Official homepage — WPS AI Office Copilot and free office download
+- [WPS AI Features](https://www.wps.ai/en-US/ai-features/): Official directory of suite-wide AI capabilities
+- [Download WPS Office](https://www.wps.ai/en-US/download/): Free installers for Windows, Mac, Linux, iPad, iOS, Android
+
+## AI capabilities (as on the homepage)
+
+- [Office Copilot](https://www.wps.ai/en-US/ai-features/#intl-ai-group-copilot): Suite-wide Copilot — AI Writing, Slide Designer, Data Analyst, PDF AI Reader
+- [Docs AI](https://www.wps.ai/en-US/ai-features/#intl-ai-group-writer): Draft, rewrite, and summarize in Writer
+- [Sheets AI](https://www.wps.ai/en-US/ai-features/#intl-ai-group-spreadsheet): Plain-language formulas and data insights
+- [Slides AI](https://www.wps.ai/en-US/ai-features/#intl-ai-group-presentation): Outline-to-deck and topic-to-slides
+- [PDF AI](https://www.wps.ai/en-US/ai-features/#intl-ai-group-pdf): Chat PDF and PDF summarizer
+- [Photos AI](https://www.wps.ai/en-US/ai-features/#intl-ai-group-photos): AI photo editor and background remover
+
+## Proof & trust (homepage facts)
+
+- 600 million monthly active users; 672 million monthly active devices (as of March 2026, WPS about page)
+- Available in 220+ countries & regions; 46 languages; 200,000+ enterprise customers
+
+## Optional
+
+- [Pricing](https://www.wps.ai/en-US/pricing/): Free Standard vs Pro+ (AI limits differ by plan)
+- [WPS Online](https://drive.wps.com/): Browser office with cloud sync
+- [WPS.com](https://www.wps.com/): Global WPS Office site

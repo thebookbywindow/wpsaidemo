@@ -9,7 +9,13 @@ export const HOME_AI_PILLARS = Object.freeze([
     directoryGroupId: 'writer',
     productPageUrl: 'https://www.wps.com/office/writer/',
     spotlightImageId: 'ai-writer-feature',
-    featureIds: ['ai-writer-feature', 'ai-summarizer'],
+    // SEO/GEO: Writer drafting → summarize → rewrite → translate (nav + feature hub order)
+    featureIds: [
+      'ai-writer-feature',
+      'ai-summarizer',
+      'ai-improve-writing',
+      'ai-translator-feature',
+    ],
   }),
   Object.freeze({
     id: 'sheets',
@@ -17,7 +23,13 @@ export const HOME_AI_PILLARS = Object.freeze([
     directoryGroupId: 'spreadsheet',
     productPageUrl: 'https://www.wps.com/office/spreadsheet/',
     spotlightImageId: 'ai-in-excel-spreadsheets',
-    featureIds: ['ai-excel-formula-generator', 'ai-in-excel-spreadsheets'],
+    // Full spreadsheet AI map (4) — formula / chat / tables / image→Excel
+    featureIds: [
+      'ai-excel-formula-generator',
+      'ai-in-excel-spreadsheets',
+      'ai-table-generator',
+      'jpg-to-excel',
+    ],
   }),
   Object.freeze({
     id: 'slides',
@@ -25,7 +37,13 @@ export const HOME_AI_PILLARS = Object.freeze([
     directoryGroupId: 'presentation',
     productPageUrl: 'https://www.wps.com/office/presentation/',
     spotlightImageId: 'ai-ppt-maker',
-    featureIds: ['ai-ppt-maker', 'ai-powerpoint-generator'],
+    // Prefer www.wps.com/feature landings; PPT maker + generator + free maker + translator
+    featureIds: [
+      'ai-ppt-maker',
+      'ai-powerpoint-generator',
+      'free-presentation-maker',
+      'slides-translator',
+    ],
   }),
   Object.freeze({
     id: 'pdf',
@@ -33,7 +51,13 @@ export const HOME_AI_PILLARS = Object.freeze([
     directoryGroupId: 'pdf',
     productPageUrl: 'https://www.wps.com/office/pdf/',
     spotlightImageId: 'chat-pdf-feature',
-    featureIds: ['chat-pdf-feature', 'pdf-summarizer-feature'],
+    // Chat / summarize / translate / OCR — highest-intent PDF AI queries
+    featureIds: [
+      'chat-pdf-feature',
+      'pdf-summarizer-feature',
+      'pdf-document-translation',
+      'pdf-ocr-feature',
+    ],
   }),
   Object.freeze({
     id: 'photos',

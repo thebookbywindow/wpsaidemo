@@ -7,9 +7,7 @@ import {
   resolveIntlAiFeatureItem,
 } from '../data/intlAiFeatures'
 
-const HERO_ICON_BY_ID = Object.fromEntries(
-  HOME_HERO_COMPONENTS.map((item) => [item.id, item.iconSrc]),
-)
+const HERO_BY_ID = Object.fromEntries(HOME_HERO_COMPONENTS.map((item) => [item.id, item]))
 
 /**
  * Suite-wide AI capability cards for the homepage.
@@ -38,6 +36,7 @@ export function useHomeAiCapabilities(copy) {
       const labels = pillarCopy[pillar.id] ?? {}
       const featureCopy = labels.features ?? {}
       const featureDetails = labels.featureDetails ?? {}
+      const hero = HERO_BY_ID[pillar.iconId] ?? null
 
       const features = (pillar.featureIds ?? []).map((featureId) => {
         const resolved = groupItemsById[featureId]
@@ -61,7 +60,8 @@ export function useHomeAiCapabilities(copy) {
         productPageUrl: pillar.productPageUrl ?? null,
         label: labels.label ?? pillar.id,
         tagline: labels.tagline ?? '',
-        iconSrc: HERO_ICON_BY_ID[pillar.iconId] ?? null,
+        iconSrc: hero?.iconSrc ?? null,
+        color: hero?.color ?? '#534ab7',
         spotlightImageSrc: spotlightResolved?.imageSrc ?? null,
         spotlightLead: labels.spotlightLead ?? '',
         features,

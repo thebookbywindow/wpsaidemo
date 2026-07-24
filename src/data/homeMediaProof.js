@@ -18,16 +18,6 @@ export const HOME_MEDIA_PROOF_TABS = [
         youtubeId: '9IlVkGulqAQ',
       },
       {
-        id: 'michael-horn',
-        author: 'Michael Horn',
-        quote:
-          'Designed to feel instantly familiar, with a clean interface and a smooth, easy-to-use experience.',
-        thumb:
-          'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/eed55eb0ec1867345eb873561984e45c.jpg',
-        duration: '08:28',
-        youtubeId: 'suPR7Qu4-kM',
-      },
-      {
         id: 'brett-in-tech',
         author: 'Brett In Tech',
         quote:
@@ -36,16 +26,6 @@ export const HOME_MEDIA_PROOF_TABS = [
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/8adc4faad73760392b15b229f1de8917.jpg',
         duration: '07:04',
         youtubeId: 'HSwY9jvanPM',
-      },
-      {
-        id: 'bogtechs',
-        author: 'Bogtechs',
-        quote:
-          'Brings a desktop-like Office experience to mobile — familiar, easy to use, and powerful in one all-in-one app.',
-        thumb:
-          'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/66a24926ef650b59cde7204a1284aa22.jpg',
-        duration: '14:06',
-        youtubeId: 'PJIFvA1Hkcs',
       },
       {
         id: 'levelup-id',
@@ -58,16 +38,6 @@ export const HOME_MEDIA_PROOF_TABS = [
         youtubeId: '7i3XIv5sMZc',
       },
       {
-        id: 'ai-border',
-        author: 'AI BORDER',
-        quote:
-          'With powerful AI tools, you can generate content, translate full documents instantly, summarize long files, and even chat with your PDFs for quick insights.',
-        thumb:
-          'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/552cf6216d3f6ef9b385aa41ac67c7b9.jpg',
-        duration: '04:05',
-        youtubeId: '5yjgEBHyRrk',
-      },
-      {
         id: 'hoc-vien',
         author: 'Học Viện',
         quote:
@@ -76,6 +46,36 @@ export const HOME_MEDIA_PROOF_TABS = [
           'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/3439fe9a87d9c7cfa0882f614a4501b8.jpg',
         duration: '09:16',
         youtubeId: 'Y4S2INhEIfE',
+      },
+      {
+        id: 'michael-horn',
+        author: 'Michael Horn',
+        quote:
+          'Designed to feel instantly familiar, with a clean interface and a smooth, easy-to-use experience.',
+        thumb:
+          'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/eed55eb0ec1867345eb873561984e45c.jpg',
+        duration: '08:28',
+        youtubeId: 'suPR7Qu4-kM',
+      },
+      {
+        id: 'bogtechs',
+        author: 'Bogtechs',
+        quote:
+          'Brings a desktop-like Office experience to mobile — familiar, easy to use, and powerful in one all-in-one app.',
+        thumb:
+          'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/66a24926ef650b59cde7204a1284aa22.jpg',
+        duration: '14:06',
+        youtubeId: 'PJIFvA1Hkcs',
+      },
+      {
+        id: 'ai-border',
+        author: 'AI BORDER',
+        quote:
+          'With powerful AI tools, you can generate content, translate full documents instantly, summarize long files, and even chat with your PDFs for quick insights.',
+        thumb:
+          'https://res-academy.cache.wpscdn.com/upload/seo-engine-admin/2026-03-24/552cf6216d3f6ef9b385aa41ac67c7b9.jpg',
+        duration: '04:05',
+        youtubeId: '5yjgEBHyRrk',
       },
       {
         id: 'mazthertutoriales',

@@ -1,3 +1,4 @@
+import { ShieldCheck } from 'lucide-react'
 import { FaAndroid, FaApple, FaLinux, FaMobileAlt, FaTabletAlt, FaWindows } from 'react-icons/fa'
 
 const PLATFORM_ICON_MAP = {
@@ -74,26 +75,50 @@ export default function HomeEntityCatalog({
   onCtaClick,
 }) {
   if (variant === 'hero') {
+    const platformItems = groups.flatMap((group) => group.items ?? [])
+
     return (
       <div className="home-hero-platforms" aria-label={title || groupLabels?.platforms || 'Platforms'}>
         <div className="home-entity-catalog-panel home-entity-catalog-panel--hero">
           {ctaLabel ? (
             <div className="home-hero-actions">
-              <button
-                className="home-primary-btn rounded-[10px] bg-[#534ab7] px-7 py-[13px] text-[16px] font-semibold text-white transition hover:bg-[#3c3489]"
-                type="button"
-                onClick={onCtaClick}
-              >
-                {ctaLabel}
+              <button className="home-hero-download-btn" type="button" onClick={onCtaClick}>
+                <span>{ctaLabel}</span>
+                <ShieldCheck
+                  className="home-hero-download-btn-shield"
+                  size={18}
+                  strokeWidth={2.25}
+                  aria-hidden="true"
+                />
               </button>
             </div>
           ) : null}
-          <PlatformList
-            groups={groups}
-            groupLabels={groupLabels}
-            navigateTo={navigateTo}
-            showTitles={false}
-          />
+
+          <div className="home-hero-platform-row">
+            {title ? <span className="home-hero-platform-prefix">{title}</span> : null}
+            <ul className="home-hero-platform-list">
+              {platformItems.map((item) => (
+                <li key={item.id}>
+                  {item.path ? (
+                    <a
+                      className="home-hero-platform-link"
+                      href={item.path}
+                      onClick={(event) => {
+                        event.preventDefault()
+                        navigateTo(item.path)
+                      }}
+                    >
+                      <span>{item.label}</span>
+                    </a>
+                  ) : (
+                    <span className="home-hero-platform-link is-static">
+                      <span>{item.label}</span>
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     )

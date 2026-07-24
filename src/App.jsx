@@ -27,17 +27,12 @@ import {
 } from './data/siteLocaleData'
 import { translateOfflinePhrase } from './data/offlinePhraseTranslations'
 import {
-  resolveResourcesHeaderMegaMenu,
-} from './data/resourcesHeaderMegaMenu.js'
-import {
   resolveWpsFeaturesHeaderMegaMenu,
 } from './data/wpsFeaturesHeaderMegaMenu.js'
 import { uiTextByLanguage } from './data/uiText'
 import { resolveWorldwideText } from './data/worldwideText'
 import {
   getLocaleDocsPath,
-  parseDocsRoute,
-  requestDocsCenterScrollToSection,
 } from './utils/docsRoute'
 import { ensureTrailingSlash, joinPath } from './utils/pathUrl'
 import { normalizeLocaleCode, toUrlLocale } from './utils/localeUrl'
@@ -2018,7 +2013,6 @@ function App() {
   const [isProductsMenuOpen, setIsProductsMenuOpen] = useState(false)
   const [isWpsFeaturesMenuOpen, setIsWpsFeaturesMenuOpen] = useState(false)
   const [isTemplatesMenuOpen, setIsTemplatesMenuOpen] = useState(false)
-  const [isResourcesMenuOpen, setIsResourcesMenuOpen] = useState(false)
   const [isOverflowMenuOpen, setIsOverflowMenuOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [visibleDesktopNavCount, setVisibleDesktopNavCount] = useState(0)
@@ -2049,7 +2043,6 @@ function App() {
     products: 0,
     'wps-features': 0,
     templates: 0,
-    resources: 0,
     overflow: 0,
   })
 
@@ -2077,9 +2070,7 @@ function App() {
     }
     if (menuKey === 'overflow') {
       setIsOverflowMenuOpen(false)
-      return
     }
-    setIsResourcesMenuOpen(false)
   }, [])
 
   const openDesktopMenu = useCallback(
@@ -2087,12 +2078,10 @@ function App() {
       clearDesktopMenuCloseTimeout('products')
       clearDesktopMenuCloseTimeout('wps-features')
       clearDesktopMenuCloseTimeout('templates')
-      clearDesktopMenuCloseTimeout('resources')
       clearDesktopMenuCloseTimeout('overflow')
       setIsProductsMenuOpen(menuKey === 'products')
       setIsWpsFeaturesMenuOpen(menuKey === 'wps-features')
       setIsTemplatesMenuOpen(menuKey === 'templates')
-      setIsResourcesMenuOpen(menuKey === 'resources')
       setIsOverflowMenuOpen(menuKey === 'overflow')
     },
     [clearDesktopMenuCloseTimeout],
@@ -2906,7 +2895,6 @@ function App() {
     setIsProductsMenuOpen(false)
     setIsWpsFeaturesMenuOpen(false)
     setIsTemplatesMenuOpen(false)
-    setIsResourcesMenuOpen(false)
     setIsOverflowMenuOpen(false)
     setIsMobileMenuOpen(false)
   }
@@ -2928,7 +2916,6 @@ function App() {
       setIsProductsMenuOpen(false)
       setIsWpsFeaturesMenuOpen(false)
       setIsTemplatesMenuOpen(false)
-      setIsResourcesMenuOpen(false)
       setIsOverflowMenuOpen(false)
       setIsMobileMenuOpen(false)
       return
@@ -2943,7 +2930,6 @@ function App() {
     setIsProductsMenuOpen(false)
     setIsWpsFeaturesMenuOpen(false)
     setIsTemplatesMenuOpen(false)
-    setIsResourcesMenuOpen(false)
     setIsOverflowMenuOpen(false)
     setIsMobileMenuOpen(false)
   }
@@ -3004,35 +2990,6 @@ function App() {
       uiText.nav.templates,
     ],
   )
-  const resourcesHeaderMegaMenu = useMemo(
-    () => resolveResourcesHeaderMegaMenu(uiText.nav.resourcesMega),
-    [uiText.nav.resourcesMega],
-  )
-  const currentDocsRoute = useMemo(
-    () => parseDocsRoute(currentPathname),
-    [currentPathname],
-  )
-  const headerResourceNavLinks = useMemo(
-    () => [
-      {
-        key: 'docs',
-        label: resourcesHeaderMegaMenu.docsCenter.title,
-        path: localeDocsPath,
-      },
-      ...resourcesHeaderMegaMenu.coreApps.map((app) => ({
-        key: app.key,
-        label: app.label,
-        path: getLocaleDocsPath(currentLocale, app.sectionSlug),
-        iconSrc: app.iconSrc,
-      })),
-    ],
-    [
-      currentLocale,
-      localeDocsPath,
-      resourcesHeaderMegaMenu.coreApps,
-      resourcesHeaderMegaMenu.docsCenter.title,
-    ],
-  )
   const footerCompanyLinks = useMemo(
     () => [
       { label: localizeString('About') },
@@ -3057,44 +3014,6 @@ function App() {
     () => currentContentRoot === 'docs',
     [currentContentRoot],
   )
-  const isHeaderResourceLinkCurrent = useCallback(
-    (key) => {
-      if (currentContentRoot !== 'docs') return false
-      if (key === 'docs') {
-        return !currentDocsRoute.sectionSlug
-      }
-      return currentDocsRoute.sectionSlug === key
-    },
-    [currentContentRoot, currentDocsRoute.sectionSlug],
-  )
-  const navigateToDocsSection = useCallback(
-    (sectionSlug) => {
-      const slug = `${sectionSlug ?? ''}`.trim()
-      if (!slug) {
-        navigateTo(getLocaleDocsPath(currentLocale), { scrollToTop: true })
-        return
-      }
-
-      const targetPath = getLocaleDocsPath(currentLocale, slug)
-      const alreadyOnSection =
-        currentContentRoot === 'docs'
-        && currentDocsRoute.sectionSlug === slug
-        && !currentDocsRoute.itemSlug
-        && !currentDocsRoute.blockSlug
-
-      navigateTo(targetPath, { scrollToTop: false })
-      if (alreadyOnSection) {
-        requestDocsCenterScrollToSection(slug)
-      }
-    },
-    [
-      currentContentRoot,
-      currentDocsRoute.blockSlug,
-      currentDocsRoute.itemSlug,
-      currentDocsRoute.sectionSlug,
-      currentLocale,
-    ],
-  )
   const desktopOverflowMenuAriaLabel = isZhContent ? '更多导航' : localizeString('More navigation')
   const mobileMenuButtonAriaLabel = isMobileMenuOpen ? uiText.nav.closeMenu : uiText.nav.menu
   const desktopMainNavItems = useMemo(
@@ -3115,8 +3034,8 @@ function App() {
       },
       {
         key: 'resources',
-        type: 'resources',
-        label: uiText.nav.resources,
+        type: 'link',
+        label: uiText.nav.docsCenter,
         path: localeDocsPath,
         isCurrent: isResourcesNavActive,
       },
@@ -3128,8 +3047,8 @@ function App() {
       localeAllProductsPath,
       localeDocsPath,
       pageType,
+      uiText.nav.docsCenter,
       uiText.nav.freeAiTools,
-      uiText.nav.resources,
       uiText.nav.wpsFeatures,
     ],
   )
@@ -3672,102 +3591,6 @@ function App() {
       )
     }
 
-    if (item.type === 'resources') {
-      return (
-        <div
-          key={item.key}
-          className="relative flex h-full shrink-0 items-center"
-          onMouseEnter={() => openDesktopMenu('resources')}
-          onMouseLeave={() => scheduleDesktopMenuClose('resources')}
-        >
-          <a
-            className={`home-page-header-link flex h-full items-center whitespace-nowrap border-x border-transparent px-[14px] text-[14px] font-medium transition ${
-              item.isCurrent
-                ? 'home-page-header-link--active'
-                : isResourcesMenuOpen
-                  ? 'home-page-header-link--open'
-                  : 'home-page-header-link--idle'
-            }`}
-            href={item.path}
-            onClick={(event) => {
-              event.preventDefault()
-              navigateTo(item.path)
-            }}
-          >
-            {item.label}
-            <span
-              className={`ml-1 inline-flex h-4 w-4 items-center justify-center transition ${
-                isResourcesMenuOpen ? 'rotate-180' : ''
-              }`}
-              aria-hidden="true"
-            >
-              <svg
-                className="h-[10px] w-[10px]"
-                viewBox="0 0 10 10"
-                fill="none"
-              >
-                <path
-                  d="M1.5 3.25L5 6.75L8.5 3.25"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </span>
-          </a>
-
-          {isResourcesMenuOpen && (
-            <div
-              className="home-nav-resources-dropdown"
-              onMouseEnter={() => openDesktopMenu('resources')}
-              onMouseLeave={() => scheduleDesktopMenuClose('resources')}
-            >
-              <a
-                href={localeDocsPath}
-                className="home-nav-resources-hub-link"
-                onClick={(event) => {
-                  event.preventDefault()
-                  navigateTo(localeDocsPath)
-                }}
-              >
-                <span className="home-nav-resources-hub-title">
-                  {resourcesHeaderMegaMenu.docsCenter.title}
-                </span>
-              </a>
-              <div className="home-nav-resources-apps-list">
-                {resourcesHeaderMegaMenu.coreApps.map((app) => {
-                  const targetPath = getLocaleDocsPath(currentLocale, app.sectionSlug)
-                  return (
-                    <a
-                      key={app.key}
-                      href={targetPath}
-                      className="home-nav-mega-link home-nav-resources-app-link truncate text-[13px]"
-                      onClick={(event) => {
-                        event.preventDefault()
-                        navigateToDocsSection(app.sectionSlug)
-                      }}
-                    >
-                      {app.iconSrc ? (
-                        <img
-                          className="home-nav-resources-app-icon"
-                          src={app.iconSrc}
-                          alt=""
-                          draggable={false}
-                          decoding="async"
-                        />
-                      ) : null}
-                      <span>{app.label}</span>
-                    </a>
-                  )
-                })}
-              </div>
-            </div>
-          )}
-        </div>
-      )
-    }
-
     if (item.type === 'templates') {
       return (
         <div
@@ -3891,7 +3714,6 @@ function App() {
   const isDesktopMegaMenuOpen =
     isProductsMenuOpen
     || isWpsFeaturesMenuOpen
-    || isResourcesMenuOpen
     || isTemplatesMenuOpen
 
   return (
@@ -4155,33 +3977,7 @@ function App() {
               <p className="text-[15px] font-semibold text-[#1a202c]">{uiText.nav.menu}</p>
             </div>
             <nav className="mt-3 flex flex-col gap-1">
-              {desktopMainNavItems.map((item) => {
-                if (item.type === 'resources') {
-                  const docsCenterLink = headerResourceNavLinks.find((link) => link.key === 'docs')
-                  const docsCenterPath = docsCenterLink?.path ?? localeDocsPath
-                  const docsCenterLabel =
-                    docsCenterLink?.label ?? resourcesHeaderMegaMenu.docsCenter.title
-                  return (
-                    <a
-                      key={`mobile-${item.key}`}
-                      className={`rounded-[10px] px-4 py-3 text-[15px] font-medium transition ${
-                        isHeaderResourceLinkCurrent('docs') || item.isCurrent
-                          ? 'bg-[#ece9fd] text-[#534ab7]'
-                          : 'text-[#4a5568] hover:bg-[#f6f5ff] hover:text-[#1a202c]'
-                      }`}
-                      href={docsCenterPath}
-                      onClick={(event) => {
-                        event.preventDefault()
-                        setIsMobileMenuOpen(false)
-                        navigateTo(docsCenterPath)
-                      }}
-                    >
-                      {docsCenterLabel}
-                    </a>
-                  )
-                }
-
-                return (
+              {desktopMainNavItems.map((item) => (
                   <a
                     key={`mobile-${item.key}`}
                     className={`rounded-[10px] px-4 py-3 text-[15px] font-medium transition ${
@@ -4198,8 +3994,7 @@ function App() {
                   >
                     {item.label}
                   </a>
-                )
-              })}
+              ))}
             </nav>
             <div className="mt-4 border-t border-[#eef1f6] px-1 pt-4">
               <p className="mb-3 text-[12px] font-semibold uppercase tracking-[0.06em] text-[#98a2b3]">

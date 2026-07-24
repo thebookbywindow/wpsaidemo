@@ -1,131 +1,76 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
+import { ArrowUpRight } from 'lucide-react'
 import { HOME_AI_CORE_PILLAR_IDS } from '../data/homeAiCapabilities'
-import { HOME_HERO_COPILOT } from '../data/homeHeroComponents'
 import { useHomeAiCapabilities } from '../hooks/useHomeAiCapabilities'
-import { useHomeIntlAiStickyAnchorTabs } from '../hooks/useHomeIntlAiStickyAnchorTabs'
+import { useHomeTabsScrollPin } from '../hooks/useHomeTabsScrollPin'
 import HomeAiSpotlightFeatureList from './HomeAiSpotlightFeatureList'
-import { renderFaqAnswer } from '../utils/renderFaqAnswer'
+import { faqAnswerLinkLabels } from '../utils/homeFaq'
 
-function HomeAiSpotlightPanel({ pillar, imageOnRight = false }) {
+/** Depth in the visible stack: 0 front → 3 back. Always 4 layers. */
+function getStackOffset(cardIndex, activeIndex, length) {
+  if (length < 1) return 0
+  return (cardIndex - activeIndex + length) % length
+}
+
+function HomeAiDeckCard({ pillar, stackOffset, isActive, learnMoreLabel = 'Learn More' }) {
   const productUrl = pillar.productPageUrl
   const productLabel = pillar.label ?? pillar.id
-  const copyRef = useRef(null)
-  const [copyHeight, setCopyHeight] = useState(null)
-
-  useEffect(() => {
-    const node = copyRef.current
-    if (!node) return undefined
-
-    const syncCopyHeight = () => {
-      setCopyHeight(Math.ceil(node.getBoundingClientRect().height))
-    }
-
-    syncCopyHeight()
-    const observer = new ResizeObserver(syncCopyHeight)
-    observer.observe(node)
-    return () => observer.disconnect()
-  }, [pillar.id])
 
   return (
     <article
-      className={`home-ai-spotlight${imageOnRight ? ' home-ai-spotlight--image-right' : ''}`}
-      style={
-        copyHeight
-          ? { '--home-ai-spotlight-copy-h': `${copyHeight}px` }
-          : undefined
-      }
+      className={`home-ai-deck-card${isActive ? ' is-active' : ''}`}
+      data-stack-offset={stackOffset}
+      style={{
+        '--deck-accent': pillar.color,
+        '--deck-offset': stackOffset,
+        zIndex: 10 + (4 - stackOffset),
+      }}
+      aria-hidden={!isActive}
     >
-      <div className="home-ai-spotlight-media">
-        {pillar.spotlightImageSrc ? (
-          productUrl ? (
-            <a
-              className="home-ai-spotlight-media-link"
-              href={productUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`${productLabel} — WPS Office`}
-            >
+      <div className="home-ai-deck-card-inner">
+        <div className="home-ai-deck-col home-ai-deck-col--lead">
+          <header className="home-ai-deck-brand">
+            {pillar.iconSrc ? (
               <img
-                className="home-ai-spotlight-image"
-                src={pillar.spotlightImageSrc}
+                className="home-ai-deck-brand-icon"
+                src={pillar.iconSrc}
                 alt=""
-                loading="lazy"
+                draggable={false}
                 decoding="async"
               />
-            </a>
-          ) : (
-            <img
-              className="home-ai-spotlight-image"
-              src={pillar.spotlightImageSrc}
-              alt=""
-              loading="lazy"
-              decoding="async"
-            />
-          )
-        ) : (
-          <div className="home-ai-spotlight-image home-ai-spotlight-image--empty" aria-hidden="true" />
-        )}
-      </div>
+            ) : null}
+            <h3 className="home-ai-deck-brand-name">{pillar.label}</h3>
+          </header>
 
-      <div ref={copyRef} className="home-ai-spotlight-copy">
-        <header className="home-ai-spotlight-head">
+          {pillar.spotlightLead ? (
+            <p className="home-ai-deck-lead">{faqAnswerLinkLabels(pillar.spotlightLead)}</p>
+          ) : null}
+
           {productUrl ? (
             <a
-              className="home-ai-spotlight-head-link"
+              className="home-ai-deck-cta"
               href={productUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`${productLabel} — WPS Office`}
+              tabIndex={isActive ? 0 : -1}
+              aria-label={`${learnMoreLabel}: ${productLabel}`}
             >
-              {pillar.iconSrc ? (
-                <img
-                  className="home-ai-spotlight-icon"
-                  src={pillar.iconSrc}
-                  alt=""
-                  draggable={false}
-                  decoding="async"
-                />
-              ) : null}
-              <div className="home-ai-spotlight-head-copy">
-                <h3 className="home-ai-spotlight-title">{pillar.label}</h3>
-                {pillar.tagline ? (
-                  <p className="home-ai-spotlight-tagline">{pillar.tagline}</p>
-                ) : null}
-              </div>
+              <span className="home-ai-deck-cta-label">{learnMoreLabel}</span>
+              <ArrowUpRight size={16} strokeWidth={2.25} aria-hidden="true" />
             </a>
-          ) : (
-            <>
-              {pillar.iconSrc ? (
-                <img
-                  className="home-ai-spotlight-icon"
-                  src={pillar.iconSrc}
-                  alt=""
-                  draggable={false}
-                  decoding="async"
-                />
-              ) : null}
-              <div className="home-ai-spotlight-head-copy">
-                <h3 className="home-ai-spotlight-title">{pillar.label}</h3>
-                {pillar.tagline ? (
-                  <p className="home-ai-spotlight-tagline">{pillar.tagline}</p>
-                ) : null}
-              </div>
-            </>
-          )}
-        </header>
+          ) : null}
+        </div>
 
-        {pillar.spotlightLead ? (
-          <p className="home-ai-spotlight-lead">{renderFaqAnswer(pillar.spotlightLead)}</p>
-        ) : null}
-
-        <HomeAiSpotlightFeatureList features={pillar.features} />
+        <div className="home-ai-deck-col home-ai-deck-col--features">
+          <HomeAiSpotlightFeatureList features={pillar.features} variant="deck" />
+        </div>
       </div>
     </article>
   )
 }
 
 /**
- * Homepage AI overview — Copilot header + Docs / PDF / Slides / Sheets stacked sections.
+ * Homepage AI overview — sticky deck driven by whole-page scroll.
  */
 export default function HomeIntlAiFeatures({ copy, title, summary }) {
   const { pillars } = useHomeAiCapabilities(copy)
@@ -136,108 +81,89 @@ export default function HomeIntlAiFeatures({ copy, title, summary }) {
     return HOME_AI_CORE_PILLAR_IDS.map((id) => byId[id]).filter(Boolean)
   }, [pillars])
 
-  const pillarIds = useMemo(() => corePillars.map((pillar) => pillar.id), [corePillars])
+  const deckTabs = useMemo(
+    () => corePillars.map((pillar) => ({ id: pillar.id })),
+    [corePillars],
+  )
 
-  const { tabsDockRef, scrollToPillar } = useHomeIntlAiStickyAnchorTabs({
-    pillarIds,
-    activeId: activePillarId,
-    setActiveId: setActivePillarId,
-    stickyGapPx: 8,
-  })
-
-  useEffect(() => {
-    if (!corePillars.some((pillar) => pillar.id === activePillarId)) {
-      setActivePillarId(corePillars[0]?.id ?? HOME_AI_CORE_PILLAR_IDS[0])
-    }
+  const resolvedActiveId = useMemo(() => {
+    if (corePillars.some((pillar) => pillar.id === activePillarId)) return activePillarId
+    return corePillars[0]?.id ?? HOME_AI_CORE_PILLAR_IDS[0]
   }, [corePillars, activePillarId])
 
+  const activeIndex = useMemo(() => {
+    const index = corePillars.findIndex((pillar) => pillar.id === resolvedActiveId)
+    return index >= 0 ? index : 0
+  }, [corePillars, resolvedActiveId])
+
+  const { trackRef, panelRef, selectTab } = useHomeTabsScrollPin({
+    tabs: deckTabs,
+    activeId: resolvedActiveId,
+    setActiveId: setActivePillarId,
+    cssPrefix: 'home-ai-deck',
+    tabsSelector: '.home-ai-deck-tabs',
+    activeTabSelector: '.home-ai-deck-tab.is-active',
+    stickyGapPx: 20,
+  })
+
   const coreTabsLabel = copy?.coreTabsAriaLabel ?? title
+  const learnMoreLabel = copy?.learnMoreLabel ?? 'Learn More'
 
   if (!corePillars.length) return null
 
   return (
     <section
       id="home-intl-ai"
-      className="home-ai-capabilities-section px-6 py-12"
+      className="home-ai-capabilities-section home-ai-deck-section px-6 py-12"
       aria-labelledby="home-intl-ai-title"
     >
       <div className="home-section-inner mx-auto w-full max-w-[1160px]">
-        <header className="home-intl-ai-copilot-head">
-          <div className="home-intl-ai-copilot-head-title-row">
-            {HOME_HERO_COPILOT?.iconSrc ? (
-              <img
-                className="home-intl-ai-copilot-head-icon"
-                src={HOME_HERO_COPILOT.iconSrc}
-                alt=""
-                width={52}
-                height={52}
-                draggable={false}
-                decoding="async"
-              />
-            ) : null}
-            <div className="home-intl-ai-copilot-head-copy">
-              <h2
-                id="home-intl-ai-title"
-                className="home-section-title text-[clamp(20px,2.5vw,26px)] font-semibold text-[#1a202c]"
-              >
-                {title}
-              </h2>
-              {summary ? (
-                <p className="home-ai-spotlight-tagline">{summary}</p>
-              ) : null}
-            </div>
-          </div>
+        <header className="home-ai-deck-head">
+          <h2 id="home-intl-ai-title" className="home-ai-deck-title">
+            {title}
+          </h2>
+          {summary ? <p className="home-ai-deck-summary">{summary}</p> : null}
         </header>
 
-        <div ref={tabsDockRef} className="home-intl-ai-tabs-dock">
-          <div className="home-intl-ai-tabs-wrap">
-            <nav
-              className="home-intl-ai-tabs home-intl-ai-tabs--desktop"
-              aria-label={coreTabsLabel}
-            >
-              {corePillars.map((pillar) => {
-                const selected = pillar.id === activePillarId
-                return (
-                  <button
-                    key={pillar.id}
-                    type="button"
-                    id={`home-intl-ai-tab-${pillar.id}`}
-                    aria-current={selected ? 'true' : undefined}
-                    className={`home-intl-ai-tab${selected ? ' is-active' : ''}`}
-                    onClick={() => scrollToPillar(pillar.id)}
-                  >
-                    {pillar.iconSrc ? (
-                      <img
-                        className="home-intl-ai-tab-icon"
-                        src={pillar.iconSrc}
-                        alt=""
-                        draggable={false}
-                        decoding="async"
-                      />
-                    ) : null}
-                    <span className="home-intl-ai-tab-name">{pillar.label}</span>
-                  </button>
-                )
-              })}
-            </nav>
-          </div>
-        </div>
+        <div ref={trackRef} className="home-ai-deck-pin-track">
+          <div ref={panelRef} className="home-ai-deck-pin-panel">
+            <div className="home-ai-deck-tabs-wrap">
+              <nav className="home-ai-deck-tabs" aria-label={coreTabsLabel}>
+                {corePillars.map((pillar) => {
+                  const selected = pillar.id === resolvedActiveId
+                  return (
+                    <button
+                      key={pillar.id}
+                      type="button"
+                      id={`home-intl-ai-tab-${pillar.id}`}
+                      aria-current={selected ? 'true' : undefined}
+                      className={`home-ai-deck-tab${selected ? ' is-active' : ''}`}
+                      onClick={() => selectTab(pillar.id)}
+                    >
+                      <span className="home-ai-deck-tab-name">{pillar.label}</span>
+                    </button>
+                  )
+                })}
+              </nav>
+            </div>
 
-        <div className="home-intl-ai-pillars-stack">
-          {corePillars.map((pillar, index) => (
-            <section
-              key={pillar.id}
-              id={`home-intl-ai-pillar-${pillar.id}`}
-              data-pillar-id={pillar.id}
-              className="home-intl-ai-pillar-block"
-              aria-labelledby={`home-intl-ai-tab-${pillar.id}`}
-            >
-              <HomeAiSpotlightPanel
-                pillar={pillar}
-                imageOnRight={index % 2 === 1}
-              />
-            </section>
-          ))}
+            <div className="home-ai-deck" aria-live="polite">
+              <div className="home-ai-deck-stack" data-card-count={corePillars.length}>
+                {corePillars.map((pillar, cardIndex) => {
+                  const stackOffset = getStackOffset(cardIndex, activeIndex, corePillars.length)
+                  return (
+                    <HomeAiDeckCard
+                      key={pillar.id}
+                      pillar={pillar}
+                      stackOffset={stackOffset}
+                      isActive={stackOffset === 0}
+                      learnMoreLabel={learnMoreLabel}
+                    />
+                  )
+                })}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

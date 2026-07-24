@@ -40,21 +40,17 @@ assert('resolve empty → null', resolveHeroComponent([], 0) === null)
 
 // Data
 assert('ten components', HOME_HERO_COMPONENTS.length === 10)
-assert('nine typewriter components', HOME_HERO_TYPEWRITER_COMPONENTS.length === 9)
+assert('four typewriter components', HOME_HERO_TYPEWRITER_COMPONENTS.length === 4)
 assert(
-  'typewriter excludes Copilot',
-  !HOME_HERO_TYPEWRITER_NAMES.includes('Copilot') &&
-    HOME_HERO_TYPEWRITER_COMPONENTS.every((item) => item.id !== 'copilot'),
+  'typewriter is Docs/Slides/Sheets/PDF only',
+  HOME_HERO_TYPEWRITER_NAMES.join('|') === 'Docs|Slides|Sheets|PDF' &&
+    !HOME_HERO_TYPEWRITER_NAMES.includes('Copilot') &&
+    !HOME_HERO_TYPEWRITER_NAMES.includes('Photos'),
 )
 assert(
   'English names (Copilot + products)',
   HOME_HERO_COMPONENT_NAMES.join('|') ===
     'Copilot|Docs|Slides|Sheets|PDF|Photos|AirPage|AirSheet|Forms|DBSheet',
-)
-assert(
-  'typewriter names exclude Copilot',
-  HOME_HERO_TYPEWRITER_NAMES.join('|') ===
-    'Docs|Slides|Sheets|PDF|Photos|AirPage|AirSheet|Forms|DBSheet',
 )
 assert(
   'official icon paths',
@@ -63,7 +59,7 @@ assert(
 )
 assert(
   'measure uses longest label',
-  getHeroLabelMeasureText(HOME_HERO_TYPEWRITER_COMPONENTS) === 'AirSheet',
+  getHeroLabelMeasureText(HOME_HERO_TYPEWRITER_COMPONENTS) === 'Slides',
 )
 assert('measure empty → ""', getHeroLabelMeasureText([]) === '')
 
@@ -98,7 +94,7 @@ assert('clamp NaN → 0', clampVisibleCharCount(Number.NaN, 5) === 0)
   assert('typing complete → hold', held.phase === 'hold' && held.delayMs === 'hold')
 }
 
-// Hold → next word typing from empty
+// Hold → next word typing from empty (wrap PDF → Docs)
 {
   const pdfIndex = HOME_HERO_TYPEWRITER_NAMES.indexOf('PDF')
   const state = stepHeroTypewriter({
@@ -109,10 +105,10 @@ assert('clamp NaN → 0', clampVisibleCharCount(Number.NaN, 5) === 0)
     itemCount: HOME_HERO_TYPEWRITER_COMPONENTS.length,
   })
   assert(
-    'hold PDF → next Photos typing from empty',
+    'hold PDF → next Docs typing from empty',
     state.phase === 'typing' &&
-      state.index === pdfIndex + 1 &&
-      HOME_HERO_TYPEWRITER_COMPONENTS[pdfIndex + 1].id === 'photos' &&
+      state.index === 0 &&
+      HOME_HERO_TYPEWRITER_COMPONENTS[0].id === 'docs' &&
       state.visibleCount === 0 &&
       state.delayMs === 'gap',
   )
@@ -167,9 +163,13 @@ for (let step = 0; step < total; step += 1) {
   seen.add(HOME_HERO_TYPEWRITER_COMPONENTS[idx].id)
   idx = nextHeroComponentIndex(idx, total)
 }
-assert('typewriter full cycle 9 unique', seen.size === 9 && idx === 0)
-assert('typewriter cycle includes Photos', seen.has('photos'))
+assert('typewriter full cycle 4 unique', seen.size === 4 && idx === 0)
+assert(
+  'typewriter cycle is four core apps',
+  ['docs', 'slides', 'sheets', 'pdf'].every((id) => seen.has(id)),
+)
 assert('typewriter cycle excludes Copilot', !seen.has('copilot'))
+assert('typewriter cycle excludes Photos', !seen.has('photos'))
 
 // Copilot still exists for the dedicated section
 assert('Copilot data kept', HOME_HERO_COMPONENTS[0].id === 'copilot')

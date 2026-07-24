@@ -1,15 +1,55 @@
+import { ArrowUpRight } from 'lucide-react'
+import { faqAnswerLinkLabels } from '../utils/homeFaq'
 import { renderFaqAnswer } from '../utils/renderFaqAnswer'
 
 /**
  * Spotlight feature bullets — title links to official WPS feature page when url is set.
+ * variant="deck" → divider rows + trailing arrow for the colored stack cards.
+ * Deck rows are already one link each — descriptions render as plain text (no nested <a>).
  */
-export default function HomeAiSpotlightFeatureList({ features = [] }) {
+export default function HomeAiSpotlightFeatureList({ features = [], variant = 'default' }) {
   if (!features.length) return null
 
+  const isDeck = variant === 'deck'
+
   return (
-    <ul className="home-ai-spotlight-features">
+    <ul className={isDeck ? 'home-ai-deck-features' : 'home-ai-spotlight-features'}>
       {features.map((feature) => {
         const key = feature.id ?? feature.label
+
+        if (isDeck) {
+          const body = (
+            <>
+              <span className="home-ai-deck-feature-copy">
+                <span className="home-ai-deck-feature-title">{feature.label}</span>
+                {feature.description ? (
+                  <span className="home-ai-deck-feature-desc">
+                    {faqAnswerLinkLabels(feature.description)}
+                  </span>
+                ) : null}
+              </span>
+              <ArrowUpRight className="home-ai-deck-feature-arrow" size={16} strokeWidth={2.25} aria-hidden="true" />
+            </>
+          )
+
+          return (
+            <li key={key} className="home-ai-deck-feature">
+              {feature.url ? (
+                <a
+                  className="home-ai-deck-feature-link"
+                  href={feature.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {body}
+                </a>
+              ) : (
+                <span className="home-ai-deck-feature-link is-static">{body}</span>
+              )}
+            </li>
+          )
+        }
+
         const title = feature.url ? (
           <a
             className="home-faq-link home-ai-spotlight-feature-link"
