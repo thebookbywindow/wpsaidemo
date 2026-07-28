@@ -39,6 +39,7 @@ import {
 const siteLocaleToDocLangMap = {
   'zh-cn': 'zh-cn',
   'zh-tw': 'zh-tw',
+  'zh-hk': 'zh-tw',
   'en-us': 'en-us',
   'ja-jp': 'ja-jp',
   'ko-kr': 'ko-kr',
@@ -508,7 +509,7 @@ export default function DocsCenterPage({
   const isZhContent = `${currentLocale}`.toLowerCase().startsWith('zh')
   const activeBlockTitle = currentDocDisplayParts?.length === 3 ? currentDocDisplayParts[1] : ''
   const [scrollLinkedTarget, setScrollLinkedTarget] = useState(null)
-  const [mobileCollapsedBlocks, setMobileCollapsedBlocks] = useState(() => new Set())
+  const [collapsedBlocks, setCollapsedBlocks] = useState(() => new Set())
   const sidebarRef = useRef(null)
   const scrollSpyFrameRef = useRef(0)
   const scrollSpyLockRef = useRef(null)
@@ -978,7 +979,7 @@ export default function DocsCenterPage({
 
   const handleCatalogBlockNavigateMobile = useCallback((sectionTitle, blockTitle) => {
     if (blockTitle) {
-      setMobileCollapsedBlocks((previous) => {
+      setCollapsedBlocks((previous) => {
         const next = new Set(previous)
         next.delete(buildMobileCatalogBlockKey(sectionTitle, blockTitle))
         return next
@@ -988,9 +989,11 @@ export default function DocsCenterPage({
     closeAll()
   }, [closeAll, handleCatalogBlockNavigate])
 
-  const toggleMobileBlock = useCallback((sectionTitle, blockTitle) => {
+  const toggleCatalogBlock = useCallback((sectionTitle, blockTitle) => {
+    // 对齐官网：仅移动端可折叠；PC 始终展开
+    if (!isMobile) return
     const blockKey = buildMobileCatalogBlockKey(sectionTitle, blockTitle)
-    setMobileCollapsedBlocks((previous) => {
+    setCollapsedBlocks((previous) => {
       const next = new Set(previous)
       if (next.has(blockKey)) {
         next.delete(blockKey)
@@ -999,7 +1002,13 @@ export default function DocsCenterPage({
       }
       return next
     })
-  }, [])
+  }, [isMobile])
+
+  useEffect(() => {
+    if (!isMobile) {
+      setCollapsedBlocks(new Set())
+    }
+  }, [isMobile])
 
   const catalogSidebar = (
     <DocsDetailCatalogSidebar
@@ -1038,206 +1047,238 @@ export default function DocsCenterPage({
         showMobileCatalogDrawer && rightOpen ? ' has-mobile-drawer-open' : ''
       }`}
     >
-      <section className="docs-center-hero">
-        <div className="docs-center-container docs-center-hero-inner">
-          <h1>{docsUiText.heroTitle}</h1>
-          <DocsCenterHeroSearch
-            comboboxRef={heroSearchComboboxRef}
-            searchKeyword={heroSearchKeyword}
-            onSearchKeywordChange={setHeroSearchKeyword}
-            isDropdownOpen={isHeroSearchDropdownOpen}
-            onDropdownOpenChange={setHeroSearchDropdownOpen}
-            searchPlaceholder={docsUiText.heroSearchPlaceholder}
-            searchButtonLabel={
-              isHeroSearchResetMode
-                ? docsUiText.heroSearchResetButton
-                : docsUiText.heroSearchButton
-            }
-            isResetMode={isHeroSearchResetMode}
-            searchSrOnly={docsUiText.searchSrOnly}
-            emptyResultsText={docsUiText.heroSearchEmptyResults}
-            keyword={heroSearchMatchKeyword}
-            results={heroSearchResults}
-            onSelectResult={handleHeroSearchSelect}
-            onSubmitSearch={handleHeroSearch}
-            onSearchClear={handleHeroSearchClear}
-          />
+      <div className="docs-center-top-wrap">
+        <div className="docs-center-bg-layer" aria-hidden="true">
+          <div className="docs-center-bg-image" />
+          <div className="docs-center-bg-fade" />
         </div>
-      </section>
 
-      {showMobileCatalogDrawer ? (
-        <>
-          {rightOpen ? (
-            <button
-              type="button"
-              className="docs-detail-mobile-drawer-backdrop"
-              aria-label={isZhContent ? '关闭目录' : 'Close directory'}
-              onClick={closeAll}
+        <div className="docs-center-top-content">
+          <section className="docs-center-hero">
+            <h1 className="docs-center-hero-title">{docsUiText.heroTitle}</h1>
+            <DocsCenterHeroSearch
+              comboboxRef={heroSearchComboboxRef}
+              searchKeyword={heroSearchKeyword}
+              onSearchKeywordChange={setHeroSearchKeyword}
+              isDropdownOpen={isHeroSearchDropdownOpen}
+              onDropdownOpenChange={setHeroSearchDropdownOpen}
+              searchPlaceholder={docsUiText.heroSearchPlaceholder}
+              searchButtonLabel={
+                isHeroSearchResetMode
+                  ? docsUiText.heroSearchResetButton
+                  : docsUiText.heroSearchButton
+              }
+              isResetMode={isHeroSearchResetMode}
+              searchSrOnly={docsUiText.searchSrOnly}
+              emptyResultsText={docsUiText.heroSearchEmptyResults}
+              keyword={heroSearchMatchKeyword}
+              results={heroSearchResults}
+              onSelectResult={handleHeroSearchSelect}
+              onSubmitSearch={handleHeroSearch}
+              onSearchClear={handleHeroSearchClear}
             />
-          ) : null}
-          <DocDetailMobileDrawer
-            side="right"
-            isOpen={rightOpen}
-            isMobile={isMobile}
-            onClose={closeAll}
-            panelLabel={docsUiText.directoryTitle}
-            showPanelHead={false}
-          >
-            {catalogSidebar}
-          </DocDetailMobileDrawer>
-        </>
-      ) : null}
+          </section>
 
-      <main className="docs-center-layout docs-center-container">
-        {showMobileCatalogDrawer ? null : catalogSidebar}
-
-        <section className="docs-center-content">
-          {visibleSections.length ? (
-            visibleSections.map((section) => (
-              <article
-                key={`catalog-${section.title}`}
-                id={`docs-section-${safeIdSegment(section.title)}`}
-                className="docs-center-section"
+          {showMobileCatalogDrawer ? (
+            <>
+              {rightOpen ? (
+                <button
+                  type="button"
+                  className="docs-detail-mobile-drawer-backdrop"
+                  aria-label={isZhContent ? '关闭目录' : 'Close directory'}
+                  onClick={closeAll}
+                />
+              ) : null}
+              <DocDetailMobileDrawer
+                side="right"
+                isOpen={rightOpen}
+                isMobile={isMobile}
+                onClose={closeAll}
+                panelLabel={docsUiText.directoryTitle}
+                showPanelHead={false}
               >
-                <header className="docs-center-section-head">
-                  <h2>{section.title}</h2>
-                </header>
-                <div className="docs-center-section-body">
-                  {section.blocks.map((block, blockIndex) => {
-                    const hasTitledGroup = Boolean(block.title)
-                    const blockKey = hasTitledGroup
-                      ? buildMobileCatalogBlockKey(section.title, block.title)
-                      : ''
-                    const isMobileBlockExpanded =
-                      !showMobileCatalogDrawer
-                      || !hasTitledGroup
-                      || !mobileCollapsedBlocks.has(blockKey)
-                    const wrapperClassName = hasTitledGroup
-                      ? `docs-center-group${
-                          showMobileCatalogDrawer && !isMobileBlockExpanded ? ' is-collapsed' : ''
-                        }`
-                      : `docs-center-items docs-center-items--flat${blockIndex > 0 ? ' docs-center-items--spaced' : ''}`
+                {catalogSidebar}
+              </DocDetailMobileDrawer>
+            </>
+          ) : null}
 
-                    return (
-                      <div
-                        key={`docs-block-${section.title}-${block.title || blockIndex}`}
-                        id={
-                          hasTitledGroup
-                            ? `docs-block-${safeIdSegment(section.title)}-${safeIdSegment(block.title)}`
-                            : undefined
-                        }
-                        className={hasTitledGroup ? 'docs-center-group-wrap' : ''}
-                      >
-                        {hasTitledGroup ? (
-                          <div className={wrapperClassName}>
-                            {showMobileCatalogDrawer ? (
-                              <button
-                                type="button"
-                                className="docs-center-group-title docs-center-group-title-btn"
-                                aria-expanded={isMobileBlockExpanded}
-                                onClick={() => toggleMobileBlock(section.title, block.title)}
-                              >
-                                <span>{block.title}</span>
-                                {isMobileBlockExpanded ? (
-                                  <ChevronUp
-                                    size={16}
-                                    strokeWidth={2}
-                                    className="docs-center-group-collapse-icon"
-                                    aria-hidden="true"
-                                  />
-                                ) : (
-                                  <ChevronDown
-                                    size={16}
-                                    strokeWidth={2}
-                                    className="docs-center-group-collapse-icon"
-                                    aria-hidden="true"
-                                  />
-                                )}
-                              </button>
-                            ) : (
-                              <h3 className="docs-center-group-title">
-                                {block.title}
-                              </h3>
-                            )}
-                            {isMobileBlockExpanded ? (
-                            <div className="docs-center-items">
-                              {block.items.map((item) => {
-                                const sourcePathParts = [section.sourceTitle, block.sourceTitle, item.sourceLabel]
-                                const pathKey = createDocsPathKey(sourcePathParts)
-                                const isClickable = isCatalogLeafClickable(pathKey, staticMetaMap)
-                                return isClickable ? (
-                                  <button
-                                    key={pathKey}
-                                    type="button"
-                                    className="docs-center-item has-doc"
-                                    onClick={() => handleNodeClick(sourcePathParts)}
-                                  >
-                                    {renderHighlightedText(item.label, heroMatchKeyword)}
-                                  </button>
-                                ) : (
-                                  <span
-                                    key={pathKey}
-                                    className="docs-center-item"
-                                  >
-                                    {renderHighlightedText(item.label, heroMatchKeyword)}
-                                  </span>
-                                )
-                              })}
-                            </div>
-                            ) : null}
-                          </div>
-                        ) : (
-                          <div className={wrapperClassName}>
-                            {block.items.map((item) => {
-                              const sourcePathParts = [section.sourceTitle, item.sourceLabel]
-                              const pathKey = createDocsPathKey(sourcePathParts)
-                              const isClickable = isCatalogLeafClickable(pathKey, staticMetaMap)
-                              return isClickable ? (
-                                <button
-                                  key={pathKey}
-                                  type="button"
-                                  className="docs-center-item has-doc"
-                                  onClick={() => handleNodeClick(sourcePathParts)}
+          <main className="docs-center-layout">
+            <div className="docs-center-main-card">
+              {showMobileCatalogDrawer ? null : catalogSidebar}
+
+              <section className="docs-center-content">
+                {visibleSections.length ? (
+                  visibleSections.map((section) => (
+                    <article
+                      key={`catalog-${section.title}`}
+                      id={`docs-section-${safeIdSegment(section.title)}`}
+                      className="docs-center-section"
+                    >
+                      <h2 className="docs-center-section-title">{section.title}</h2>
+                      <div className="docs-center-section-body">
+                        {section.blocks.map((block, blockIndex) => {
+                          const hasTitledGroup = Boolean(block.title)
+                          const blockKey = hasTitledGroup
+                            ? buildMobileCatalogBlockKey(section.title, block.title)
+                            : ''
+                          const isBlockExpanded =
+                            !hasTitledGroup
+                            || !isMobile
+                            || !collapsedBlocks.has(blockKey)
+
+                          return (
+                            <div
+                              key={`docs-block-${section.title}-${block.title || blockIndex}`}
+                              id={
+                                hasTitledGroup
+                                  ? `docs-block-${safeIdSegment(section.title)}-${safeIdSegment(block.title)}`
+                                  : undefined
+                              }
+                              className={
+                                hasTitledGroup
+                                  ? `docs-center-group-wrap${isBlockExpanded ? ' is-expanded' : ''}`
+                                  : 'docs-center-group-wrap docs-center-group-wrap--flat'
+                              }
+                            >
+                              {hasTitledGroup ? (
+                                <section
+                                  className={`docs-center-group${
+                                    isBlockExpanded ? ' is-expanded' : ' is-collapsed'
+                                  }`}
                                 >
-                                  {renderHighlightedText(item.label, heroMatchKeyword)}
-                                </button>
+                                  {isMobile ? (
+                                    <button
+                                      type="button"
+                                      className="docs-center-group-title docs-center-group-title-btn"
+                                      aria-expanded={isBlockExpanded}
+                                      onClick={() => toggleCatalogBlock(section.title, block.title)}
+                                    >
+                                      <span className="docs-center-group-title-text">
+                                        {block.title}
+                                      </span>
+                                      {isBlockExpanded ? (
+                                        <ChevronUp
+                                          size={16}
+                                          strokeWidth={1.5}
+                                          className="docs-center-group-collapse-icon"
+                                          aria-hidden="true"
+                                        />
+                                      ) : (
+                                        <ChevronDown
+                                          size={16}
+                                          strokeWidth={1.5}
+                                          className="docs-center-group-collapse-icon"
+                                          aria-hidden="true"
+                                        />
+                                      )}
+                                    </button>
+                                  ) : (
+                                    <div className="docs-center-group-title">
+                                      <span className="docs-center-group-title-text">
+                                        {block.title}
+                                      </span>
+                                    </div>
+                                  )}
+                                  {isBlockExpanded ? (
+                                    <ul className="docs-center-items">
+                                      {block.items.map((item) => {
+                                        const sourcePathParts = [
+                                          section.sourceTitle,
+                                          block.sourceTitle,
+                                          item.sourceLabel,
+                                        ]
+                                        const pathKey = createDocsPathKey(sourcePathParts)
+                                        const isClickable = isCatalogLeafClickable(
+                                          pathKey,
+                                          staticMetaMap,
+                                        )
+                                        return (
+                                          <li key={pathKey} className="docs-center-item-wrap">
+                                            {isClickable ? (
+                                              <button
+                                                type="button"
+                                                className="docs-center-item has-doc"
+                                                onClick={() => handleNodeClick(sourcePathParts)}
+                                              >
+                                                {renderHighlightedText(item.label, heroMatchKeyword)}
+                                              </button>
+                                            ) : (
+                                              <span className="docs-center-item">
+                                                {renderHighlightedText(item.label, heroMatchKeyword)}
+                                              </span>
+                                            )}
+                                          </li>
+                                        )
+                                      })}
+                                    </ul>
+                                  ) : null}
+                                </section>
                               ) : (
-                                <span key={pathKey} className="docs-center-item">
-                                  {renderHighlightedText(item.label, heroMatchKeyword)}
-                                </span>
-                              )
-                            })}
-                          </div>
-                        )}
+                                <ul
+                                  className={`docs-center-items docs-center-items--flat${
+                                    blockIndex > 0 ? ' docs-center-items--spaced' : ''
+                                  }`}
+                                >
+                                  {block.items.map((item) => {
+                                    const sourcePathParts = [
+                                      section.sourceTitle,
+                                      item.sourceLabel,
+                                    ]
+                                    const pathKey = createDocsPathKey(sourcePathParts)
+                                    const isClickable = isCatalogLeafClickable(
+                                      pathKey,
+                                      staticMetaMap,
+                                    )
+                                    return (
+                                      <li key={pathKey} className="docs-center-item-wrap">
+                                        {isClickable ? (
+                                          <button
+                                            type="button"
+                                            className="docs-center-item has-doc"
+                                            onClick={() => handleNodeClick(sourcePathParts)}
+                                          >
+                                            {renderHighlightedText(item.label, heroMatchKeyword)}
+                                          </button>
+                                        ) : (
+                                          <span className="docs-center-item">
+                                            {renderHighlightedText(item.label, heroMatchKeyword)}
+                                          </span>
+                                        )}
+                                      </li>
+                                    )
+                                  })}
+                                </ul>
+                              )}
+                            </div>
+                          )
+                        })}
                       </div>
-                    )
-                  })}
-                </div>
-              </article>
-            ))
-          ) : (
-            <article className="docs-center-section">
-              <header className="docs-center-section-head">
-                <h2>
-                  {heroMatchKeyword
-                    ? docsUiText.heroSearchResultsTitle
-                    : docsUiText.directoryTitle}
-                </h2>
-              </header>
-              <div className="docs-center-section-body">
-                <p className="docs-center-empty">
-                  {heroMatchKeyword
-                    ? docsUiText.heroSearchNoResults.replace(
-                        '{keyword}',
-                        heroFilterKeyword.trim(),
-                      )
-                    : docsUiText.noResults}
-                </p>
-              </div>
-            </article>
-          )}
-        </section>
-      </main>
+                    </article>
+                  ))
+                ) : (
+                  <article className="docs-center-section">
+                    <h2 className="docs-center-section-title">
+                      {heroMatchKeyword
+                        ? docsUiText.heroSearchResultsTitle
+                        : docsUiText.directoryTitle}
+                    </h2>
+                    <div className="docs-center-section-body">
+                      <p className="docs-center-empty">
+                        {heroMatchKeyword
+                          ? docsUiText.heroSearchNoResults.replace(
+                              '{keyword}',
+                              heroFilterKeyword.trim(),
+                            )
+                          : docsUiText.noResults}
+                      </p>
+                    </div>
+                  </article>
+                )}
+              </section>
+            </div>
+          </main>
+        </div>
+      </div>
 
       <div className="docs-center-float-actions">
         {showMobileCatalogDrawer ? (

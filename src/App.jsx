@@ -1,4 +1,5 @@
 import { Fragment, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { ChevronDown, Globe } from 'lucide-react'
 import DocsCenterPage from './components/DocsCenterPage'
 import HomePage from './components/HomePage'
 import AllProductsPage from './components/AllProductsPage'
@@ -1384,24 +1385,15 @@ const answersForumQuestionItems = [
 
 const supportedLocales = [
   { bcp47: 'en-US', code: 'en-us', short: 'US', label: 'English' },
-  { bcp47: 'es-ES', code: 'es-es', short: 'ES', label: 'Español' },
-  { bcp47: 'de-DE', code: 'de-de', short: 'DE', label: 'Deutsch' },
-  { bcp47: 'fr-FR', code: 'fr-fr', short: 'FR', label: 'Français' },
-  { bcp47: 'ja-JP', code: 'ja-jp', short: 'JP', label: '日本語' },
-  { bcp47: 'ko-KR', code: 'ko-kr', short: 'KR', label: '한국어' },
+  { bcp47: 'zh-HK', code: 'zh-hk', short: 'HK', label: '繁體中文 + 粵語' },
+  { bcp47: 'es-MX', code: 'es-mx', short: 'MX', label: 'Español' },
   { bcp47: 'pt-BR', code: 'pt-br', short: 'BR', label: 'Português' },
-  { bcp47: 'ar-SA', code: 'ar-sa', short: 'SA', label: 'العربية' },
-  { bcp47: 'it-IT', code: 'it-it', short: 'IT', label: 'Italiano' },
-  { bcp47: 'nl-NL', code: 'nl-nl', short: 'NL', label: 'Nederlands' },
-  { bcp47: 'pl-PL', code: 'pl-pl', short: 'PL', label: 'Polski' },
-  { bcp47: 'tr-TR', code: 'tr-tr', short: 'TR', label: 'Türkçe' },
+  { bcp47: 'fr-FR', code: 'fr-fr', short: 'FR', label: 'Français' },
   { bcp47: 'id-ID', code: 'id-id', short: 'ID', label: 'Bahasa Indonesia' },
-  { bcp47: 'th-TH', code: 'th-th', short: 'TH', label: 'ภาษาไทย' },
   { bcp47: 'vi-VN', code: 'vi-vn', short: 'VN', label: 'Tiếng Việt' },
-  { bcp47: 'ms-MY', code: 'ms-my', short: 'MY', label: 'Bahasa Melayu' },
-  { bcp47: 'zh-CN', code: 'zh-cn', short: 'CN', label: '简体中文' },
-  { bcp47: 'zh-TW', code: 'zh-tw', short: 'TW', label: '繁體中文' },
+  { bcp47: 'tr-TR', code: 'tr-tr', short: 'TR', label: 'Türkçe' },
   { bcp47: 'ru-RU', code: 'ru-ru', short: 'RU', label: 'Русский' },
+  { bcp47: 'th-TH', code: 'th-th', short: 'TH', label: 'ไทย' },
 ]
 
 const localeOptions = supportedLocales.map((item) => ({
@@ -1419,36 +1411,28 @@ const worldwideLocales = supportedLocales.map((item) => ({
 
 const worldwideGroups = [
   {
-    title: 'North America',
+    title: 'Global English',
     codes: ['en-us'],
   },
   {
-    title: 'Western Europe',
-    codes: ['es-es', 'de-de', 'fr-fr', 'it-it', 'nl-nl'],
-  },
-  {
-    title: 'Central & Eastern Europe',
-    codes: ['pl-pl', 'ru-ru', 'tr-tr'],
-  },
-  {
     title: 'Greater China',
-    codes: ['zh-cn', 'zh-tw'],
-  },
-  {
-    title: 'East Asia',
-    codes: ['ja-jp', 'ko-kr'],
-  },
-  {
-    title: 'Southeast Asia',
-    codes: ['id-id', 'th-th', 'vi-vn', 'ms-my'],
+    codes: ['zh-hk'],
   },
   {
     title: 'Latin America',
-    codes: ['pt-br'],
+    codes: ['es-mx', 'pt-br'],
   },
   {
-    title: 'Middle East',
-    codes: ['ar-sa'],
+    title: 'Western Europe',
+    codes: ['fr-fr'],
+  },
+  {
+    title: 'Southeast Asia',
+    codes: ['id-id', 'vi-vn', 'th-th'],
+  },
+  {
+    title: 'Eurasia',
+    codes: ['tr-tr', 'ru-ru'],
   },
 ]
 
@@ -1828,11 +1812,13 @@ function formatBlogDate(dateString, locale = 'en-us') {
     return dateString
   }
   const normalizedLocale = `${locale}`.replace(/_/g, '-')
-  const dateLocale = normalizedLocale.startsWith('zh-tw')
-    ? 'zh-TW'
-    : normalizedLocale.startsWith('zh')
-      ? 'zh-CN'
-      : normalizedLocale
+  const dateLocale = normalizedLocale.startsWith('zh-hk')
+    ? 'zh-HK'
+    : normalizedLocale.startsWith('zh-tw')
+      ? 'zh-TW'
+      : normalizedLocale.startsWith('zh')
+        ? 'zh-CN'
+        : normalizedLocale
   return date.toLocaleDateString(dateLocale, {
     month: 'short',
     day: 'numeric',
@@ -2966,9 +2952,6 @@ function App() {
   const localeAiFeaturesPath = getLocaleAiFeaturesPath(currentLocale)
   const localeWorldwidePath = getLocaleWorldwidePath(currentLocale)
   const localeGuidesPath = getLocaleGuidesPath(currentLocale)
-  const footerBlurb = isZhContent
-    ? '人人可用的 AI 办公套件。'
-    : localizeString('AI-powered office suite for everyone.')
   const footerProductLinks = useMemo(
     () =>
       homeProductCards.slice(0, 5).map((item) => ({
@@ -3000,14 +2983,6 @@ function App() {
       { label: localizeString('Careers') },
       { label: localizeString('Press') },
       { label: localizeString('Contact') },
-    ],
-    [localizeString],
-  )
-  const footerLegalLinks = useMemo(
-    () => [
-      { label: localizeString('Privacy Policy') },
-      { label: localizeString('Terms of Service') },
-      { label: localizeString('Cookie Policy') },
     ],
     [localizeString],
   )
@@ -5685,43 +5660,55 @@ function App() {
         <div className="site-footer-shell">
           <div className="site-footer-top">
             <div className="site-footer-brand-col">
-              <a
-                className="site-footer-brand"
-                aria-label="WPS AI"
-                href={localeHomePath}
-                onClick={(event) => {
-                  event.preventDefault()
-                  navigateTo(localeHomePath)
-                }}
-              >
-                <img
-                  className="site-footer-brand-logo"
-                  src="/icons/wps/copilot.svg"
-                  alt=""
-                  width={24}
-                  height={24}
-                  draggable={false}
-                  decoding="async"
-                  aria-hidden="true"
-                />
-                <span className="site-footer-brand-name" aria-hidden="true">
-                  WPS AI
-                </span>
-              </a>
-              <p className="site-footer-brand-text">{footerBlurb}</p>
-              <div className="site-footer-social-row">
-                {footerSocialItems.map((social) => (
-                  <a
-                    key={social.id}
-                    href={social.url}
-                    aria-label={social.label}
-                    className="site-footer-social-link"
-                    target="_blank"
-                    rel="noopener noreferrer"
+              <div className="site-footer-brand-main">
+                <a
+                  className="site-footer-brand"
+                  aria-label="WPS AI"
+                  href={localeHomePath}
+                  onClick={(event) => {
+                    event.preventDefault()
+                    navigateTo(localeHomePath)
+                  }}
+                >
+                  <img
+                    className="site-footer-brand-logo"
+                    src="/icons/wps/copilot.svg"
+                    alt=""
+                    width={28}
+                    height={28}
+                    draggable={false}
+                    decoding="async"
+                    aria-hidden="true"
+                  />
+                  <span className="site-footer-brand-name" aria-hidden="true">
+                    WPS AI
+                  </span>
+                </a>
+                <p className="site-footer-address">
+                  <span>WPS SOFTWARE PTE. LTD.</span>
+                  <span>6 RAFFLES QUAY #14-06, SINGAPORE (048580)</span>
+                </p>
+              </div>
+              <div className="site-footer-brand-meta">
+                <label className="site-footer-lang-pill">
+                  <Globe className="site-footer-lang-icon" size={15} strokeWidth={1.75} aria-hidden="true" />
+                  <select
+                    value={currentLocale}
+                    onChange={(event) => handleLocaleSelect(event.target.value)}
+                    className="site-footer-select"
+                    aria-label={uiText.nav.language}
                   >
-                    {social.icon}
-                  </a>
-                ))}
+                    {localeOptions.map((item) => (
+                      <option key={item.code} value={item.code}>
+                        {item.label}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="site-footer-lang-caret" size={14} strokeWidth={2} aria-hidden="true" />
+                </label>
+                <p className="site-footer-copyright">
+                  Copyright © Kingsoft Office Software, All Rights Reserved.
+                </p>
               </div>
             </div>
 
@@ -5741,49 +5728,6 @@ function App() {
                     {link.label}
                   </a>
                 ))}
-              </div>
-            </div>
-
-            <div className="site-footer-links-col">
-              <h4 className="site-footer-heading">{uiText.nav.resources}</h4>
-              <div className="site-footer-link-list">
-                {footerResourceLinks.map((link) =>
-                  link.path ? (
-                    <a
-                      key={`footer-resource-${link.label}`}
-                      href={link.path}
-                      className="site-footer-link"
-                      onClick={(event) => {
-                        event.preventDefault()
-                        navigateTo(link.path)
-                      }}
-                    >
-                      <span>{link.label}</span>
-                      {link.external ? (
-                        <svg
-                          width="12"
-                          height="12"
-                          viewBox="0 0 12 12"
-                          fill="none"
-                          aria-hidden="true"
-                          className="site-footer-link-icon"
-                        >
-                          <path
-                            d="M4 2H10V8M10 2L2 10"
-                            stroke="currentColor"
-                            strokeWidth="1.3"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      ) : null}
-                    </a>
-                  ) : (
-                    <span key={`footer-resource-${link.label}`} className="site-footer-link">
-                      <span>{link.label}</span>
-                    </span>
-                  ),
-                )}
               </div>
             </div>
 
@@ -5812,49 +5756,47 @@ function App() {
               </div>
             </div>
 
-            <div className="site-footer-language-col">
-              <h4 className="site-footer-heading">{uiText.nav.language}</h4>
-              <div className="site-footer-select-wrap">
-                <select
-                  value={currentLocale}
-                  onChange={(event) => handleLocaleSelect(event.target.value)}
-                  className="site-footer-select"
-                >
-                  {localeOptions.map((item) => (
-                    <option key={item.code} value={item.code}>
-                      {`${item.short} ${item.label}`}
-                    </option>
-                  ))}
-                </select>
-                <span className="site-footer-select-caret" aria-hidden="true">▾</span>
+            <div className="site-footer-links-col">
+              <h4 className="site-footer-heading">{uiText.footer.support}</h4>
+              <div className="site-footer-link-list">
+                {footerResourceLinks.map((link) =>
+                  link.path ? (
+                    <a
+                      key={`footer-support-${link.label}`}
+                      href={link.path}
+                      className="site-footer-link"
+                      onClick={(event) => {
+                        event.preventDefault()
+                        navigateTo(link.path)
+                      }}
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <span key={`footer-support-${link.label}`} className="site-footer-link">
+                      {link.label}
+                    </span>
+                  ),
+                )}
               </div>
             </div>
-          </div>
 
-          <div className="site-footer-bottom">
-            <p className="site-footer-copyright">
-              © {new Date().getFullYear()} WPS AI. {localizeString('All rights reserved.')}
-            </p>
-            <div className="site-footer-legal-list">
-              {footerLegalLinks.map((link) =>
-                link.path ? (
+            <div className="site-footer-social-col">
+              <h4 className="site-footer-heading">{uiText.footer.followUs}</h4>
+              <div className="site-footer-social-row">
+                {footerSocialItems.map((social) => (
                   <a
-                    key={`footer-legal-${link.label}`}
-                    href={link.path}
-                    className="site-footer-legal-link"
-                    onClick={(event) => {
-                      event.preventDefault()
-                      navigateTo(link.path)
-                    }}
+                    key={social.id}
+                    href={social.url}
+                    aria-label={social.label}
+                    className="site-footer-social-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
-                    {link.label}
+                    {social.icon}
                   </a>
-                ) : (
-                  <span key={`footer-legal-${link.label}`} className="site-footer-legal-link">
-                    {link.label}
-                  </span>
-                ),
-              )}
+                ))}
+              </div>
             </div>
           </div>
         </div>

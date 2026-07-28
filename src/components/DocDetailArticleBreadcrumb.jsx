@@ -49,14 +49,18 @@ export function DocDetailDocCatalogIndex({
 
   return (
     <div className="docs-detail-index-page">
-      <header className="docs-detail-index-header">
-        <h2>{docTitle}</h2>
+      <header
+        className={`docs-detail-index-header${hasIndexVideo ? ' has-intro' : ''}${
+          docSummary ? ' has-summary' : ''
+        }`}
+      >
+        <h1 className="docs-detail-index-title">{docTitle}</h1>
         <div
           className={`docs-detail-index-header-body${
             hasIndexVideo ? '' : ' docs-detail-index-header-body--no-video'
           }`}
         >
-          {docSummary ? <p>{docSummary}</p> : null}
+          {docSummary ? <p className="docs-detail-index-intro">{docSummary}</p> : null}
           <DocDetailIndexVideoPlaceholder
             isZhContent={isZhContent}
             title={docTitle}

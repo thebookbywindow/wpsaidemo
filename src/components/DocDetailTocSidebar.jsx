@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef, useState } from 'react'
 import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react'
 import {
   DOC_DETAIL_COMMON_SCOPE_SLUG,
@@ -9,6 +10,8 @@ import {
   isDocDetailCommonScopeId,
 } from '../data/docDetailTocData'
 import { getDocDetailFeatureIcon, getDocDetailPlatformIcon } from '../utils/docDetailPlatformIcons'
+
+const RAIL_ACCENT_HEIGHT = 20
 
 export default function DocDetailTocSidebar({
   sidebarTitle,
@@ -30,7 +33,10 @@ export default function DocDetailTocSidebar({
   variant = 'default',
 }) {
   const isPopover = variant === 'popover'
+  const showRail = embedded && !isPopover
+  const showPlatformIcons = isPopover
   const PlatformChevron = isPopover ? ChevronDown : ChevronRight
+  const chevronSize = isPopover ? 18 : 18
   const sections = getDocDetailTocSections(isZhContent)
   const isPlatformLess = platforms.length === 0
   const hasUniversalSections = universalSectionIds.length > 0 && !isPlatformLess
@@ -42,6 +48,40 @@ export default function DocDetailTocSidebar({
     sections,
     platformSectionIds.length > 0 ? platformSectionIds : sections.map((section) => section.id),
   )
+
+  const navRef = useRef(null)
+  const [accentTop, setAccentTop] = useState(4)
+
+  useLayoutEffect(() => {
+    if (!showRail) return undefined
+
+    const updateAccent = () => {
+      const nav = navRef.current
+      if (!nav) return
+      const currentBtn =
+        nav.querySelector('.docs-detail-sidebar-group.is-current .docs-detail-sidebar-platform')
+        || nav.querySelector('.docs-detail-sidebar-group.is-expanded .docs-detail-sidebar-platform')
+      if (!currentBtn) return
+      const navTop = nav.getBoundingClientRect().top
+      const btnRect = currentBtn.getBoundingClientRect()
+      const offset = btnRect.top - navTop + Math.max(0, (btnRect.height - RAIL_ACCENT_HEIGHT) / 2)
+      setAccentTop(offset)
+    }
+
+    updateAccent()
+    window.addEventListener('resize', updateAccent)
+    return () => window.removeEventListener('resize', updateAccent)
+  }, [
+    showRail,
+    expandedPlatformId,
+    activePlatformId,
+    activeSectionId,
+    contentViewMode,
+    platforms,
+    universalSectionIds,
+    platformSectionIds,
+    isZhContent,
+  ])
 
   const renderSectionButtons = (platformId, sectionList) =>
     sectionList.map((section) => {
@@ -66,6 +106,24 @@ export default function DocDetailTocSidebar({
       )
     })
 
+  const renderPlatformLeading = (label, Icon) => (
+    <span className="docs-detail-sidebar-platform-main">
+      <span className="docs-detail-sidebar-platform-leading">
+        {showPlatformIcons && Icon ? (
+          <span className="docs-detail-sidebar-platform-icon" aria-hidden="true">
+            <Icon size={13} strokeWidth={1.85} />
+          </span>
+        ) : null}
+        <span className="docs-detail-sidebar-platform-label">{label}</span>
+      </span>
+      <PlatformChevron
+        size={chevronSize}
+        className="docs-detail-sidebar-platform-chevron"
+        aria-hidden="true"
+      />
+    </span>
+  )
+
   const renderFeatureGroup = (sectionList, { expandable = true } = {}) => {
     const isFeatureExpanded = expandedPlatformId === DOC_DETAIL_COMMON_SCOPE_SLUG
       || expandedPlatformId === DOC_DETAIL_FEATURE_SCOPE_ID
@@ -74,28 +132,20 @@ export default function DocDetailTocSidebar({
 
     return (
       <div
-        className={`docs-detail-sidebar-group${isFeatureExpanded ? ' is-expanded' : ''}`}
+        className={`docs-detail-sidebar-group${isFeatureExpanded ? ' is-expanded' : ''}${
+          isFeatureActive ? ' is-current' : ''
+        }`}
       >
         {expandable ? (
           <button
             type="button"
             className={`docs-detail-sidebar-platform docs-detail-sidebar-platform--feature${
               isFeatureActive ? ' is-active' : ''
-            }`}
+            }${isFeatureExpanded ? ' is-expanded' : ''}`}
             aria-expanded={isFeatureExpanded}
             onClick={() => onPlatformToggle(DOC_DETAIL_FEATURE_SCOPE_ID)}
           >
-            <span className="docs-detail-sidebar-platform-main">
-              <span className="docs-detail-sidebar-platform-icon" aria-hidden="true">
-                <FeatureIcon size={13} strokeWidth={1.85} />
-              </span>
-              <span className="docs-detail-sidebar-platform-label">{platformLessGroupLabel}</span>
-            </span>
-            <PlatformChevron
-              size={13}
-              className="docs-detail-sidebar-platform-chevron"
-              aria-hidden="true"
-            />
+            {renderPlatformLeading(platformLessGroupLabel, FeatureIcon)}
           </button>
         ) : (
           <div
@@ -103,12 +153,7 @@ export default function DocDetailTocSidebar({
               isFeatureActive ? ' is-active' : ''
             }`}
           >
-            <span className="docs-detail-sidebar-platform-main">
-              <span className="docs-detail-sidebar-platform-icon" aria-hidden="true">
-                <FeatureIcon size={13} strokeWidth={1.85} />
-              </span>
-              <span className="docs-detail-sidebar-platform-label">{platformLessGroupLabel}</span>
-            </span>
+            {renderPlatformLeading(platformLessGroupLabel, FeatureIcon)}
           </div>
         )}
         {isFeatureExpanded ? (
@@ -120,9 +165,57 @@ export default function DocDetailTocSidebar({
     )
   }
 
+  const renderPlatformGroup = (platform, sectionList) => {
+    const isExpanded =
+      Boolean(expandedPlatformId) && expandedPlatformId === platform.id
+    const isPlatformActive =
+      activePlatformId === platform.id && contentViewMode === 'section-detail'
+    const PlatformIcon = getDocDetailPlatformIcon(platform.id)
+
+    return (
+      <div
+        key={`doc-toc-platform-${platform.id}`}
+        className={`docs-detail-sidebar-group${isExpanded ? ' is-expanded' : ''}${
+          isPlatformActive ? ' is-current' : ''
+        }`}
+      >
+        <button
+          type="button"
+          className={`docs-detail-sidebar-platform${isPlatformActive ? ' is-active' : ''}${
+            isExpanded ? ' is-expanded' : ''
+          }`}
+          aria-expanded={isExpanded}
+          onClick={() => onPlatformToggle(platform.id)}
+        >
+          {renderPlatformLeading(platform.label, PlatformIcon)}
+        </button>
+        {isExpanded ? (
+          <div className="docs-detail-sidebar-sections">
+            {renderSectionButtons(platform.id, sectionList)}
+          </div>
+        ) : null}
+      </div>
+    )
+  }
+
   const CloseIcon = drawerCloseSide === 'right' ? ChevronRight : ChevronLeft
   const showSidebarHead = !embedded || Boolean(onDrawerClose)
   const sidebarHeadTitle = onDrawerClose ? drawerHeadTitle || sidebarTitle : sidebarTitle
+
+  const navBody = (
+    <>
+      {isPlatformLess ? (
+        renderFeatureGroup(sections)
+      ) : isHybrid ? (
+        <>
+          {renderFeatureGroup(universalSections)}
+          {platforms.map((platform) => renderPlatformGroup(platform, platformSections))}
+        </>
+      ) : (
+        platforms.map((platform) => renderPlatformGroup(platform, sections))
+      )}
+    </>
+  )
 
   return (
     <aside
@@ -151,90 +244,20 @@ export default function DocDetailTocSidebar({
           <h3>{sidebarHeadTitle}</h3>
         </div>
       ) : null}
-      <nav className="docs-detail-sidebar-nav">
-        {isPlatformLess ? (
-          renderFeatureGroup(sections)
-        ) : isHybrid ? (
+      <nav ref={navRef} className="docs-detail-sidebar-nav" aria-label={sidebarHeadTitle}>
+        {showRail ? (
           <>
-            {renderFeatureGroup(universalSections)}
-            {platforms.map((platform) => {
-              const isExpanded =
-                Boolean(expandedPlatformId) && expandedPlatformId === platform.id
-              const isPlatformActive =
-                activePlatformId === platform.id && contentViewMode === 'section-detail'
-              const PlatformIcon = getDocDetailPlatformIcon(platform.id)
-
-              return (
-                <div
-                  key={`doc-toc-platform-${platform.id}`}
-                  className={`docs-detail-sidebar-group${isExpanded ? ' is-expanded' : ''}`}
-                >
-                  <button
-                    type="button"
-                    className={`docs-detail-sidebar-platform${isPlatformActive ? ' is-active' : ''}`}
-                    aria-expanded={isExpanded}
-                    onClick={() => onPlatformToggle(platform.id)}
-                  >
-                    <span className="docs-detail-sidebar-platform-main">
-                      <span className="docs-detail-sidebar-platform-icon" aria-hidden="true">
-                        <PlatformIcon size={13} strokeWidth={1.85} />
-                      </span>
-                      <span className="docs-detail-sidebar-platform-label">{platform.label}</span>
-                    </span>
-                    <PlatformChevron
-                      size={13}
-                      className="docs-detail-sidebar-platform-chevron"
-                      aria-hidden="true"
-                    />
-                  </button>
-                  {isExpanded ? (
-                    <div className="docs-detail-sidebar-sections">
-                      {renderSectionButtons(platform.id, platformSections)}
-                    </div>
-                  ) : null}
-                </div>
-              )
-            })}
+            <div className="docs-detail-sidebar-rail" aria-hidden="true">
+              <div className="docs-detail-sidebar-rail-track" />
+              <div
+                className="docs-detail-sidebar-rail-accent"
+                style={{ top: `${accentTop}px` }}
+              />
+            </div>
+            <div className="docs-detail-sidebar-nav-content">{navBody}</div>
           </>
         ) : (
-          platforms.map((platform) => {
-            const isExpanded =
-              Boolean(expandedPlatformId) && expandedPlatformId === platform.id
-            const isPlatformActive =
-              activePlatformId === platform.id && contentViewMode === 'section-detail'
-            const PlatformIcon = getDocDetailPlatformIcon(platform.id)
-
-            return (
-              <div
-                key={`doc-toc-platform-${platform.id}`}
-                className={`docs-detail-sidebar-group${isExpanded ? ' is-expanded' : ''}`}
-              >
-                <button
-                  type="button"
-                  className={`docs-detail-sidebar-platform${isPlatformActive ? ' is-active' : ''}`}
-                  aria-expanded={isExpanded}
-                  onClick={() => onPlatformToggle(platform.id)}
-                >
-                  <span className="docs-detail-sidebar-platform-main">
-                    <span className="docs-detail-sidebar-platform-icon" aria-hidden="true">
-                      <PlatformIcon size={13} strokeWidth={1.85} />
-                    </span>
-                    <span className="docs-detail-sidebar-platform-label">{platform.label}</span>
-                  </span>
-                  <PlatformChevron
-                    size={13}
-                    className="docs-detail-sidebar-platform-chevron"
-                    aria-hidden="true"
-                  />
-                </button>
-                {isExpanded ? (
-                  <div className="docs-detail-sidebar-sections">
-                    {renderSectionButtons(platform.id, sections)}
-                  </div>
-                ) : null}
-              </div>
-            )
-          })
+          navBody
         )}
       </nav>
     </aside>

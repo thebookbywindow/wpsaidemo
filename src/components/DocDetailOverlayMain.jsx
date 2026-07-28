@@ -52,19 +52,24 @@ function convertMarkdownListsToHtml(text) {
 
   const renderList = (items) => {
     const hasNested = items.some((item) => item.subs.length > 0)
-    const listClass = hasNested ? ' class="docs-detail-faq-list"' : ''
-    const listItems = items
-      .map((item) => {
-        if (item.subs.length) {
-          const answers = item.subs
-            .map((sub) => `<li class="docs-detail-faq-answer-item">${sub}</li>`)
-            .join('')
-          return `<li class="docs-detail-faq-item"><p class="docs-detail-faq-question">${item.content}</p><ul class="docs-detail-faq-answers">${answers}</ul></li>`
-        }
-        return `<li>${item.content}</li>`
-      })
-      .join('\n')
-    return `<ul${listClass}>\n${listItems}\n</ul>`
+    // 对齐官网 FAQ：问题用 h3，解答用段落，不用灰底卡片
+    if (hasNested) {
+      return items
+        .map((item) => {
+          if (item.subs.length) {
+            const question = item.content
+              .replace(/<\/?strong>/g, '')
+              .replace(/<\/?b>/g, '')
+              .trim()
+            const answers = item.subs.map((sub) => `<p>${sub}</p>`).join('\n')
+            return `<h3>${question}</h3>\n${answers}`
+          }
+          return `<p>${item.content}</p>`
+        })
+        .join('\n')
+    }
+    const listItems = items.map((item) => `<li>${item.content}</li>`).join('\n')
+    return `<ul>\n${listItems}\n</ul>`
   }
 
   while (index < lines.length) {
@@ -133,6 +138,7 @@ function markdownToHtml(markdown, emptyText = 'No content available.') {
     }
     if (
       trimmed.startsWith('<h')
+      || trimmed.startsWith('<p')
       || trimmed.startsWith('<ul')
       || trimmed.startsWith('<ol')
       || trimmed.startsWith('<li')
@@ -434,10 +440,14 @@ export default function DocDetailOverlayMain({
   return (
     <div
       className={`docs-center-overlay-main${
-        isTocCompact ? ' docs-center-overlay-main--toc-compact' : ''
-      }${isCatalogCompact ? ' docs-center-overlay-main--mobile-drawers' : ''}${
-        catalogDrawerOpen ? ' has-mobile-drawer-open' : ''
-      }${platformPopoverOpen ? ' has-platform-popover-open' : ''}`}
+        contentViewMode === 'doc-catalog-index'
+          ? ' docs-center-overlay-main--feature'
+          : ' docs-center-overlay-main--doc'
+      }${isTocCompact ? ' docs-center-overlay-main--toc-compact' : ''}${
+        isCatalogCompact ? ' docs-center-overlay-main--mobile-drawers' : ''
+      }${catalogDrawerOpen ? ' has-mobile-drawer-open' : ''}${
+        platformPopoverOpen ? ' has-platform-popover-open' : ''
+      }`}
     >
       {isCatalogCompact && catalogDrawerOpen ? (
         <button

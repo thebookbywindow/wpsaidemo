@@ -6,24 +6,15 @@ export const DEFAULT_LOCALE_BCP47 = 'en-US'
 /** Locales that receive hreflang alternates (aligned with App supportedLocales). */
 export const SITE_HREFLANG_LOCALES = [
   'en-US',
-  'es-ES',
-  'de-DE',
-  'fr-FR',
-  'ja-JP',
-  'ko-KR',
+  'zh-HK',
+  'es-MX',
   'pt-BR',
-  'ar-SA',
-  'it-IT',
-  'nl-NL',
-  'pl-PL',
-  'tr-TR',
+  'fr-FR',
   'id-ID',
-  'th-TH',
   'vi-VN',
-  'ms-MY',
-  'zh-CN',
-  'zh-TW',
+  'tr-TR',
   'ru-RU',
+  'th-TH',
 ]
 
 export const HOME_OG_IMAGE_PATH = '/images/og/wps-ai-home-1200x630.png'

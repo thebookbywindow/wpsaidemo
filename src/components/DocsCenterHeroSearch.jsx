@@ -86,7 +86,7 @@ export default function DocsCenterHeroSearch({
     <div
       className={`docs-center-search-wrap${
         leadingAction ? ' docs-center-search-wrap--with-leading-action' : ''
-      }`}
+      }${showDropdown ? ' is-active' : ''}`}
     >
       <div className="docs-center-search-combobox" ref={comboboxRef}>
         <label className="docs-center-search-input-wrap" aria-label={searchSrOnly}>
@@ -96,10 +96,16 @@ export default function DocsCenterHeroSearch({
           <input
             type="search"
             role="combobox"
+            name="docs-q"
             aria-expanded={showDropdown}
             aria-controls="docs-center-hero-search-listbox"
             aria-autocomplete="list"
             placeholder={searchPlaceholder}
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck={false}
+            enterKeyHint="search"
             value={searchKeyword}
             onChange={(event) => {
               const value = event.target.value
@@ -109,11 +115,6 @@ export default function DocsCenterHeroSearch({
                 handleKeywordBecomesEmpty(event)
               } else {
                 isManualDeleteKeyRef.current = false
-              }
-            }}
-            onSearch={(event) => {
-              if (!event.currentTarget.value) {
-                onSearchClear?.()
               }
             }}
             onFocus={() => onDropdownOpenChange(true)}
@@ -141,9 +142,9 @@ export default function DocsCenterHeroSearch({
         onClick={onSubmitSearch}
       >
         {isResetMode ? (
-          <RotateCcw size={18} strokeWidth={2.25} aria-hidden="true" />
+          <RotateCcw size={20} strokeWidth={2.25} aria-hidden="true" />
         ) : (
-          <Search size={18} strokeWidth={2.25} aria-hidden="true" />
+          <Search size={20} strokeWidth={2.25} color="#fff" aria-hidden="true" />
         )}
       </button>
     </div>
