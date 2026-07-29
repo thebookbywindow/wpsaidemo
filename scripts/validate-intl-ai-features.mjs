@@ -154,6 +154,24 @@ assert(
   splitIntlAiLabelByQuery('AI Writer', '  ').length === 1 &&
     splitIntlAiLabelByQuery('AI Writer', '  ')[0].match === false,
 )
+assert(
+  'search matches displayName entries (all-products)',
+  filterIntlAiFeatureGroups(
+    [
+      {
+        id: 'ai-tools',
+        title: 'AI Tools',
+        items: [
+          { name: 'ChatPDF', displayName: 'Chat with PDF', path: '/chat-pdf' },
+          { name: 'Other', displayName: 'Other Tool', path: '/other' },
+        ],
+      },
+    ],
+    'chat',
+  )
+    .map((g) => g.items.map((i) => i.name).join(','))
+    .join('|') === 'ChatPDF',
+)
 
 const rootDir = join(dirname(fileURLToPath(import.meta.url)), '..')
 const expectedTabIcons = {

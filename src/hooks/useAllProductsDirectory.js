@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 
 export const ALL_PRODUCTS_GROUP_ID_PREFIX = 'all-products-group-'
 
@@ -23,7 +23,7 @@ export function getAllProductsSectionIconSrc(title) {
 }
 
 /**
- * Category directory state for the Free AI Tools catalog page.
+ * Category directory groups for the Free AI Tools catalog page.
  */
 export function useAllProductsDirectory(sections) {
   const groups = useMemo(
@@ -37,20 +37,5 @@ export function useAllProductsDirectory(sections) {
     [sections],
   )
 
-  const defaultId = groups[0]?.id ?? ''
-  const [activeId, setActiveId] = useState(defaultId)
-  const pillarIds = useMemo(() => groups.map((group) => group.id), [groups])
-
-  useEffect(() => {
-    if (!groups.some((group) => group.id === activeId)) {
-      setActiveId(groups[0]?.id ?? '')
-    }
-  }, [groups, activeId])
-
-  return {
-    groups,
-    pillarIds,
-    activeId,
-    setActiveId,
-  }
+  return { groups }
 }

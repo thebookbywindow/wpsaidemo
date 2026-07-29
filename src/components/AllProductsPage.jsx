@@ -1,12 +1,31 @@
+import { Search, X } from 'lucide-react'
 import {
   ALL_PRODUCTS_GROUP_ID_PREFIX,
   useAllProductsDirectory,
 } from '../hooks/useAllProductsDirectory'
-import { useHomeIntlAiStickyAnchorTabs } from '../hooks/useHomeIntlAiStickyAnchorTabs'
+import { useIntlAiFeaturesSearch } from '../hooks/useIntlAiFeaturesSearch'
 import { joinPath } from '../utils/pathUrl'
+import {
+  getDirectoryItemLabel,
+  splitIntlAiLabelByQuery,
+} from '../utils/intlAiFeaturesSearch'
 
-function AllProductsLink({ item, currentUrlLocale, navigateTo }) {
+function AllProductsLinkLabel({ label, query }) {
+  const parts = splitIntlAiLabelByQuery(label, query)
+  return parts.map((part, index) =>
+    part.match ? (
+      <mark key={`m-${index}`} className="intl-ai-dir-link-mark">
+        {part.text}
+      </mark>
+    ) : (
+      <span key={`t-${index}`}>{part.text}</span>
+    ),
+  )
+}
+
+function AllProductsLink({ item, query, currentUrlLocale, navigateTo }) {
   const targetPath = joinPath(currentUrlLocale, item.path)
+  const label = getDirectoryItemLabel(item)
 
   return (
     <a
@@ -17,12 +36,12 @@ function AllProductsLink({ item, currentUrlLocale, navigateTo }) {
         navigateTo(targetPath)
       }}
     >
-      {item.displayName ?? item.name}
+      <AllProductsLinkLabel label={label} query={query} />
     </a>
   )
 }
 
-function AllProductsGroup({ group, isFirst, currentUrlLocale, navigateTo }) {
+function AllProductsGroup({ group, isFirst, query, currentUrlLocale, navigateTo }) {
   if (!group?.items?.length) return null
 
   return (
@@ -48,6 +67,7 @@ function AllProductsGroup({ group, isFirst, currentUrlLocale, navigateTo }) {
           <AllProductsLink
             key={item.path ?? item.name}
             item={item}
+            query={query}
             currentUrlLocale={currentUrlLocale}
             navigateTo={navigateTo}
           />
@@ -58,7 +78,7 @@ function AllProductsGroup({ group, isFirst, currentUrlLocale, navigateTo }) {
 }
 
 /**
- * Free AI Tools / all-products catalog — category sitemap only.
+ * Free AI Tools / all-products catalog — category sitemap with search filter.
  */
 export default function AllProductsPage({
   copy,
@@ -66,15 +86,16 @@ export default function AllProductsPage({
   currentUrlLocale,
   navigateTo,
 }) {
-  const { groups, pillarIds, activeId, setActiveId } = useAllProductsDirectory(sections)
-  const { tabsDockRef, scrollToPillar } = useHomeIntlAiStickyAnchorTabs({
-    pillarIds,
-    activeId,
-    setActiveId,
-    blockIdPrefix: ALL_PRODUCTS_GROUP_ID_PREFIX,
-  })
+  const { groups } = useAllProductsDirectory(sections)
+  const { query, setQuery, clearQuery, filteredGroups, isEmpty } =
+    useIntlAiFeaturesSearch(groups)
 
   if (!groups.length) return null
+
+  const searchPlaceholder = copy?.searchPlaceholder ?? 'Search tools...'
+  const searchAriaLabel = copy?.searchAriaLabel ?? searchPlaceholder
+  const searchEmpty = copy?.searchEmpty ?? 'No matching tools.'
+  const searchClearLabel = copy?.searchClearLabel ?? 'Clear search'
 
   return (
     <div className="all-products-page bg-transparent">
@@ -93,50 +114,48 @@ export default function AllProductsPage({
         aria-label={copy?.title ?? 'Free AI Tools'}
       >
         <div className="mx-auto w-full max-w-[1160px]">
-          <div ref={tabsDockRef} className="home-intl-ai-tabs-dock intl-ai-dir-tabs-dock">
-            <div className="home-intl-ai-tabs-wrap">
-              <nav
-                className="home-intl-ai-tabs"
-                aria-label={copy?.tabsAriaLabel ?? 'Product categories'}
-              >
-                {groups.map((group) => {
-                  const selected = group.id === activeId
-                  return (
-                    <button
-                      key={group.id}
-                      type="button"
-                      id={`all-products-tab-${group.id}`}
-                      aria-current={selected ? 'true' : undefined}
-                      className={`home-intl-ai-tab${selected ? ' is-active' : ''}`}
-                      onClick={() => scrollToPillar(group.id)}
-                    >
-                      {group.iconSrc ? (
-                        <img
-                          className="home-intl-ai-tab-icon"
-                          src={group.iconSrc}
-                          alt=""
-                          draggable={false}
-                          decoding="async"
-                        />
-                      ) : null}
-                      <span className="home-intl-ai-tab-name">{group.title}</span>
-                    </button>
-                  )
-                })}
-              </nav>
-            </div>
+          <div className="intl-ai-dir-search">
+            <label className="intl-ai-dir-search-field" aria-label={searchAriaLabel}>
+              <Search className="intl-ai-dir-search-icon" size={16} strokeWidth={1.75} aria-hidden />
+              <input
+                type="search"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder={searchPlaceholder}
+                autoComplete="off"
+                autoCorrect="off"
+                spellCheck={false}
+              />
+              {query ? (
+                <button
+                  type="button"
+                  className="intl-ai-dir-search-clear"
+                  onClick={clearQuery}
+                  aria-label={searchClearLabel}
+                >
+                  <X size={14} strokeWidth={2} aria-hidden />
+                </button>
+              ) : null}
+            </label>
           </div>
 
           <div className="intl-ai-dir-panel">
-            {groups.map((group, index) => (
-              <AllProductsGroup
-                key={group.id}
-                group={group}
-                isFirst={index === 0}
-                currentUrlLocale={currentUrlLocale}
-                navigateTo={navigateTo}
-              />
-            ))}
+            {isEmpty ? (
+              <p className="intl-ai-dir-search-empty" role="status">
+                {searchEmpty}
+              </p>
+            ) : (
+              filteredGroups.map((group, index) => (
+                <AllProductsGroup
+                  key={group.id}
+                  group={group}
+                  isFirst={index === 0}
+                  query={query}
+                  currentUrlLocale={currentUrlLocale}
+                  navigateTo={navigateTo}
+                />
+              ))
+            )}
           </div>
         </div>
       </section>

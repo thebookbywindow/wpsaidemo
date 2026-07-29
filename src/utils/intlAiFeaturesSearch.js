@@ -1,13 +1,18 @@
 /**
- * Pure helpers for Intl AI features directory search / instant filter.
+ * Pure helpers for directory pages: instant search filter + match highlight.
  */
 
 export function normalizeIntlAiSearchQuery(query) {
   return `${query ?? ''}`.trim().toLowerCase()
 }
 
+/** Entry label for AI features (`label`) or all-products (`displayName` / `name`). */
+export function getDirectoryItemLabel(item) {
+  return `${item?.label ?? item?.displayName ?? item?.name ?? ''}`
+}
+
 function itemMatchesQuery(item, query) {
-  const label = `${item?.label ?? ''}`.toLowerCase()
+  const label = getDirectoryItemLabel(item).toLowerCase()
   return Boolean(label) && label.includes(query)
 }
 

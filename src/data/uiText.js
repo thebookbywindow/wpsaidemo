@@ -14,7 +14,7 @@ export const uiTextByLanguage = {
       signIn: 'Sign In',
       getStartedFree: 'Free download',
       seeAllTools: 'See all tools →',
-      seeAllFeatures: 'See all features →',
+      seeAllFeatures: 'See all AI features →',
       wpsFeaturesMega: {
         aiFeaturesTitle: 'WPS AI Features',
         groups: {
@@ -771,6 +771,10 @@ export const uiTextByLanguage = {
       viewAZ: 'A–Z',
       tabsAriaLabel: 'Product categories',
       viewModeAriaLabel: 'Catalog view',
+      searchPlaceholder: 'Search tools...',
+      searchAriaLabel: 'Search tools',
+      searchEmpty: 'No matching tools.',
+      searchClearLabel: 'Clear search',
     },
     worldwide: {
       badge: 'Global Language Map',
@@ -826,7 +830,7 @@ export const uiTextByLanguage = {
       signIn: '登录',
       getStartedFree: '免费下载',
       seeAllTools: '查看所有工具 →',
-      seeAllFeatures: '查看全部功能 →',
+      seeAllFeatures: '查看全部 AI 功能 →',
       wpsFeaturesMega: {
         aiFeaturesTitle: 'WPS AI 功能',
         groups: {
@@ -1567,6 +1571,10 @@ export const uiTextByLanguage = {
       viewAZ: 'A–Z',
       tabsAriaLabel: '产品分类',
       viewModeAriaLabel: '目录视图',
+      searchPlaceholder: '搜索工具...',
+      searchAriaLabel: '搜索工具',
+      searchEmpty: '没有匹配的工具。',
+      searchClearLabel: '清除搜索',
     },
     worldwide: {
       badge: '全球语言地图',
