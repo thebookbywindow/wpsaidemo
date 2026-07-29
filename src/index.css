@@ -15,7 +15,8 @@
   --docs-detail-overlay-max-width: 1680px;
   --docs-detail-catalog-width: 272px;
   --docs-detail-embedded-toc-width: 246px;
-  --docs-surface-tint: rgba(111, 106, 153, 0.04);
+  /* Match wps.ai --color-surface-tint (#6f6a990a) */
+  --docs-surface-tint: #6f6a990a;
   --docs-border-subtle: rgba(13, 13, 13, 0.06);
   --docs-text-secondary: rgba(13, 13, 13, 0.46);
   --docs-text-brand: #682aef;
@@ -1591,6 +1592,32 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
+  /*
+   * Match https://www.wps.ai/ .sidebar-nav-scroll (4px thin bar).
+   * Do NOT use margin-right:-8px here: parent .docs-center-sidebar /
+   * .docs-detail-catalog-sidebar use overflow:hidden and would clip the thumb.
+   * Thumb uses official site-wide scrollbar gray (#d0d0d0), not
+   * --docs-border-subtle (6% black) which disappears on white panels.
+   */
+  scrollbar-width: thin;
+  scrollbar-color: #d0d0d0 transparent;
+}
+
+.docs-center-sidebar-body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.docs-center-sidebar-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.docs-center-sidebar-body::-webkit-scrollbar-thumb {
+  background: #d0d0d0;
+  border-radius: 4px;
+}
+
+.docs-center-sidebar-body::-webkit-scrollbar-thumb:hover {
+  background: #b8b8b8;
 }
 
 .docs-center-sidebar-search {
@@ -1826,7 +1853,6 @@ body {
   max-width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-  scrollbar-width: thin;
 }
 
 .docs-center-main-card .docs-center-toc-parent + .docs-center-toc-parent {
@@ -2349,6 +2375,12 @@ body {
   font-family: var(--docs-font-heading);
 }
 
+.docs-center-page--detail-open {
+  /* Match wps.ai .docscenter-page: surface tint (not solid white). */
+  background: var(--docs-surface-tint);
+  min-height: calc(100vh - var(--nav-height));
+}
+
 .docs-center-page--detail-open .docs-center-top-wrap,
 .docs-center-page--detail-open .docs-center-info-panels,
 .docs-center-page--detail-open > .docs-center-float-actions {
@@ -2357,6 +2389,18 @@ body {
 
 .docs-center-overlay.open {
   display: block;
+  /* Second tint layer — same as wps.ai .docs-doc-wrap over .docscenter-page → ~#f3f3f7 */
+  background: var(--docs-surface-tint);
+  min-height: inherit;
+}
+
+/* Docs detail sits inside home shell; strip marketing pink/purple wash. */
+.home-figma-page:has(.docs-center-page--detail-open) {
+  background: #ffffff;
+}
+
+.home-figma-page:has(.docs-center-page--detail-open)::before {
+  display: none;
 }
 
 .docs-center-overlay-lang-tabs {
@@ -5478,81 +5522,101 @@ body {
   color: #7448ff;
 }
 
-.home-nav-resources-dropdown {
-  position: absolute;
-  top: calc(100% - 1px);
-  left: 50%;
-  z-index: 100;
-  display: flex;
-  width: max-content;
-  min-width: 200px;
-  max-width: min(280px, calc(100vw - 32px));
-  flex-direction: column;
-  padding: 10px 8px;
-  border: 1px solid rgba(233, 225, 255, 0.92);
-  border-radius: 14px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(251, 248, 255, 0.995) 100%);
-  box-shadow: 0 18px 40px rgba(110, 80, 160, 0.14);
-  backdrop-filter: blur(24px);
-  transform: translateX(-50%);
+.home-nav-resources-mega {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0;
+  padding: 4px 0 0;
 }
 
-.home-nav-resources-hub-link {
-  display: inline-flex;
-  align-items: center;
-  align-self: stretch;
-  padding: 6px 10px;
-  border-radius: var(--home-control-radius);
-  text-decoration: none;
-  transition: color 0.15s ease, background 0.15s ease;
+.home-nav-resources-mega-column {
+  min-height: 100%;
+  padding: 12px 14px 18px;
+  border-right: 1px solid rgba(233, 225, 255, 0.92);
 }
 
-.home-nav-resources-hub-link:hover,
-.home-nav-resources-hub-link.is-current {
-  background: rgba(143, 91, 255, 0.06);
+.home-nav-resources-mega-column:last-child {
+  border-right: 0;
 }
 
-.home-nav-resources-hub-link:hover .home-nav-resources-hub-title,
-.home-nav-resources-hub-link.is-current .home-nav-resources-hub-title {
-  color: #8f5bff;
-}
-
-.home-nav-resources-hub-title {
-  font-size: 13px;
-  font-weight: 650;
-  line-height: 1.3;
-  color: #261f38;
-}
-
-.home-nav-resources-apps-list {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+.home-nav-resources-learn-more {
   margin-top: 4px;
-  padding-top: 4px;
-  border-top: 1px solid rgba(233, 225, 255, 0.92);
+  color: #417ff9;
+  font-weight: 600;
 }
 
-.home-nav-resources-app-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  border: 0;
-  background: transparent;
+.home-nav-resources-learn-more:hover {
+  color: #2f6ae0;
 }
 
-.home-nav-resources-app-link.is-current {
-  background: rgba(143, 91, 255, 0.08);
-  color: #8f5bff;
-  text-decoration-color: rgba(143, 91, 255, 0.45);
+@media (max-width: 1100px) {
+  .home-nav-resources-mega {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .home-nav-resources-mega-column:nth-child(3n) {
+    border-right: 0;
+  }
+
+  .home-nav-resources-mega-column:nth-child(n + 4) {
+    border-top: 1px solid rgba(233, 225, 255, 0.92);
+  }
 }
 
-.home-nav-resources-app-icon {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-  object-fit: contain;
+@media (max-width: 720px) {
+  .home-nav-resources-mega {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-nav-resources-mega-column:nth-child(3n) {
+    border-right: 1px solid rgba(233, 225, 255, 0.92);
+  }
+
+  .home-nav-resources-mega-column:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .home-nav-resources-mega-column:nth-child(n + 3) {
+    border-top: 1px solid rgba(233, 225, 255, 0.92);
+  }
+}
+
+.home-nav-free-ai-tools-mega {
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 2fr);
+  gap: 0;
+  padding: 4px 0 0;
+}
+
+.home-nav-free-ai-tools-mega-column {
+  min-height: 100%;
+  padding: 12px 14px 18px;
+  border-right: 1px solid rgba(233, 225, 255, 0.92);
+}
+
+.home-nav-free-ai-tools-mega-column:last-child {
+  border-right: 0;
+}
+
+.home-nav-free-ai-tools-mega-links--two-col {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 8px;
+}
+
+@media (max-width: 900px) {
+  .home-nav-free-ai-tools-mega {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-nav-free-ai-tools-mega-column:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .home-nav-free-ai-tools-mega-column:nth-child(n + 3) {
+    border-top: 1px solid rgba(233, 225, 255, 0.92);
+  }
+
+  .home-nav-free-ai-tools-mega-links--two-col {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .home-nav-wps-features-mega {
@@ -9918,6 +9982,14 @@ button.home-media-card--interactive:focus-visible {
   letter-spacing: -0.01em;
   color: inherit;
   white-space: nowrap;
+}
+
+.site-footer-tagline {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  color: #334155;
 }
 
 .site-footer-address {

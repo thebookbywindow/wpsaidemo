@@ -1,5 +1,7 @@
 import { Fragment, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { ChevronDown, Globe } from 'lucide-react'
+import { ChevronDown, Globe, Languages, Users } from 'lucide-react'
+import { FaFacebookF, FaYoutube } from 'react-icons/fa'
+import { FaXTwitter } from 'react-icons/fa6'
 import DocsCenterPage from './components/DocsCenterPage'
 import HomePage from './components/HomePage'
 import AllProductsPage from './components/AllProductsPage'
@@ -28,9 +30,27 @@ import {
 } from './data/siteLocaleData'
 import { translateOfflinePhrase } from './data/offlinePhraseTranslations'
 import {
+  resolveFreeAiToolsHeaderMegaMenu,
+} from './data/freeAiToolsHeaderMegaMenu.js'
+import {
+  resolveResourcesHeaderMegaMenu,
+} from './data/resourcesHeaderMegaMenu.js'
+import {
   resolveWpsFeaturesHeaderMegaMenu,
 } from './data/wpsFeaturesHeaderMegaMenu.js'
 import { uiTextByLanguage } from './data/uiText'
+import {
+  SITE_FOOTER_COMPANY_LINKS,
+  SITE_FOOTER_PRODUCT_LINKS,
+  SITE_FOOTER_SOCIAL_LINKS,
+  SITE_FOOTER_SUPPORT_LINKS,
+} from './data/siteFooterLinks'
+
+const FOOTER_SOCIAL_ICONS = {
+  facebook: FaFacebookF,
+  twitter: FaXTwitter,
+  youtube: FaYoutube,
+}
 import { resolveWorldwideText } from './data/worldwideText'
 import {
   getLocaleDocsPath,
@@ -2003,6 +2023,7 @@ function App() {
   const [isProductsMenuOpen, setIsProductsMenuOpen] = useState(false)
   const [isWpsFeaturesMenuOpen, setIsWpsFeaturesMenuOpen] = useState(false)
   const [isTemplatesMenuOpen, setIsTemplatesMenuOpen] = useState(false)
+  const [isResourcesMenuOpen, setIsResourcesMenuOpen] = useState(false)
   const [isOverflowMenuOpen, setIsOverflowMenuOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [visibleDesktopNavCount, setVisibleDesktopNavCount] = useState(0)
@@ -2033,6 +2054,7 @@ function App() {
     products: 0,
     'wps-features': 0,
     templates: 0,
+    resources: 0,
     overflow: 0,
   })
 
@@ -2058,6 +2080,10 @@ function App() {
       setIsTemplatesMenuOpen(false)
       return
     }
+    if (menuKey === 'resources') {
+      setIsResourcesMenuOpen(false)
+      return
+    }
     if (menuKey === 'overflow') {
       setIsOverflowMenuOpen(false)
     }
@@ -2068,10 +2094,12 @@ function App() {
       clearDesktopMenuCloseTimeout('products')
       clearDesktopMenuCloseTimeout('wps-features')
       clearDesktopMenuCloseTimeout('templates')
+      clearDesktopMenuCloseTimeout('resources')
       clearDesktopMenuCloseTimeout('overflow')
       setIsProductsMenuOpen(menuKey === 'products')
       setIsWpsFeaturesMenuOpen(menuKey === 'wps-features')
       setIsTemplatesMenuOpen(menuKey === 'templates')
+      setIsResourcesMenuOpen(menuKey === 'resources')
       setIsOverflowMenuOpen(menuKey === 'overflow')
     },
     [clearDesktopMenuCloseTimeout],
@@ -2140,6 +2168,7 @@ function App() {
       clearDesktopMenuCloseTimeout('products')
       clearDesktopMenuCloseTimeout('templates')
       clearDesktopMenuCloseTimeout('resources')
+      clearDesktopMenuCloseTimeout('wps-features')
       clearDesktopMenuCloseTimeout('overflow')
     },
     [clearDesktopMenuCloseTimeout],
@@ -2179,6 +2208,14 @@ function App() {
   const wpsFeaturesHeaderMegaMenu = useMemo(
     () => resolveWpsFeaturesHeaderMegaMenu(uiText.nav.wpsFeaturesMega),
     [uiText.nav.wpsFeaturesMega],
+  )
+  const resourcesHeaderMegaMenu = useMemo(
+    () => resolveResourcesHeaderMegaMenu(uiText.nav.resourcesMega),
+    [uiText.nav.resourcesMega],
+  )
+  const freeAiToolsHeaderMegaMenu = useMemo(
+    () => resolveFreeAiToolsHeaderMegaMenu(uiText.nav.freeAiToolsMega),
+    [uiText.nav.freeAiToolsMega],
   )
   const worldwideText = useMemo(() => resolveWorldwideText(contentLanguage), [contentLanguage])
 
@@ -2497,25 +2534,6 @@ function App() {
       }))
   }, [currentLocale, localizedTemplateMenuSections])
 
-  const productsMegaMenuSections = useMemo(
-    () => {
-      const sectionMap = new Map(localizedAllProductsSections.map((section) => [section.title, section]))
-      return localizedProducts
-        .map((productItem) => {
-          const matchedSection = sectionMap.get(productItem.name)
-          if (!matchedSection) {
-            return null
-          }
-          return {
-            ...matchedSection,
-            desc: productItem.desc,
-            color: productItem.color,
-          }
-        })
-        .filter(Boolean)
-    },
-    [localizedAllProductsSections, localizedProducts],
-  )
   const homeProductCards = useMemo(
     () => {
       const sectionMap = new Map(localizedAllProductsSections.map((section) => [section.title, section]))
@@ -2830,21 +2848,6 @@ function App() {
     )
   }, [currentTemplateRoute, templateLibraryData, localizeString])
 
-  const isTemplatesPage = useMemo(() => {
-    const { normalizedSegments } = splitPath(currentPathname)
-    const normalizedPath = `${normalizedSegments[0] ?? ''}/${normalizedSegments[1] ?? ''}`
-    return (
-      Boolean(getTemplateRouteInfo(normalizedSegments)) ||
-      normalizedPath === 'ai-writing/cover-letter' ||
-      normalizedPath === 'ai-slides/theme'
-    )
-  }, [currentPathname])
-
-  const isProductsPage = useMemo(() => {
-    const nextPageType = getPageType(currentPathname)
-    return nextPageType === 'all-products' || (nextPageType === 'tool-demo' && !isTemplatesPage)
-  }, [currentPathname, isTemplatesPage])
-
   useEffect(() => {
     if (currentTemplateRoute?.kind === 'library') {
       setActiveTemplateFilter('All')
@@ -2885,6 +2888,7 @@ function App() {
     setIsProductsMenuOpen(false)
     setIsWpsFeaturesMenuOpen(false)
     setIsTemplatesMenuOpen(false)
+    setIsResourcesMenuOpen(false)
     setIsOverflowMenuOpen(false)
     setIsMobileMenuOpen(false)
   }
@@ -2906,6 +2910,7 @@ function App() {
       setIsProductsMenuOpen(false)
       setIsWpsFeaturesMenuOpen(false)
       setIsTemplatesMenuOpen(false)
+      setIsResourcesMenuOpen(false)
       setIsOverflowMenuOpen(false)
       setIsMobileMenuOpen(false)
       return
@@ -2920,6 +2925,7 @@ function App() {
     setIsProductsMenuOpen(false)
     setIsWpsFeaturesMenuOpen(false)
     setIsTemplatesMenuOpen(false)
+    setIsResourcesMenuOpen(false)
     setIsOverflowMenuOpen(false)
     setIsMobileMenuOpen(false)
   }
@@ -2954,39 +2960,38 @@ function App() {
   const localeGuidesPath = getLocaleGuidesPath(currentLocale)
   const footerProductLinks = useMemo(
     () =>
-      homeProductCards.slice(0, 5).map((item) => ({
-        label: item.displayName ?? item.name,
-        path: item.targetPath,
+      SITE_FOOTER_PRODUCT_LINKS.map((item) => ({
+        id: item.id,
+        label: uiText.footer.links[item.labelKey],
+        href: item.href,
       })),
-    [homeProductCards],
-  )
-  const footerResourceLinks = useMemo(
-    () => [
-      { label: uiText.nav.templates, path: localeAllTemplatesPath },
-      { label: uiText.nav.guides, path: localeGuidesPath },
-      { label: uiText.nav.blog, path: localeBlogPath },
-      { label: 'docs', path: localeDocsPath },
-    ],
-    [
-      localeAllTemplatesPath,
-      localeBlogPath,
-      localeDocsPath,
-      localeGuidesPath,
-      uiText.nav.blog,
-      uiText.nav.guides,
-      uiText.nav.templates,
-    ],
+    [uiText.footer.links],
   )
   const footerCompanyLinks = useMemo(
-    () => [
-      { label: localizeString('About') },
-      { label: localizeString('Careers') },
-      { label: localizeString('Press') },
-      { label: localizeString('Contact') },
-    ],
-    [localizeString],
+    () =>
+      SITE_FOOTER_COMPANY_LINKS.map((item) => ({
+        id: item.id,
+        label: uiText.footer.links[item.labelKey],
+        href: item.href,
+      })),
+    [uiText.footer.links],
   )
-  const footerSocialItems = blogSocialLinks.slice(0, 3)
+  const footerSupportLinks = useMemo(
+    () =>
+      SITE_FOOTER_SUPPORT_LINKS.map((item) => {
+        let href = item.href
+        if (item.internal === 'docs') href = localeDocsPath
+        if (item.internal === 'blog') href = localeBlogPath
+        return {
+          id: item.id,
+          label: uiText.footer.links[item.labelKey],
+          href,
+          external: !item.internal,
+        }
+      }),
+    [localeBlogPath, localeDocsPath, uiText.footer.links],
+  )
+  const footerSocialItems = SITE_FOOTER_SOCIAL_LINKS
   const { normalizedSegments: currentSegments } = splitPath(currentPathname)
   const currentContentRoot = currentSegments[0] ?? ''
   const isResourcesNavActive = useMemo(
@@ -3005,14 +3010,23 @@ function App() {
         isCurrent: pageType === 'ai-features',
       },
       {
+        key: 'resources',
+        type: 'resources',
+        label: uiText.nav.resources,
+        // Matches wps.ai: Resources trigger opens the panel; it is not a route.
+        path: '#resources',
+        isCurrent: false,
+      },
+      {
         key: 'products',
         type: 'products',
         label: uiText.nav.freeAiTools,
-        path: localeAllProductsPath,
-        isCurrent: isProductsPage,
+        // Matches wps.ai: Free AI Tools trigger opens the panel; it is not a route.
+        path: '#free-ai-tools',
+        isCurrent: false,
       },
       {
-        key: 'resources',
+        key: 'docs',
         type: 'link',
         label: uiText.nav.docsCenter,
         path: localeDocsPath,
@@ -3020,14 +3034,13 @@ function App() {
       },
     ],
     [
-      isProductsPage,
       isResourcesNavActive,
       localeAiFeaturesPath,
-      localeAllProductsPath,
       localeDocsPath,
       pageType,
       uiText.nav.docsCenter,
       uiText.nav.freeAiTools,
+      uiText.nav.resources,
       uiText.nav.wpsFeatures,
     ],
   )
@@ -3447,6 +3460,113 @@ function App() {
       )
     }
 
+    if (item.type === 'resources') {
+      return (
+        <div
+          key={item.key}
+          className="relative flex h-full shrink-0 items-center"
+          onMouseEnter={() => openDesktopMenu('resources')}
+          onMouseLeave={() => scheduleDesktopMenuClose('resources')}
+        >
+          <a
+            className={`home-page-header-link flex h-full items-center whitespace-nowrap border-x border-transparent px-[14px] text-[14px] font-medium transition ${
+              item.isCurrent
+                ? 'home-page-header-link--active'
+                : isResourcesMenuOpen
+                  ? 'home-page-header-link--open'
+                  : 'home-page-header-link--idle'
+            }`}
+            href={item.path}
+            aria-haspopup="true"
+            aria-expanded={isResourcesMenuOpen}
+            onClick={(event) => {
+              event.preventDefault()
+              if (isResourcesMenuOpen) {
+                setIsResourcesMenuOpen(false)
+                return
+              }
+              openDesktopMenu('resources')
+            }}
+          >
+            {item.label}
+            <span
+              className={`ml-1 inline-flex h-4 w-4 items-center justify-center transition ${
+                isResourcesMenuOpen ? 'rotate-180' : ''
+              }`}
+              aria-hidden="true"
+            >
+              <svg
+                className="h-[10px] w-[10px]"
+                viewBox="0 0 10 10"
+                fill="none"
+              >
+                <path
+                  d="M1.5 3.25L5 6.75L8.5 3.25"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+          </a>
+
+          {isResourcesMenuOpen && (
+            <div
+              className="fixed inset-x-0 top-[59px] z-[100] home-nav-mega-panel"
+              onMouseEnter={() => openDesktopMenu('resources')}
+              onMouseLeave={() => scheduleDesktopMenuClose('resources')}
+            >
+              <div className="mx-auto w-full max-w-[1200px]">
+                <div className="home-nav-resources-mega home-nav-mega-grid grid w-full">
+                  {resourcesHeaderMegaMenu.groups.map((group) => (
+                    <section
+                      key={group.id}
+                      className="home-nav-resources-mega-column home-nav-mega-card min-w-0"
+                    >
+                      <div className="flex items-center gap-2">
+                        {group.iconKind === 'languages' ? (
+                          <Languages
+                            className="h-4 w-4 shrink-0 text-[#534ab7]"
+                            aria-hidden="true"
+                          />
+                        ) : group.iconSrc ? (
+                          <img
+                            className="h-4 w-4 shrink-0"
+                            src={group.iconSrc}
+                            alt=""
+                            draggable={false}
+                            decoding="async"
+                          />
+                        ) : null}
+                        <h4 className="text-[13px] font-semibold text-[#261f38]">{group.title}</h4>
+                      </div>
+                      <div className="mt-2.5 flex flex-col gap-0.5">
+                        {group.items.map((linkItem) => (
+                          <a
+                            key={linkItem.id}
+                            href={linkItem.url}
+                            className={`home-nav-mega-link truncate text-[13px]${
+                              linkItem.isLearnMore ? ' home-nav-resources-learn-more' : ''
+                            }`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => setIsResourcesMenuOpen(false)}
+                          >
+                            {linkItem.label}
+                          </a>
+                        ))}
+                      </div>
+                    </section>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )
+    }
+
     if (item.type === 'products') {
       return (
         <div
@@ -3456,7 +3576,7 @@ function App() {
           onMouseLeave={() => scheduleDesktopMenuClose('products')}
         >
           <a
-            className={`home-page-header-link flex h-full items-center border-x border-transparent px-[14px] text-[14px] font-medium transition ${
+            className={`home-page-header-link flex h-full items-center whitespace-nowrap border-x border-transparent px-[14px] text-[14px] font-medium transition ${
               item.isCurrent
                 ? 'home-page-header-link--active'
                 : isProductsMenuOpen
@@ -3464,9 +3584,15 @@ function App() {
                   : 'home-page-header-link--idle'
             }`}
             href={item.path}
+            aria-haspopup="true"
+            aria-expanded={isProductsMenuOpen}
             onClick={(event) => {
               event.preventDefault()
-              navigateTo(item.path)
+              if (isProductsMenuOpen) {
+                setIsProductsMenuOpen(false)
+                return
+              }
+              openDesktopMenu('products')
             }}
           >
             {item.label}
@@ -3499,69 +3625,51 @@ function App() {
               onMouseLeave={() => scheduleDesktopMenuClose('products')}
             >
               <div className="mx-auto w-full max-w-[1200px]">
-                <div
-                  className="home-nav-mega-grid grid w-full grid-cols-5"
-                >
-                  {productsMegaMenuSections.map((section) => (
+                <div className="home-nav-free-ai-tools-mega home-nav-mega-grid grid w-full">
+                  {freeAiToolsHeaderMegaMenu.groups.map((group) => (
                     <section
-                      key={section.title}
-                      className="home-nav-mega-card min-w-0"
+                      key={group.id}
+                      className="home-nav-free-ai-tools-mega-column home-nav-mega-card min-w-0"
                     >
-                      <div className="flex items-start gap-2">
-                        <span
-                          className="mt-[4px] inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-[4px] text-[9px] font-bold"
-                          style={{
-                            color: section.color,
-                            backgroundColor: `${section.color}1f`,
-                          }}
-                        >
-                          {(section.displayTitle ?? section.title).replace(/\s+/g, '').charAt(0)}
-                        </span>
-                        <div className="min-w-0">
-                          <h3
-                            className="truncate text-[16px] font-semibold leading-[1.1] text-[#261f38]"
-                          >
-                            {section.displayTitle ?? section.title}
-                          </h3>
-                          <p
-                            className="mt-0.5 text-[12px] leading-4 text-[#847a96]"
-                          >
-                            {section.desc}
-                          </p>
-                        </div>
+                      <div className="flex items-center gap-2">
+                        {group.iconKind === 'users' ? (
+                          <Users
+                            className="h-4 w-4 shrink-0 text-[#534ab7]"
+                            aria-hidden="true"
+                          />
+                        ) : group.iconSrc ? (
+                          <img
+                            className="h-4 w-4 shrink-0"
+                            src={group.iconSrc}
+                            alt=""
+                            draggable={false}
+                            decoding="async"
+                          />
+                        ) : null}
+                        <h4 className="text-[13px] font-semibold text-[#261f38]">{group.title}</h4>
                       </div>
-                      <div className="mt-2.5 flex flex-col gap-1">
-                        {section.items.slice(0, 6).map((sectionItem) => {
-                          const targetPath = joinPath(currentUrlLocale, sectionItem.path)
-                          return (
-                            <a
-                              key={sectionItem.name}
-                              href={targetPath}
-                              className="home-nav-mega-link truncate text-[13px]"
-                              onClick={(event) => {
-                                event.preventDefault()
-                                navigateTo(targetPath)
-                              }}
-                            >
-                              {sectionItem.displayName ?? sectionItem.name}
-                            </a>
-                          )
-                        })}
+                      <div
+                        className={`mt-2.5 gap-0.5${
+                          group.itemColumns === 2
+                            ? ' home-nav-free-ai-tools-mega-links--two-col grid'
+                            : ' flex flex-col'
+                        }`}
+                      >
+                        {group.items.map((linkItem) => (
+                          <a
+                            key={linkItem.id}
+                            href={linkItem.url}
+                            className="home-nav-mega-link truncate text-[13px]"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => setIsProductsMenuOpen(false)}
+                          >
+                            {linkItem.label}
+                          </a>
+                        ))}
                       </div>
                     </section>
                   ))}
-                </div>
-                <div className="flex justify-end px-[18px] pb-4">
-                  <a
-                    href={item.path}
-                    className="home-nav-mega-cta inline-flex text-[12.5px] font-semibold"
-                    onClick={(event) => {
-                      event.preventDefault()
-                      navigateTo(item.path)
-                    }}
-                  >
-                    {uiText.nav.seeAllTools}
-                  </a>
                 </div>
               </div>
             </div>
@@ -3693,6 +3801,7 @@ function App() {
   const isDesktopMegaMenuOpen =
     isProductsMenuOpen
     || isWpsFeaturesMenuOpen
+    || isResourcesMenuOpen
     || isTemplatesMenuOpen
 
   return (
@@ -3787,6 +3896,14 @@ function App() {
                         href={item.path}
                         onClick={(event) => {
                           event.preventDefault()
+                          if (item.type === 'resources') {
+                            openDesktopMenu('resources')
+                            return
+                          }
+                          if (item.type === 'products') {
+                            openDesktopMenu('products')
+                            return
+                          }
                           navigateTo(item.path)
                         }}
                       >
@@ -3956,7 +4073,64 @@ function App() {
               <p className="text-[15px] font-semibold text-[#1a202c]">{uiText.nav.menu}</p>
             </div>
             <nav className="mt-3 flex flex-col gap-1">
-              {desktopMainNavItems.map((item) => (
+              {desktopMainNavItems.map((item) => {
+                if (item.type === 'resources') {
+                  return (
+                    <div key={`mobile-${item.key}`} className="rounded-[10px] px-2 py-2">
+                      <p className="px-2 py-2 text-[15px] font-medium text-[#1a202c]">
+                        {item.label}
+                      </p>
+                      <div className="flex flex-col gap-0.5">
+                        {resourcesHeaderMegaMenu.groups.map((group) => {
+                          const target =
+                            group.items.find((linkItem) => linkItem.isLearnMore)
+                            ?? group.items[0]
+                          return (
+                            <a
+                              key={`mobile-resources-${group.id}`}
+                              className="rounded-[10px] px-4 py-2.5 text-[14px] font-medium text-[#4a5568] transition hover:bg-[#f6f5ff] hover:text-[#1a202c]"
+                              href={target.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                              {group.title}
+                            </a>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )
+                }
+
+                if (item.type === 'products') {
+                  return (
+                    <div key={`mobile-${item.key}`} className="rounded-[10px] px-2 py-2">
+                      <p className="px-2 py-2 text-[15px] font-medium text-[#1a202c]">
+                        {item.label}
+                      </p>
+                      <div className="flex flex-col gap-0.5">
+                        {freeAiToolsHeaderMegaMenu.groups.map((group) => {
+                          const target = group.items[0]
+                          return (
+                            <a
+                              key={`mobile-free-ai-tools-${group.id}`}
+                              className="rounded-[10px] px-4 py-2.5 text-[14px] font-medium text-[#4a5568] transition hover:bg-[#f6f5ff] hover:text-[#1a202c]"
+                              href={target.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                              {group.title}
+                            </a>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )
+                }
+
+                return (
                   <a
                     key={`mobile-${item.key}`}
                     className={`rounded-[10px] px-4 py-3 text-[15px] font-medium transition ${
@@ -3973,7 +4147,8 @@ function App() {
                   >
                     {item.label}
                   </a>
-              ))}
+                )
+              })}
             </nav>
             <div className="mt-4 border-t border-[#eef1f6] px-1 pt-4">
               <p className="mb-3 text-[12px] font-semibold uppercase tracking-[0.06em] text-[#98a2b3]">
@@ -5684,6 +5859,7 @@ function App() {
                     WPS AI
                   </span>
                 </a>
+                <p className="site-footer-tagline">{uiText.footer.tagline}</p>
                 <p className="site-footer-address">
                   <span>WPS SOFTWARE PTE. LTD.</span>
                   <span>6 RAFFLES QUAY #14-06, SINGAPORE (048580)</span>
@@ -5713,17 +5889,15 @@ function App() {
             </div>
 
             <div className="site-footer-links-col">
-              <h4 className="site-footer-heading">{uiText.footer.products}</h4>
+              <h4 className="site-footer-heading">{uiText.footer.product}</h4>
               <div className="site-footer-link-list">
                 {footerProductLinks.map((link) => (
                   <a
-                    key={`footer-product-${link.label}`}
-                    href={link.path}
+                    key={`footer-product-${link.id}`}
+                    href={link.href}
                     className="site-footer-link"
-                    onClick={(event) => {
-                      event.preventDefault()
-                      navigateTo(link.path)
-                    }}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     {link.label}
                   </a>
@@ -5734,48 +5908,46 @@ function App() {
             <div className="site-footer-links-col">
               <h4 className="site-footer-heading">{uiText.footer.company}</h4>
               <div className="site-footer-link-list">
-                {footerCompanyLinks.map((link) =>
-                  link.path ? (
-                    <a
-                      key={`footer-company-${link.label}`}
-                      href={link.path}
-                      className="site-footer-link"
-                      onClick={(event) => {
-                        event.preventDefault()
-                        navigateTo(link.path)
-                      }}
-                    >
-                      {link.label}
-                    </a>
-                  ) : (
-                    <span key={`footer-company-${link.label}`} className="site-footer-link">
-                      {link.label}
-                    </span>
-                  ),
-                )}
+                {footerCompanyLinks.map((link) => (
+                  <a
+                    key={`footer-company-${link.id}`}
+                    href={link.href}
+                    className="site-footer-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {link.label}
+                  </a>
+                ))}
               </div>
             </div>
 
             <div className="site-footer-links-col">
               <h4 className="site-footer-heading">{uiText.footer.support}</h4>
               <div className="site-footer-link-list">
-                {footerResourceLinks.map((link) =>
-                  link.path ? (
+                {footerSupportLinks.map((link) =>
+                  link.external ? (
                     <a
-                      key={`footer-support-${link.label}`}
-                      href={link.path}
+                      key={`footer-support-${link.id}`}
+                      href={link.href}
                       className="site-footer-link"
-                      onClick={(event) => {
-                        event.preventDefault()
-                        navigateTo(link.path)
-                      }}
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
                       {link.label}
                     </a>
                   ) : (
-                    <span key={`footer-support-${link.label}`} className="site-footer-link">
+                    <a
+                      key={`footer-support-${link.id}`}
+                      href={link.href}
+                      className="site-footer-link"
+                      onClick={(event) => {
+                        event.preventDefault()
+                        navigateTo(link.href)
+                      }}
+                    >
                       {link.label}
-                    </span>
+                    </a>
                   ),
                 )}
               </div>
@@ -5784,18 +5956,21 @@ function App() {
             <div className="site-footer-social-col">
               <h4 className="site-footer-heading">{uiText.footer.followUs}</h4>
               <div className="site-footer-social-row">
-                {footerSocialItems.map((social) => (
-                  <a
-                    key={social.id}
-                    href={social.url}
-                    aria-label={social.label}
-                    className="site-footer-social-link"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {social.icon}
-                  </a>
-                ))}
+                {footerSocialItems.map((social) => {
+                  const Icon = FOOTER_SOCIAL_ICONS[social.id]
+                  return (
+                    <a
+                      key={social.id}
+                      href={social.href}
+                      aria-label={social.label}
+                      className="site-footer-social-link"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {Icon ? <Icon size={16} aria-hidden="true" /> : null}
+                    </a>
+                  )
+                })}
               </div>
             </div>
           </div>

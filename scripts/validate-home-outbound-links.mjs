@@ -59,6 +59,50 @@ function curlOk(url) {
 }
 
 const app = read('src/App.jsx')
+const footerLinks = read('src/data/siteFooterLinks.js')
+
+assert(
+  'siteFooterLinks mirrors wps.ai Product column (10 official destinations)',
+  footerLinks.includes('https://www.wps.com/office/windows/') &&
+    footerLinks.includes('https://www.wps.com/education/') &&
+    footerLinks.includes('https://www.wps.com/office/writer/') &&
+    footerLinks.includes('https://www.wps.com/office/pdf/') &&
+    (footerLinks.match(/href:\s*'https:\/\//g) || []).length === 22,
+)
+assert(
+  'siteFooterLinks Support: Docs Center → Blog → Feedback + official help links',
+  /SITE_FOOTER_SUPPORT_LINKS\s*=\s*\[[\s\S]*?id:\s*'docs-center'[\s\S]*?internal:\s*'docs'[\s\S]*?id:\s*'blog'[\s\S]*?internal:\s*'blog'[\s\S]*?id:\s*'feedback'/.test(
+    footerLinks,
+  ) &&
+    footerLinks.includes('https://www.wps.com/support/') &&
+    footerLinks.includes('https://help.wps.com/') &&
+    footerLinks.includes('https://www.wps.com/academy/') &&
+    footerLinks.includes('https://www.wps.com/whatsnew/pc/'),
+)
+assert(
+  'siteFooterLinks mirrors wps.ai Company column',
+  footerLinks.includes('https://www.wps.com/about-us/') &&
+    footerLinks.includes('https://www.wps.com/strategic-partner/') &&
+    footerLinks.includes('https://www.wps.com/partners-oem/') &&
+    footerLinks.includes('https://template.wps.com/') &&
+    footerLinks.includes('https://www.wps.com/privacy-policy/'),
+)
+assert(
+  'App footer uses official external siteFooterLinks',
+  app.includes('SITE_FOOTER_PRODUCT_LINKS') &&
+    app.includes('SITE_FOOTER_COMPANY_LINKS') &&
+    app.includes('SITE_FOOTER_SUPPORT_LINKS') &&
+    app.includes('SITE_FOOTER_SOCIAL_LINKS') &&
+    app.includes('target="_blank"') &&
+    app.includes('rel="noopener noreferrer"'),
+)
+
+assert(
+  'siteFooterLinks Follow Us matches wps.ai (Facebook → X → YouTube)',
+  /SITE_FOOTER_SOCIAL_LINKS\s*=\s*\[[\s\S]*?facebook\.com\/kingsoftwps[\s\S]*?twitter\.com\/WPS_Office[\s\S]*?youtube\.com\/wpsofficeofficial/.test(
+    footerLinks,
+  ),
+)
 
 assert(
   'blogSocialLinks define https urls for twitter/youtube/linkedin',
@@ -69,16 +113,11 @@ assert(
     ),
 )
 
-const footerSocialSnippet = app.match(
-  /footerSocialItems\.map\(\(social\)\s*=>\s*\([\s\S]*?<\/a>\s*\)\)/,
-)?.[0] ?? ''
 assert(
-  'footer social anchors use social.url',
-  footerSocialSnippet.includes('href={social.url}'),
-)
-assert(
-  'footer social anchors do not use href="#"',
-  footerSocialSnippet.length > 0 && !footerSocialSnippet.includes('href="#"'),
+  'footer social anchors use social.href from SITE_FOOTER_SOCIAL_LINKS',
+  app.includes('footerSocialItems = SITE_FOOTER_SOCIAL_LINKS') &&
+    app.includes('href={social.href}') &&
+    !/footerSocialItems[\s\S]{0,400}href="#"/m.test(app),
 )
 
 const blogSocialSnippet = app.match(
