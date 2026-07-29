@@ -1,12 +1,25 @@
-import { useMemo } from 'react'
+import { Search, X } from 'lucide-react'
 import { useHomeIntlAiFeatures } from '../hooks/useHomeIntlAiFeatures'
-import { useHomeIntlAiGroupTabs } from '../hooks/useHomeIntlAiGroupTabs'
-import { useHomeIntlAiStickyAnchorTabs } from '../hooks/useHomeIntlAiStickyAnchorTabs'
+import { useIntlAiFeaturesSearch } from '../hooks/useIntlAiFeaturesSearch'
 import { useIntlAiFeaturesPageSeo } from '../hooks/useIntlAiFeaturesPageSeo'
+import { splitIntlAiLabelByQuery } from '../utils/intlAiFeaturesSearch'
 
 const INTL_AI_GROUP_ID_PREFIX = 'intl-ai-group-'
 
-function IntlAiFeatureLink({ item }) {
+function IntlAiFeatureLinkLabel({ label, query }) {
+  const parts = splitIntlAiLabelByQuery(label, query)
+  return parts.map((part, index) =>
+    part.match ? (
+      <mark key={`m-${index}`} className="intl-ai-dir-link-mark">
+        {part.text}
+      </mark>
+    ) : (
+      <span key={`t-${index}`}>{part.text}</span>
+    ),
+  )
+}
+
+function IntlAiFeatureLink({ item, query }) {
   return (
     <a
       className="intl-ai-dir-link"
@@ -14,12 +27,12 @@ function IntlAiFeatureLink({ item }) {
       target="_blank"
       rel="noopener noreferrer"
     >
-      {item.label}
+      <IntlAiFeatureLinkLabel label={item.label} query={query} />
     </a>
   )
 }
 
-function IntlAiFeatureGroup({ group, isFirst }) {
+function IntlAiFeatureGroup({ group, isFirst, query }) {
   if (!group?.items?.length) return null
 
   return (
@@ -42,7 +55,7 @@ function IntlAiFeatureGroup({ group, isFirst }) {
       </h2>
       <div className="intl-ai-dir-list">
         {group.items.map((item) => (
-          <IntlAiFeatureLink key={item.id} item={item} />
+          <IntlAiFeatureLink key={item.id} item={item} query={query} />
         ))}
       </div>
     </article>
@@ -53,15 +66,9 @@ function IntlAiFeatureGroup({ group, isFirst }) {
  * Dedicated directory of official WPS International AI feature landing pages.
  */
 export default function IntlAiFeaturesPage({ copy }) {
-  const { groups, tabLabels } = useHomeIntlAiFeatures(copy)
-  const { tabs, activeId, setActiveId } = useHomeIntlAiGroupTabs(groups, tabLabels)
-  const pillarIds = useMemo(() => groups.map((group) => group.id), [groups])
-  const { tabsDockRef, scrollToPillar } = useHomeIntlAiStickyAnchorTabs({
-    pillarIds,
-    activeId,
-    setActiveId,
-    blockIdPrefix: INTL_AI_GROUP_ID_PREFIX,
-  })
+  const { groups } = useHomeIntlAiFeatures(copy)
+  const { query, setQuery, clearQuery, filteredGroups, isEmpty } =
+    useIntlAiFeaturesSearch(groups)
 
   useIntlAiFeaturesPageSeo({
     enabled: true,
@@ -70,6 +77,11 @@ export default function IntlAiFeaturesPage({ copy }) {
   })
 
   if (!groups.length) return null
+
+  const searchPlaceholder = copy?.searchPlaceholder ?? 'Search AI features...'
+  const searchAriaLabel = copy?.searchAriaLabel ?? searchPlaceholder
+  const searchEmpty = copy?.searchEmpty ?? 'No matching AI features.'
+  const searchClearLabel = copy?.searchClearLabel ?? 'Clear search'
 
   return (
     <div className="intl-ai-features-page bg-transparent">
@@ -88,48 +100,46 @@ export default function IntlAiFeaturesPage({ copy }) {
         aria-label={copy?.pageTitle ?? 'WPS AI features'}
       >
         <div className="mx-auto w-full max-w-[1160px]">
-          <div ref={tabsDockRef} className="home-intl-ai-tabs-dock intl-ai-dir-tabs-dock">
-            <div className="home-intl-ai-tabs-wrap">
-              <nav
-                className="home-intl-ai-tabs"
-                aria-label={copy?.tabsAriaLabel ?? 'AI feature categories'}
-              >
-                {tabs.map((tab) => {
-                  const selected = tab.id === activeId
-                  return (
-                    <button
-                      key={tab.id}
-                      type="button"
-                      id={`intl-ai-tab-${tab.id}`}
-                      aria-current={selected ? 'true' : undefined}
-                      className={`home-intl-ai-tab${selected ? ' is-active' : ''}`}
-                      onClick={() => scrollToPillar(tab.id)}
-                    >
-                      {tab.iconSrc ? (
-                        <img
-                          className="home-intl-ai-tab-icon"
-                          src={tab.iconSrc}
-                          alt=""
-                          draggable={false}
-                          decoding="async"
-                        />
-                      ) : null}
-                      <span className="home-intl-ai-tab-name">{tab.label}</span>
-                    </button>
-                  )
-                })}
-              </nav>
-            </div>
+          <div className="intl-ai-dir-search">
+            <label className="intl-ai-dir-search-field" aria-label={searchAriaLabel}>
+              <Search className="intl-ai-dir-search-icon" size={16} strokeWidth={1.75} aria-hidden />
+              <input
+                type="search"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder={searchPlaceholder}
+                autoComplete="off"
+                autoCorrect="off"
+                spellCheck={false}
+              />
+              {query ? (
+                <button
+                  type="button"
+                  className="intl-ai-dir-search-clear"
+                  onClick={clearQuery}
+                  aria-label={searchClearLabel}
+                >
+                  <X size={14} strokeWidth={2} aria-hidden />
+                </button>
+              ) : null}
+            </label>
           </div>
 
           <div className="intl-ai-dir-panel">
-            {groups.map((group, index) => (
-              <IntlAiFeatureGroup
-                key={group.id}
-                group={group}
-                isFirst={index === 0}
-              />
-            ))}
+            {isEmpty ? (
+              <p className="intl-ai-dir-search-empty" role="status">
+                {searchEmpty}
+              </p>
+            ) : (
+              filteredGroups.map((group, index) => (
+                <IntlAiFeatureGroup
+                  key={group.id}
+                  group={group}
+                  isFirst={index === 0}
+                  query={query}
+                />
+              ))
+            )}
           </div>
         </div>
       </section>

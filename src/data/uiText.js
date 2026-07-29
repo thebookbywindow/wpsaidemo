@@ -278,6 +278,10 @@ export const uiTextByLanguage = {
         pageDesc: 'Official WPS AI pages for Docs, Sheets, Slides, PDF & more.',
         externalHint: 'Links open official WPS international feature pages in a new tab.',
         tabsAriaLabel: 'AI feature categories',
+        searchPlaceholder: 'Search AI features...',
+        searchAriaLabel: 'Search AI features',
+        searchEmpty: 'No matching AI features.',
+        searchClearLabel: 'Clear search',
         seoTitle: 'WPS AI Features | Official Directory',
         seoDescription:
           'Browse official WPS AI features for Docs, Sheets, Slides, PDF, Photos & Copilot.',
@@ -1079,6 +1083,10 @@ export const uiTextByLanguage = {
         pageDesc: '文字、表格、演示、PDF 等官方 WPS AI 功能页。',
         externalHint: '以下链接将在新标签页打开 WPS 国际站官方功能页。',
         tabsAriaLabel: 'AI 功能分类',
+        searchPlaceholder: '搜索 AI 功能...',
+        searchAriaLabel: '搜索 AI 功能',
+        searchEmpty: '没有匹配的 AI 功能。',
+        searchClearLabel: '清除搜索',
         seoTitle: 'WPS AI 功能 | 官方目录',
         seoDescription: '浏览 WPS AI 官方功能：文字、表格、演示、PDF、Photos 与 Copilot。',
         tabs: {

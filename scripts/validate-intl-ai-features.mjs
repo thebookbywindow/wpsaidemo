@@ -40,6 +40,11 @@ import {
 } from '../src/hooks/useHomeIntlAiGroupBodyScroll.js'
 import { hasIntentionalLocationHash } from '../src/hooks/useHomeScrollTopOnMount.js'
 import {
+  filterIntlAiFeatureGroups,
+  normalizeIntlAiSearchQuery,
+  splitIntlAiLabelByQuery,
+} from '../src/utils/intlAiFeaturesSearch.js'
+import {
   pickBestImageUrl,
   scoreWpsProductScreenshot,
 } from './scrape-intl-ai-feature-meta.mjs'
@@ -97,6 +102,57 @@ assert(
     [{ id: 'copilot', title: 'Office Copilot' }, { id: 'writer', title: 'Writer' }],
     { copilot: 'Copilot' },
   )[0].label === 'Copilot',
+)
+
+const searchSampleGroups = [
+  {
+    id: 'writer',
+    title: 'Writer',
+    items: [
+      { id: 'ai-writer', label: 'AI Writer' },
+      { id: 'spell-check', label: 'Spell Check' },
+    ],
+  },
+  {
+    id: 'photos',
+    title: 'Photos / Visual AI',
+    items: [{ id: 'photo-editor', label: 'AI Photo Editor' }],
+  },
+  {
+    id: 'forms',
+    title: 'Forms',
+    items: [{ id: 'smart-form', label: 'Smart Form' }],
+  },
+]
+assert('search normalize trims + lowercases', normalizeIntlAiSearchQuery('  PDF  ') === 'pdf')
+assert(
+  'search empty query returns same groups ref',
+  filterIntlAiFeatureGroups(searchSampleGroups, '   ') === searchSampleGroups,
+)
+assert(
+  'search filters by link label',
+  filterIntlAiFeatureGroups(searchSampleGroups, 'spell')
+    .map((g) => `${g.id}:${g.items.map((i) => i.id).join(',')}`)
+    .join('|') === 'writer:spell-check',
+)
+assert(
+  'search hides empty groups',
+  filterIntlAiFeatureGroups(searchSampleGroups, 'zzz').length === 0,
+)
+assert(
+  'search ignores group title-only matches',
+  filterIntlAiFeatureGroups(searchSampleGroups, 'Visual').length === 0,
+)
+assert(
+  'search highlight splits matched span',
+  splitIntlAiLabelByQuery('AI Photo Editor', 'photo')
+    .map((part) => `${part.match ? 'M' : 'T'}:${part.text}`)
+    .join('|') === 'T:AI |M:Photo|T: Editor',
+)
+assert(
+  'search highlight empty query is plain',
+  splitIntlAiLabelByQuery('AI Writer', '  ').length === 1 &&
+    splitIntlAiLabelByQuery('AI Writer', '  ')[0].match === false,
 )
 
 const rootDir = join(dirname(fileURLToPath(import.meta.url)), '..')
@@ -369,6 +425,17 @@ for (const language of ['en', 'zh']) {
 
   if (!copy.notes?.spreadsheetClientNote) {
     errors.push(`uiText.${language}.intlAiFeatures.notes.spreadsheetClientNote missing`)
+  }
+
+  for (const key of [
+    'searchPlaceholder',
+    'searchAriaLabel',
+    'searchEmpty',
+    'searchClearLabel',
+  ]) {
+    if (!copy[key]) {
+      errors.push(`uiText.${language}.intlAiFeatures.${key} missing`)
+    }
   }
 
   for (const item of listIntlAiFeatureItems()) {
