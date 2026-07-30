@@ -1,4 +1,5 @@
-import { ArrowUpRight, FileText, Globe, Presentation, Files } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
+import { HOME_V2_CASE_CARDS, HOME_V2_HERO_BACKDROP } from '../data/homeV2Assets'
 import { useHomeEntityCatalog } from '../hooks/useHomeEntityCatalog'
 import { useHomeIntentLinks } from '../hooks/useHomeIntentLinks'
 import { useHomePageSeo } from '../hooks/useHomePageSeo'
@@ -15,15 +16,8 @@ import HomeMediaProof from './HomeMediaProof'
 import HomeTrustBar from './HomeTrustBar'
 import { renderFaqAnswer } from '../utils/renderFaqAnswer'
 
-const INTENT_CARD_ICONS = {
-  'pdf-extension': FileText,
-  'wps-office-web': Globe,
-  'wps-ai-ppt': Presentation,
-  'pdf-to-word': Files,
-}
-
 /**
- * SEO/GEO homepage — each section owns one job.
+ * SEO/GEO homepage — visual shell aligned to official home-v2 (hv2-*).
  */
 export default function HomePage({
   uiText,
@@ -49,17 +43,30 @@ export default function HomePage({
   })
 
   return (
-    <>
-      <section className="home-hero-section px-6 text-center">
-        <div className="home-section-inner home-hero-inner mx-auto w-full max-w-[1160px]">
+    <div className="home-v2-main">
+      <section className="hv2-hero home-hero-section text-center">
+        <div className="hv2-hero__backdrop" aria-hidden="true">
+          <img
+            className="hv2-hero__backdrop-img"
+            src={HOME_V2_HERO_BACKDROP}
+            alt=""
+            width={2222}
+            height={840}
+            fetchPriority="high"
+            decoding="async"
+          />
+        </div>
+        <div className="hv2-container home-section-inner home-hero-inner">
           <HomeHeroTitle
             lead={home.heroTitleLead}
             join={home.heroTitleJoin}
+            leadMobile={home.heroTitleLeadMobile}
+            joinMobile={home.heroTitleJoinMobile}
             tail={home.heroTitleTail}
             prefix={home.heroTitlePrefix}
             title={home.heroTitle}
           />
-          <p className="home-hero-desc mx-auto max-w-[720px]">
+          <p className="hv2-hero__desc home-hero-desc mx-auto">
             {home.heroDesc}
           </p>
           <div className="home-hero-download">
@@ -73,36 +80,39 @@ export default function HomePage({
             />
           </div>
         </div>
+        <div className="hv2-hero__trust">
+          <HomeTrustBar label={home.trustBarLabel} copy={home.trustBar} />
+        </div>
       </section>
 
-      <HomeTrustBar label={home.trustBarLabel} copy={home.trustBar} />
+      <div className="hv2-deck hv2-section">
+        <HomeIntlAiFeatures
+          title={home.intlAiFeatures?.title}
+          summary={home.intlAiFeatures?.summary}
+          copy={home.intlAiFeatures}
+        />
+      </div>
 
-      <HomeIntlAiFeatures
-        title={home.intlAiFeatures?.title}
-        summary={home.intlAiFeatures?.summary}
-        copy={home.intlAiFeatures}
-      />
-
-      <section className="home-intent-section px-6 py-12" aria-labelledby="home-intent-title">
-        <div className="home-section-inner mx-auto w-full max-w-[1160px]">
+      <section className="hv2-cases hv2-section" aria-labelledby="home-intent-title">
+        <div className="hv2-container home-section-inner">
           <div className="home-intent-header">
-            <h2 id="home-intent-title" className="home-section-title text-[#1a202c]">
+            <h2 id="home-intent-title" className="hv2-section-title home-section-title">
               {home.intentLinksTitle}
             </h2>
             {home.intentLinksSub ? (
-              <p className="home-intent-sub">{home.intentLinksSub}</p>
+              <p className="hv2-section-sub home-intent-sub">{home.intentLinksSub}</p>
             ) : null}
           </div>
-          <ul className="home-intent-list">
+          <ul className="hv2-cases__grid home-intent-list">
             {intentLinks.map((item) => {
               const copy = home.intentLinks?.[item.id]
               if (!copy) return null
-              const Icon = INTENT_CARD_ICONS[item.id] ?? FileText
+              const caseMeta = HOME_V2_CASE_CARDS[item.id]
 
               return (
                 <li key={item.id}>
                   <a
-                    className={`home-intent-card home-intent-card--${item.id}`}
+                    className={`hv2-case hv2-case--${caseMeta?.variant ?? 'green'} home-intent-card home-intent-card--${item.id}`}
                     href={item.path}
                     {...(item.external
                       ? { target: '_blank', rel: 'noopener noreferrer' }
@@ -113,68 +123,86 @@ export default function HomePage({
                       navigateTo(item.path)
                     }}
                   >
-                    <strong className="home-intent-card-title">{copy.label}</strong>
-                    <span className="home-intent-card-visual" aria-hidden="true">
-                      <Icon className="home-intent-card-icon" strokeWidth={1.6} />
+                    <h3 className="hv2-case__title home-intent-card-title">{copy.label}</h3>
+                    <span className="hv2-case__visual home-intent-card-visual" aria-hidden="true">
+                      {caseMeta?.artSrc ? (
+                        <img
+                          className="hv2-case__art"
+                          src={caseMeta.artSrc}
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          style={{
+                            width: caseMeta.artWidth,
+                            aspectRatio: caseMeta.artAspect,
+                          }}
+                        />
+                      ) : null}
                     </span>
-                    <span className="home-intent-card-desc">{copy.desc}</span>
-                    <span className="home-intent-card-arrow" aria-hidden="true">
-                      <ArrowUpRight size={18} strokeWidth={2} />
+                    <span className="hv2-case__bottom">
+                      <span className="hv2-case__desc home-intent-card-desc">{copy.desc}</span>
+                      <span className="hv2-case__arrow home-intent-card-arrow" aria-hidden="true">
+                        <ArrowUpRight size={24} strokeWidth={1.8} />
+                      </span>
                     </span>
                   </a>
                 </li>
               )
             })}
           </ul>
-        </div>
-      </section>
 
-      <section className="home-diff-section px-6 py-12" aria-labelledby="home-diff-title">
-        <div className="home-section-inner mx-auto w-full max-w-[1160px]">
-          <h2 id="home-diff-title" className="home-diff-eyebrow">
-            {home.keyFactsTitle}
-          </h2>
-          <div className="home-diff-stats">
-            {(home.keyFacts ?? []).map((item) => {
-              const { value, label } = formatKeyFactStat(item.title)
-              const href = extractKeyFactHref(item.desc)
-              const content = (
-                <>
-                  <HomeDiffStatValue value={value} />
-                  <p className="home-diff-stat-label">{label || item.title}</p>
-                  <p className="sr-only">{renderFaqAnswer(item.desc)}</p>
-                </>
-              )
-
-              if (href) {
-                return (
-                  <a
-                    key={item.title}
-                    className="home-diff-stat home-diff-stat--link"
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {content}
-                  </a>
+          <div className="hv2-cases__stats" aria-labelledby="home-diff-title">
+            <h3 id="home-diff-title" className="hv2-cases__stats-title home-diff-eyebrow">
+              {home.keyFactsTitle}
+            </h3>
+            <div className="home-diff-stats">
+              {(home.keyFacts ?? []).map((item) => {
+                const { value, label } = formatKeyFactStat(item.title)
+                const href = extractKeyFactHref(item.desc)
+                const content = (
+                  <>
+                    <HomeDiffStatValue value={value} />
+                    <p className="home-diff-stat-label">{label || item.title}</p>
+                    <p className="sr-only">{renderFaqAnswer(item.desc)}</p>
+                  </>
                 )
-              }
 
-              return (
-                <article key={item.title} className="home-diff-stat">
-                  {content}
-                </article>
-              )
-            })}
+                if (href) {
+                  return (
+                    <a
+                      key={item.title}
+                      className="home-diff-stat home-diff-stat--link"
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {content}
+                    </a>
+                  )
+                }
+
+                return (
+                  <article key={item.title} className="home-diff-stat">
+                    {content}
+                  </article>
+                )
+              })}
+            </div>
           </div>
         </div>
       </section>
 
-      <HomeMediaProof title={home.mediaProofTitle} tabsCopy={home.mediaProofTabs} />
+      <div className="hv2-proof hv2-section">
+        <HomeMediaProof title={home.mediaProofTitle} tabsCopy={home.mediaProofTabs} />
+      </div>
 
-      <HomeFaq title={home.faqTitle} faqTopics={home.faqTopics} />
+      <div className="hv2-faq hv2-section">
+        <HomeFaq title={home.faqTitle} faqTopics={home.faqTopics} />
+      </div>
 
-      <HomeDownloadSection copy={home.downloadSection} />
-    </>
+      <div className="hv2-cta">
+        <HomeDownloadSection copy={home.downloadSection} />
+      </div>
+    </div>
   )
 }

@@ -1,7 +1,7 @@
 export const uiTextByLanguage = {
   en: {
     nav: {
-      wpsFeatures: 'WPS AI Features',
+      wpsFeatures: 'WPS Features',
       freeAiTools: 'Free AI Tools',
       products: 'Products',
       templates: 'Templates',
@@ -11,8 +11,8 @@ export const uiTextByLanguage = {
       menu: 'Menu',
       closeMenu: 'Close menu',
       language: 'Language',
-      signIn: 'Sign In',
-      getStartedFree: 'Free download',
+      signIn: 'Sign in',
+      getStartedFree: 'Free Download',
       seeAllTools: 'See all tools →',
       seeAllFeatures: 'See all AI features →',
       wpsFeaturesMega: {
@@ -104,25 +104,27 @@ export const uiTextByLanguage = {
       // Hero / SEO: AI-first lead; download stays in desc / CTA / title tail
       heroTitleLead: 'Create smarter & faster ',
       heroTitleJoin: 'across',
+      // Mobile hero: shorter lead; join moves up beside lead
+      heroTitleLeadMobile: 'Create smarter ',
+      heroTitleJoinMobile: 'for',
       heroTitleTail: 'With WPS AI — agentic AI for free office',
       heroTitlePrefix: 'Create smarter & faster across ',
       heroTitle:
         'Create smarter & faster across Copilot, Docs, Slides, Sheets, PDF, Photos, AirPage, AirSheet, Forms, DBSheet With WPS AI — agentic AI for free office',
-      heroDesc:
-        'Meet WPS Office — a better way to work, all in one place. Collaborate in real time and stay in sync across PC, mobile, and online.',
+      heroDesc: 'Meet WPS Office — a better way to work, all in one place.',
       // Entity: brand relationship only (not a product list)
       entityTitle: 'What is WPS AI?',
       entityAnswer:
         'WPS AI is the AI layer inside WPS Office (also called WPS or Kingsoft Office). It is not a separate suite: it adds AI drafting, rewriting, summarization, and formula help across the WPS Office apps.',
-      downloadCta: 'Free download',
+      downloadCta: 'Free Download',
       downloadSection: {
         title: 'An AI Office Suite for All Your Work',
         description:
           'One free download gives you Docs, PDF, Slides, and Sheets—with AI ready inside each workflow.',
-        ctaLabel: 'Free download',
+        ctaLabel: 'Free Download',
       },
       // Catalog: platforms + download links only
-      catalogTitle: 'Available platforms',
+      catalogTitle: 'Available for',
       catalogSummary: 'Download WPS Office for Windows, Mac, Linux, iPad, iOS, and Android.',
       catalogGroups: {
         platforms: 'Platforms',
@@ -178,7 +180,7 @@ export const uiTextByLanguage = {
             },
           },
           docs: {
-            label: 'WPS Docs',
+            label: 'Docs',
             tagline: 'Write and rewrite smarter',
             spotlightLead:
               'WPS AI inside [WPS Writer](https://www.wps.com/office/writer/) helps you draft from a blank page, rewrite tone and clarity, and [summarize long documents](https://www.wps.com/feature/ai-summarizer/) — all without leaving your doc.',
@@ -200,7 +202,7 @@ export const uiTextByLanguage = {
             },
           },
           sheets: {
-            label: 'WPS Sheets',
+            label: 'Sheets',
             tagline: 'Analyze data with less manual work',
             spotlightLead:
               '[WPS Spreadsheet](https://www.wps.com/office/spreadsheet/) AI turns plain-language questions into formulas, insights, and tables — so you spend less time on syntax and more on decisions across desktop and web.',
@@ -222,7 +224,7 @@ export const uiTextByLanguage = {
             },
           },
           slides: {
-            label: 'WPS Slides',
+            label: 'Slides',
             tagline: 'Create presentations faster',
             spotlightLead:
               '[WPS Presentation](https://www.wps.com/office/presentation/) AI turns outlines, topics, and briefs into polished slide decks — layout, structure, and copy included, ready to present or export.',
@@ -244,7 +246,7 @@ export const uiTextByLanguage = {
             },
           },
           pdf: {
-            label: 'WPS PDF',
+            label: 'PDF',
             tagline: 'Read, chat, and summarize PDFs',
             spotlightLead:
               '[WPS PDF](https://www.wps.com/office/pdf/) AI lets you chat with documents, pull answers with source proof, and [summarize long reports](https://www.wps.com/feature/pdf-summarizer/) — securely inside WPS, without switching apps.',
@@ -425,9 +427,9 @@ export const uiTextByLanguage = {
           'G2',
           'AWS',
           'CNET',
-          'Trustpilot',
           'TechRadar',
           'Forbes',
+          'Trustpilot',
         ],
       },
       // About: company entity one-liner
@@ -983,12 +985,13 @@ export const uiTextByLanguage = {
       // Hero: H1 / SEO 以 AI 为主信号，免费下载作辅
       heroTitleLead: '更聪明、更高效地创作，',
       heroTitleJoin: '尽在',
+      heroTitleLeadMobile: '更聪明地创作，',
+      heroTitleJoinMobile: '尽在',
       heroTitleTail: ' — WPS AI 赋能免费 office',
       heroTitlePrefix: '更聪明、更高效地创作，尽在 ',
       heroTitle:
         '更聪明、更高效地创作，尽在 Copilot, Docs, Slides, Sheets, PDF, Photos, AirPage, AirSheet, Forms, DBSheet — WPS AI 赋能免费 office',
-      heroDesc:
-        '遇见 WPS Office —— 更好的工作方式，一站到位。实时协作，多端同步，PC、移动端与在线版随时衔接。',
+      heroDesc: '遇见 WPS Office —— 更好的工作方式，一站到位。',
       // Entity: 只讲品牌关系
       entityTitle: '什么是 WPS AI？',
       entityAnswer:
@@ -1050,7 +1053,7 @@ export const uiTextByLanguage = {
             },
           },
           docs: {
-            label: 'WPS 文字',
+            label: '文字',
             tagline: '更聪明地写作与改写',
             spotlightLead:
               '[WPS 文字 Writer](https://www.wps.com/office/writer/) 内置 AI：从空白页起草、改写语气与表达、[一键摘要长文档](https://www.wps.com/feature/ai-summarizer/) —— 全程不离开当前文档。',
@@ -1072,7 +1075,7 @@ export const uiTextByLanguage = {
             },
           },
           sheets: {
-            label: 'WPS 表格',
+            label: '表格',
             tagline: '少做手工，多做分析',
             spotlightLead:
               '[WPS 表格 Spreadsheet](https://www.wps.com/office/spreadsheet/) AI 把口语化问题变成公式、洞察与结构化表格 —— 少记语法，多做决策，桌面与网页端均可使用。',
@@ -1094,7 +1097,7 @@ export const uiTextByLanguage = {
             },
           },
           slides: {
-            label: 'WPS 演示',
+            label: '演示',
             tagline: '更快做出演示文稿',
             spotlightLead:
               '[WPS 演示 Presentation](https://www.wps.com/office/presentation/) AI 可将大纲、主题或简报快速变成结构完整的幻灯片 —— 版式、层次与文案一并生成，可直接演示或导出。',
@@ -1116,7 +1119,7 @@ export const uiTextByLanguage = {
             },
           },
           pdf: {
-            label: 'WPS PDF',
+            label: 'PDF',
             tagline: '阅读、对话、摘要 PDF',
             spotlightLead:
               '[WPS PDF](https://www.wps.com/office/pdf/) AI 支持文档对话、带出处引用的问答，以及[长报告摘要](https://www.wps.com/feature/pdf-summarizer/) —— 在 WPS 内安全完成，无需切换应用。',
@@ -1294,9 +1297,9 @@ export const uiTextByLanguage = {
           'G2',
           'AWS',
           'CNET',
-          'Trustpilot',
           'TechRadar',
           'Forbes',
+          'Trustpilot',
         ],
       },
       aboutTitle: '关于 WPS',

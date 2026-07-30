@@ -25,17 +25,21 @@ assert(
   trustBar.includes('home-trust-bar-label') && trustBar.includes('home-trust-brands-slot'),
 )
 assert('no metrics cards', !trustBar.includes('TrustMetrics'))
+const brandNames = HOME_TRUST_BRANDS.map((b) => (typeof b === 'string' ? b : b.name))
 assert(
   'brands drop App Store / Google Play',
-  !HOME_TRUST_BRANDS.includes('App Store') && !HOME_TRUST_BRANDS.includes('Google Play'),
+  !brandNames.includes('App Store') && !brandNames.includes('Google Play'),
 )
 assert(
   'brands include AWS / G2 / Trustpilot (not G2 Award)',
-  HOME_TRUST_BRANDS.includes('AWS') &&
-    HOME_TRUST_BRANDS.includes('G2') &&
-    HOME_TRUST_BRANDS.includes('Trustpilot'),
+  brandNames.includes('AWS') &&
+    brandNames.includes('G2') &&
+    brandNames.includes('Trustpilot'),
 )
-assert('brands exclude rating glyphs', !HOME_TRUST_BRANDS.some((b) => b.includes('★') || b.includes('4.8')))
+assert(
+  'brands exclude rating glyphs',
+  !brandNames.some((b) => b.includes('★') || b.includes('4.8')),
+)
 assert('pinned class support', trustBar.includes('is-pinned'))
 assert('fixed pin css', css.includes('.home-trust-dock.is-pinned'))
 
@@ -52,7 +56,7 @@ assert(
 )
 assert('css disables pin under 720px', css.includes('@media (max-width: 720px)') && css.includes('.home-trust-dock.is-pinned'))
 
-assert('no Microsoft', !HOME_TRUST_BRANDS.includes('Microsoft'))
+assert('no Microsoft', !brandNames.includes('Microsoft'))
 assert('seven brand names', HOME_TRUST_BRANDS.length === 7)
 
 const failed = cases.filter((c) => !c.ok)

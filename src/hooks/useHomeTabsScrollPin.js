@@ -110,8 +110,12 @@ function readStickyTopPx(gapPx = HOME_TABS_SCROLL_PIN_GAP_PX) {
   return readNavHeightPx() + gapPx
 }
 
+/** Below this width: click tabs only — page scroll must not advance deck tabs. */
+export const HOME_TABS_SCROLL_PIN_DISABLE_MQ = '(max-width: 720px)'
+
 /**
  * Sticky panel + tall track: further page scroll advances tabs (~20px under nav).
+ * Pass `enabled: false` (e.g. mobile) to keep click switching only.
  */
 export function useHomeTabsScrollPin({
   tabs,
@@ -121,12 +125,14 @@ export function useHomeTabsScrollPin({
   tabsSelector,
   activeTabSelector,
   stickyGapPx = HOME_TABS_SCROLL_PIN_GAP_PX,
+  enabled = true,
 }) {
   const trackRef = useRef(null)
   const panelRef = useRef(null)
   const tabsRef = useRef(tabs)
   const activeIdRef = useRef(activeId)
   const setActiveIdRef = useRef(setActiveId)
+  const enabledRef = useRef(enabled)
   const ignoreScrollSyncUntilRef = useRef(0)
   const tabScrollBehaviorRef = useRef('auto')
   const lockedPanelHeightRef = useRef(0)
@@ -150,9 +156,28 @@ export function useHomeTabsScrollPin({
   }, [setActiveId])
 
   useEffect(() => {
+    enabledRef.current = enabled
+  }, [enabled])
+
+  useEffect(() => {
     const track = trackRef.current
     const panel = panelRef.current
     if (!track || !panel) return undefined
+
+    const clearPinMetrics = () => {
+      track.style.removeProperty(tabCountVar)
+      track.style.removeProperty(panelHVar)
+      panel.style.minHeight = ''
+      panel.style.maxHeight = ''
+      const section = track.closest('.home-ai-capabilities-section')
+      section?.style.removeProperty('--home-intl-ai-peek')
+      lockedPanelHeightRef.current = 0
+    }
+
+    if (!enabled) {
+      clearPinMetrics()
+      return undefined
+    }
 
     const tabCount = () => Math.max(1, tabsRef.current?.length ?? 1)
 
@@ -241,8 +266,9 @@ export function useHomeTabsScrollPin({
       observer.disconnect()
       window.removeEventListener('scroll', onScrollOrResize)
       window.removeEventListener('resize', onScrollOrResize)
+      clearPinMetrics()
     }
-  }, [tabCountVar, panelHVar, stickyGapPx])
+  }, [tabCountVar, panelHVar, stickyGapPx, enabled])
 
   useEffect(() => {
     const panel = panelRef.current
@@ -264,6 +290,9 @@ export function useHomeTabsScrollPin({
 
     tabScrollBehaviorRef.current = 'smooth'
     setActiveIdRef.current?.(id)
+
+    // Mobile / disabled: click switches card only — do not hijack page scroll.
+    if (!enabledRef.current) return
 
     const track = trackRef.current
     const panel = panelRef.current

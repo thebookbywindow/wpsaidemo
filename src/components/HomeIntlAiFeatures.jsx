@@ -1,10 +1,22 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useSyncExternalStore } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { HOME_AI_CORE_PILLAR_IDS } from '../data/homeAiCapabilities'
 import { useHomeAiCapabilities } from '../hooks/useHomeAiCapabilities'
-import { useHomeTabsScrollPin } from '../hooks/useHomeTabsScrollPin'
+import {
+  HOME_TABS_SCROLL_PIN_DISABLE_MQ,
+  useHomeTabsScrollPin,
+} from '../hooks/useHomeTabsScrollPin'
 import HomeAiSpotlightFeatureList from './HomeAiSpotlightFeatureList'
 import { faqAnswerLinkLabels } from '../utils/homeFaq'
+
+const subscribeDeckScrollPinMobile = (onStoreChange) => {
+  const mediaQuery = window.matchMedia(HOME_TABS_SCROLL_PIN_DISABLE_MQ)
+  mediaQuery.addEventListener('change', onStoreChange)
+  return () => mediaQuery.removeEventListener('change', onStoreChange)
+}
+const getDeckScrollPinMobileSnapshot = () =>
+  window.matchMedia(HOME_TABS_SCROLL_PIN_DISABLE_MQ).matches
+const getDeckScrollPinMobileServerSnapshot = () => false
 
 /** Depth in the visible stack: 0 front → 3 back. Always 4 layers. */
 function getStackOffset(cardIndex, activeIndex, length) {
@@ -75,6 +87,11 @@ function HomeAiDeckCard({ pillar, stackOffset, isActive, learnMoreLabel = 'Learn
 export default function HomeIntlAiFeatures({ copy, title, summary }) {
   const { pillars } = useHomeAiCapabilities(copy)
   const [activePillarId, setActivePillarId] = useState(HOME_AI_CORE_PILLAR_IDS[0])
+  const isMobile = useSyncExternalStore(
+    subscribeDeckScrollPinMobile,
+    getDeckScrollPinMobileSnapshot,
+    getDeckScrollPinMobileServerSnapshot,
+  )
 
   const corePillars = useMemo(() => {
     const byId = Object.fromEntries(pillars.map((pillar) => [pillar.id, pillar]))
@@ -104,6 +121,8 @@ export default function HomeIntlAiFeatures({ copy, title, summary }) {
     tabsSelector: '.home-ai-deck-tabs',
     activeTabSelector: '.home-ai-deck-tab.is-active',
     stickyGapPx: 20,
+    // Mobile: click to switch; page scroll continues downward (no pin scrub).
+    enabled: !isMobile,
   })
 
   const coreTabsLabel = copy?.coreTabsAriaLabel ?? title
@@ -114,22 +133,12 @@ export default function HomeIntlAiFeatures({ copy, title, summary }) {
   return (
     <section
       id="home-intl-ai"
-      className="home-ai-capabilities-section home-ai-deck-section px-6 py-12"
+      className="home-ai-capabilities-section home-ai-deck-section"
       aria-labelledby="home-intl-ai-title"
     >
       <div className="home-section-inner mx-auto w-full max-w-[1160px]">
         <header className="home-ai-deck-head">
           <h2 id="home-intl-ai-title" className="home-ai-deck-title">
-            <img
-              className="home-ai-deck-title-icon"
-              src="/icons/wps/copilot.svg"
-              alt=""
-              width={36}
-              height={36}
-              draggable={false}
-              decoding="async"
-              aria-hidden="true"
-            />
             <span>{title}</span>
           </h2>
           {summary ? <p className="home-ai-deck-summary">{summary}</p> : null}

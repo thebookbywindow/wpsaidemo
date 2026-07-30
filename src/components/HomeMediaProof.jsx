@@ -97,7 +97,7 @@ export default function HomeMediaProof({ title, tabsCopy }) {
   return (
     <section
       id="home-media-proof"
-      className="home-media-proof-section px-6 py-12"
+      className="home-media-proof-section px-6"
       aria-labelledby={title ? titleId : undefined}
       aria-label={title ? undefined : 'Media proof'}
     >

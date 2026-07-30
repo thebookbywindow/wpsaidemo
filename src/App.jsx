@@ -1,5 +1,5 @@
 import { Fragment, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { ChevronDown, Globe, Languages, Users } from 'lucide-react'
+import { ChevronDown, Globe, Users } from 'lucide-react'
 import { FaFacebookF, FaYoutube } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
 import DocsCenterPage from './components/DocsCenterPage'
@@ -33,11 +33,11 @@ import {
   resolveFreeAiToolsHeaderMegaMenu,
 } from './data/freeAiToolsHeaderMegaMenu.js'
 import {
-  resolveResourcesHeaderMegaMenu,
-} from './data/resourcesHeaderMegaMenu.js'
-import {
   resolveWpsFeaturesHeaderMegaMenu,
 } from './data/wpsFeaturesHeaderMegaMenu.js'
+import {
+  resolveResourcesHeaderMegaMenu,
+} from './data/resourcesHeaderMegaMenu.js'
 import { uiTextByLanguage } from './data/uiText'
 import {
   SITE_FOOTER_COMPANY_LINKS,
@@ -2023,9 +2023,10 @@ function App() {
   const [isProductsMenuOpen, setIsProductsMenuOpen] = useState(false)
   const [isWpsFeaturesMenuOpen, setIsWpsFeaturesMenuOpen] = useState(false)
   const [isTemplatesMenuOpen, setIsTemplatesMenuOpen] = useState(false)
-  const [isResourcesMenuOpen, setIsResourcesMenuOpen] = useState(false)
   const [isOverflowMenuOpen, setIsOverflowMenuOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  /** Mobile drawer: which parent nav key is expanded (null = all collapsed). */
+  const [mobileNavExpandedKey, setMobileNavExpandedKey] = useState(null)
   const [visibleDesktopNavCount, setVisibleDesktopNavCount] = useState(0)
   const [allTemplatesTab, setAllTemplatesTab] = useState('category')
   const [activeGuideCategory, setActiveGuideCategory] = useState('all')
@@ -2054,7 +2055,6 @@ function App() {
     products: 0,
     'wps-features': 0,
     templates: 0,
-    resources: 0,
     overflow: 0,
   })
 
@@ -2080,10 +2080,6 @@ function App() {
       setIsTemplatesMenuOpen(false)
       return
     }
-    if (menuKey === 'resources') {
-      setIsResourcesMenuOpen(false)
-      return
-    }
     if (menuKey === 'overflow') {
       setIsOverflowMenuOpen(false)
     }
@@ -2094,12 +2090,10 @@ function App() {
       clearDesktopMenuCloseTimeout('products')
       clearDesktopMenuCloseTimeout('wps-features')
       clearDesktopMenuCloseTimeout('templates')
-      clearDesktopMenuCloseTimeout('resources')
       clearDesktopMenuCloseTimeout('overflow')
       setIsProductsMenuOpen(menuKey === 'products')
       setIsWpsFeaturesMenuOpen(menuKey === 'wps-features')
       setIsTemplatesMenuOpen(menuKey === 'templates')
-      setIsResourcesMenuOpen(menuKey === 'resources')
       setIsOverflowMenuOpen(menuKey === 'overflow')
     },
     [clearDesktopMenuCloseTimeout],
@@ -2133,12 +2127,14 @@ function App() {
       const isInsideMobileMenuPanel = mobileMenuPanelRef.current?.contains(event.target)
       if (!isInsideMobileMenuButton && !isInsideMobileMenuPanel) {
         setIsMobileMenuOpen(false)
+        setMobileNavExpandedKey(null)
       }
     }
     const onKeyDown = (event) => {
       if (event.key === 'Escape') {
         setIsLangOpen(false)
         setIsMobileMenuOpen(false)
+        setMobileNavExpandedKey(null)
       }
     }
     const onPopState = () => {
@@ -2152,6 +2148,7 @@ function App() {
       setCurrentPathname(canonicalPath)
       setCurrentLocale(resolveLocaleFromPath(canonicalPath))
       setIsMobileMenuOpen(false)
+      setMobileNavExpandedKey(null)
     }
     window.addEventListener('pointerdown', onPointerDown)
     window.addEventListener('keydown', onKeyDown)
@@ -2167,7 +2164,6 @@ function App() {
     () => () => {
       clearDesktopMenuCloseTimeout('products')
       clearDesktopMenuCloseTimeout('templates')
-      clearDesktopMenuCloseTimeout('resources')
       clearDesktopMenuCloseTimeout('wps-features')
       clearDesktopMenuCloseTimeout('overflow')
     },
@@ -2208,10 +2204,6 @@ function App() {
   const wpsFeaturesHeaderMegaMenu = useMemo(
     () => resolveWpsFeaturesHeaderMegaMenu(uiText.nav.wpsFeaturesMega),
     [uiText.nav.wpsFeaturesMega],
-  )
-  const resourcesHeaderMegaMenu = useMemo(
-    () => resolveResourcesHeaderMegaMenu(uiText.nav.resourcesMega),
-    [uiText.nav.resourcesMega],
   )
   const freeAiToolsHeaderMegaMenu = useMemo(
     () => resolveFreeAiToolsHeaderMegaMenu(uiText.nav.freeAiToolsMega),
@@ -2888,7 +2880,6 @@ function App() {
     setIsProductsMenuOpen(false)
     setIsWpsFeaturesMenuOpen(false)
     setIsTemplatesMenuOpen(false)
-    setIsResourcesMenuOpen(false)
     setIsOverflowMenuOpen(false)
     setIsMobileMenuOpen(false)
   }
@@ -2910,7 +2901,6 @@ function App() {
       setIsProductsMenuOpen(false)
       setIsWpsFeaturesMenuOpen(false)
       setIsTemplatesMenuOpen(false)
-      setIsResourcesMenuOpen(false)
       setIsOverflowMenuOpen(false)
       setIsMobileMenuOpen(false)
       return
@@ -2925,7 +2915,6 @@ function App() {
     setIsProductsMenuOpen(false)
     setIsWpsFeaturesMenuOpen(false)
     setIsTemplatesMenuOpen(false)
-    setIsResourcesMenuOpen(false)
     setIsOverflowMenuOpen(false)
     setIsMobileMenuOpen(false)
   }
@@ -2978,18 +2967,13 @@ function App() {
   )
   const footerSupportLinks = useMemo(
     () =>
-      SITE_FOOTER_SUPPORT_LINKS.map((item) => {
-        let href = item.href
-        if (item.internal === 'docs') href = localeDocsPath
-        if (item.internal === 'blog') href = localeBlogPath
-        return {
-          id: item.id,
-          label: uiText.footer.links[item.labelKey],
-          href,
-          external: !item.internal,
-        }
-      }),
-    [localeBlogPath, localeDocsPath, uiText.footer.links],
+      SITE_FOOTER_SUPPORT_LINKS.map((item) => ({
+        id: item.id,
+        label: uiText.footer.links[item.labelKey],
+        href: item.internal === 'docs' ? localeDocsPath : item.href,
+        external: !item.internal,
+      })),
+    [localeDocsPath, uiText.footer.links],
   )
   const footerSocialItems = SITE_FOOTER_SOCIAL_LINKS
   const { normalizedSegments: currentSegments } = splitPath(currentPathname)
@@ -3010,14 +2994,6 @@ function App() {
         isCurrent: pageType === 'ai-features',
       },
       {
-        key: 'resources',
-        type: 'resources',
-        label: uiText.nav.resources,
-        // Matches wps.ai: Resources trigger opens the panel; it is not a route.
-        path: '#resources',
-        isCurrent: false,
-      },
-      {
         key: 'products',
         type: 'products',
         label: uiText.nav.freeAiTools,
@@ -3032,15 +3008,22 @@ function App() {
         path: localeDocsPath,
         isCurrent: isResourcesNavActive,
       },
+      {
+        key: 'blog',
+        type: 'external',
+        label: uiText.nav.blog,
+        path: 'https://www.wps.ai/blog/',
+        isCurrent: false,
+      },
     ],
     [
       isResourcesNavActive,
       localeAiFeaturesPath,
       localeDocsPath,
       pageType,
+      uiText.nav.blog,
       uiText.nav.docsCenter,
       uiText.nav.freeAiTools,
-      uiText.nav.resources,
       uiText.nav.wpsFeatures,
     ],
   )
@@ -3460,113 +3443,6 @@ function App() {
       )
     }
 
-    if (item.type === 'resources') {
-      return (
-        <div
-          key={item.key}
-          className="relative flex h-full shrink-0 items-center"
-          onMouseEnter={() => openDesktopMenu('resources')}
-          onMouseLeave={() => scheduleDesktopMenuClose('resources')}
-        >
-          <a
-            className={`home-page-header-link flex h-full items-center whitespace-nowrap border-x border-transparent px-[14px] text-[14px] font-medium transition ${
-              item.isCurrent
-                ? 'home-page-header-link--active'
-                : isResourcesMenuOpen
-                  ? 'home-page-header-link--open'
-                  : 'home-page-header-link--idle'
-            }`}
-            href={item.path}
-            aria-haspopup="true"
-            aria-expanded={isResourcesMenuOpen}
-            onClick={(event) => {
-              event.preventDefault()
-              if (isResourcesMenuOpen) {
-                setIsResourcesMenuOpen(false)
-                return
-              }
-              openDesktopMenu('resources')
-            }}
-          >
-            {item.label}
-            <span
-              className={`ml-1 inline-flex h-4 w-4 items-center justify-center transition ${
-                isResourcesMenuOpen ? 'rotate-180' : ''
-              }`}
-              aria-hidden="true"
-            >
-              <svg
-                className="h-[10px] w-[10px]"
-                viewBox="0 0 10 10"
-                fill="none"
-              >
-                <path
-                  d="M1.5 3.25L5 6.75L8.5 3.25"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </span>
-          </a>
-
-          {isResourcesMenuOpen && (
-            <div
-              className="fixed inset-x-0 top-[59px] z-[100] home-nav-mega-panel"
-              onMouseEnter={() => openDesktopMenu('resources')}
-              onMouseLeave={() => scheduleDesktopMenuClose('resources')}
-            >
-              <div className="mx-auto w-full max-w-[1200px]">
-                <div className="home-nav-resources-mega home-nav-mega-grid grid w-full">
-                  {resourcesHeaderMegaMenu.groups.map((group) => (
-                    <section
-                      key={group.id}
-                      className="home-nav-resources-mega-column home-nav-mega-card min-w-0"
-                    >
-                      <div className="flex items-center gap-2">
-                        {group.iconKind === 'languages' ? (
-                          <Languages
-                            className="h-4 w-4 shrink-0 text-[#534ab7]"
-                            aria-hidden="true"
-                          />
-                        ) : group.iconSrc ? (
-                          <img
-                            className="h-4 w-4 shrink-0"
-                            src={group.iconSrc}
-                            alt=""
-                            draggable={false}
-                            decoding="async"
-                          />
-                        ) : null}
-                        <h4 className="text-[13px] font-semibold text-[#261f38]">{group.title}</h4>
-                      </div>
-                      <div className="mt-2.5 flex flex-col gap-0.5">
-                        {group.items.map((linkItem) => (
-                          <a
-                            key={linkItem.id}
-                            href={linkItem.url}
-                            className={`home-nav-mega-link truncate text-[13px]${
-                              linkItem.isLearnMore ? ' home-nav-resources-learn-more' : ''
-                            }`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={() => setIsResourcesMenuOpen(false)}
-                          >
-                            {linkItem.label}
-                          </a>
-                        ))}
-                      </div>
-                    </section>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      )
-    }
-
     if (item.type === 'products') {
       return (
         <div
@@ -3779,6 +3655,20 @@ function App() {
       )
     }
 
+    if (item.type === 'external') {
+      return (
+        <a
+          key={item.key}
+          className="home-page-header-link home-page-header-link--idle flex h-full shrink-0 items-center whitespace-nowrap border-x border-transparent px-[14px] text-[14px] font-medium transition"
+          href={item.path}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {item.label}
+        </a>
+      )
+    }
+
     return (
       <a
         key={item.key}
@@ -3801,17 +3691,16 @@ function App() {
   const isDesktopMegaMenuOpen =
     isProductsMenuOpen
     || isWpsFeaturesMenuOpen
-    || isResourcesMenuOpen
     || isTemplatesMenuOpen
 
   return (
-    <div className="home-figma-page min-h-screen overflow-x-clip text-[#1a202c]">
-      <header className={`sticky top-0 z-20 border-b border-[#e2e8f0] bg-transparent backdrop-blur-[12px] home-page-header${isDesktopMegaMenuOpen ? ' home-page-header--mega-open' : ''}`}>
-        <div className="home-page-header-inner relative mx-auto flex h-[60px] w-full max-w-[1240px] items-center gap-4 px-6">
+    <div className="home-figma-page home-v2 min-h-screen overflow-x-clip text-[#0d0d0d]">
+      <header className={`sticky top-0 z-20 hv2-nav hv2-chrome home-page-header${isDesktopMegaMenuOpen ? ' home-page-header--mega-open' : ''}`}>
+        <div className="home-page-header-inner hv2-nav__inner relative mx-auto flex h-[62px] w-full max-w-[1200px] items-center">
           <div className="flex shrink-0 items-center justify-start">
             <a
-              className="flex shrink-0 items-center gap-3 whitespace-nowrap"
-              aria-label="WPS AI"
+              className="hv2-nav__brand flex shrink-0 items-center whitespace-nowrap"
+              aria-label="WPS AI home"
               href={localeHomePath}
               onClick={(event) => {
                 event.preventDefault()
@@ -3819,18 +3708,24 @@ function App() {
               }}
             >
               <img
-                className="home-page-header-logo"
-                src="/icons/wps/copilot.svg"
+                className="home-page-header-logo hv2-nav__logo"
+                src="/images/home-v2/nav-logo-ai.svg"
                 alt=""
-                width={28}
-                height={28}
+                width={24}
+                height={24}
                 draggable={false}
                 decoding="async"
                 aria-hidden="true"
               />
-              <span className="home-page-header-brand-name" aria-hidden="true">
-                WPS AI
-              </span>
+              <img
+                className="hv2-nav__wordmark"
+                src="/images/home-v2/nav-wordmark.svg"
+                alt="WPS AI"
+                width={67}
+                height={24}
+                draggable={false}
+                decoding="async"
+              />
             </a>
           </div>
           <nav
@@ -3895,17 +3790,20 @@ function App() {
                         }`}
                         href={item.path}
                         onClick={(event) => {
-                          event.preventDefault()
-                          if (item.type === 'resources') {
-                            openDesktopMenu('resources')
+                          if (item.type === 'external') {
+                            setIsOverflowMenuOpen(false)
                             return
                           }
+                          event.preventDefault()
                           if (item.type === 'products') {
                             openDesktopMenu('products')
                             return
                           }
                           navigateTo(item.path)
                         }}
+                        {...(item.type === 'external'
+                          ? { target: '_blank', rel: 'noopener noreferrer' }
+                          : {})}
                       >
                         {item.label}
                       </a>
@@ -4011,22 +3909,23 @@ function App() {
               </div>
             )}
             <button
-              className="home-page-header-cta rounded-[6px] bg-[#534ab7] px-[18px] py-2 text-[13px] font-semibold text-white transition hover:bg-[#3c3489]"
+              className="home-page-header-cta hv2-nav__cta"
               type="button"
+              aria-label={uiText.nav.getStartedFree}
               onClick={() => navigateTo(localeDownloadPath)}
             >
-              {uiText.nav.getStartedFree}
+              <span className="hv2-nav__cta-full">{uiText.nav.getStartedFree}</span>
+              <span className="hv2-nav__cta-short">{uiText.nav.download}</span>
             </button>
-            <button
-              className="home-page-header-signin inline-flex shrink-0 rounded-[6px] border-0 px-4 py-2 text-[13px] font-medium text-[#4a5568] transition hover:bg-[#f1efe8] hover:text-[#1a202c]"
-              type="button"
-            >
-              {uiText.nav.signIn}
-            </button>
+            <div className="hv2-nav__auth header-auth theme-light">
+              <button className="home-page-header-signin sign-in-btn" type="button">
+                {uiText.nav.signIn}
+              </button>
+            </div>
           </div>
           <div className="relative ml-auto flex shrink-0 items-center gap-2 min-[720px]:hidden" ref={mobileMenuButtonRef}>
             <button
-              className="inline-flex shrink-0 rounded-[8px] px-3 py-2 text-[13px] font-medium text-[#4a5568] transition hover:bg-[#f1efe8] hover:text-[#1a202c]"
+              className="home-page-header-mobile-signin inline-flex shrink-0 rounded-[8px] px-3 py-2 text-[13px] font-medium text-[#4a5568] transition hover:bg-[#f1efe8] hover:text-[#1a202c]"
               type="button"
             >
               {uiText.nav.signIn}
@@ -4038,7 +3937,13 @@ function App() {
                   : 'bg-transparent text-[#4a5568] hover:border-[#afa9ec] hover:text-[#534ab7]'
               }`}
               type="button"
-              onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+              onClick={() => {
+                setIsMobileMenuOpen((prev) => {
+                  const next = !prev
+                  if (!next) setMobileNavExpandedKey(null)
+                  return next
+                })
+              }}
               aria-expanded={isMobileMenuOpen}
               aria-haspopup="dialog"
               aria-label={mobileMenuButtonAriaLabel}
@@ -4066,82 +3971,110 @@ function App() {
       {isMobileMenuOpen && (
         <div
           ref={mobileMenuPanelRef}
-          className="fixed inset-x-0 bottom-0 top-[60px] z-30 border-t border-[#e2e8f0] bg-transparent shadow-[0_16px_36px_rgba(15,23,42,0.12)] backdrop-blur-[16px] min-[720px]:hidden"
+          className="fixed inset-x-0 bottom-0 top-[60px] z-30 border-t border-[#e2e8f0] bg-white shadow-[0_16px_36px_rgba(15,23,42,0.12)] min-[720px]:hidden"
         >
-          <div className="h-full overflow-y-auto px-3 py-3">
-            <div className="border-b border-[#eef1f6] px-2 pb-3">
-              <p className="text-[15px] font-semibold text-[#1a202c]">{uiText.nav.menu}</p>
-            </div>
-            <nav className="mt-3 flex flex-col gap-1">
+          <div className="h-full overflow-y-auto px-3 py-2">
+            <nav className="home-mobile-nav" aria-label={uiText.nav.menu}>
               {desktopMainNavItems.map((item) => {
-                if (item.type === 'resources') {
+                const isExpanded = mobileNavExpandedKey === item.key
+                const toggleExpanded = () => {
+                  setMobileNavExpandedKey((prev) => (prev === item.key ? null : item.key))
+                }
+                const closeMobileNav = () => {
+                  setIsMobileMenuOpen(false)
+                  setMobileNavExpandedKey(null)
+                }
+
+                if (item.type === 'products' || item.type === 'wps-features') {
+                  const groups =
+                    item.type === 'products'
+                      ? freeAiToolsHeaderMegaMenu.groups
+                      : wpsFeaturesHeaderMegaMenu.groups
+
                   return (
-                    <div key={`mobile-${item.key}`} className="rounded-[10px] px-2 py-2">
-                      <p className="px-2 py-2 text-[15px] font-medium text-[#1a202c]">
-                        {item.label}
-                      </p>
-                      <div className="flex flex-col gap-0.5">
-                        {resourcesHeaderMegaMenu.groups.map((group) => {
-                          const target =
-                            group.items.find((linkItem) => linkItem.isLearnMore)
-                            ?? group.items[0]
-                          return (
+                    <div key={`mobile-${item.key}`} className="home-mobile-nav__section">
+                      <button
+                        type="button"
+                        className="home-mobile-nav__trigger"
+                        aria-expanded={isExpanded}
+                        aria-controls={`mobile-nav-panel-${item.key}`}
+                        id={`mobile-nav-trigger-${item.key}`}
+                        onClick={toggleExpanded}
+                      >
+                        <span>{item.label}</span>
+                        <ChevronDown className="home-mobile-nav__chevron" aria-hidden="true" />
+                      </button>
+                      {isExpanded ? (
+                        <div
+                          id={`mobile-nav-panel-${item.key}`}
+                          role="region"
+                          aria-labelledby={`mobile-nav-trigger-${item.key}`}
+                          className="home-mobile-nav__panel"
+                        >
+                          {groups.map((group) => (
+                            <div key={`mobile-${item.key}-${group.id}`} className="home-mobile-nav__group">
+                              <p className="home-mobile-nav__group-label">{group.title}</p>
+                              {group.items.map((linkItem) => {
+                                const href = linkItem.url || group.items[0]?.url
+                                const label = linkItem.label || linkItem.title
+                                if (!href || !label) return null
+                                return (
+                                  <a
+                                    key={linkItem.id}
+                                    className="home-mobile-nav__link"
+                                    href={href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={closeMobileNav}
+                                  >
+                                    {label}
+                                  </a>
+                                )
+                              })}
+                            </div>
+                          ))}
+                          {item.type === 'wps-features' ? (
                             <a
-                              key={`mobile-resources-${group.id}`}
-                              className="rounded-[10px] px-4 py-2.5 text-[14px] font-medium text-[#4a5568] transition hover:bg-[#f6f5ff] hover:text-[#1a202c]"
-                              href={target.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={() => setIsMobileMenuOpen(false)}
+                              className="home-mobile-nav__link"
+                              href={item.path}
+                              onClick={(event) => {
+                                event.preventDefault()
+                                closeMobileNav()
+                                navigateTo(item.path)
+                              }}
                             >
-                              {group.title}
+                              {uiText.nav.seeAllFeatures}
                             </a>
-                          )
-                        })}
-                      </div>
+                          ) : null}
+                        </div>
+                      ) : null}
                     </div>
                   )
                 }
 
-                if (item.type === 'products') {
+                if (item.type === 'external') {
                   return (
-                    <div key={`mobile-${item.key}`} className="rounded-[10px] px-2 py-2">
-                      <p className="px-2 py-2 text-[15px] font-medium text-[#1a202c]">
-                        {item.label}
-                      </p>
-                      <div className="flex flex-col gap-0.5">
-                        {freeAiToolsHeaderMegaMenu.groups.map((group) => {
-                          const target = group.items[0]
-                          return (
-                            <a
-                              key={`mobile-free-ai-tools-${group.id}`}
-                              className="rounded-[10px] px-4 py-2.5 text-[14px] font-medium text-[#4a5568] transition hover:bg-[#f6f5ff] hover:text-[#1a202c]"
-                              href={target.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={() => setIsMobileMenuOpen(false)}
-                            >
-                              {group.title}
-                            </a>
-                          )
-                        })}
-                      </div>
-                    </div>
+                    <a
+                      key={`mobile-${item.key}`}
+                      className="home-mobile-nav__link"
+                      href={item.path}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={closeMobileNav}
+                    >
+                      {item.label}
+                    </a>
                   )
                 }
 
                 return (
                   <a
                     key={`mobile-${item.key}`}
-                    className={`rounded-[10px] px-4 py-3 text-[15px] font-medium transition ${
-                      item.isCurrent
-                        ? 'bg-[#ece9fd] text-[#534ab7]'
-                        : 'text-[#4a5568] hover:bg-[#f6f5ff] hover:text-[#1a202c]'
-                    }`}
+                    className={`home-mobile-nav__link${item.isCurrent ? ' is-active' : ''}`}
                     href={item.path}
                     onClick={(event) => {
                       event.preventDefault()
-                      setIsMobileMenuOpen(false)
+                      closeMobileNav()
                       navigateTo(item.path)
                     }}
                   >
@@ -4150,26 +4083,22 @@ function App() {
                 )
               })}
             </nav>
-            <div className="mt-4 border-t border-[#eef1f6] px-1 pt-4">
-              <p className="mb-3 text-[12px] font-semibold uppercase tracking-[0.06em] text-[#98a2b3]">
-                {uiText.nav.language}
-              </p>
-              <div className="grid grid-cols-2 gap-2">
+            <div className="home-mobile-nav__footer">
+              <p className="home-mobile-nav__footer-label">{uiText.nav.language}</p>
+              <div className="grid grid-cols-2 gap-1 px-1">
                 {localeOptions.map((item) => (
                   <button
                     key={`mobile-locale-${item.code}`}
                     type="button"
-                    className={`flex items-center gap-2 rounded-[10px] px-3 py-2 text-left text-[12px] transition ${
-                      currentLocale === item.code
-                        ? 'bg-[#d9d8eb] text-[#534ab7]'
-                        : 'text-[#4a5568] hover:bg-[#f2f4f8]'
+                    className={`home-mobile-nav__link flex items-center gap-2 text-left ${
+                      currentLocale === item.code ? 'is-active' : ''
                     }`}
                     onClick={() => handleLocaleSelect(item.code)}
                   >
-                    <span className="w-6 shrink-0 text-[11px] font-semibold text-[#5f5e5a]">
+                    <span className="w-6 shrink-0 text-[12px] font-medium text-[#737373]">
                       {item.short}
                     </span>
-                    <span className="truncate">{item.label}</span>
+                    <span className="truncate text-[14px]">{item.label}</span>
                   </button>
                 ))}
               </div>
@@ -5831,149 +5760,131 @@ function App() {
       </section>
       )}
 
-      <footer className="site-footer">
-        <div className="site-footer-shell">
-          <div className="site-footer-top">
-            <div className="site-footer-brand-col">
-              <div className="site-footer-brand-main">
-                <a
-                  className="site-footer-brand"
-                  aria-label="WPS AI"
-                  href={localeHomePath}
-                  onClick={(event) => {
-                    event.preventDefault()
-                    navigateTo(localeHomePath)
-                  }}
-                >
-                  <img
-                    className="site-footer-brand-logo"
-                    src="/icons/wps/copilot.svg"
-                    alt=""
-                    width={28}
-                    height={28}
-                    draggable={false}
-                    decoding="async"
-                    aria-hidden="true"
-                  />
-                  <span className="site-footer-brand-name" aria-hidden="true">
-                    WPS AI
-                  </span>
-                </a>
-                <p className="site-footer-tagline">{uiText.footer.tagline}</p>
-                <p className="site-footer-address">
-                  <span>WPS SOFTWARE PTE. LTD.</span>
-                  <span>6 RAFFLES QUAY #14-06, SINGAPORE (048580)</span>
-                </p>
-              </div>
-              <div className="site-footer-brand-meta">
-                <label className="site-footer-lang-pill">
-                  <Globe className="site-footer-lang-icon" size={15} strokeWidth={1.75} aria-hidden="true" />
-                  <select
-                    value={currentLocale}
-                    onChange={(event) => handleLocaleSelect(event.target.value)}
-                    className="site-footer-select"
-                    aria-label={uiText.nav.language}
-                  >
-                    {localeOptions.map((item) => (
-                      <option key={item.code} value={item.code}>
-                        {item.label}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown className="site-footer-lang-caret" size={14} strokeWidth={2} aria-hidden="true" />
-                </label>
-                <p className="site-footer-copyright">
-                  Copyright © Kingsoft Office Software, All Rights Reserved.
-                </p>
-              </div>
+      <footer className="site-footer hv2-footer hv2-chrome">
+        <div className="hv2-container site-footer-shell">
+          <div className="hv2-footer__top site-footer-top">
+            <div className="hv2-footer__brand site-footer-brand-col">
+              <img
+                className="hv2-footer__logo site-footer-brand-logo"
+                src="/images/home-v2/footer-logo-wps.svg"
+                alt="WPS"
+                width={96}
+                height={24}
+                draggable={false}
+                decoding="async"
+              />
+              <p className="hv2-footer__address site-footer-address">
+                WPS SOFTWARE PTE. LTD.
+                <br />
+                6 RAFFLES QUAY #14-06
+                <br />
+                SINGAPORE (048580)
+              </p>
             </div>
 
-            <div className="site-footer-links-col">
-              <h4 className="site-footer-heading">{uiText.footer.product}</h4>
-              <div className="site-footer-link-list">
+            <nav className="hv2-footer__col site-footer-links-col" aria-labelledby="hv2-footer-product">
+              <p id="hv2-footer-product" className="hv2-footer__col-title site-footer-heading">
+                {uiText.footer.product}
+              </p>
+              <ul className="hv2-footer__links site-footer-link-list">
                 {footerProductLinks.map((link) => (
-                  <a
-                    key={`footer-product-${link.id}`}
-                    href={link.href}
-                    className="site-footer-link"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {link.label}
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            <div className="site-footer-links-col">
-              <h4 className="site-footer-heading">{uiText.footer.company}</h4>
-              <div className="site-footer-link-list">
-                {footerCompanyLinks.map((link) => (
-                  <a
-                    key={`footer-company-${link.id}`}
-                    href={link.href}
-                    className="site-footer-link"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {link.label}
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            <div className="site-footer-links-col">
-              <h4 className="site-footer-heading">{uiText.footer.support}</h4>
-              <div className="site-footer-link-list">
-                {footerSupportLinks.map((link) =>
-                  link.external ? (
+                  <li key={`footer-product-${link.id}`}>
                     <a
-                      key={`footer-support-${link.id}`}
                       href={link.href}
-                      className="site-footer-link"
+                      className="hv2-footer__link site-footer-link"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       {link.label}
                     </a>
-                  ) : (
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            <nav className="hv2-footer__col site-footer-links-col" aria-labelledby="hv2-footer-company">
+              <p id="hv2-footer-company" className="hv2-footer__col-title site-footer-heading">
+                {uiText.footer.company}
+              </p>
+              <ul className="hv2-footer__links site-footer-link-list">
+                {footerCompanyLinks.map((link) => (
+                  <li key={`footer-company-${link.id}`}>
                     <a
-                      key={`footer-support-${link.id}`}
                       href={link.href}
-                      className="site-footer-link"
-                      onClick={(event) => {
-                        event.preventDefault()
-                        navigateTo(link.href)
-                      }}
+                      className="hv2-footer__link site-footer-link"
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
                       {link.label}
                     </a>
-                  ),
-                )}
-              </div>
-            </div>
+                  </li>
+                ))}
+              </ul>
+            </nav>
 
-            <div className="site-footer-social-col">
-              <h4 className="site-footer-heading">{uiText.footer.followUs}</h4>
-              <div className="site-footer-social-row">
+            <nav className="hv2-footer__col site-footer-links-col" aria-labelledby="hv2-footer-support">
+              <p id="hv2-footer-support" className="hv2-footer__col-title site-footer-heading">
+                {uiText.footer.support}
+              </p>
+              <ul className="hv2-footer__links site-footer-link-list">
+                {footerSupportLinks.map((link) => (
+                  <li key={`footer-support-${link.id}`}>
+                    {link.external ? (
+                      <a
+                        href={link.href}
+                        className="hv2-footer__link site-footer-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <a
+                        href={link.href}
+                        className="hv2-footer__link site-footer-link"
+                        onClick={(event) => {
+                          event.preventDefault()
+                          navigateTo(link.href)
+                        }}
+                      >
+                        {link.label}
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            <nav
+              className="hv2-footer__col hv2-footer__col--social site-footer-social-col"
+              aria-labelledby="hv2-footer-social"
+            >
+              <p id="hv2-footer-social" className="hv2-footer__col-title site-footer-heading">
+                {uiText.footer.followUs}
+              </p>
+              <ul className="hv2-footer__socials site-footer-social-row">
                 {footerSocialItems.map((social) => {
                   const Icon = FOOTER_SOCIAL_ICONS[social.id]
                   return (
-                    <a
-                      key={social.id}
-                      href={social.href}
-                      aria-label={social.label}
-                      className="site-footer-social-link"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {Icon ? <Icon size={16} aria-hidden="true" /> : null}
-                    </a>
+                    <li key={social.id}>
+                      <a
+                        href={social.href}
+                        aria-label={social.label}
+                        className="hv2-footer__social site-footer-social-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {Icon ? <Icon size={18} aria-hidden="true" /> : null}
+                      </a>
+                    </li>
                   )
                 })}
-              </div>
-            </div>
+              </ul>
+            </nav>
           </div>
+          <p className="hv2-footer__copyright site-footer-copyright">
+            Copyright © Kingsoft Office Software, All Rights Reserved.
+          </p>
         </div>
       </footer>
     </div>

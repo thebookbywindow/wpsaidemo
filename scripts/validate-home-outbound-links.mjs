@@ -67,13 +67,15 @@ assert(
     footerLinks.includes('https://www.wps.com/education/') &&
     footerLinks.includes('https://www.wps.com/office/writer/') &&
     footerLinks.includes('https://www.wps.com/office/pdf/') &&
-    (footerLinks.match(/href:\s*'https:\/\//g) || []).length === 22,
+    (footerLinks.match(/href:\s*'https:\/\//g) || []).length === 23,
 )
 assert(
-  'siteFooterLinks Support: Docs Center → Blog → Feedback + official help links',
-  /SITE_FOOTER_SUPPORT_LINKS\s*=\s*\[[\s\S]*?id:\s*'docs-center'[\s\S]*?internal:\s*'docs'[\s\S]*?id:\s*'blog'[\s\S]*?internal:\s*'blog'[\s\S]*?id:\s*'feedback'/.test(
+  'siteFooterLinks Support keeps Docs Center / Blog plus Feedback → Help Center → Academy → What\'s New',
+  /SITE_FOOTER_SUPPORT_LINKS\s*=\s*\[[\s\S]*?id:\s*'docs-center'[\s\S]*?id:\s*'blog'[\s\S]*?id:\s*'feedback'[\s\S]*?id:\s*'help-center'[\s\S]*?id:\s*'wps-academy'[\s\S]*?id:\s*'whats-new'/.test(
     footerLinks,
   ) &&
+    footerLinks.includes("internal: 'docs'") &&
+    footerLinks.includes('https://www.wps.ai/blog/') &&
     footerLinks.includes('https://www.wps.com/support/') &&
     footerLinks.includes('https://help.wps.com/') &&
     footerLinks.includes('https://www.wps.com/academy/') &&
@@ -88,18 +90,19 @@ assert(
     footerLinks.includes('https://www.wps.com/privacy-policy/'),
 )
 assert(
-  'App footer uses official external siteFooterLinks',
+  'App footer uses official siteFooterLinks and resolves internal docs path',
   app.includes('SITE_FOOTER_PRODUCT_LINKS') &&
     app.includes('SITE_FOOTER_COMPANY_LINKS') &&
     app.includes('SITE_FOOTER_SUPPORT_LINKS') &&
     app.includes('SITE_FOOTER_SOCIAL_LINKS') &&
+    app.includes("item.internal === 'docs'") &&
     app.includes('target="_blank"') &&
     app.includes('rel="noopener noreferrer"'),
 )
 
 assert(
   'siteFooterLinks Follow Us matches wps.ai (Facebook → X → YouTube)',
-  /SITE_FOOTER_SOCIAL_LINKS\s*=\s*\[[\s\S]*?facebook\.com\/kingsoftwps[\s\S]*?twitter\.com\/WPS_Office[\s\S]*?youtube\.com\/wpsofficeofficial/.test(
+  /SITE_FOOTER_SOCIAL_LINKS\s*=\s*\[[\s\S]*?facebook\.com\/kingsoftwps[\s\S]*?x\.com\/WPS_Office[\s\S]*?youtube\.com\/wpsofficeofficial/.test(
     footerLinks,
   ),
 )

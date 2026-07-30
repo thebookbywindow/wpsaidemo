@@ -1,9 +1,21 @@
-import { ArrowUpRight, ShieldCheck } from 'lucide-react'
+import { useSyncExternalStore } from 'react'
+import { ArrowUpRight } from 'lucide-react'
 import { FaAndroid, FaApple, FaLinux, FaMobileAlt, FaTabletAlt, FaWindows } from 'react-icons/fa'
+import { HOME_V2_DOWNLOAD_SHIELD } from '../data/homeV2Assets'
+import { HOME_TRUST_DOCK_PIN_DISABLE_MQ } from '../hooks/useHomeTrustDockPin'
 import {
   alertPlatformDownload,
   detectAndAlertPlatformDownload,
 } from '../utils/detectClientPlatform'
+
+const subscribeHeroPlatformMobile = (onStoreChange) => {
+  const mediaQuery = window.matchMedia(HOME_TRUST_DOCK_PIN_DISABLE_MQ)
+  mediaQuery.addEventListener('change', onStoreChange)
+  return () => mediaQuery.removeEventListener('change', onStoreChange)
+}
+const getHeroPlatformMobileSnapshot = () =>
+  window.matchMedia(HOME_TRUST_DOCK_PIN_DISABLE_MQ).matches
+const getHeroPlatformMobileServerSnapshot = () => false
 
 const PLATFORM_ICON_MAP = {
   windows: FaWindows,
@@ -77,6 +89,12 @@ export default function HomeEntityCatalog({
   variant = 'section',
   ctaLabel,
 }) {
+  const isMobile = useSyncExternalStore(
+    subscribeHeroPlatformMobile,
+    getHeroPlatformMobileSnapshot,
+    getHeroPlatformMobileServerSnapshot,
+  )
+
   if (variant === 'hero') {
     const platformItems = groups.flatMap((group) => group.items ?? [])
 
@@ -88,16 +106,20 @@ export default function HomeEntityCatalog({
               <button
                 className="home-hero-download-btn"
                 type="button"
+                aria-label="Free download WPS Office for your device"
                 onClick={() => {
                   detectAndAlertPlatformDownload()
                 }}
               >
                 <span>{ctaLabel}</span>
-                <ShieldCheck
+                <img
                   className="home-hero-download-btn-shield"
-                  size={18}
-                  strokeWidth={2.25}
+                  src={HOME_V2_DOWNLOAD_SHIELD}
+                  alt=""
+                  width={24}
+                  height={24}
                   aria-hidden="true"
+                  draggable={false}
                 />
               </button>
             </div>
@@ -108,21 +130,27 @@ export default function HomeEntityCatalog({
             <ul className="home-hero-platform-list">
               {platformItems.map((item) => (
                 <li key={item.id}>
-                  <button
-                    type="button"
-                    className="home-hero-platform-link"
-                    onClick={() => {
-                      alertPlatformDownload(item.platform || item.label)
-                    }}
-                  >
-                    <span className="home-hero-platform-label">{item.label}</span>
-                    <ArrowUpRight
-                      className="home-hero-platform-arrow"
-                      size={12}
-                      strokeWidth={2.25}
-                      aria-hidden="true"
-                    />
-                  </button>
+                  {isMobile ? (
+                    <span className="home-hero-platform-link home-hero-platform-link--static">
+                      <span className="home-hero-platform-label">{item.label}</span>
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      className="home-hero-platform-link"
+                      onClick={() => {
+                        alertPlatformDownload(item.platform || item.label)
+                      }}
+                    >
+                      <span className="home-hero-platform-label">{item.label}</span>
+                      <ArrowUpRight
+                        className="home-hero-platform-arrow"
+                        size={12}
+                        strokeWidth={2.25}
+                        aria-hidden="true"
+                      />
+                    </button>
+                  )}
                 </li>
               ))}
             </ul>

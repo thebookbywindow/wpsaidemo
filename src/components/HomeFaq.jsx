@@ -38,7 +38,7 @@ export default function HomeFaq({ title, faqTopics = {} }) {
   }
 
   return (
-    <section className="home-faq-section px-6 py-12 pb-20" id="home-faq">
+    <section className="home-faq-section px-6" id="home-faq">
       <div className="home-section-inner mx-auto w-full max-w-[1160px]">
         <h2 id={titleId} className="home-section-title text-center text-[#1a202c]">
           {title}

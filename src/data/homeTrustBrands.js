@@ -1,43 +1,43 @@
 /**
- * Trust strip brands — logo assets under /public/images/trust-logos/.
- * Prefer monochrome mac-logo_* SVGs from the marketing reference when available.
+ * Trust strip brands — official home-v2 grayscale logos.
+ * Order matches https://www.wps.ai/en-US/ `.hv2-hero__marquee-set`.
  */
 
 export const HOME_TRUST_BRANDS = Object.freeze([
   Object.freeze({
     id: 'unesco',
     name: 'UNESCO',
-    logoSrc: '/images/trust-logos/unesco.svg',
+    logoSrc: '/images/home-v2/trust-unesco.png',
   }),
   Object.freeze({
     id: 'g2',
     name: 'G2',
-    logoSrc: '/images/trust-logos/mac-logo-g2.svg',
+    logoSrc: '/images/home-v2/trust-g2.png',
   }),
   Object.freeze({
     id: 'aws',
     name: 'AWS',
-    logoSrc: '/images/trust-logos/mac-logo-aws.svg',
+    logoSrc: '/images/home-v2/trust-aws.webp',
   }),
   Object.freeze({
     id: 'cnet',
     name: 'CNET',
-    logoSrc: '/images/trust-logos/mac-logo-cnet.svg',
-  }),
-  Object.freeze({
-    id: 'trustpilot',
-    name: 'Trustpilot',
-    logoSrc: '/images/trust-logos/mac-logo-trustpilot.svg',
+    logoSrc: '/images/home-v2/trust-cnet.png',
   }),
   Object.freeze({
     id: 'techradar',
     name: 'TechRadar',
-    logoSrc: '/images/trust-logos/techradar.svg',
+    logoSrc: '/images/home-v2/trust-techradar.webp',
   }),
   Object.freeze({
     id: 'forbes',
     name: 'Forbes',
-    logoSrc: '/images/trust-logos/mac-logo-forbes.svg',
+    logoSrc: '/images/home-v2/trust-forbes.webp',
+  }),
+  Object.freeze({
+    id: 'trustpilot',
+    name: 'Trustpilot',
+    logoSrc: '/images/home-v2/trust-trustpilot.webp',
   }),
 ])
 

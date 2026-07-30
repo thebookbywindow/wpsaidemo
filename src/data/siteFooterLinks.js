@@ -1,5 +1,5 @@
 /**
- * Footer link columns mirrored from https://www.wps.ai/ (official Product / Company / Support).
+ * Footer link columns mirrored from https://www.wps.ai/en-US/ home-v2 footer.
  * Canonical www.wps.com destinations (locale redirects are handled by WPS).
  */
 export const SITE_FOOTER_PRODUCT_LINKS = [
@@ -23,18 +23,19 @@ export const SITE_FOOTER_COMPANY_LINKS = [
   { id: 'privacy-policy', labelKey: 'privacyPolicy', href: 'https://www.wps.com/privacy-policy/' },
 ]
 
+/** Support column — Docs Center (in-app) + Blog + official support destinations. */
 export const SITE_FOOTER_SUPPORT_LINKS = [
   { id: 'docs-center', labelKey: 'docsCenter', internal: 'docs' },
-  { id: 'blog', labelKey: 'blog', internal: 'blog' },
+  { id: 'blog', labelKey: 'blog', href: 'https://www.wps.ai/blog/' },
   { id: 'feedback', labelKey: 'feedback', href: 'https://www.wps.com/support/' },
   { id: 'help-center', labelKey: 'helpCenter', href: 'https://help.wps.com/' },
   { id: 'wps-academy', labelKey: 'wpsAcademy', href: 'https://www.wps.com/academy/' },
   { id: 'whats-new', labelKey: 'whatsNew', href: 'https://www.wps.com/whatsnew/pc/' },
 ]
 
-/** Follow Us — same order & destinations as https://www.wps.ai/ footer. */
+/** Follow Us — same order & destinations as https://www.wps.ai/en-US/ footer. */
 export const SITE_FOOTER_SOCIAL_LINKS = [
   { id: 'facebook', label: 'Facebook', href: 'https://www.facebook.com/kingsoftwps' },
-  { id: 'twitter', label: 'X / Twitter', href: 'https://twitter.com/WPS_Office' },
+  { id: 'twitter', label: 'X / Twitter', href: 'https://x.com/WPS_Office' },
   { id: 'youtube', label: 'YouTube', href: 'https://www.youtube.com/wpsofficeofficial' },
 ]
