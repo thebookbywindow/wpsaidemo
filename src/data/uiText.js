@@ -137,26 +137,25 @@ export const uiTextByLanguage = {
           {
             id: 'windows',
             label: 'Windows',
-            href: 'https://www.wps.com/download/',
+            platform: 'windows',
             desc: 'Download WPS Office Desktop Editor to get a lightweight PDF tool that provides complete solutions for all PDF problems.',
             meta: '5.3M / Feb 26 2025',
           },
           {
             id: 'linux',
             label: 'Linux',
-            href: 'https://www.wps.com/download/',
             desc: 'WPS Office is a free office suite that supports Linux. Download the WPS Office app to access PDF tools anytime.',
             menu: [
               {
                 id: 'deb',
                 label: 'Deb Package',
-                href: 'https://www.wps.com/download/',
+                platform: 'deb',
                 iconSrc: '/images/platforms/download.svg',
               },
               {
                 id: 'rpm',
                 label: 'Rpm Package',
-                href: 'https://www.wps.com/download/',
+                platform: 'rpm',
                 iconSrc: '/images/platforms/download.svg',
               },
             ],
@@ -164,7 +163,7 @@ export const uiTextByLanguage = {
           {
             id: 'mac',
             label: 'Mac',
-            href: 'https://www.wps.com/download/',
+            platform: 'mac',
             desc: 'WPS Office, perfectly compatible with the macOS system on Mac, and supports Intel and Apple chips to help you edit PDFs easily.',
             meta: '982KB / Feb 24 2025',
           },
@@ -177,13 +176,13 @@ export const uiTextByLanguage = {
               {
                 id: 'google-play',
                 label: 'Get it on Google Play',
-                href: 'https://play.google.com/store/apps/details?id=cn.wps.moffice_eng',
+                platform: 'android',
                 iconSrc: '/images/platforms/google-play.svg',
               },
               {
                 id: 'app-store',
                 label: 'Download on the AppStore',
-                href: 'https://apps.apple.com/app/id599791151',
+                platform: 'ios',
                 iconSrc: '/images/platforms/appstore.svg',
               },
             ],
@@ -1082,26 +1081,25 @@ export const uiTextByLanguage = {
           {
             id: 'windows',
             label: 'Windows',
-            href: 'https://www.wps.com/download/',
+            platform: 'windows',
             desc: '下载 WPS Office 桌面版，获得轻量级 PDF 工具，覆盖常见 PDF 处理需求。',
             meta: '5.3M / Feb 26 2025',
           },
           {
             id: 'linux',
             label: 'Linux',
-            href: 'https://www.wps.com/download/',
             desc: 'WPS Office 免费支持 Linux。下载应用，随时使用 PDF 工具。',
             menu: [
               {
                 id: 'deb',
                 label: 'Deb Package',
-                href: 'https://www.wps.com/download/',
+                platform: 'deb',
                 iconSrc: '/images/platforms/download.svg',
               },
               {
                 id: 'rpm',
                 label: 'Rpm Package',
-                href: 'https://www.wps.com/download/',
+                platform: 'rpm',
                 iconSrc: '/images/platforms/download.svg',
               },
             ],
@@ -1109,7 +1107,7 @@ export const uiTextByLanguage = {
           {
             id: 'mac',
             label: 'Mac',
-            href: 'https://www.wps.com/download/',
+            platform: 'mac',
             desc: '完美兼容 macOS，支持 Intel 与 Apple 芯片，轻松编辑 PDF。',
             meta: '982KB / Feb 24 2025',
           },
@@ -1122,13 +1120,13 @@ export const uiTextByLanguage = {
               {
                 id: 'google-play',
                 label: 'Get it on Google Play',
-                href: 'https://play.google.com/store/apps/details?id=cn.wps.moffice_eng',
+                platform: 'android',
                 iconSrc: '/images/platforms/google-play.svg',
               },
               {
                 id: 'app-store',
                 label: 'Download on the AppStore',
-                href: 'https://apps.apple.com/app/id599791151',
+                platform: 'ios',
                 iconSrc: '/images/platforms/appstore.svg',
               },
             ],

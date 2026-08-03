@@ -1,9 +1,11 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { startPlatformDownload } from '../utils/detectClientPlatform'
 
 const PLATFORM_ASSETS = {
   windows: {
     icons: [{ src: '/images/platforms/windows.svg', alt: 'free download wps office for windows' }],
     cta: 'arrow',
+    downloadId: 'windows',
   },
   linux: {
     icons: [{ src: '/images/platforms/linux.svg', alt: 'free download wps office for linux' }],
@@ -13,6 +15,7 @@ const PLATFORM_ASSETS = {
   mac: {
     icons: [{ src: '/images/platforms/macos.svg', alt: 'free download wps office for mac' }],
     cta: 'arrow',
+    downloadId: 'mac',
   },
   mobile: {
     icons: [
@@ -24,9 +27,8 @@ const PLATFORM_ASSETS = {
   },
 }
 
-function openDownloadUrl(url) {
-  if (!url) return
-  window.open(url, '_blank', 'noopener,noreferrer')
+function triggerCardDownload(downloadId) {
+  startPlatformDownload(downloadId || 'windows', { openGuidance: true })
 }
 
 function DownloadCtaIcon({ variant }) {
@@ -105,7 +107,6 @@ export default function HomePlatformDownloads({ copy }) {
   const titleSuffix = copy.titleSuffix || ''
   const forLabel = copy.forLabel || 'WPS Office for'
   const ctaLabel = copy.ctaLabel || 'Free Download'
-  const fallbackUrl = copy.downloadUrl || 'https://www.wps.com/download/'
 
   const menuCards = copy.cards.filter((card) => card.menu?.length)
 
@@ -180,7 +181,7 @@ export default function HomePlatformDownloads({ copy }) {
                       setOpenMenu(expanded ? null : menuId)
                       return
                     }
-                    openDownloadUrl(card.href || fallbackUrl)
+                    triggerCardDownload(asset.downloadId || card.platform || card.id)
                   }}
                 >
                   <span className="btn-label">
@@ -219,13 +220,13 @@ export default function HomePlatformDownloads({ copy }) {
                     tabIndex={expanded ? 0 : -1}
                     onClick={() => {
                       setOpenMenu(null)
-                      openDownloadUrl(item.href || card.href || fallbackUrl)
+                      triggerCardDownload(item.platform || item.id)
                     }}
                     onKeyDown={(event) => {
                       if (event.key !== 'Enter' && event.key !== ' ') return
                       event.preventDefault()
                       setOpenMenu(null)
-                      openDownloadUrl(item.href || card.href || fallbackUrl)
+                      triggerCardDownload(item.platform || item.id)
                     }}
                   >
                     <img src={item.iconSrc || '/images/platforms/download.svg'} alt="" />{' '}
