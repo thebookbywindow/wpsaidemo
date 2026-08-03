@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useLayoutEffect, useRef } from 'react'
 import { useHomeTrustBar } from '../hooks/useHomeTrustBar'
 import { useHomeTrustDockPin } from '../hooks/useHomeTrustDockPin'
 
@@ -18,12 +18,12 @@ function TrustBrandMark({ brand, decorative = false }) {
   return <span className="home-trust-brand-fallback">{brand.name}</span>
 }
 
-function TrustBrandGroup({ brands, decorative = false }) {
+function TrustBrandGroup({ brands, decorative = false, copyKey = 'live' }) {
   return (
     <div className="home-trust-marquee-group" aria-hidden={decorative ? 'true' : undefined}>
       {brands.map((brand) => (
         <span
-          key={`${decorative ? 'dup' : 'live'}-${brand.id}`}
+          key={`${copyKey}-${brand.id}`}
           className="home-trust-brand"
           data-brand={brand.id}
         >
@@ -36,8 +36,7 @@ function TrustBrandGroup({ brands, decorative = false }) {
 
 /**
  * Trust strip — DOM order is label → brands.
- * Brands are fixed to the first viewport bottom until the in-flow slot catches them.
- * Logo track mirrors the marketing HTML marquee (duplicated group + translateX(-50%)).
+ * Seamless marquee: duplicate groups + pixel-exact translate (not -50%).
  */
 export default function HomeTrustBar({ label, copy }) {
   const { brands } = useHomeTrustBar(copy)
@@ -46,6 +45,63 @@ export default function HomeTrustBar({ label, copy }) {
   const trackRef = useRef(null)
   const rateFrameRef = useRef(0)
   const rateTargetRef = useRef(1)
+
+  useLayoutEffect(() => {
+    const track = trackRef.current
+    if (!track || !brands.length) return undefined
+
+    const firstGroup = track.querySelector('.home-trust-marquee-group')
+    if (!firstGroup) return undefined
+
+    let cancelled = false
+
+    const syncShift = () => {
+      if (cancelled) return
+      const width = Math.round(firstGroup.getBoundingClientRect().width)
+      if (width <= 0) return
+
+      const prev = Number.parseFloat(track.style.getPropertyValue('--trust-shift')) || 0
+      const alreadyReady = track.classList.contains('is-ready')
+      // Ignore sub-pixel noise; rewriting --trust-shift mid-loop causes a visible hitch.
+      if (alreadyReady && Math.abs(prev - width) < 1) return
+
+      track.classList.remove('is-ready')
+      track.style.setProperty('--trust-shift', `${width}px`)
+      // Restart from 0 so the keyframe distance matches the measured group width.
+      track.style.animation = 'none'
+      void track.offsetWidth
+      track.style.animation = ''
+      track.classList.add('is-ready')
+    }
+
+    const waitImages = async () => {
+      const images = [...track.querySelectorAll('img')]
+      await Promise.all(
+        images.map((img) => {
+          if (img.complete) return Promise.resolve()
+          return img.decode?.().catch(() => undefined) ??
+            new Promise((resolve) => {
+              img.addEventListener('load', resolve, { once: true })
+              img.addEventListener('error', resolve, { once: true })
+            })
+        }),
+      )
+      if (!cancelled) syncShift()
+    }
+
+    syncShift()
+    void waitImages()
+
+    const observer = new ResizeObserver(syncShift)
+    observer.observe(firstGroup)
+    window.addEventListener('resize', syncShift)
+
+    return () => {
+      cancelled = true
+      observer.disconnect()
+      window.removeEventListener('resize', syncShift)
+    }
+  }, [brands])
 
   useEffect(() => {
     const marquee = marqueeRef.current
@@ -97,7 +153,7 @@ export default function HomeTrustBar({ label, copy }) {
 
   return (
     <section className="home-trust-bar" aria-label={label}>
-      <div className="home-section-inner home-trust-bar-inner mx-auto w-full max-w-[1160px]">
+      <div className="home-trust-bar-inner w-full">
         {label ? <p className="home-trust-bar-label">{label}</p> : null}
 
         <div ref={slotRef} className="home-trust-brands-slot">
@@ -107,8 +163,9 @@ export default function HomeTrustBar({ label, copy }) {
           >
             <div ref={marqueeRef} className="home-trust-marquee" tabIndex={0}>
               <div ref={trackRef} className="home-trust-marquee-track">
-                <TrustBrandGroup brands={brands} />
-                <TrustBrandGroup brands={brands} decorative />
+                <TrustBrandGroup brands={brands} copyKey="a" />
+                <TrustBrandGroup brands={brands} decorative copyKey="b" />
+                <TrustBrandGroup brands={brands} decorative copyKey="c" />
               </div>
             </div>
           </div>

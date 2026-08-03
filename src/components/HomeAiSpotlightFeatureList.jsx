@@ -28,7 +28,7 @@ export default function HomeAiSpotlightFeatureList({ features = [], variant = 'd
                   </span>
                 ) : null}
               </span>
-              <ArrowUpRight className="home-ai-deck-feature-arrow" size={16} strokeWidth={2.25} aria-hidden="true" />
+              <ArrowUpRight className="home-ai-deck-feature-arrow" size={20} strokeWidth={1.75} aria-hidden="true" />
             </>
           )
 

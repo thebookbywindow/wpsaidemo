@@ -145,8 +145,8 @@ export default function HomeEntityCatalog({
                       <span className="home-hero-platform-label">{item.label}</span>
                       <ArrowUpRight
                         className="home-hero-platform-arrow"
-                        size={12}
-                        strokeWidth={2.25}
+                        size={16}
+                        strokeWidth={2}
                         aria-hidden="true"
                       />
                     </button>

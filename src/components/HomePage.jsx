@@ -6,6 +6,7 @@ import { useHomePageSeo } from '../hooks/useHomePageSeo'
 import { useHomeScrollTopOnMount } from '../hooks/useHomeScrollTopOnMount'
 import HomeDownloadSection from './HomeDownloadSection'
 import HomeEntityCatalog from './HomeEntityCatalog'
+import HomePlatformDownloads from './HomePlatformDownloads'
 import { flattenHomeFaqs } from '../utils/homeFaq'
 import HomeDiffStatValue from './HomeDiffStatValue'
 import { formatKeyFactStat, extractKeyFactHref } from '../utils/formatKeyFactStat'
@@ -195,6 +196,8 @@ export default function HomePage({
       <div className="hv2-proof hv2-section">
         <HomeMediaProof title={home.mediaProofTitle} tabsCopy={home.mediaProofTabs} />
       </div>
+
+      <HomePlatformDownloads copy={home.platformDownloads} />
 
       <div className="hv2-faq hv2-section">
         <HomeFaq title={home.faqTitle} faqTopics={home.faqTopics} />

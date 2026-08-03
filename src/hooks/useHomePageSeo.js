@@ -10,6 +10,7 @@ import {
   homeCanonicalUrl,
   toOgLocale,
 } from '../data/siteSeo'
+import { toBcp47Locale } from '../utils/localeUrl'
 
 const JSON_LD_ID = 'home-seo-graph'
 const HREFLANG_ATTR = 'data-home-hreflang'
@@ -222,7 +223,7 @@ export function useHomePageSeo({
   useEffect(() => {
     if (!enabled || typeof document === 'undefined') return undefined
 
-    const localeBcp47 = locale || DEFAULT_LOCALE_BCP47
+    const localeBcp47 = toBcp47Locale(locale || DEFAULT_LOCALE_BCP47) || DEFAULT_LOCALE_BCP47
     const pageUrl = homeCanonicalUrl(localeBcp47)
     const ogImage = `${SITE_ORIGIN}${HOME_OG_IMAGE_PATH}`
     const ogLocale = toOgLocale(localeBcp47)

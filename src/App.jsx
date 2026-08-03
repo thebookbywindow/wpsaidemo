@@ -1424,7 +1424,7 @@ const localeOptions = supportedLocales.map((item) => ({
 
 const worldwideLocales = supportedLocales.map((item) => ({
   bcp47: item.bcp47,
-  urlLocale: item.bcp47,
+  urlLocale: toUrlLocale(item.code),
   shortCode: item.short,
   nativeLabel: item.label,
 }))

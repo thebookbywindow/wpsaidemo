@@ -101,17 +101,18 @@ export const uiTextByLanguage = {
       },
     },
     home: {
-      // Hero / SEO: AI-first lead; download stays in desc / CTA / title tail
-      heroTitleLead: 'Create smarter & faster ',
-      heroTitleJoin: 'across',
+      // Hero / SEO — aligned to Figma AI-Web Homepage Simplified Concept
+      heroTitleLead: 'Create smarter ',
+      heroTitleJoin: 'for',
       // Mobile hero: shorter lead; join moves up beside lead
       heroTitleLeadMobile: 'Create smarter ',
       heroTitleJoinMobile: 'for',
-      heroTitleTail: 'With WPS AI — agentic AI for free office',
-      heroTitlePrefix: 'Create smarter & faster across ',
+      heroTitleTail: 'With WPS AI for free office',
+      heroTitlePrefix: 'Create smarter for ',
       heroTitle:
-        'Create smarter & faster across Copilot, Docs, Slides, Sheets, PDF, Photos, AirPage, AirSheet, Forms, DBSheet With WPS AI — agentic AI for free office',
-      heroDesc: 'Meet WPS Office — a better way to work, all in one place.',
+        'Create smarter for Docs, Slides, Sheets, PDF With WPS AI for free office',
+      heroDesc:
+        'Meet WPS Office — a better way to work, all in one place. Collaborate in real time and stay in sync across PC, mobile, and online.',
       // Entity: brand relationship only (not a product list)
       entityTitle: 'What is WPS AI?',
       entityAnswer:
@@ -123,6 +124,72 @@ export const uiTextByLanguage = {
           'One free download gives you Docs, PDF, Slides, and Sheets—with AI ready inside each workflow.',
         ctaLabel: 'Free Download',
       },
+      platformDownloads: {
+        title: 'Download WPS Office and Edit PDF',
+        titlePrefix: 'Download WPS Office',
+        titleSuffix: 'and Edit PDF',
+        summary:
+          'Download WPS Office to get more PDF management features such as OCR (image scanning and conversion), adding watermarks and e-signatures, and PDF to image conversion.',
+        forLabel: 'WPS Office for',
+        ctaLabel: 'Free Download',
+        downloadUrl: 'https://www.wps.com/download/',
+        cards: [
+          {
+            id: 'windows',
+            label: 'Windows',
+            href: 'https://www.wps.com/download/',
+            desc: 'Download WPS Office Desktop Editor to get a lightweight PDF tool that provides complete solutions for all PDF problems.',
+            meta: '5.3M / Feb 26 2025',
+          },
+          {
+            id: 'linux',
+            label: 'Linux',
+            href: 'https://www.wps.com/download/',
+            desc: 'WPS Office is a free office suite that supports Linux. Download the WPS Office app to access PDF tools anytime.',
+            menu: [
+              {
+                id: 'deb',
+                label: 'Deb Package',
+                href: 'https://www.wps.com/download/',
+                iconSrc: '/images/platforms/download.svg',
+              },
+              {
+                id: 'rpm',
+                label: 'Rpm Package',
+                href: 'https://www.wps.com/download/',
+                iconSrc: '/images/platforms/download.svg',
+              },
+            ],
+          },
+          {
+            id: 'mac',
+            label: 'Mac',
+            href: 'https://www.wps.com/download/',
+            desc: 'WPS Office, perfectly compatible with the macOS system on Mac, and supports Intel and Apple chips to help you edit PDFs easily.',
+            meta: '982KB / Feb 24 2025',
+          },
+          {
+            id: 'mobile',
+            label: 'Android & iOS',
+            desc: 'Google Play Best of 2015\nApp Store Best of 2015',
+            descVariant: 'awards',
+            menu: [
+              {
+                id: 'google-play',
+                label: 'Get it on Google Play',
+                href: 'https://play.google.com/store/apps/details?id=cn.wps.moffice_eng',
+                iconSrc: '/images/platforms/google-play.svg',
+              },
+              {
+                id: 'app-store',
+                label: 'Download on the AppStore',
+                href: 'https://apps.apple.com/app/id599791151',
+                iconSrc: '/images/platforms/appstore.svg',
+              },
+            ],
+          },
+        ],
+      },
       // Catalog: platforms + download links only
       catalogTitle: 'Available for',
       catalogSummary: 'Download WPS Office for Windows, Mac, Linux, iPad, iOS, and Android.',
@@ -131,9 +198,9 @@ export const uiTextByLanguage = {
       },
       // International AI feature directory (external official URLs)
       intlAiFeatures: {
-        title: 'WPS AI connected workflow',
+        title: 'Four tools. WPS AI connected workflow.',
         summary:
-          'The suite-wide Office Copilot inside free WPS Office for Docs, Spreadsheet, Presentation, and PDF.',
+          'Each product gets one clear story, one visual proof, and the AI actions that matter most.',
         pillars: {
           copilot: {
             label: 'Copilot',
@@ -438,9 +505,9 @@ export const uiTextByLanguage = {
         'WPS Office and WPS AI are products of Kingsoft Office Software (WPS). The suite provides free office apps for documents, spreadsheets, presentations, and PDF across desktop, mobile, and web.',
       aboutLinkLabel: 'Product encyclopedia',
       // High-intent internal links
-      intentLinksTitle: 'Popular WPS topics',
+      intentLinksTitle: 'See what WPS AI can finish for you.',
       intentLinksSub:
-        'A shortlist of the WPS workflows people come back to most — pick a topic and go.',
+        'Explore four real work moments. Each card starts with a familiar problem and shows the result WPS AI helps create.',
       intentLinks: {
         'pdf-extension': {
           label: 'PDF Extension for Chrome',
@@ -525,14 +592,14 @@ export const uiTextByLanguage = {
       compareDisclaimer:
         'Informational comparison only, based on publicly available product and pricing pages. Third-party product names are trademarks of their respective owners. Features, pricing, and availability vary by plan, platform, and region. Last updated: July 2026.',
       // Key facts: verifiable attributes (not definitions, not inventory)
-      keyFactsTitle: 'WPS at a glance',
+      keyFactsTitle: 'Trusted by teams. Proven in practice.',
       mediaProofTitle: 'Trusted by Experts & Proven by Users',
       mediaProofSummary:
         'Experience the shift from manual labor to intelligent creation. WPS software is your co-pilot for every task.',
       mediaProofTabs: {
-        kol: { name: 'KOL Videos', desc: 'What creators are saying' },
-        pr: { name: 'PR&Media', desc: 'Tech press and industry reviews' },
-        g2: { name: 'G2 Users', desc: 'Real feedback from daily users' },
+        kol: { name: 'WPS Office', desc: 'What creators are saying' },
+        pr: { name: 'All Tools', desc: 'Tech press and industry reviews' },
+        g2: { name: 'QR code', desc: 'Real feedback from daily users' },
       },
       keyFacts: [
         {
@@ -557,7 +624,7 @@ export const uiTextByLanguage = {
         },
       ],
       // FAQ: AI definitions first (GEO), then query-shaped SEO topics
-      faqTitle: 'Frequently asked questions',
+      faqTitle: 'Questions, organized by topic.',
       faqTopics: {
         ai: {
           label: 'WPS AI',
@@ -1002,6 +1069,72 @@ export const uiTextByLanguage = {
         description: '一次免费下载即可使用文字、PDF、演示与表格——各流程内置 AI。',
         ctaLabel: '免费下载',
       },
+      platformDownloads: {
+        title: '下载 WPS Office，轻松编辑 PDF',
+        titlePrefix: '下载 WPS Office',
+        titleSuffix: '轻松编辑 PDF',
+        summary:
+          '下载 WPS Office，获取更完整的 PDF 管理能力，例如 OCR（图片扫描与转换）、添加水印与电子签名，以及 PDF 转图片。',
+        forLabel: 'WPS Office for',
+        ctaLabel: '免费下载',
+        downloadUrl: 'https://www.wps.com/download/',
+        cards: [
+          {
+            id: 'windows',
+            label: 'Windows',
+            href: 'https://www.wps.com/download/',
+            desc: '下载 WPS Office 桌面版，获得轻量级 PDF 工具，覆盖常见 PDF 处理需求。',
+            meta: '5.3M / Feb 26 2025',
+          },
+          {
+            id: 'linux',
+            label: 'Linux',
+            href: 'https://www.wps.com/download/',
+            desc: 'WPS Office 免费支持 Linux。下载应用，随时使用 PDF 工具。',
+            menu: [
+              {
+                id: 'deb',
+                label: 'Deb Package',
+                href: 'https://www.wps.com/download/',
+                iconSrc: '/images/platforms/download.svg',
+              },
+              {
+                id: 'rpm',
+                label: 'Rpm Package',
+                href: 'https://www.wps.com/download/',
+                iconSrc: '/images/platforms/download.svg',
+              },
+            ],
+          },
+          {
+            id: 'mac',
+            label: 'Mac',
+            href: 'https://www.wps.com/download/',
+            desc: '完美兼容 macOS，支持 Intel 与 Apple 芯片，轻松编辑 PDF。',
+            meta: '982KB / Feb 24 2025',
+          },
+          {
+            id: 'mobile',
+            label: 'Android & iOS',
+            desc: 'Google Play Best of 2015\nApp Store Best of 2015',
+            descVariant: 'awards',
+            menu: [
+              {
+                id: 'google-play',
+                label: 'Get it on Google Play',
+                href: 'https://play.google.com/store/apps/details?id=cn.wps.moffice_eng',
+                iconSrc: '/images/platforms/google-play.svg',
+              },
+              {
+                id: 'app-store',
+                label: 'Download on the AppStore',
+                href: 'https://apps.apple.com/app/id599791151',
+                iconSrc: '/images/platforms/appstore.svg',
+              },
+            ],
+          },
+        ],
+      },
       // Catalog: 仅平台与下载入口
       catalogTitle: '支持平台',
       catalogSummary: '支持 Windows、Mac、Linux、iPad、iOS 与 Android，点击进入下载页。',
@@ -1009,9 +1142,8 @@ export const uiTextByLanguage = {
         platforms: '支持平台',
       },
       intlAiFeatures: {
-        title: 'WPS AI 连通工作流',
-        summary:
-          '免费 WPS Office 中的整套 Office Copilot，覆盖文字、表格、演示与 PDF。',
+        title: '四大工具，WPS AI 连通工作流。',
+        summary: '每个产品一条清晰故事、一张视觉证明，以及最关键的 AI 能力。',
         pillars: {
           copilot: {
             label: 'Copilot',
@@ -1306,9 +1438,9 @@ export const uiTextByLanguage = {
       aboutText:
         'WPS Office 与 WPS AI 由金山办公（WPS / Kingsoft Office）提供，覆盖文档、表格、演示与 PDF，支持桌面端、移动端与网页端免费使用入口。',
       aboutLinkLabel: '产品百科',
-      intentLinksTitle: '热门 WPS 话题',
+      intentLinksTitle: '看看 WPS AI 能为你完成什么。',
       intentLinksSub:
-        '精选大家最常回来的 WPS 工作流 —— 挑一个话题，直接开始。',
+        '探索四个真实工作场景。每张卡片从一个熟悉问题出发，展示 WPS AI 如何帮你完成结果。',
       intentLinks: {
         'pdf-extension': {
           label: 'Chrome PDF 扩展',
@@ -1391,14 +1523,14 @@ export const uiTextByLanguage = {
       compareDisclaimer:
         '本表仅供信息参考，依据各产品公开的产品页与定价页整理。第三方产品名称为其各自权利人的商标。功能、价格与可用性因套餐、平台和地区而异。最后更新：2026 年 7 月。',
       // Key facts: 可验证属性
-      keyFactsTitle: 'WPS 关键数据',
+      keyFactsTitle: '团队信赖，实践验证。',
       mediaProofTitle: '专家信赖 & 用户验证',
       mediaProofSummary:
         '从手工劳作到智能创作 —— WPS 软件是你每项任务的协同助手。',
       mediaProofTabs: {
-        kol: { name: 'KOL 视频', desc: '创作者怎么说' },
-        pr: { name: '媒体评测', desc: '科技媒体与行业评价' },
-        g2: { name: 'G2 用户', desc: '真实用户反馈' },
+        kol: { name: 'WPS Office', desc: '创作者怎么说' },
+        pr: { name: '全部工具', desc: '科技媒体与行业评价' },
+        g2: { name: '二维码', desc: '真实用户反馈' },
       },
       keyFacts: [
         {
@@ -1423,7 +1555,7 @@ export const uiTextByLanguage = {
         },
       ],
       // FAQ: AI 定义优先（GEO），再接检索型主题
-      faqTitle: '常见问题',
+      faqTitle: '按主题整理的问题。',
       faqTopics: {
         ai: {
           label: 'WPS AI',

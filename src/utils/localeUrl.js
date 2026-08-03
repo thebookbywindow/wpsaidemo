@@ -33,7 +33,13 @@ const LOCALE_ALIAS_MAP = {
   es: 'es-mx',
 }
 
+/** URL path segment — always lowercase (e.g. `en-us`, not `en-US`). */
 export function toUrlLocale(localeCode) {
+  return `${localeCode ?? ''}`.toLowerCase().replace(/_/g, '-')
+}
+
+/** BCP47 tag for html lang / hreflang / og (e.g. `en-US`). */
+export function toBcp47Locale(localeCode) {
   const normalized = `${localeCode ?? ''}`.toLowerCase().replace(/_/g, '-')
   return LOCALE_BCP47_BY_CODE[normalized] ?? localeCode
 }
