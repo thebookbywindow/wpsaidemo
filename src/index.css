@@ -881,7 +881,12 @@ body {
 
 .ency-highlight {
   background: #fff3c1;
-  padding: 0 2px;
+  padding: 0;
+  margin: 0;
+  border-radius: 2px;
+  font: inherit;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 .ency-empty {
@@ -8993,12 +8998,14 @@ a.home-ai-pillar-link:focus-visible {
 }
 
 .intl-ai-dir-link-mark {
-  padding: 0 2px;
+  padding: 0;
   margin: 0;
-  border-radius: 3px;
+  border-radius: 2px;
   background: rgba(243, 89, 206, 0.14);
   color: #d946a8;
-  font-weight: 600;
+  font: inherit;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 .intl-ai-dir-link:hover .intl-ai-dir-link-mark {
