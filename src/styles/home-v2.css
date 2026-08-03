@@ -201,6 +201,49 @@
   }
 }
 
+/* Compact = media mobile OR JS “nav doesn’t fit” → hamburger immediately */
+.home-v2 .home-page-header--compact .home-page-header-nav {
+  display: none !important;
+}
+
+.home-v2 .home-page-header--compact .home-page-header-mobile-controls {
+  display: flex !important;
+}
+
+.home-v2 .home-page-header--compact .home-page-header-actions {
+  display: flex !important;
+  margin-left: auto;
+  gap: 12px !important;
+}
+
+.home-v2 .home-page-header--compact .home-page-header-actions .hv2-nav__auth,
+.home-v2 .home-page-header--compact .home-page-header-actions .home-nav-trigger-button,
+.home-v2 .home-page-header--compact .home-page-header-mobile-signin {
+  display: none !important;
+}
+
+.home-v2 .home-page-header--compact .home-page-header-mobile-controls {
+  margin-left: 0;
+}
+
+.home-v2 .home-page-header--compact .hv2-nav__cta-full {
+  display: none;
+}
+
+.home-v2 .home-page-header--compact .hv2-nav__cta-short {
+  display: inline;
+}
+
+.home-v2 .home-page-header--compact .home-page-header-cta,
+.home-v2 .home-page-header--compact .hv2-nav__cta {
+  height: auto;
+  min-height: 26px !important;
+  padding: 6px 12px !important;
+  border-radius: 6px !important;
+  font-size: 12px !important;
+  line-height: 14px !important;
+}
+
 /* Official mobile trailing: compact Download CTA + burger; no Sign in */
 @media (max-width: 719.98px) {
   .home-v2 .home-page-header-actions {
@@ -209,7 +252,8 @@
     gap: 12px !important;
   }
 
-  .home-v2 .home-page-header-actions .hv2-nav__auth {
+  .home-v2 .home-page-header-actions .hv2-nav__auth,
+  .home-v2 .home-page-header-actions .home-nav-trigger-button {
     display: none !important;
   }
 
@@ -217,7 +261,7 @@
     display: none !important;
   }
 
-  .home-v2 .home-page-header-inner > .relative.ml-auto {
+  .home-v2 .home-page-header-inner > .home-page-header-mobile-controls {
     margin-left: 0;
   }
 

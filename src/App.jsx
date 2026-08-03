@@ -2028,6 +2028,10 @@ function App() {
   /** Mobile drawer: which parent nav key is expanded (null = all collapsed). */
   const [mobileNavExpandedKey, setMobileNavExpandedKey] = useState(null)
   const [visibleDesktopNavCount, setVisibleDesktopNavCount] = useState(0)
+  /** True when center nav cannot fit — switch to hamburger (no squeezed desktop links). */
+  const [isCompactNav, setIsCompactNav] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(max-width: 719.98px)').matches,
+  )
   const [allTemplatesTab, setAllTemplatesTab] = useState('category')
   const [activeGuideCategory, setActiveGuideCategory] = useState('all')
   const [activeTemplateFilter, setActiveTemplateFilter] = useState('All')
@@ -2049,8 +2053,11 @@ function App() {
   const langMenuRef = useRef(null)
   const mobileMenuButtonRef = useRef(null)
   const mobileMenuPanelRef = useRef(null)
+  const headerInnerRef = useRef(null)
+  const headerBrandRef = useRef(null)
   const desktopNavRef = useRef(null)
   const desktopNavMeasureRef = useRef(null)
+  const desktopActionsWidthRef = useRef(300)
   const desktopMenuCloseTimeoutRef = useRef({
     products: 0,
     'wps-features': 0,
@@ -3027,14 +3034,19 @@ function App() {
       uiText.nav.wpsFeatures,
     ],
   )
-  const visibleDesktopNavItems = desktopMainNavItems.slice(0, visibleDesktopNavCount)
-  const overflowDesktopNavItems = desktopMainNavItems.slice(visibleDesktopNavCount)
+  const visibleDesktopNavItems = isCompactNav
+    ? []
+    : desktopMainNavItems.slice(0, visibleDesktopNavCount)
+  const overflowDesktopNavItems = isCompactNav
+    ? []
+    : desktopMainNavItems.slice(visibleDesktopNavCount)
   const isDesktopNavOverflowActive = overflowDesktopNavItems.some((item) => item.isCurrent)
 
   useLayoutEffect(() => {
-    const navNode = desktopNavRef.current
+    const innerNode = headerInnerRef.current
+    const brandNode = headerBrandRef.current
     const measureNode = desktopNavMeasureRef.current
-    if (!navNode || !measureNode) {
+    if (!innerNode || !brandNode || !measureNode) {
       return undefined
     }
 
@@ -3042,55 +3054,50 @@ function App() {
       measureNode.querySelector(`[data-nav-measure="${key}"]`)?.getBoundingClientRect().width ?? 0
 
     let frameId = 0
-    const calculateVisibleNavCount = () => {
-      const availableWidth = navNode.clientWidth
-      if (!availableWidth) {
-        setVisibleDesktopNavCount(0)
-        return
+    const calculateCompactNav = () => {
+      const brandWidth = brandNode.getBoundingClientRect().width
+      const measuredActionsWidth = readMeasuredWidth('desktop-actions')
+      if (measuredActionsWidth > 0) {
+        desktopActionsWidthRef.current = measuredActionsWidth
       }
 
       const navWidths = desktopMainNavItems.map((item) =>
         readMeasuredWidth(`desktop-nav-${item.key}`),
       )
-      const overflowWidth = readMeasuredWidth('desktop-nav-overflow')
       const gapWidth = 2
-      const fitsWithVisibleNavCount = (count) => {
-        const hasOverflow = count < desktopMainNavItems.length
-        const itemCount = count + (hasOverflow ? 1 : 0)
-        const visibleNavWidth = navWidths.slice(0, count).reduce((sum, width) => sum + width, 0)
-        const totalWidth =
-          visibleNavWidth
-          + (hasOverflow ? overflowWidth : 0)
-          + Math.max(0, itemCount - 1) * gapWidth
+      const innerGap = 24
+      const fullNavWidth =
+        navWidths.reduce((sum, width) => sum + width, 0)
+        + Math.max(0, desktopMainNavItems.length - 1) * gapWidth
+      const actionsWidth = desktopActionsWidthRef.current
+      const availableForNav =
+        innerNode.clientWidth - brandWidth - actionsWidth - innerGap * 2
+      const mediaCompact = window.matchMedia('(max-width: 719.98px)').matches
+      const nextCompact =
+        mediaCompact
+        || availableForNav < 8
+        || fullNavWidth > availableForNav - 8
 
-        return totalWidth <= availableWidth - 8
-      }
-
-      let nextVisibleCount = desktopMainNavItems.length
-      while (nextVisibleCount > 0 && !fitsWithVisibleNavCount(nextVisibleCount)) {
-        nextVisibleCount -= 1
-      }
-      if (!fitsWithVisibleNavCount(nextVisibleCount)) {
-        nextVisibleCount = 0
-      }
-
-      if (nextVisibleCount >= desktopMainNavItems.length) {
+      setIsCompactNav((prev) => (prev === nextCompact ? prev : nextCompact))
+      const nextVisibleCount = nextCompact ? 0 : desktopMainNavItems.length
+      setVisibleDesktopNavCount((prev) => (prev === nextVisibleCount ? prev : nextVisibleCount))
+      if (nextCompact) {
         setIsOverflowMenuOpen(false)
       }
-
-      setVisibleDesktopNavCount((prev) => (prev === nextVisibleCount ? prev : nextVisibleCount))
     }
 
     const scheduleMeasurement = () => {
       window.cancelAnimationFrame(frameId)
-      frameId = window.requestAnimationFrame(calculateVisibleNavCount)
+      frameId = window.requestAnimationFrame(calculateCompactNav)
     }
 
     scheduleMeasurement()
 
     const resizeObserver =
       typeof ResizeObserver === 'function' ? new ResizeObserver(scheduleMeasurement) : null
-    resizeObserver?.observe(navNode)
+    resizeObserver?.observe(innerNode)
+    resizeObserver?.observe(brandNode)
+    resizeObserver?.observe(measureNode)
     window.addEventListener('resize', scheduleMeasurement)
 
     return () => {
@@ -3099,6 +3106,18 @@ function App() {
       window.removeEventListener('resize', scheduleMeasurement)
     }
   }, [desktopMainNavItems])
+
+  useEffect(() => {
+    if (isCompactNav) {
+      setIsProductsMenuOpen(false)
+      setIsWpsFeaturesMenuOpen(false)
+      setIsTemplatesMenuOpen(false)
+      setIsOverflowMenuOpen(false)
+      return
+    }
+    setIsMobileMenuOpen(false)
+    setMobileNavExpandedKey(null)
+  }, [isCompactNav])
 
   const encyclopediaLocale = resolveEncyclopediaLocale(currentLocale)
   const encyclopediaUiBase =
@@ -3695,9 +3714,12 @@ function App() {
 
   return (
     <div className="home-figma-page home-v2 min-h-screen overflow-x-clip text-[#0d0d0d]">
-      <header className={`sticky top-0 z-20 hv2-nav hv2-chrome home-page-header${isDesktopMegaMenuOpen ? ' home-page-header--mega-open' : ''}`}>
-        <div className="home-page-header-inner hv2-nav__inner relative mx-auto flex h-[62px] w-full max-w-[1200px] items-center">
-          <div className="flex shrink-0 items-center justify-start">
+      <header className={`sticky top-0 z-20 hv2-nav hv2-chrome home-page-header${isDesktopMegaMenuOpen ? ' home-page-header--mega-open' : ''}${isCompactNav ? ' home-page-header--compact' : ''}`}>
+        <div
+          ref={headerInnerRef}
+          className="home-page-header-inner hv2-nav__inner relative mx-auto flex h-[62px] w-full max-w-[1200px] items-center"
+        >
+          <div ref={headerBrandRef} className="flex shrink-0 items-center justify-start">
             <a
               className="hv2-nav__brand flex shrink-0 items-center whitespace-nowrap"
               aria-label="WPS AI home"
@@ -3816,7 +3838,7 @@ function App() {
           <div
             ref={desktopNavMeasureRef}
             aria-hidden="true"
-            className="pointer-events-none invisible absolute left-0 top-0 -z-10 hidden h-0 items-center gap-[2px] overflow-hidden whitespace-nowrap min-[720px]:flex"
+            className="pointer-events-none invisible absolute left-0 top-0 -z-10 flex h-0 items-center gap-[2px] overflow-hidden whitespace-nowrap"
           >
             {desktopMainNavItems.map((item) => (
               <span
@@ -3856,6 +3878,18 @@ function App() {
                     strokeLinejoin="round"
                   />
                 </svg>
+              </span>
+            </span>
+            <span
+              data-nav-measure="desktop-actions"
+              className="inline-flex shrink-0 items-center justify-end gap-3 whitespace-nowrap"
+            >
+              <span className="inline-flex h-[23px] w-[23px] shrink-0" />
+              <span className="inline-flex h-[36px] items-center rounded-full px-5 text-[14px] font-semibold">
+                {uiText.nav.getStartedFree}
+              </span>
+              <span className="inline-flex h-[36px] items-center px-3 text-[14px] font-medium">
+                {uiText.nav.signIn}
               </span>
             </span>
           </div>
@@ -3923,7 +3957,10 @@ function App() {
               </button>
             </div>
           </div>
-          <div className="relative ml-auto flex shrink-0 items-center gap-2 min-[720px]:hidden" ref={mobileMenuButtonRef}>
+          <div
+            className="home-page-header-mobile-controls relative ml-auto flex shrink-0 items-center gap-2 min-[720px]:hidden"
+            ref={mobileMenuButtonRef}
+          >
             <button
               className="home-page-header-mobile-signin inline-flex shrink-0 rounded-[8px] px-3 py-2 text-[13px] font-medium text-[#4a5568] transition hover:bg-[#f1efe8] hover:text-[#1a202c]"
               type="button"
@@ -3971,7 +4008,7 @@ function App() {
       {isMobileMenuOpen && (
         <div
           ref={mobileMenuPanelRef}
-          className="fixed inset-x-0 bottom-0 top-[60px] z-30 border-t border-[#e2e8f0] bg-white shadow-[0_16px_36px_rgba(15,23,42,0.12)] min-[720px]:hidden"
+          className={`fixed inset-x-0 bottom-0 top-[60px] z-30 border-t border-[#e2e8f0] bg-white shadow-[0_16px_36px_rgba(15,23,42,0.12)]${isCompactNav ? '' : ' min-[720px]:hidden'}`}
         >
           <div className="h-full overflow-y-auto px-3 py-2">
             <nav className="home-mobile-nav" aria-label={uiText.nav.menu}>
