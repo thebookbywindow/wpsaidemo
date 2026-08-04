@@ -125,11 +125,11 @@ export const uiTextByLanguage = {
         ctaLabel: 'Free Download',
       },
       platformDownloads: {
-        title: 'Download WPS Office and Edit PDF',
-        titlePrefix: 'Download WPS Office',
-        titleSuffix: 'and Edit PDF',
+        title: 'WPS Office for Every Device',
+        titlePrefix: 'WPS Office for Every Device',
+        titleSuffix: '',
         summary:
-          'Download WPS Office to get more PDF management features such as OCR (image scanning and conversion), adding watermarks and e-signatures, and PDF to image conversion.',
+          'Free on Windows, Mac, Linux, Android, and iOS. One install gives you Writer, Spreadsheet, Presentation, and PDF — each with AI writing, slide design, data analysis, and Chat PDF built in.',
         forLabel: 'WPS Office for',
         ctaLabel: 'Free Download',
         downloadUrl: 'https://www.wps.com/download/',
@@ -1069,11 +1069,11 @@ export const uiTextByLanguage = {
         ctaLabel: '免费下载',
       },
       platformDownloads: {
-        title: '下载 WPS Office，轻松编辑 PDF',
-        titlePrefix: '下载 WPS Office',
-        titleSuffix: '轻松编辑 PDF',
+        title: 'WPS Office 全平台下载',
+        titlePrefix: 'WPS Office 全平台下载',
+        titleSuffix: '',
         summary:
-          '下载 WPS Office，获取更完整的 PDF 管理能力，例如 OCR（图片扫描与转换）、添加水印与电子签名，以及 PDF 转图片。',
+          '支持 Windows、Mac、Linux、Android 与 iOS。一次安装即可使用文字、表格、演示与 PDF —— 各应用内置 AI 写作、幻灯片设计、数据分析与 Chat PDF。',
         forLabel: 'WPS Office for',
         ctaLabel: '免费下载',
         downloadUrl: 'https://www.wps.com/download/',
