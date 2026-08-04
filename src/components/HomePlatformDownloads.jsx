@@ -167,7 +167,6 @@ export default function HomePlatformDownloads({ copy }) {
                           : card.desc}
                       </p>
                     ) : null}
-                    {card.meta ? <p className="meta">{card.meta}</p> : null}
                   </div>
                 </div>
 

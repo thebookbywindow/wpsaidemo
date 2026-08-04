@@ -139,7 +139,6 @@ export const uiTextByLanguage = {
             label: 'Windows',
             platform: 'windows',
             desc: 'Download WPS Office Desktop Editor to get a lightweight PDF tool that provides complete solutions for all PDF problems.',
-            meta: '5.3M / Feb 26 2025',
           },
           {
             id: 'linux',
@@ -165,7 +164,6 @@ export const uiTextByLanguage = {
             label: 'Mac',
             platform: 'mac',
             desc: 'WPS Office, perfectly compatible with the macOS system on Mac, and supports Intel and Apple chips to help you edit PDFs easily.',
-            meta: '982KB / Feb 24 2025',
           },
           {
             id: 'mobile',
@@ -1083,7 +1081,6 @@ export const uiTextByLanguage = {
             label: 'Windows',
             platform: 'windows',
             desc: '下载 WPS Office 桌面版，获得轻量级 PDF 工具，覆盖常见 PDF 处理需求。',
-            meta: '5.3M / Feb 26 2025',
           },
           {
             id: 'linux',
@@ -1109,7 +1106,6 @@ export const uiTextByLanguage = {
             label: 'Mac',
             platform: 'mac',
             desc: '完美兼容 macOS，支持 Intel 与 Apple 芯片，轻松编辑 PDF。',
-            meta: '982KB / Feb 24 2025',
           },
           {
             id: 'mobile',
