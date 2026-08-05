@@ -138,12 +138,12 @@ export const uiTextByLanguage = {
             id: 'windows',
             label: 'Windows',
             platform: 'windows',
-            desc: 'Free WPS Office for Windows 11/10/8 — MS Office–compatible, lightweight install with WPS AI Copilot, AI Writer, AI slides, and Chat PDF.',
+            desc: 'Free WPS Office for Windows 11/10/8 — MS Office–compatible. Featuring Data Analyst for spreadsheet insights, plus WPS AI Copilot, AI writing, slide design, and Chat PDF.',
           },
           {
             id: 'linux',
             label: 'Linux',
-            desc: 'Free WPS Office for Linux (.deb & .rpm) on Ubuntu, CentOS, and Deepin — WPS AI Copilot, AI writing, and Chat PDF in one suite.',
+            desc: 'Free WPS Office for Linux (.deb & .rpm) on Ubuntu, CentOS, and Deepin. Featuring WPS AI Copilot across the full suite, plus AI writing, slide design, data analysis, and Chat PDF.',
             menu: [
               {
                 id: 'deb',
@@ -163,12 +163,12 @@ export const uiTextByLanguage = {
             id: 'mac',
             label: 'Mac',
             platform: 'mac',
-            desc: 'Native WPS Office for Mac — Apple Silicon (M1–M4) and Intel with WPS AI Copilot, AI slide design, and Chat PDF built in.',
+            desc: 'Native WPS Office for Mac — Apple Silicon (M1–M4) and Intel. Featuring AI slide design for one-click decks, plus WPS AI Copilot, AI writing, data analysis, and Chat PDF.',
           },
           {
             id: 'mobile',
             label: 'Android & iOS',
-            desc: 'WPS Office for Android and iOS — edit on the go with cloud sync, WPS AI drafting, slide design, and Chat PDF on mobile.',
+            desc: 'WPS Office for Android and iOS — edit on the go with cloud sync. Featuring Chat PDF for mobile reading, plus WPS AI Copilot, AI writing, slide design, and data analysis.',
             menu: [
               {
                 id: 'google-play',
@@ -1079,12 +1079,12 @@ export const uiTextByLanguage = {
             id: 'windows',
             label: 'Windows',
             platform: 'windows',
-            desc: 'Windows 11/10/8 免费下载 WPS Office — 轻量安装，兼容 Microsoft Office，内置 WPS AI Copilot、AI 写作与 Chat PDF。',
+            desc: 'Windows 11/10/8 免费下载 — 轻量安装，兼容 Microsoft Office。主打数据分析，表格对话与洞察，另含 WPS AI Copilot、AI 写作、幻灯片设计与 Chat PDF。',
           },
           {
             id: 'linux',
             label: 'Linux',
-            desc: 'Linux 免费版（.deb / .rpm）— 支持 Ubuntu、CentOS、Deepin，含文字、表格、演示、PDF 与 WPS AI Copilot。',
+            desc: 'Linux 免费版（.deb / .rpm），支持 Ubuntu、CentOS、Deepin。主打 WPS AI Copilot 全套件 AI 助手，另含 AI 写作、幻灯片设计、数据分析与 Chat PDF。',
             menu: [
               {
                 id: 'deb',
@@ -1104,12 +1104,12 @@ export const uiTextByLanguage = {
             id: 'mac',
             label: 'Mac',
             platform: 'mac',
-            desc: 'Mac 原生支持 Apple 芯片（M1–M4）与 Intel — 免费 WPS Office，内置 WPS AI Copilot、AI 幻灯片与 Chat PDF。',
+            desc: 'Mac 原生支持 Apple 芯片（M1–M4）与 Intel。主打 AI 幻灯片设计，一键生成演示，另含 WPS AI Copilot、AI 写作、数据分析与 Chat PDF。',
           },
           {
             id: 'mobile',
             label: 'Android & iOS',
-            desc: 'Android 与 iOS 移动版 WPS Office — 云端同步，随时随地编辑，WPS AI 起草、幻灯片与 Chat PDF。',
+            desc: 'Android 与 iOS 移动版，云端同步随时编辑。主打 Chat PDF 移动阅读与问答，另含 WPS AI Copilot、AI 写作、幻灯片设计与数据分析。',
             menu: [
               {
                 id: 'google-play',
