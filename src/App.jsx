@@ -1534,6 +1534,9 @@ const toolRootSet = new Set(
 )
 const templateLibraryRootSet = new Set(['resume-templates', 'presentation-templates'])
 
+const WPS_AI_FEATURES_ROUTE = 'wps-ai-features'
+const LEGACY_AI_FEATURES_ROUTE = 'ai-features'
+
 const localeSet = new Set(supportedLocales.map((item) => item.code))
 const rootPageSet = new Set(['search', 'sitemap.xml'])
 const contentRootSet = new Set([
@@ -1550,7 +1553,7 @@ const contentRootSet = new Set([
   'download',
   'all-products',
   'all-templates',
-  'ai-features',
+  'wps-ai-features',
   'worldwide',
   'answers',
 ])
@@ -1572,6 +1575,13 @@ function splitPath(pathname) {
   return { locale: 'en-us', normalizedSegments: segments }
 }
 
+function normalizeRouteSegments(segments) {
+  if (segments[0] === LEGACY_AI_FEATURES_ROUTE) {
+    return [WPS_AI_FEATURES_ROUTE, ...segments.slice(1)]
+  }
+  return segments
+}
+
 function getCanonicalLocalizedPath(pathname, fallbackLocale = 'en-us') {
   const segments = pathname.split('/').filter(Boolean)
   if (segments.length === 0) {
@@ -1584,7 +1594,7 @@ function getCanonicalLocalizedPath(pathname, fallbackLocale = 'en-us') {
     if (segments.length === 1) {
       return joinPath(urlLocale)
     }
-    const innerSegments = segments.slice(1)
+    const innerSegments = normalizeRouteSegments(segments.slice(1))
     if (!innerSegments.length) {
       return joinPath(urlLocale)
     }
@@ -1599,7 +1609,7 @@ function getCanonicalLocalizedPath(pathname, fallbackLocale = 'en-us') {
   }
 
   if (contentRootSet.has(segments[0]) || toolRootSet.has(segments[0])) {
-    return joinPath(toUrlLocale(fallbackLocale), ...segments)
+    return joinPath(toUrlLocale(fallbackLocale), ...normalizeRouteSegments(segments))
   }
 
   return null
@@ -1672,7 +1682,8 @@ function resolveTemplateTargetPath(path, locale) {
 
 function buildLocalizedPath(targetLocale, sourcePathname = window.location.pathname) {
   const { search, hash } = window.location
-  const { normalizedSegments } = splitPath(sourcePathname)
+  const { normalizedSegments: rawSegments } = splitPath(sourcePathname)
+  const normalizedSegments = normalizeRouteSegments(rawSegments)
 
   if (normalizedSegments.length === 0) {
     return joinPath(toUrlLocale(targetLocale))
@@ -1720,7 +1731,10 @@ function getPageType(pathname) {
   if (normalizedSegments[0] === 'all-templates') {
     return 'all-templates'
   }
-  if (normalizedSegments[0] === 'ai-features') {
+  if (
+    normalizedSegments[0] === WPS_AI_FEATURES_ROUTE
+    || normalizedSegments[0] === LEGACY_AI_FEATURES_ROUTE
+  ) {
     return 'ai-features'
   }
   if (normalizedSegments[0] === 'worldwide') {
@@ -1798,7 +1812,7 @@ function getLocaleAllTemplatesPath(locale) {
 }
 
 function getLocaleAiFeaturesPath(locale) {
-  return joinPath(toUrlLocale(locale), 'ai-features')
+  return joinPath(toUrlLocale(locale), WPS_AI_FEATURES_ROUTE)
 }
 
 function getLocaleWorldwidePath(locale) {

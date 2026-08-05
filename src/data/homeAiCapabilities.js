@@ -95,7 +95,7 @@ export const HOME_AI_PILLARS = Object.freeze([
 /** Core homepage AI tabs — Docs / PDF / Slides / Sheets. */
 export const HOME_AI_CORE_PILLAR_IDS = Object.freeze(['docs', 'pdf', 'slides', 'sheets'])
 
-/** Build /ai-features anchor for a homepage pillar card. */
+/** Build /wps-ai-features anchor for a homepage pillar card. */
 export function getHomeAiPillarDirectoryHref(localeAiFeaturesPath, directoryGroupId) {
   if (!localeAiFeaturesPath || !directoryGroupId) return null
   return `${localeAiFeaturesPath}#intl-ai-group-${directoryGroupId}`
