@@ -1,7 +1,7 @@
 export const uiTextByLanguage = {
   en: {
     nav: {
-      wpsFeatures: 'WPS Features',
+      wpsFeatures: 'WPS AI Features',
       freeAiTools: 'Free AI Tools',
       products: 'Products',
       templates: 'Templates',
