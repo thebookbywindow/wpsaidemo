@@ -4007,6 +4007,7 @@ function App() {
                     item.type === 'products'
                       ? freeAiToolsHeaderMegaMenu.groups
                       : wpsFeaturesHeaderMegaMenu.groups
+                  const hasDirectoryRoute = item.type === 'wps-features' && Boolean(item.path)
 
                   return (
                     <div key={`mobile-${item.key}`} className="home-mobile-nav__section">
@@ -4050,9 +4051,9 @@ function App() {
                               })}
                             </div>
                           ))}
-                          {item.type === 'wps-features' ? (
+                          {hasDirectoryRoute ? (
                             <a
-                              className="home-mobile-nav__link"
+                              className="home-mobile-nav__link home-mobile-nav__link--panel-cta"
                               href={item.path}
                               onClick={(event) => {
                                 event.preventDefault()
@@ -4101,28 +4102,25 @@ function App() {
               })}
             </nav>
             <div className="home-mobile-nav__footer">
-              <p className="home-mobile-nav__footer-label">{uiText.nav.language}</p>
-              <div className="grid grid-cols-2 gap-1 px-1">
-                {localeOptions.map((item) => (
-                  <button
-                    key={`mobile-locale-${item.code}`}
-                    type="button"
-                    className={`home-mobile-nav__link flex items-center gap-2 text-left ${
-                      currentLocale === item.code ? 'is-active' : ''
-                    }`}
-                    onClick={() => handleLocaleSelect(item.code)}
-                  >
-                    <span className="w-6 shrink-0 text-[12px] font-medium text-[#737373]">
-                      {item.short}
-                    </span>
-                    <span className="truncate text-[14px]">{item.label}</span>
-                  </button>
-                ))}
-              </div>
-              <div className="mt-3 flex justify-end px-1">
+              <label className="home-mobile-nav__footer-label" htmlFor="mobile-nav-locale-select">
+                {uiText.nav.language}
+              </label>
+              <div className="home-mobile-nav__footer-row px-3">
+                <select
+                  id="mobile-nav-locale-select"
+                  className="home-mobile-nav__locale-select"
+                  value={currentLocale}
+                  onChange={(event) => handleLocaleSelect(event.target.value)}
+                >
+                  {localeOptions.map((item) => (
+                    <option key={`mobile-locale-${item.code}`} value={item.code}>
+                      {`${item.short} ${item.label}`}
+                    </option>
+                  ))}
+                </select>
                 <a
                   href={localeLocalePath}
-                  className="text-[13px] font-semibold text-[#8f5bff] transition hover:text-[#7348e6] hover:underline"
+                  className="home-mobile-nav__locale-link"
                   onClick={(event) => {
                     event.preventDefault()
                     setIsMobileMenuOpen(false)
