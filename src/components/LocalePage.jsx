@@ -40,7 +40,7 @@ function LocaleLink({ item, query, navigateTo }) {
   )
 }
 
-function LocaleRegionGroup({ group, isFirst, query, navigateTo }) {
+function LocaleLanguageGroup({ group, isFirst, query, navigateTo }) {
   if (!group?.items?.length) return null
 
   return (
@@ -48,9 +48,11 @@ function LocaleRegionGroup({ group, isFirst, query, navigateTo }) {
       id={`${LOCALE_GROUP_ID_PREFIX}${group.id}`}
       className={`intl-ai-dir-group${isFirst ? '' : ' is-divided'}`}
     >
-      <h2 className="intl-ai-dir-group-title">
-        <span>{group.title}</span>
-      </h2>
+      {group.title ? (
+        <h2 className="intl-ai-dir-group-title">
+          <span>{group.title}</span>
+        </h2>
+      ) : null}
       <div className="intl-ai-dir-list">
         {group.items.map((item) => (
           <LocaleLink key={item.id} item={item} query={query} navigateTo={navigateTo} />
@@ -61,14 +63,11 @@ function LocaleRegionGroup({ group, isFirst, query, navigateTo }) {
 }
 
 /**
- * Locale picker — layout aligned with WPS AI features directory; grouped by region.
+ * Locale picker — grouped by language (native language names, no regional geopolitical buckets).
  */
 export default function LocalePage({ contentLanguage, navigateTo }) {
   const copy = resolveLocalePageText(contentLanguage)
-  const groups = useMemo(
-    () => buildLocalePageGroups(copy.groupTitles),
-    [copy.groupTitles],
-  )
+  const groups = useMemo(() => buildLocalePageGroups(), [])
   const { query, setQuery, clearQuery, filteredGroups, isEmpty } =
     useIntlAiFeaturesSearch(groups)
 
@@ -125,7 +124,7 @@ export default function LocalePage({ contentLanguage, navigateTo }) {
               </p>
             ) : (
               filteredGroups.map((group, index) => (
-                <LocaleRegionGroup
+                <LocaleLanguageGroup
                   key={group.id}
                   group={group}
                   isFirst={index === 0}

@@ -1,6 +1,9 @@
+/** Locale picker H1 — fixed copy in all UI languages. */
+export const LOCALE_PAGE_H1 = '选择你的国家/地区和语言'
+
 const groupTitlesEn = {
   globalEnglish: 'Global English',
-  greaterChina: 'Greater China',
+  chinaHongKong: 'China Hong Kong',
   latinAmerica: 'Latin America',
   westernEurope: 'Western Europe',
   southeastAsia: 'Southeast Asia',
@@ -26,7 +29,7 @@ export const localePageTextByLanguage = {
     searchClearLabel: '清除搜索',
     groupTitles: {
       globalEnglish: '全球英语',
-      greaterChina: '大中华区',
+      chinaHongKong: '中国香港',
       latinAmerica: '拉丁美洲',
       westernEurope: '西欧',
       southeastAsia: '东南亚',
@@ -42,7 +45,7 @@ export const localePageTextByLanguage = {
     searchClearLabel: '清除搜尋',
     groupTitles: {
       globalEnglish: '全球英語',
-      greaterChina: '大中華區',
+      chinaHongKong: '中國香港',
       latinAmerica: '拉丁美洲',
       westernEurope: '西歐',
       southeastAsia: '東南亞',
@@ -58,7 +61,7 @@ export const localePageTextByLanguage = {
     searchClearLabel: 'Borrar búsqueda',
     groupTitles: {
       globalEnglish: 'Inglés global',
-      greaterChina: 'Gran China',
+      chinaHongKong: 'China Hong Kong',
       latinAmerica: 'América Latina',
       westernEurope: 'Europa occidental',
       southeastAsia: 'Sudeste asiático',
@@ -74,7 +77,7 @@ export const localePageTextByLanguage = {
     searchClearLabel: 'Limpar pesquisa',
     groupTitles: {
       globalEnglish: 'Inglês global',
-      greaterChina: 'Grande China',
+      chinaHongKong: 'China Hong Kong',
       latinAmerica: 'América Latina',
       westernEurope: 'Europa Ocidental',
       southeastAsia: 'Sudeste Asiático',
@@ -90,7 +93,7 @@ export const localePageTextByLanguage = {
     searchClearLabel: 'Effacer la recherche',
     groupTitles: {
       globalEnglish: 'Anglais international',
-      greaterChina: 'Grande Chine',
+      chinaHongKong: 'China Hong Kong',
       latinAmerica: 'Amérique latine',
       westernEurope: 'Europe occidentale',
       southeastAsia: 'Asie du Sud-Est',
@@ -106,7 +109,7 @@ export const localePageTextByLanguage = {
     searchClearLabel: 'Hapus pencarian',
     groupTitles: {
       globalEnglish: 'Inggris global',
-      greaterChina: 'Tiongkok Raya',
+      chinaHongKong: 'China Hong Kong',
       latinAmerica: 'Amerika Latin',
       westernEurope: 'Eropa Barat',
       southeastAsia: 'Asia Tenggara',
@@ -122,7 +125,7 @@ export const localePageTextByLanguage = {
     searchClearLabel: 'Xóa tìm kiếm',
     groupTitles: {
       globalEnglish: 'Tiếng Anh toàn cầu',
-      greaterChina: 'Đại Trung Hoa',
+      chinaHongKong: 'China Hong Kong',
       latinAmerica: 'Mỹ Latinh',
       westernEurope: 'Tây Âu',
       southeastAsia: 'Đông Nam Á',
@@ -138,7 +141,7 @@ export const localePageTextByLanguage = {
     searchClearLabel: 'Aramayı temizle',
     groupTitles: {
       globalEnglish: 'Küresel İngilizce',
-      greaterChina: 'Büyük Çin',
+      chinaHongKong: 'China Hong Kong',
       latinAmerica: 'Latin Amerika',
       westernEurope: 'Batı Avrupa',
       southeastAsia: 'Güneydoğu Asya',
@@ -154,7 +157,7 @@ export const localePageTextByLanguage = {
     searchClearLabel: 'Очистить поиск',
     groupTitles: {
       globalEnglish: 'Глобальный английский',
-      greaterChina: 'Большой Китай',
+      chinaHongKong: 'China Hong Kong',
       latinAmerica: 'Латинская Америка',
       westernEurope: 'Западная Европа',
       southeastAsia: 'Юго-Восточная Азия',
@@ -170,7 +173,7 @@ export const localePageTextByLanguage = {
     searchClearLabel: 'ล้างการค้นหา',
     groupTitles: {
       globalEnglish: 'ภาษาอังกฤษทั่วโลก',
-      greaterChina: 'จีนใหญ่',
+      chinaHongKong: 'China Hong Kong',
       latinAmerica: 'Latin America',
       westernEurope: 'ยุโรปตะวันตก',
       southeastAsia: 'เอเชียตะวันออกเฉียงใต้',
@@ -180,5 +183,6 @@ export const localePageTextByLanguage = {
 }
 
 export function resolveLocalePageText(contentLanguage = 'en') {
-  return localePageTextByLanguage[contentLanguage] ?? localePageTextByLanguage.en
+  const copy = localePageTextByLanguage[contentLanguage] ?? localePageTextByLanguage.en
+  return { ...copy, pageTitle: LOCALE_PAGE_H1 }
 }

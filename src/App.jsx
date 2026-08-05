@@ -3907,7 +3907,7 @@ function App() {
                     </button>
                   ))}
                 </div>
-                <div className="home-nav-locale-panel__footer mt-3 flex justify-end border-t border-[#f0ecf8] pt-3">
+                <div className="home-nav-locale-panel__footer mt-3 flex justify-end pt-3">
                   <a
                     href={localeLocalePath}
                     className="home-nav-locale-panel-link text-[12px] font-semibold text-[#8f5bff] transition hover:text-[#7348e6] hover:underline"
@@ -4151,7 +4151,10 @@ function App() {
             contentLanguage={contentLanguage}
           />
         ) : pageType === 'ai-features' ? (
-          <IntlAiFeaturesPage copy={uiText.home.intlAiFeatures} />
+          <IntlAiFeaturesPage
+            copy={uiText.home.intlAiFeatures}
+            locale={currentUrlLocale || contentLanguage}
+          />
         ) : pageType === 'docs-center' ? (
           <DocsCenterPage
             currentLocale={currentLocale}

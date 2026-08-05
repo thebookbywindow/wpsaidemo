@@ -104,14 +104,14 @@ export const uiTextByLanguage = {
     home: {
       // Hero / SEO — aligned to Figma AI-Web Homepage Simplified Concept
       heroTitleLead: 'Create smarter ',
-      heroTitleJoin: 'for',
+      heroTitleJoin: 'across',
       // Mobile hero: shorter lead; join moves up beside lead
       heroTitleLeadMobile: 'Create smarter ',
-      heroTitleJoinMobile: 'for',
-      heroTitleTail: 'With WPS AI for free office',
-      heroTitlePrefix: 'Create smarter for ',
+      heroTitleJoinMobile: 'across',
+      heroTitleTail: 'With agentic AI for free office',
+      heroTitlePrefix: 'Create smarter across ',
       heroTitle:
-        'Create smarter for Docs, Slides, Sheets, PDF With WPS AI for free office',
+        'Create smarter across Docs, Slides, Sheets, PDF With agentic AI for free office',
       heroDesc:
         'Meet WPS Office — a better way to work, all in one place. Collaborate in real time and stay in sync across PC, mobile, and online.',
       // Entity: brand relationship only (not a product list)
@@ -196,8 +196,10 @@ export const uiTextByLanguage = {
       // International AI feature directory (external official URLs)
       intlAiFeatures: {
         title: 'Four tools. WPS AI connected workflow.',
+        titleLine1: 'Four tools.',
+        titleLine2: 'WPS AI connected workflow.',
         summary:
-          'Each product gets one clear story, one visual proof, and the AI actions that matter most.',
+          'Each product gets one clear story, one visual proof point, and three direct routes into its most valuable AI tools.',
         pillars: {
           copilot: {
             label: 'Copilot',
@@ -247,7 +249,7 @@ export const uiTextByLanguage = {
             label: 'Docs',
             tagline: 'Write and rewrite smarter',
             spotlightLead:
-              'WPS AI inside [WPS Writer](https://www.wps.com/office/writer/) helps you draft from a blank page, rewrite tone and clarity, and [summarize long documents](https://www.wps.com/feature/ai-summarizer/) — all without leaving your doc.',
+              'WPS AI inside WPS Writer helps you draft from a blank page, rewrite tone and clarity, and summarize long documents — all without leaving your doc.',
             features: {
               'ai-writer-feature': 'Generate drafts and polish tone with AI Writer',
               'ai-summarizer': 'Summarize long documents in one click',
@@ -256,20 +258,20 @@ export const uiTextByLanguage = {
             },
             featureDetails: {
               'ai-writer-feature':
-                'Generate essays, blogs, and business copy up to 10× faster. [AI Writer](https://www.wps.com/feature/ai-writer/) includes grammar checking and ChatGPT-powered drafting inside Word.',
+                'Generate essays, blogs, and business copy up to 10× faster. AI Writer includes grammar checking and ChatGPT-powered drafting inside Word.',
               'ai-summarizer':
-                'Turn reports, contracts, and research into concise summaries with [AI Summarizer](https://www.wps.com/feature/ai-summarizer/) — keep the key points and skip the manual read-through.',
+                'Turn reports, contracts, and research into concise summaries with AI Summarizer — keep the key points and skip the manual read-through.',
               'ai-improve-writing':
-                'Polish drafts for clarity, tone, and readability with [AI Improve Writing](https://explore.wps.com/ai/ai-improve-writing) — rewrite in place without starting over.',
+                'Polish drafts for clarity, tone, and readability with AI Improve Writing — rewrite in place without starting over.',
               'ai-translator-feature':
-                'Translate full documents and selected text with [AI Translator](https://www.wps.com/feature/ai-translator/) while keeping formatting inside your Word file.',
+                'Translate full documents and selected text with AI Translator while keeping formatting inside your Word file.',
             },
           },
           sheets: {
             label: 'Sheets',
             tagline: 'Analyze data with less manual work',
             spotlightLead:
-              '[WPS Spreadsheet](https://www.wps.com/office/spreadsheet/) AI turns plain-language questions into formulas, insights, and tables — so you spend less time on syntax and more on decisions across desktop and web.',
+              'WPS Spreadsheet AI turns plain-language questions into formulas, insights, and tables — so you spend less time on syntax and more on decisions across desktop and web.',
             features: {
               'ai-excel-formula-generator': 'Build formulas from plain language',
               'ai-in-excel-spreadsheets': 'Ask questions and get insights from your data',
@@ -278,20 +280,20 @@ export const uiTextByLanguage = {
             },
             featureDetails: {
               'ai-excel-formula-generator':
-                'Describe what you need in everyday language and get accurate Excel formulas instantly with the [AI Excel Formula Generator](https://www.wps.com/feature/ai-excel-formula-generator/) — fewer errors, no formula memorization.',
+                'Describe what you need in everyday language and get accurate Excel formulas instantly with the AI Excel Formula Generator — fewer errors, no formula memorization.',
               'ai-in-excel-spreadsheets':
-                'Ask questions about your data in natural language and get AI-driven insights with [AI in Excel Spreadsheets](https://www.wps.com/feature/ai-in-excel-spreadsheets/) right inside your sheet.',
+                'Ask questions about your data in natural language and get AI-driven insights with AI in Excel Spreadsheets right inside your sheet.',
               'ai-table-generator':
-                'Describe the table you need and get a clean, structured spreadsheet with [AI Table Generator](https://www.wps.com/feature/ai-table-generator/) — headers, rows, and starter data included.',
+                'Describe the table you need and get a clean, structured spreadsheet with AI Table Generator — headers, rows, and starter data included.',
               'jpg-to-excel':
-                'Upload a photo or screenshot of a table and convert it into an editable spreadsheet with [JPG to Excel](https://www.wps.com/feature/jpg-to-excel/) — OCR that preserves rows and columns.',
+                'Upload a photo or screenshot of a table and convert it into an editable spreadsheet with JPG to Excel — OCR that preserves rows and columns.',
             },
           },
           slides: {
             label: 'Slides',
             tagline: 'Create presentations faster',
             spotlightLead:
-              '[WPS Presentation](https://www.wps.com/office/presentation/) AI turns outlines, topics, and briefs into polished slide decks — layout, structure, and copy included, ready to present or export.',
+              'WPS Presentation AI turns outlines, topics, and briefs into polished slide decks — layout, structure, and copy included, ready to present or export.',
             features: {
               'ai-ppt-maker': 'Turn an outline into a polished deck',
               'ai-powerpoint-generator': 'Generate slides from a topic or brief',
@@ -300,20 +302,20 @@ export const uiTextByLanguage = {
             },
             featureDetails: {
               'ai-ppt-maker':
-                'Paste an outline or bullet list and let [AI PPT Maker](https://www.wps.com/feature/ai-ppt-maker/) build a complete, well-structured presentation you can refine slide by slide.',
+                'Paste an outline or bullet list and let AI PPT Maker build a complete, well-structured presentation you can refine slide by slide.',
               'ai-powerpoint-generator':
-                'Start from a topic, prompt, or brief and generate professional slides in seconds with the [AI PowerPoint Generator](https://explore.wps.com/ppt/ai-powerpoint-generator) — compatible with PowerPoint workflows.',
+                'Start from a topic, prompt, or brief and generate professional slides in seconds with the AI PowerPoint Generator — compatible with PowerPoint workflows.',
               'free-presentation-maker':
-                'Create presentation decks for free from a short prompt with the [Free Presentation Maker](https://explore.wps.com/ppt/free-presentation-maker) — structure, titles, and starter copy included.',
+                'Create presentation decks for free from a short prompt with the Free Presentation Maker — structure, titles, and starter copy included.',
               'slides-translator':
-                'Translate whole PowerPoint decks while keeping layout with [AI Slides Translator](https://www.wps.com/feature/slides-translator/) — ideal for multilingual meetings and reviews.',
+                'Translate whole PowerPoint decks while keeping layout with AI Slides Translator — ideal for multilingual meetings and reviews.',
             },
           },
           pdf: {
             label: 'PDF',
             tagline: 'Read, chat, and summarize PDFs',
             spotlightLead:
-              '[WPS PDF](https://www.wps.com/office/pdf/) AI lets you chat with documents, pull answers with source proof, and [summarize long reports](https://www.wps.com/feature/pdf-summarizer/) — securely inside WPS, without switching apps.',
+              'WPS PDF AI lets you chat with documents, pull answers with source proof, and summarize long reports — securely inside WPS, without switching apps.',
             features: {
               'chat-pdf-feature': 'Chat with PDFs to find answers instantly',
               'pdf-summarizer-feature': 'Summarize reports without reading every page',
@@ -322,13 +324,13 @@ export const uiTextByLanguage = {
             },
             featureDetails: {
               'chat-pdf-feature':
-                'Ask questions about any PDF and get instant answers with [Chat PDF](https://www.wps.com/feature/chat-pdf/) — clickable source references for manuals, papers, and contracts.',
+                'Ask questions about any PDF and get instant answers with Chat PDF — clickable source references for manuals, papers, and contracts.',
               'pdf-summarizer-feature':
-                'Summarize lengthy PDFs in seconds with the [PDF Summarizer](https://www.wps.com/feature/pdf-summarizer/) — no need to scroll every page yourself.',
+                'Summarize lengthy PDFs in seconds with the PDF Summarizer — no need to scroll every page yourself.',
               'pdf-document-translation':
-                'Translate PDF files while preserving layout with [PDF Document Translation](https://www.wps.com/feature/pdf-document-translation/) — fast multilingual reading for contracts and reports.',
+                'Translate PDF files while preserving layout with PDF Document Translation — fast multilingual reading for contracts and reports.',
               'pdf-ocr-feature':
-                'Turn scanned or image-based PDFs into searchable, selectable text with [PDF OCR](https://www.wps.com/feature/pdf-ocr/) — ready to copy, search, and edit.',
+                'Turn scanned or image-based PDFs into searchable, selectable text with PDF OCR — ready to copy, search, and edit.',
             },
           },
           photos: {
@@ -377,7 +379,7 @@ export const uiTextByLanguage = {
         browseAllLabel: 'Browse all AI features',
         explorePillarCta: 'Explore {app} AI features',
         learnMoreLabel: 'Learn More',
-        coreTabsAriaLabel: 'Core WPS apps',
+        coreTabsAriaLabel: 'WPS AI products',
         mobileTabsCloseLabel: 'Close app menu',
         pageTitle: 'WPS AI features',
         pageDesc: 'Official WPS AI pages for Docs, Sheets, Slides, PDF & more.',

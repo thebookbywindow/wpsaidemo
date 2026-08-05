@@ -37,3 +37,9 @@ export function homeCanonicalUrl(bcp47 = DEFAULT_LOCALE_BCP47) {
   const urlLocale = `${bcp47}`.toLowerCase().replace(/_/g, '-')
   return `${SITE_ORIGIN}/${urlLocale}/`
 }
+
+/** Canonical AI features directory URL — locale segment is lowercase (`/en-us/wps-ai-features/`). */
+export function aiFeaturesCanonicalUrl(bcp47 = DEFAULT_LOCALE_BCP47) {
+  const urlLocale = `${bcp47}`.toLowerCase().replace(/_/g, '-')
+  return `${SITE_ORIGIN}/${urlLocale}/wps-ai-features/`
+}

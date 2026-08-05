@@ -65,7 +65,7 @@ function IntlAiFeatureGroup({ group, isFirst, query }) {
 /**
  * Dedicated directory of official WPS International AI feature landing pages.
  */
-export default function IntlAiFeaturesPage({ copy }) {
+export default function IntlAiFeaturesPage({ copy, locale }) {
   const { groups } = useHomeIntlAiFeatures(copy)
   const { query, setQuery, clearQuery, filteredGroups, isEmpty } =
     useIntlAiFeaturesSearch(groups)
@@ -74,6 +74,7 @@ export default function IntlAiFeaturesPage({ copy }) {
     enabled: true,
     title: copy?.seoTitle ?? copy?.pageTitle ?? 'WPS AI Features',
     description: copy?.seoDescription ?? copy?.pageDesc ?? '',
+    locale,
   })
 
   if (!groups.length) return null

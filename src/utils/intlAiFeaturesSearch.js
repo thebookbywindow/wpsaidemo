@@ -12,8 +12,14 @@ export function getDirectoryItemLabel(item) {
 }
 
 function itemMatchesQuery(item, query) {
-  const label = getDirectoryItemLabel(item).toLowerCase()
-  return Boolean(label) && label.includes(query)
+  const haystacks = [
+    getDirectoryItemLabel(item),
+    ...(Array.isArray(item?.searchTerms) ? item.searchTerms : []),
+  ]
+    .map((value) => `${value}`.toLowerCase())
+    .filter(Boolean)
+
+  return haystacks.some((label) => label.includes(query))
 }
 
 /**
