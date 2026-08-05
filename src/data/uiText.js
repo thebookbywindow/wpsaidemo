@@ -20,7 +20,7 @@ export const uiTextByLanguage = {
         aiFeaturesTitle: 'WPS AI Features',
         groups: {
           copilot: 'Copilot',
-          writer: 'Writer',
+          writer: 'Docs',
           spreadsheet: 'Sheets',
           presentation: 'Slides',
           pdf: 'PDF',
@@ -394,7 +394,7 @@ export const uiTextByLanguage = {
           'Browse official WPS AI features for Docs, Sheets, Slides, PDF, Photos & Copilot.',
         tabs: {
           copilot: 'Copilot',
-          writer: 'Writer',
+          writer: 'Docs',
           spreadsheet: 'Spreadsheet',
           presentation: 'Presentation',
           pdf: 'PDF',
@@ -406,7 +406,7 @@ export const uiTextByLanguage = {
         },
         groups: {
           copilot: 'Office Copilot',
-          writer: 'Writer',
+          writer: 'Docs',
           spreadsheet: 'Spreadsheet',
           presentation: 'Presentation',
           pdf: 'PDF',
