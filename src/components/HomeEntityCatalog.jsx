@@ -1,21 +1,8 @@
-import { useSyncExternalStore } from 'react'
-import { ArrowUpRight } from 'lucide-react'
 import { FaAndroid, FaApple, FaLinux, FaMobileAlt, FaTabletAlt, FaWindows } from 'react-icons/fa'
 import { HOME_V2_DOWNLOAD_SHIELD } from '../data/homeV2Assets'
-import { HOME_TRUST_DOCK_PIN_DISABLE_MQ } from '../hooks/useHomeTrustDockPin'
 import {
-  alertPlatformDownload,
   detectAndAlertPlatformDownload,
 } from '../utils/detectClientPlatform'
-
-const subscribeHeroPlatformMobile = (onStoreChange) => {
-  const mediaQuery = window.matchMedia(HOME_TRUST_DOCK_PIN_DISABLE_MQ)
-  mediaQuery.addEventListener('change', onStoreChange)
-  return () => mediaQuery.removeEventListener('change', onStoreChange)
-}
-const getHeroPlatformMobileSnapshot = () =>
-  window.matchMedia(HOME_TRUST_DOCK_PIN_DISABLE_MQ).matches
-const getHeroPlatformMobileServerSnapshot = () => false
 
 const PLATFORM_ICON_MAP = {
   windows: FaWindows,
@@ -89,12 +76,6 @@ export default function HomeEntityCatalog({
   variant = 'section',
   ctaLabel,
 }) {
-  const isMobile = useSyncExternalStore(
-    subscribeHeroPlatformMobile,
-    getHeroPlatformMobileSnapshot,
-    getHeroPlatformMobileServerSnapshot,
-  )
-
   if (variant === 'hero') {
     const platformItems = groups.flatMap((group) => group.items ?? [])
 
@@ -130,27 +111,9 @@ export default function HomeEntityCatalog({
             <ul className="home-hero-platform-list">
               {platformItems.map((item) => (
                 <li key={item.id}>
-                  {isMobile ? (
-                    <span className="home-hero-platform-link home-hero-platform-link--static">
-                      <span className="home-hero-platform-label">{item.label}</span>
-                    </span>
-                  ) : (
-                    <button
-                      type="button"
-                      className="home-hero-platform-link"
-                      onClick={() => {
-                        alertPlatformDownload(item.platform || item.label)
-                      }}
-                    >
-                      <span className="home-hero-platform-label">{item.label}</span>
-                      <ArrowUpRight
-                        className="home-hero-platform-arrow"
-                        size={16}
-                        strokeWidth={2}
-                        aria-hidden="true"
-                      />
-                    </button>
-                  )}
+                  <span className="home-hero-platform-link home-hero-platform-link--static">
+                    <span className="home-hero-platform-label">{item.label}</span>
+                  </span>
                 </li>
               ))}
             </ul>

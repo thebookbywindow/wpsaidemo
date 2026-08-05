@@ -579,8 +579,7 @@
   white-space: normal;
 }
 
-.home-v2-main .home-hero-platform-link,
-.home-v2-main .home-hero-platform-link--static {
+.home-v2-main .home-hero-platform-link {
   display: inline-flex;
   align-items: center;
   gap: 0;
@@ -595,12 +594,10 @@
   cursor: pointer;
 }
 
-.home-v2-main .home-hero-platform-arrow {
-  width: 16px;
-  height: 16px;
-  flex: 0 0 16px;
+.home-v2-main .home-hero-platform-link--static {
+  cursor: default;
+  pointer-events: none;
 }
-
 /* ——— Trust marquee (official hv2-hero__trust) ——— */
 .home-v2-main .hv2-hero__trust {
   --hv2-brand-step: clamp(104px, 91.24px + 3.545vw, 170px);

@@ -138,12 +138,12 @@ export const uiTextByLanguage = {
             id: 'windows',
             label: 'Windows',
             platform: 'windows',
-            desc: 'Download WPS Office Desktop Editor to get a lightweight PDF tool that provides complete solutions for all PDF problems.',
+            desc: 'Free WPS Office for Windows 11/10/8 — MS Office–compatible, lightweight install with WPS AI Copilot, AI Writer, AI slides, and Chat PDF.',
           },
           {
             id: 'linux',
             label: 'Linux',
-            desc: 'WPS Office is a free office suite that supports Linux. Download the WPS Office app to access PDF tools anytime.',
+            desc: 'Free WPS Office for Linux (.deb & .rpm) on Ubuntu, CentOS, and Deepin — WPS AI Copilot, AI writing, and Chat PDF in one suite.',
             menu: [
               {
                 id: 'deb',
@@ -163,13 +163,12 @@ export const uiTextByLanguage = {
             id: 'mac',
             label: 'Mac',
             platform: 'mac',
-            desc: 'WPS Office, perfectly compatible with the macOS system on Mac, and supports Intel and Apple chips to help you edit PDFs easily.',
+            desc: 'Native WPS Office for Mac — Apple Silicon (M1–M4) and Intel with WPS AI Copilot, AI slide design, and Chat PDF built in.',
           },
           {
             id: 'mobile',
             label: 'Android & iOS',
-            desc: 'Google Play Best of 2015\nApp Store Best of 2015',
-            descVariant: 'awards',
+            desc: 'WPS Office for Android and iOS — edit on the go with cloud sync, WPS AI drafting, slide design, and Chat PDF on mobile.',
             menu: [
               {
                 id: 'google-play',
@@ -1080,12 +1079,12 @@ export const uiTextByLanguage = {
             id: 'windows',
             label: 'Windows',
             platform: 'windows',
-            desc: '下载 WPS Office 桌面版，获得轻量级 PDF 工具，覆盖常见 PDF 处理需求。',
+            desc: 'Windows 11/10/8 免费下载 WPS Office — 轻量安装，兼容 Microsoft Office，内置 WPS AI Copilot、AI 写作与 Chat PDF。',
           },
           {
             id: 'linux',
             label: 'Linux',
-            desc: 'WPS Office 免费支持 Linux。下载应用，随时使用 PDF 工具。',
+            desc: 'Linux 免费版（.deb / .rpm）— 支持 Ubuntu、CentOS、Deepin，含文字、表格、演示、PDF 与 WPS AI Copilot。',
             menu: [
               {
                 id: 'deb',
@@ -1105,13 +1104,12 @@ export const uiTextByLanguage = {
             id: 'mac',
             label: 'Mac',
             platform: 'mac',
-            desc: '完美兼容 macOS，支持 Intel 与 Apple 芯片，轻松编辑 PDF。',
+            desc: 'Mac 原生支持 Apple 芯片（M1–M4）与 Intel — 免费 WPS Office，内置 WPS AI Copilot、AI 幻灯片与 Chat PDF。',
           },
           {
             id: 'mobile',
             label: 'Android & iOS',
-            desc: 'Google Play Best of 2015\nApp Store Best of 2015',
-            descVariant: 'awards',
+            desc: 'Android 与 iOS 移动版 WPS Office — 云端同步，随时随地编辑，WPS AI 起草、幻灯片与 Chat PDF。',
             menu: [
               {
                 id: 'google-play',
