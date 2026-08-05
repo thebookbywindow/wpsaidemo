@@ -6,6 +6,7 @@ import DocsCenterPage from './components/DocsCenterPage'
 import HomePage from './components/HomePage'
 import AllProductsPage from './components/AllProductsPage'
 import IntlAiFeaturesPage from './components/IntlAiFeaturesPage'
+import LocalePage from './components/LocalePage'
 import {
   encyclopediaEntriesByLocale,
   encyclopediaUiTextByLocale,
@@ -51,7 +52,6 @@ const FOOTER_SOCIAL_ICONS = {
   twitter: FaXTwitter,
   youtube: FaYoutube,
 }
-import { resolveWorldwideText } from './data/worldwideText'
 import {
   getLocaleDocsPath,
 } from './utils/docsRoute'
@@ -1405,7 +1405,7 @@ const answersForumQuestionItems = [
 
 const supportedLocales = [
   { bcp47: 'en-US', code: 'en-us', short: 'US', label: 'English' },
-  { bcp47: 'zh-HK', code: 'zh-hk', short: 'HK', label: '繁體中文 + 粵語' },
+  { bcp47: 'zh-HK', code: 'zh-hk', short: 'HK', label: '繁體中文' },
   { bcp47: 'es-MX', code: 'es-mx', short: 'MX', label: 'Español' },
   { bcp47: 'pt-BR', code: 'pt-br', short: 'BR', label: 'Português' },
   { bcp47: 'fr-FR', code: 'fr-fr', short: 'FR', label: 'Français' },
@@ -1421,40 +1421,6 @@ const localeOptions = supportedLocales.map((item) => ({
   short: item.short,
   label: item.label,
 }))
-
-const worldwideLocales = supportedLocales.map((item) => ({
-  bcp47: item.bcp47,
-  urlLocale: toUrlLocale(item.code),
-  shortCode: item.short,
-  nativeLabel: item.label,
-}))
-
-const worldwideGroups = [
-  {
-    title: 'Global English',
-    codes: ['en-us'],
-  },
-  {
-    title: 'Greater China',
-    codes: ['zh-hk'],
-  },
-  {
-    title: 'Latin America',
-    codes: ['es-mx', 'pt-br'],
-  },
-  {
-    title: 'Western Europe',
-    codes: ['fr-fr'],
-  },
-  {
-    title: 'Southeast Asia',
-    codes: ['id-id', 'vi-vn', 'th-th'],
-  },
-  {
-    title: 'Eurasia',
-    codes: ['tr-tr', 'ru-ru'],
-  },
-]
 
 const allProductsSections = [
   {
@@ -1555,6 +1521,7 @@ const contentRootSet = new Set([
   'all-templates',
   'wps-ai-features',
   'worldwide',
+  'locale',
   'answers',
 ])
 
@@ -1594,7 +1561,10 @@ function getCanonicalLocalizedPath(pathname, fallbackLocale = 'en-us') {
     if (segments.length === 1) {
       return joinPath(urlLocale)
     }
-    const innerSegments = normalizeRouteSegments(segments.slice(1))
+    let innerSegments = normalizeRouteSegments(segments.slice(1))
+    if (innerSegments[0] === 'worldwide') {
+      innerSegments = ['locale', ...innerSegments.slice(1)]
+    }
     if (!innerSegments.length) {
       return joinPath(urlLocale)
     }
@@ -1737,8 +1707,8 @@ function getPageType(pathname) {
   ) {
     return 'ai-features'
   }
-  if (normalizedSegments[0] === 'worldwide') {
-    return 'worldwide'
+  if (normalizedSegments[0] === 'worldwide' || normalizedSegments[0] === 'locale') {
+    return 'locale'
   }
   if (normalizedSegments[0] === 'answers' && normalizedSegments[1] === 'forum') {
     return 'answers-forum'
@@ -1815,8 +1785,12 @@ function getLocaleAiFeaturesPath(locale) {
   return joinPath(toUrlLocale(locale), WPS_AI_FEATURES_ROUTE)
 }
 
+function getLocaleLocalePath(locale) {
+  return joinPath(toUrlLocale(locale), 'locale')
+}
+
 function getLocaleWorldwidePath(locale) {
-  return joinPath(toUrlLocale(locale), 'worldwide')
+  return getLocaleLocalePath(locale)
 }
 
 function getLocaleGuidesPath(locale) {
@@ -2230,8 +2204,6 @@ function App() {
     () => resolveFreeAiToolsHeaderMegaMenu(uiText.nav.freeAiToolsMega),
     [uiText.nav.freeAiToolsMega],
   )
-  const worldwideText = useMemo(() => resolveWorldwideText(contentLanguage), [contentLanguage])
-
   useEffect(() => {
     document.documentElement.lang = currentLocale
     document.documentElement.dir = currentLocale.startsWith('ar') ? 'rtl' : 'ltr'
@@ -2391,15 +2363,6 @@ function App() {
       })),
     [localizeString],
   )
-  const localizedWorldwideGroups = useMemo(
-    () =>
-      worldwideGroups.map((group) => ({
-        ...group,
-        displayTitle: worldwideText.groupTitles[group.title] ?? group.title,
-      })),
-    [worldwideText],
-  )
-
   const docsUiTextBase = isZhContent ? (docsUiByLanguage[contentLanguage] ?? docsUiByLanguage.zh) : docsUiByLanguage.en
   const docsUiText = useMemo(
     () => (isZhContent ? docsUiTextBase : localizeNestedStrings(docsUiTextBase, localizeString)),
@@ -2487,16 +2450,6 @@ function App() {
       : answersForumTemplatesByLanguage.en
     return isZhCnContent ? base : localizeNestedStrings(base, localizeString)
   }, [isZhCnContent, localizeString])
-
-  const worldwideGroupMap = useMemo(() => {
-    const localeMap = new Map(worldwideLocales.map((item) => [item.urlLocale, item]))
-    return localizedWorldwideGroups.map((group) => ({
-      ...group,
-      items: group.codes
-        .map((code) => localeMap.get(code))
-        .filter(Boolean),
-    }))
-  }, [localizedWorldwideGroups])
 
   const allTemplatesSections = useMemo(
     () =>
@@ -2966,7 +2919,7 @@ function App() {
   const localeAllProductsPath = getLocaleAllProductsPath(currentLocale)
   const localeAllTemplatesPath = getLocaleAllTemplatesPath(currentLocale)
   const localeAiFeaturesPath = getLocaleAiFeaturesPath(currentLocale)
-  const localeWorldwidePath = getLocaleWorldwidePath(currentLocale)
+  const localeLocalePath = getLocaleLocalePath(currentLocale)
   const localeGuidesPath = getLocaleGuidesPath(currentLocale)
   const footerProductLinks = useMemo(
     () =>
@@ -3954,6 +3907,19 @@ function App() {
                     </button>
                   ))}
                 </div>
+                <div className="home-nav-locale-panel__footer mt-3 flex justify-end border-t border-[#f0ecf8] pt-3">
+                  <a
+                    href={localeLocalePath}
+                    className="home-nav-locale-panel-link text-[12px] font-semibold text-[#8f5bff] transition hover:text-[#7348e6] hover:underline"
+                    onClick={(event) => {
+                      event.preventDefault()
+                      setIsLangOpen(false)
+                      navigateTo(localeLocalePath)
+                    }}
+                  >
+                    {uiText.nav.localePanelLink}
+                  </a>
+                </div>
               </div>
             )}
             <button
@@ -4152,6 +4118,20 @@ function App() {
                     <span className="truncate text-[14px]">{item.label}</span>
                   </button>
                 ))}
+              </div>
+              <div className="mt-3 flex justify-end px-1">
+                <a
+                  href={localeLocalePath}
+                  className="text-[13px] font-semibold text-[#8f5bff] transition hover:text-[#7348e6] hover:underline"
+                  onClick={(event) => {
+                    event.preventDefault()
+                    setIsMobileMenuOpen(false)
+                    setMobileNavExpandedKey(null)
+                    navigateTo(localeLocalePath)
+                  }}
+                >
+                  {uiText.nav.localePanelLink}
+                </a>
               </div>
             </div>
           </div>
@@ -4812,7 +4792,7 @@ function App() {
                 </p>
                 <button
                   type="button"
-                  onClick={() => navigateTo(localeWorldwidePath)}
+                  onClick={() => navigateTo(localeLocalePath)}
                   className="mt-4 text-[13px] font-semibold text-[#534ab7] underline underline-offset-2"
                 >
                   {uiText.download.worldwideCta}
@@ -5720,96 +5700,10 @@ function App() {
               </div>
             </section>
           </div>
-        ) : (
-          <div className="bg-transparent">
-            <section className="site-page-hero site-page-hero--aurora px-6 py-14">
-              <div className="mx-auto w-full max-w-[1160px] text-center">
-                <p className="mx-auto inline-flex rounded-[20px] bg-[#cecbf6] px-3 py-1 text-[12px] font-semibold text-[#3c3489]">
-                  {worldwideText.badge}
-                </p>
-                <h1 className="mt-4 text-[clamp(30px,4.5vw,48px)] font-extrabold leading-[1.15] tracking-[-0.03em] text-[#1a202c]">
-                  {worldwideText.title}
-                </h1>
-                <p className="mx-auto mt-4 max-w-[820px] text-[16px] leading-7 text-[#4a5568]">
-                  {worldwideText.desc}
-                </p>
-              </div>
-            </section>
-          </div>
-        )}
+        ) : pageType === 'locale' ? (
+          <LocalePage contentLanguage={contentLanguage} navigateTo={navigateTo} />
+        ) : null}
       </main>
-
-      {pageType === 'worldwide' && (
-        <section
-          className="site-page-transition-section site-page-transition-section--lift site-page-transition-section--aurora select-none px-6 py-12"
-          onDragStart={(event) => {
-            event.preventDefault()
-          }}
-        >
-          <div className="mx-auto grid w-full max-w-[1160px] gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {worldwideGroupMap.map((group) => (
-              <section
-                key={group.title}
-                className="rounded-[14px] border border-[#e2e8f0] bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)]"
-              >
-                <h2 className="text-[15px] font-semibold text-[#1f2432]">{group.displayTitle ?? group.title}</h2>
-                <div className="mt-3 flex flex-col gap-1">
-                  {group.items.map((item) => {
-                    const targetPath = joinPath(item.urlLocale)
-                    return (
-                      <a
-                        key={item.bcp47}
-                        href={targetPath}
-                        draggable={false}
-                        className="inline-flex w-fit text-[14px] leading-7 text-[#4a5568] transition hover:text-[#534ab7] hover:underline"
-                        onClick={(event) => {
-                          event.preventDefault()
-                          navigateTo(targetPath)
-                        }}
-                        title={item.bcp47}
-                      >
-                        <span className="inline-flex items-center gap-1" dir="ltr">
-                          <bdi>{item.shortCode}</bdi>
-                          <span aria-hidden="true">-</span>
-                          <bdi dir="auto">{item.nativeLabel}</bdi>
-                        </span>
-                      </a>
-                    )
-                  })}
-                </div>
-              </section>
-            ))}
-          </div>
-
-          <div className="mx-auto mt-6 w-full max-w-[1160px] rounded-[14px] border border-[#e2e8f0] bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-            <h2 className="text-[15px] font-semibold text-[#1f2432]">{worldwideText.allLanguages}</h2>
-            <div className="mt-3 grid gap-x-10 gap-y-1 sm:grid-cols-2 lg:grid-cols-4">
-              {worldwideLocales.map((item) => {
-                const targetPath = joinPath(item.urlLocale)
-                return (
-                  <a
-                    key={item.bcp47}
-                    href={targetPath}
-                    draggable={false}
-                    className="inline-flex w-fit text-[14px] leading-7 text-[#4a5568] transition hover:text-[#534ab7] hover:underline"
-                    onClick={(event) => {
-                      event.preventDefault()
-                      navigateTo(targetPath)
-                    }}
-                    title={item.bcp47}
-                  >
-                    <span className="inline-flex items-center gap-1" dir="ltr">
-                      <bdi>{item.shortCode}</bdi>
-                      <span aria-hidden="true">-</span>
-                      <bdi dir="auto">{item.nativeLabel}</bdi>
-                    </span>
-                  </a>
-                )
-              })}
-            </div>
-        </div>
-      </section>
-      )}
 
       <footer className="site-footer hv2-footer hv2-chrome">
         <div className="hv2-container site-footer-shell">
