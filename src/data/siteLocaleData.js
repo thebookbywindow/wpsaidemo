@@ -9,16 +9,18 @@ const localeToContentLanguageMap = {
   'tr-tr': 'tr',
   'ru-ru': 'ru',
   'th-th': 'th',
-  // Legacy site locales
-  'es-es': 'es',
   'de-de': 'de',
   'ja-jp': 'ja',
+  'it-it': 'it',
+  'pl-pl': 'pl',
+  'hi-in': 'hi',
+  'tl-ph': 'tl',
+  'ms-my': 'ms',
+  // Legacy site locales
+  'es-es': 'es',
   'ko-kr': 'ko',
   'ar-sa': 'ar',
-  'it-it': 'it',
   'nl-nl': 'nl',
-  'pl-pl': 'pl',
-  'ms-my': 'ms',
   'zh-cn': 'zh',
   'zh-tw': 'zh-tw',
 }
@@ -39,6 +41,8 @@ const contentLanguageFallbackMap = {
   th: 'en',
   vi: 'en',
   ms: 'en',
+  hi: 'en',
+  tl: 'en',
   'zh-tw': 'zh',
   ru: 'en',
 }

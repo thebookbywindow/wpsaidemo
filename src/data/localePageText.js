@@ -1,6 +1,3 @@
-/** Locale picker H1 — fixed copy in all UI languages. */
-export const LOCALE_PAGE_H1 = '选择你的国家/地区和语言'
-
 const groupTitlesEn = {
   globalEnglish: 'Global English',
   chinaHongKong: 'China Hong Kong',
@@ -12,19 +9,19 @@ const groupTitlesEn = {
 
 export const localePageTextByLanguage = {
   en: {
-    pageTitle: 'Choose your country & language',
-    documentTitle: 'WPS AI - Choose Your Country & Language',
-    searchPlaceholder: 'Search countries or languages...',
-    searchAriaLabel: 'Search countries or languages',
+    pageTitle: 'Choose your country/region & language',
+    documentTitle: 'WPS AI - Choose Your Country/Region & Language',
+    searchPlaceholder: 'Search countries, regions or languages...',
+    searchAriaLabel: 'Search countries, regions or languages',
     searchEmpty: 'No matching locales.',
     searchClearLabel: 'Clear search',
     groupTitles: groupTitlesEn,
   },
   zh: {
-    pageTitle: '选择国家/地区和语言',
-    documentTitle: 'WPS AI - 选择国家/地区和语言',
-    searchPlaceholder: '搜索国家或语言...',
-    searchAriaLabel: '搜索国家或语言',
+    pageTitle: '选择你的国家/地区和语言',
+    documentTitle: 'WPS AI - 选择你的国家/地区和语言',
+    searchPlaceholder: '搜索国家/地区或语言...',
+    searchAriaLabel: '搜索国家/地区或语言',
     searchEmpty: '未找到匹配的语言版本。',
     searchClearLabel: '清除搜索',
     groupTitles: {
@@ -37,10 +34,10 @@ export const localePageTextByLanguage = {
     },
   },
   'zh-tw': {
-    pageTitle: '選擇國家/地區和語言',
-    documentTitle: 'WPS AI - 選擇國家/地區和語言',
-    searchPlaceholder: '搜尋國家或語言...',
-    searchAriaLabel: '搜尋國家或語言',
+    pageTitle: '選擇你的國家/地區和語言',
+    documentTitle: 'WPS AI - 選擇你的國家/地區和語言',
+    searchPlaceholder: '搜尋國家/地區或語言...',
+    searchAriaLabel: '搜尋國家/地區或語言',
     searchEmpty: '未找到符合條件的語言版本。',
     searchClearLabel: '清除搜尋',
     groupTitles: {
@@ -53,10 +50,10 @@ export const localePageTextByLanguage = {
     },
   },
   es: {
-    pageTitle: 'Elija su país e idioma',
-    documentTitle: 'WPS AI - Elija su país e idioma',
-    searchPlaceholder: 'Buscar países o idiomas...',
-    searchAriaLabel: 'Buscar países o idiomas',
+    pageTitle: 'Elija su país/región e idioma',
+    documentTitle: 'WPS AI - Elija su país/región e idioma',
+    searchPlaceholder: 'Buscar países, regiones o idiomas...',
+    searchAriaLabel: 'Buscar países, regiones o idiomas',
     searchEmpty: 'No se encontraron idiomas.',
     searchClearLabel: 'Borrar búsqueda',
     groupTitles: {
@@ -69,10 +66,10 @@ export const localePageTextByLanguage = {
     },
   },
   pt: {
-    pageTitle: 'Escolha seu país e idioma',
-    documentTitle: 'WPS AI - Escolha seu país e idioma',
-    searchPlaceholder: 'Pesquisar países ou idiomas...',
-    searchAriaLabel: 'Pesquisar países ou idiomas',
+    pageTitle: 'Escolha seu país/região e idioma',
+    documentTitle: 'WPS AI - Escolha seu país/região e idioma',
+    searchPlaceholder: 'Pesquisar países, regiões ou idiomas...',
+    searchAriaLabel: 'Pesquisar países, regiões ou idiomas',
     searchEmpty: 'Nenhum idioma encontrado.',
     searchClearLabel: 'Limpar pesquisa',
     groupTitles: {
@@ -85,10 +82,10 @@ export const localePageTextByLanguage = {
     },
   },
   fr: {
-    pageTitle: 'Choisissez votre pays et votre langue',
-    documentTitle: 'WPS AI - Choisissez votre pays et votre langue',
-    searchPlaceholder: 'Rechercher un pays ou une langue...',
-    searchAriaLabel: 'Rechercher un pays ou une langue',
+    pageTitle: 'Choisissez votre pays/région et votre langue',
+    documentTitle: 'WPS AI - Choisissez votre pays/région et votre langue',
+    searchPlaceholder: 'Rechercher un pays, une région ou une langue...',
+    searchAriaLabel: 'Rechercher un pays, une région ou une langue',
     searchEmpty: 'Aucune langue correspondante.',
     searchClearLabel: 'Effacer la recherche',
     groupTitles: {
@@ -101,10 +98,10 @@ export const localePageTextByLanguage = {
     },
   },
   id: {
-    pageTitle: 'Pilih negara & bahasa Anda',
-    documentTitle: 'WPS AI - Pilih Negara & Bahasa Anda',
-    searchPlaceholder: 'Cari negara atau bahasa...',
-    searchAriaLabel: 'Cari negara atau bahasa',
+    pageTitle: 'Pilih negara/wilayah & bahasa Anda',
+    documentTitle: 'WPS AI - Pilih Negara/Wilayah & Bahasa Anda',
+    searchPlaceholder: 'Cari negara, wilayah atau bahasa...',
+    searchAriaLabel: 'Cari negara, wilayah atau bahasa',
     searchEmpty: 'Tidak ada bahasa yang cocok.',
     searchClearLabel: 'Hapus pencarian',
     groupTitles: {
@@ -117,10 +114,10 @@ export const localePageTextByLanguage = {
     },
   },
   vi: {
-    pageTitle: 'Chọn quốc gia và ngôn ngữ',
-    documentTitle: 'WPS AI - Chọn quốc gia và ngôn ngữ',
-    searchPlaceholder: 'Tìm quốc gia hoặc ngôn ngữ...',
-    searchAriaLabel: 'Tìm quốc gia hoặc ngôn ngữ',
+    pageTitle: 'Chọn quốc gia/khu vực và ngôn ngữ của bạn',
+    documentTitle: 'WPS AI - Chọn quốc gia/khu vực và ngôn ngữ của bạn',
+    searchPlaceholder: 'Tìm quốc gia, khu vực hoặc ngôn ngữ...',
+    searchAriaLabel: 'Tìm quốc gia, khu vực hoặc ngôn ngữ',
     searchEmpty: 'Không tìm thấy ngôn ngữ phù hợp.',
     searchClearLabel: 'Xóa tìm kiếm',
     groupTitles: {
@@ -133,10 +130,10 @@ export const localePageTextByLanguage = {
     },
   },
   tr: {
-    pageTitle: 'Ülkenizi ve dilinizi seçin',
-    documentTitle: 'WPS AI - Ülkenizi ve dilinizi seçin',
-    searchPlaceholder: 'Ülke veya dil ara...',
-    searchAriaLabel: 'Ülke veya dil ara',
+    pageTitle: 'Ülkenizi/bölgenizi ve dilinizi seçin',
+    documentTitle: 'WPS AI - Ülkenizi/bölgenizi ve dilinizi seçin',
+    searchPlaceholder: 'Ülke, bölge veya dil ara...',
+    searchAriaLabel: 'Ülke, bölge veya dil ara',
     searchEmpty: 'Eşleşen dil bulunamadı.',
     searchClearLabel: 'Aramayı temizle',
     groupTitles: {
@@ -149,10 +146,10 @@ export const localePageTextByLanguage = {
     },
   },
   ru: {
-    pageTitle: 'Выберите страну и язык',
-    documentTitle: 'WPS AI - Выберите страну и язык',
-    searchPlaceholder: 'Поиск страны или языка...',
-    searchAriaLabel: 'Поиск страны или языка',
+    pageTitle: 'Выберите страну/регион и язык',
+    documentTitle: 'WPS AI - Выберите страну/регион и язык',
+    searchPlaceholder: 'Поиск страны, региона или языка...',
+    searchAriaLabel: 'Поиск страны, региона или языка',
     searchEmpty: 'Подходящие языки не найдены.',
     searchClearLabel: 'Очистить поиск',
     groupTitles: {
@@ -165,10 +162,10 @@ export const localePageTextByLanguage = {
     },
   },
   th: {
-    pageTitle: 'เลือกประเทศและภาษาของคุณ',
-    documentTitle: 'WPS AI - เลือกประเทศและภาษาของคุณ',
-    searchPlaceholder: 'ค้นหาประเทศหรือภาษา...',
-    searchAriaLabel: 'ค้นหาประเทศหรือภาษา',
+    pageTitle: 'เลือกประเทศ/ภูมิภาคและภาษาของคุณ',
+    documentTitle: 'WPS AI - เลือกประเทศ/ภูมิภาคและภาษาของคุณ',
+    searchPlaceholder: 'ค้นหาประเทศ ภูมิภาค หรือภาษา...',
+    searchAriaLabel: 'ค้นหาประเทศ ภูมิภาค หรือภาษา',
     searchEmpty: 'ไม่พบภาษาที่ตรงกัน',
     searchClearLabel: 'ล้างการค้นหา',
     groupTitles: {
@@ -180,9 +177,71 @@ export const localePageTextByLanguage = {
       eurasia: 'ยูเรเชีย',
     },
   },
+  de: {
+    pageTitle: 'Wählen Sie Ihr Land/Ihre Region und Ihre Sprache',
+    documentTitle: 'WPS AI - Wählen Sie Ihr Land/Ihre Region und Ihre Sprache',
+    searchPlaceholder: 'Länder, Regionen oder Sprachen suchen...',
+    searchAriaLabel: 'Länder, Regionen oder Sprachen suchen',
+    searchEmpty: 'Keine passenden Sprachen gefunden.',
+    searchClearLabel: 'Suche löschen',
+    groupTitles: groupTitlesEn,
+  },
+  ja: {
+    pageTitle: '国/地域と言語を選択',
+    documentTitle: 'WPS AI - 国/地域と言語を選択',
+    searchPlaceholder: '国・地域または言語を検索...',
+    searchAriaLabel: '国・地域または言語を検索',
+    searchEmpty: '一致する言語が見つかりません。',
+    searchClearLabel: '検索をクリア',
+    groupTitles: groupTitlesEn,
+  },
+  it: {
+    pageTitle: 'Scegli il tuo paese/regione e la lingua',
+    documentTitle: 'WPS AI - Scegli il tuo paese/regione e la lingua',
+    searchPlaceholder: 'Cerca paesi, regioni o lingue...',
+    searchAriaLabel: 'Cerca paesi, regioni o lingue',
+    searchEmpty: 'Nessuna lingua corrispondente.',
+    searchClearLabel: 'Cancella ricerca',
+    groupTitles: groupTitlesEn,
+  },
+  pl: {
+    pageTitle: 'Wybierz kraj/region i język',
+    documentTitle: 'WPS AI - Wybierz kraj/region i język',
+    searchPlaceholder: 'Szukaj krajów, regionów lub języków...',
+    searchAriaLabel: 'Szukaj krajów, regionów lub języków',
+    searchEmpty: 'Nie znaleziono pasujących języków.',
+    searchClearLabel: 'Wyczyść wyszukiwanie',
+    groupTitles: groupTitlesEn,
+  },
+  hi: {
+    pageTitle: 'अपना देश/क्षेत्र और भाषा चुनें',
+    documentTitle: 'WPS AI - अपना देश/क्षेत्र और भाषा चुनें',
+    searchPlaceholder: 'देश, क्षेत्र या भाषा खोजें...',
+    searchAriaLabel: 'देश, क्षेत्र या भाषा खोजें',
+    searchEmpty: 'कोई मेल खाती भाषा नहीं मिली।',
+    searchClearLabel: 'खोज साफ़ करें',
+    groupTitles: groupTitlesEn,
+  },
+  tl: {
+    pageTitle: 'Piliin ang iyong bansa/rehiyon at wika',
+    documentTitle: 'WPS AI - Piliin ang iyong bansa/rehiyon at wika',
+    searchPlaceholder: 'Maghanap ng bansa, rehiyon o wika...',
+    searchAriaLabel: 'Maghanap ng bansa, rehiyon o wika',
+    searchEmpty: 'Walang tumutugmang wika.',
+    searchClearLabel: 'I-clear ang paghahanap',
+    groupTitles: groupTitlesEn,
+  },
+  ms: {
+    pageTitle: 'Pilih negara/wilayah dan bahasa anda',
+    documentTitle: 'WPS AI - Pilih negara/wilayah dan bahasa anda',
+    searchPlaceholder: 'Cari negara, wilayah atau bahasa...',
+    searchAriaLabel: 'Cari negara, wilayah atau bahasa',
+    searchEmpty: 'Tiada bahasa yang sepadan.',
+    searchClearLabel: 'Kosongkan carian',
+    groupTitles: groupTitlesEn,
+  },
 }
 
 export function resolveLocalePageText(contentLanguage = 'en') {
-  const copy = localePageTextByLanguage[contentLanguage] ?? localePageTextByLanguage.en
-  return { ...copy, pageTitle: LOCALE_PAGE_H1 }
+  return localePageTextByLanguage[contentLanguage] ?? localePageTextByLanguage.en
 }

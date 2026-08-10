@@ -9,16 +9,18 @@ const LOCALE_BCP47_BY_CODE = {
   'tr-tr': 'tr-TR',
   'ru-ru': 'ru-RU',
   'th-th': 'th-TH',
-  // Legacy aliases kept for URL normalize / content fallbacks
-  'es-es': 'es-ES',
   'de-de': 'de-DE',
   'ja-jp': 'ja-JP',
+  'it-it': 'it-IT',
+  'pl-pl': 'pl-PL',
+  'hi-in': 'hi-IN',
+  'tl-ph': 'tl-PH',
+  'ms-my': 'ms-MY',
+  // Legacy aliases kept for URL normalize / content fallbacks
+  'es-es': 'es-ES',
   'ko-kr': 'ko-KR',
   'ar-sa': 'ar-SA',
-  'it-it': 'it-IT',
   'nl-nl': 'nl-NL',
-  'pl-pl': 'pl-PL',
-  'ms-my': 'ms-MY',
   'zh-cn': 'zh-CN',
   'zh-tw': 'zh-TW',
 }

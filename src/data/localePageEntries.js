@@ -15,9 +15,34 @@ export const localePageEntries = [
   { code: 'fr-fr', region: 'France', language: 'Français', sortKey: 'France' },
   { code: 'id-id', region: 'Indonesia', language: 'Bahasa Indonesia', sortKey: 'Indonesia' },
   { code: 'vi-vn', region: 'Việt Nam', language: 'Tiếng Việt', sortKey: 'Viet Nam' },
-  { code: 'th-th', region: 'ประเทศไทย', language: 'ไทย', sortKey: 'Thailand' },
   { code: 'tr-tr', region: 'Türkiye', language: 'Türkçe', sortKey: 'Turkiye' },
   { code: 'ru-ru', region: 'Россия', language: 'Русский', sortKey: 'Russia' },
+  { code: 'th-th', region: 'ประเทศไทย', language: 'ไทย', sortKey: 'Thailand' },
+  { code: 'de-de', region: 'Deutschland', language: 'Deutsch', sortKey: 'Germany' },
+  { code: 'ja-jp', region: '日本', language: '日本語', sortKey: 'Japan' },
+  { code: 'it-it', region: 'Italia', language: 'Italiano', sortKey: 'Italy' },
+  { code: 'pl-pl', region: 'Polska', language: 'Polski', sortKey: 'Poland' },
+  {
+    code: 'hi-in',
+    region: 'भारत',
+    language: 'हिन्दी',
+    sortKey: 'India',
+    searchTerms: ['India', 'Hindi', 'हिन्दी', 'भारत', '印地语'],
+  },
+  {
+    code: 'tl-ph',
+    region: 'Pilipinas',
+    language: 'Filipino',
+    sortKey: 'Philippines',
+    searchTerms: ['Philippines', 'Filipino', 'Tagalog', 'Pilipinas', '菲律宾语'],
+  },
+  {
+    code: 'ms-my',
+    region: 'Malaysia',
+    language: 'Bahasa Melayu',
+    sortKey: 'Malaysia',
+    searchTerms: ['Malaysia', 'Bahasa Melayu', 'Malay', '马来语'],
+  },
 ]
 
 function resolveLocaleEntryLabel(entry) {

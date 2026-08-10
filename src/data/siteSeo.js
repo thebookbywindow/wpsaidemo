@@ -15,6 +15,13 @@ export const SITE_HREFLANG_LOCALES = [
   'tr-TR',
   'ru-RU',
   'th-TH',
+  'de-DE',
+  'ja-JP',
+  'it-IT',
+  'pl-PL',
+  'hi-IN',
+  'tl-PH',
+  'ms-MY',
 ]
 
 export const HOME_OG_IMAGE_PATH = '/images/og/wps-ai-home-1200x630.png'

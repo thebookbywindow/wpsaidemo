@@ -1414,6 +1414,13 @@ const supportedLocales = [
   { bcp47: 'tr-TR', code: 'tr-tr', short: 'TR', label: 'Türkçe' },
   { bcp47: 'ru-RU', code: 'ru-ru', short: 'RU', label: 'Русский' },
   { bcp47: 'th-TH', code: 'th-th', short: 'TH', label: 'ไทย' },
+  { bcp47: 'de-DE', code: 'de-de', short: 'DE', label: 'Deutsch' },
+  { bcp47: 'ja-JP', code: 'ja-jp', short: 'JP', label: '日本語' },
+  { bcp47: 'it-IT', code: 'it-it', short: 'IT', label: 'Italiano' },
+  { bcp47: 'pl-PL', code: 'pl-pl', short: 'PL', label: 'Polski' },
+  { bcp47: 'hi-IN', code: 'hi-in', short: 'IN', label: 'हिन्दी' },
+  { bcp47: 'tl-PH', code: 'tl-ph', short: 'PH', label: 'Filipino' },
+  { bcp47: 'ms-MY', code: 'ms-my', short: 'MY', label: 'Bahasa Melayu' },
 ]
 
 const localeOptions = supportedLocales.map((item) => ({
