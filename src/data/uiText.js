@@ -16,6 +16,12 @@ export const uiTextByLanguage = {
       getStartedFree: 'Free Download',
       seeAllTools: 'See all tools →',
       seeAllFeatures: 'See all AI features →',
+      productsMega: {
+        platforms: 'Platforms',
+        officeFor: 'WPS Office for',
+        windows: 'Windows',
+        mac: 'Mac',
+      },
       wpsFeaturesMega: {
         aiFeaturesTitle: 'WPS AI Features',
         groups: {
@@ -963,6 +969,12 @@ export const uiTextByLanguage = {
       getStartedFree: '免费下载',
       seeAllTools: '查看所有工具 →',
       seeAllFeatures: '查看全部 AI 功能 →',
+      productsMega: {
+        platforms: '平台',
+        officeFor: 'WPS Office for',
+        windows: 'Windows',
+        mac: 'Mac',
+      },
       wpsFeaturesMega: {
         aiFeaturesTitle: 'WPS AI 功能',
         groups: {

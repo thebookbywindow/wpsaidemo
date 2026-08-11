@@ -34,6 +34,9 @@ import {
   resolveFreeAiToolsHeaderMegaMenu,
 } from './data/freeAiToolsHeaderMegaMenu.js'
 import {
+  resolveProductsHeaderMegaMenu,
+} from './data/productsHeaderMegaMenu.js'
+import {
   resolveWpsFeaturesHeaderMegaMenu,
 } from './data/wpsFeaturesHeaderMegaMenu.js'
 import {
@@ -2016,6 +2019,7 @@ function localizeNestedStrings(value, localizeString) {
 function App() {
   const [isLangOpen, setIsLangOpen] = useState(false)
   const [isProductsMenuOpen, setIsProductsMenuOpen] = useState(false)
+  const [isFreeAiToolsMenuOpen, setIsFreeAiToolsMenuOpen] = useState(false)
   const [isWpsFeaturesMenuOpen, setIsWpsFeaturesMenuOpen] = useState(false)
   const [isTemplatesMenuOpen, setIsTemplatesMenuOpen] = useState(false)
   const [isOverflowMenuOpen, setIsOverflowMenuOpen] = useState(false)
@@ -2055,6 +2059,7 @@ function App() {
   const desktopActionsWidthRef = useRef(300)
   const desktopMenuCloseTimeoutRef = useRef({
     products: 0,
+    'free-ai-tools': 0,
     'wps-features': 0,
     templates: 0,
     overflow: 0,
@@ -2074,6 +2079,10 @@ function App() {
       setIsProductsMenuOpen(false)
       return
     }
+    if (menuKey === 'free-ai-tools') {
+      setIsFreeAiToolsMenuOpen(false)
+      return
+    }
     if (menuKey === 'wps-features') {
       setIsWpsFeaturesMenuOpen(false)
       return
@@ -2090,10 +2099,12 @@ function App() {
   const openDesktopMenu = useCallback(
     (menuKey) => {
       clearDesktopMenuCloseTimeout('products')
+      clearDesktopMenuCloseTimeout('free-ai-tools')
       clearDesktopMenuCloseTimeout('wps-features')
       clearDesktopMenuCloseTimeout('templates')
       clearDesktopMenuCloseTimeout('overflow')
       setIsProductsMenuOpen(menuKey === 'products')
+      setIsFreeAiToolsMenuOpen(menuKey === 'free-ai-tools')
       setIsWpsFeaturesMenuOpen(menuKey === 'wps-features')
       setIsTemplatesMenuOpen(menuKey === 'templates')
       setIsOverflowMenuOpen(menuKey === 'overflow')
@@ -2165,6 +2176,7 @@ function App() {
   useEffect(
     () => () => {
       clearDesktopMenuCloseTimeout('products')
+      clearDesktopMenuCloseTimeout('free-ai-tools')
       clearDesktopMenuCloseTimeout('templates')
       clearDesktopMenuCloseTimeout('wps-features')
       clearDesktopMenuCloseTimeout('overflow')
@@ -2206,6 +2218,10 @@ function App() {
   const wpsFeaturesHeaderMegaMenu = useMemo(
     () => resolveWpsFeaturesHeaderMegaMenu(uiText.nav.wpsFeaturesMega),
     [uiText.nav.wpsFeaturesMega],
+  )
+  const productsHeaderMegaMenu = useMemo(
+    () => resolveProductsHeaderMegaMenu(uiText.nav.productsMega),
+    [uiText.nav.productsMega],
   )
   const freeAiToolsHeaderMegaMenu = useMemo(
     () => resolveFreeAiToolsHeaderMegaMenu(uiText.nav.freeAiToolsMega),
@@ -2859,6 +2875,7 @@ function App() {
     setCurrentLocale(resolveLocaleFromPath(canonicalPathname))
     setIsLangOpen(false)
     setIsProductsMenuOpen(false)
+    setIsFreeAiToolsMenuOpen(false)
     setIsWpsFeaturesMenuOpen(false)
     setIsTemplatesMenuOpen(false)
     setIsOverflowMenuOpen(false)
@@ -2880,6 +2897,7 @@ function App() {
       }
       setIsLangOpen(false)
       setIsProductsMenuOpen(false)
+      setIsFreeAiToolsMenuOpen(false)
       setIsWpsFeaturesMenuOpen(false)
       setIsTemplatesMenuOpen(false)
       setIsOverflowMenuOpen(false)
@@ -2894,6 +2912,7 @@ function App() {
     setCurrentLocale(resolveLocaleFromPath(canonicalPathname))
     setIsLangOpen(false)
     setIsProductsMenuOpen(false)
+    setIsFreeAiToolsMenuOpen(false)
     setIsWpsFeaturesMenuOpen(false)
     setIsTemplatesMenuOpen(false)
     setIsOverflowMenuOpen(false)
@@ -2968,6 +2987,14 @@ function App() {
   const desktopMainNavItems = useMemo(
     () => [
       {
+        key: 'products',
+        type: 'products',
+        label: uiText.nav.products,
+        // Products trigger opens Platforms panel; it is not a route.
+        path: '#products',
+        isCurrent: false,
+      },
+      {
         key: 'wps-features',
         type: 'wps-features',
         label: uiText.nav.wpsFeatures,
@@ -2975,8 +3002,8 @@ function App() {
         isCurrent: pageType === 'ai-features',
       },
       {
-        key: 'products',
-        type: 'products',
+        key: 'free-ai-tools',
+        type: 'free-ai-tools',
         label: uiText.nav.freeAiTools,
         // Matches wps.ai: Free AI Tools trigger opens the panel; it is not a route.
         path: '#free-ai-tools',
@@ -3005,6 +3032,7 @@ function App() {
       uiText.nav.blog,
       uiText.nav.docsCenter,
       uiText.nav.freeAiTools,
+      uiText.nav.products,
       uiText.nav.wpsFeatures,
     ],
   )
@@ -3084,6 +3112,7 @@ function App() {
   useEffect(() => {
     if (isCompactNav) {
       setIsProductsMenuOpen(false)
+      setIsFreeAiToolsMenuOpen(false)
       setIsWpsFeaturesMenuOpen(false)
       setIsTemplatesMenuOpen(false)
       setIsOverflowMenuOpen(false)
@@ -3330,6 +3359,100 @@ function App() {
     (item) => activeGuideCategory === 'all' || item.category === activeGuideCategory,
   )
   const renderDesktopMainNavItem = (item) => {
+    if (item.type === 'products') {
+      return (
+        <div
+          key={item.key}
+          className="relative flex h-full shrink-0 items-center"
+          onMouseEnter={() => openDesktopMenu('products')}
+          onMouseLeave={() => scheduleDesktopMenuClose('products')}
+        >
+          <a
+            className={`home-page-header-link flex h-full items-center whitespace-nowrap border-x border-transparent px-[14px] text-[14px] font-medium transition ${
+              item.isCurrent
+                ? 'home-page-header-link--active'
+                : isProductsMenuOpen
+                  ? 'home-page-header-link--open'
+                  : 'home-page-header-link--idle'
+            }`}
+            href={item.path}
+            aria-haspopup="true"
+            aria-expanded={isProductsMenuOpen}
+            onClick={(event) => {
+              event.preventDefault()
+              if (isProductsMenuOpen) {
+                setIsProductsMenuOpen(false)
+                return
+              }
+              openDesktopMenu('products')
+            }}
+          >
+            {item.label}
+            <span
+              className={`ml-1 inline-flex h-4 w-4 items-center justify-center transition ${
+                isProductsMenuOpen ? 'rotate-180' : ''
+              }`}
+              aria-hidden="true"
+            >
+              <svg
+                className="h-[10px] w-[10px]"
+                viewBox="0 0 10 10"
+                fill="none"
+              >
+                <path
+                  d="M1.5 3.25L5 6.75L8.5 3.25"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+          </a>
+
+          {isProductsMenuOpen && (
+            <div
+              className="home-nav-products-panel home-nav-floating-panel absolute left-0 top-full z-[100] mt-1"
+              onMouseEnter={() => openDesktopMenu('products')}
+              onMouseLeave={() => scheduleDesktopMenuClose('products')}
+            >
+              {productsHeaderMegaMenu.groups.map((group) => (
+                <section key={group.id} className="home-nav-products-mega-section">
+                  <h4 className="home-nav-products-mega-title">{group.title}</h4>
+                  <div className="home-nav-products-mega-cards">
+                    {group.items.map((linkItem) => (
+                      <a
+                        key={linkItem.id}
+                        href={linkItem.url}
+                        className="home-nav-products-card"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => setIsProductsMenuOpen(false)}
+                      >
+                        {linkItem.iconSrc ? (
+                          <img
+                            className="home-nav-products-card-icon"
+                            src={linkItem.iconSrc}
+                            alt=""
+                            draggable={false}
+                            decoding="async"
+                          />
+                        ) : null}
+                        <span className="home-nav-products-card-copy">
+                          <span className="home-nav-products-card-eyebrow">{linkItem.eyebrow}</span>
+                          <span className="home-nav-products-card-label">{linkItem.label}</span>
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+          )}
+        </div>
+      )
+    }
+
     if (item.type === 'wps-features') {
       return (
         <div
@@ -3436,38 +3559,38 @@ function App() {
       )
     }
 
-    if (item.type === 'products') {
+    if (item.type === 'free-ai-tools') {
       return (
         <div
           key={item.key}
           className="relative flex h-full shrink-0 items-center"
-          onMouseEnter={() => openDesktopMenu('products')}
-          onMouseLeave={() => scheduleDesktopMenuClose('products')}
+          onMouseEnter={() => openDesktopMenu('free-ai-tools')}
+          onMouseLeave={() => scheduleDesktopMenuClose('free-ai-tools')}
         >
           <a
             className={`home-page-header-link flex h-full items-center whitespace-nowrap border-x border-transparent px-[14px] text-[14px] font-medium transition ${
               item.isCurrent
                 ? 'home-page-header-link--active'
-                : isProductsMenuOpen
+                : isFreeAiToolsMenuOpen
                   ? 'home-page-header-link--open'
                   : 'home-page-header-link--idle'
             }`}
             href={item.path}
             aria-haspopup="true"
-            aria-expanded={isProductsMenuOpen}
+            aria-expanded={isFreeAiToolsMenuOpen}
             onClick={(event) => {
               event.preventDefault()
-              if (isProductsMenuOpen) {
-                setIsProductsMenuOpen(false)
+              if (isFreeAiToolsMenuOpen) {
+                setIsFreeAiToolsMenuOpen(false)
                 return
               }
-              openDesktopMenu('products')
+              openDesktopMenu('free-ai-tools')
             }}
           >
             {item.label}
             <span
               className={`ml-1 inline-flex h-4 w-4 items-center justify-center transition ${
-                isProductsMenuOpen ? 'rotate-180' : ''
+                isFreeAiToolsMenuOpen ? 'rotate-180' : ''
               }`}
               aria-hidden="true"
             >
@@ -3487,11 +3610,11 @@ function App() {
             </span>
           </a>
 
-          {isProductsMenuOpen && (
+          {isFreeAiToolsMenuOpen && (
             <div
               className="fixed inset-x-0 top-[59px] z-[100] home-nav-mega-panel"
-              onMouseEnter={() => openDesktopMenu('products')}
-              onMouseLeave={() => scheduleDesktopMenuClose('products')}
+              onMouseEnter={() => openDesktopMenu('free-ai-tools')}
+              onMouseLeave={() => scheduleDesktopMenuClose('free-ai-tools')}
             >
               <div className="mx-auto w-full max-w-[1200px]">
                 <div className="home-nav-free-ai-tools-mega home-nav-mega-grid grid w-full">
@@ -3531,7 +3654,7 @@ function App() {
                             className="home-nav-mega-link truncate text-[13px]"
                             target="_blank"
                             rel="noopener noreferrer"
-                            onClick={() => setIsProductsMenuOpen(false)}
+                            onClick={() => setIsFreeAiToolsMenuOpen(false)}
                           >
                             {linkItem.label}
                           </a>
@@ -3682,7 +3805,7 @@ function App() {
   }
 
   const isDesktopMegaMenuOpen =
-    isProductsMenuOpen
+    isFreeAiToolsMenuOpen
     || isWpsFeaturesMenuOpen
     || isTemplatesMenuOpen
 
@@ -3791,8 +3914,8 @@ function App() {
                             return
                           }
                           event.preventDefault()
-                          if (item.type === 'products') {
-                            openDesktopMenu('products')
+                          if (item.type === 'products' || item.type === 'free-ai-tools') {
+                            openDesktopMenu(item.type)
                             return
                           }
                           navigateTo(item.path)
@@ -4009,11 +4132,17 @@ function App() {
                   setMobileNavExpandedKey(null)
                 }
 
-                if (item.type === 'products' || item.type === 'wps-features') {
+                if (
+                  item.type === 'products'
+                  || item.type === 'free-ai-tools'
+                  || item.type === 'wps-features'
+                ) {
                   const groups =
                     item.type === 'products'
-                      ? freeAiToolsHeaderMegaMenu.groups
-                      : wpsFeaturesHeaderMegaMenu.groups
+                      ? productsHeaderMegaMenu.groups
+                      : item.type === 'free-ai-tools'
+                        ? freeAiToolsHeaderMegaMenu.groups
+                        : wpsFeaturesHeaderMegaMenu.groups
                   const hasDirectoryRoute = item.type === 'wps-features' && Boolean(item.path)
 
                   return (
