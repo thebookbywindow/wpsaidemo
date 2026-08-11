@@ -5664,57 +5664,57 @@ body {
 }
 
 /* Compact Products dropdown (2 platforms) — not a full-bleed mega. */
+/* Platforms panel — card grid aligned with wps.com Products → Platforms */
 .home-nav-products-panel {
-  width: min(320px, calc(100vw - 24px));
-  padding: 12px;
+  width: min(560px, calc(100vw - 24px));
+  padding: 16px;
 }
 
 .home-nav-products-mega-title {
-  margin: 0 4px 8px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  margin: 0 4px 12px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
   line-height: 1.3;
-  color: #9e91b5;
+  color: #0d0d0d;
 }
 
 .home-nav-products-mega-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
 }
 
 .home-nav-products-card {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
-  min-height: 56px;
-  padding: 10px 12px;
+  justify-content: center;
+  gap: 10px;
+  min-height: 118px;
+  padding: 14px 10px;
   border: 1px solid transparent;
-  border-radius: var(--home-control-radius);
-  background: transparent;
-  color: #261f38;
-  text-align: left;
+  border-radius: 16px;
+  background: #eef1f6;
+  color: #0d0d0d;
+  text-align: center;
   text-decoration: none;
   transition:
     border-color 0.15s ease,
     background 0.15s ease,
-    color 0.15s ease;
+    color 0.15s ease,
+    transform 0.15s ease;
 }
 
 .home-nav-products-card:hover {
-  border-color: rgba(233, 225, 255, 0.96);
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.96) 0%,
-    rgba(244, 236, 255, 0.96) 100%
-  );
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  border-color: rgba(13, 13, 13, 0.08);
+  background: #e6eaf2;
+  transform: translateY(-1px);
 }
 
 .home-nav-products-card-icon {
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   flex-shrink: 0;
   object-fit: contain;
 }
@@ -5723,6 +5723,7 @@ body {
   display: flex;
   min-width: 0;
   flex-direction: column;
+  align-items: center;
   gap: 2px;
 }
 
@@ -5730,18 +5731,28 @@ body {
   font-size: 11px;
   font-weight: 500;
   line-height: 1.3;
-  color: #9e91b5;
+  color: #8a8f9c;
 }
 
 .home-nav-products-card-label {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.25;
-  color: #261f38;
+  color: #0d0d0d;
 }
 
 .home-nav-products-card:hover .home-nav-products-card-label {
-  color: #8f5bff;
+  color: #0d0d0d;
+}
+
+@media (max-width: 640px) {
+  .home-nav-products-panel {
+    width: min(100vw - 24px, 360px);
+  }
+
+  .home-nav-products-mega-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .home-nav-mega-grid {

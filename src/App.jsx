@@ -1966,6 +1966,9 @@ function localizeSourceText(value, language, enabled) {
     Products: {
       th: 'ผลิตภัณฑ์',
     },
+    Platforms: {
+      th: 'แพลตฟอร์ม',
+    },
     Support: {
       th: 'การสนับสนุน',
     },
@@ -2991,8 +2994,8 @@ function App() {
         key: 'products',
         type: 'products',
         label: uiText.nav.products,
-        // Products trigger opens Platforms panel; it is not a route.
-        path: '#products',
+        // Platforms trigger opens platform cards panel; it is not a route.
+        path: '#platforms',
         isCurrent: false,
       },
       {

@@ -1,6 +1,6 @@
 /**
- * Products header mega menu — Platforms cards (Windows / Mac for now).
- * Visual pattern aligned with wps.com Products → Platforms.
+ * Platforms header mega menu — all WPS Office platforms.
+ * Visual / links aligned with wps.com Products → Platforms.
  */
 
 export const PRODUCTS_HEADER_MEGA_MENU = Object.freeze({
@@ -21,7 +21,42 @@ export const PRODUCTS_HEADER_MEGA_MENU = Object.freeze({
           labelKey: 'mac',
           eyebrowKey: 'officeFor',
           url: 'https://www.wps.com/office/mac/',
-          iconSrc: '/images/platforms/macos.svg',
+          iconSrc: '/images/platforms/appstore.svg',
+        },
+        {
+          id: 'linux',
+          labelKey: 'linux',
+          eyebrowKey: 'officeFor',
+          url: 'https://www.wps.com/office/linux/',
+          iconSrc: '/images/platforms/linux.svg',
+        },
+        {
+          id: 'android',
+          labelKey: 'android',
+          eyebrowKey: 'officeFor',
+          url: 'https://www.wps.com/office/android/',
+          iconSrc: '/images/platforms/android.svg',
+        },
+        {
+          id: 'ios',
+          labelKey: 'ios',
+          eyebrowKey: 'officeFor',
+          url: 'https://www.wps.com/office/ios/',
+          iconSrc: '/images/platforms/apple.png',
+        },
+        {
+          id: 'ipad',
+          labelKey: 'ipad',
+          eyebrowKey: 'officeFor',
+          url: 'https://www.wps.com/office/ipad/',
+          iconSrc: '/images/platforms/apple.png',
+        },
+        {
+          id: 'online',
+          labelKey: 'online',
+          eyebrowKey: 'office',
+          url: 'https://www.wps.com/wpsdocs/',
+          iconSrc: '/images/platforms/online.png',
         },
       ]),
     }),

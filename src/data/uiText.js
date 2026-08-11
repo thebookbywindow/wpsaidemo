@@ -3,7 +3,7 @@ export const uiTextByLanguage = {
     nav: {
       wpsFeatures: 'WPS AI Features',
       freeAiTools: 'Free AI Tools',
-      products: 'Products',
+      products: 'Platforms',
       templates: 'Templates',
       download: 'Download',
       pricing: 'Pricing',
@@ -19,8 +19,14 @@ export const uiTextByLanguage = {
       productsMega: {
         platforms: 'Platforms',
         officeFor: 'WPS Office for',
+        office: 'WPS Office',
         windows: 'Windows',
         mac: 'Mac',
+        linux: 'Linux',
+        android: 'Android',
+        ios: 'iOS',
+        ipad: 'iPad',
+        online: 'Online',
       },
       wpsFeaturesMega: {
         aiFeaturesTitle: 'WPS AI Features',
@@ -956,7 +962,7 @@ export const uiTextByLanguage = {
     nav: {
       wpsFeatures: 'WPS AI 功能',
       freeAiTools: 'Free AI Tools',
-      products: '产品',
+      products: '平台',
       templates: '模板',
       download: '下载',
       pricing: '定价',
@@ -972,8 +978,14 @@ export const uiTextByLanguage = {
       productsMega: {
         platforms: '平台',
         officeFor: 'WPS Office for',
+        office: 'WPS Office',
         windows: 'Windows',
         mac: 'Mac',
+        linux: 'Linux',
+        android: 'Android',
+        ios: 'iOS',
+        ipad: 'iPad',
+        online: 'Online',
       },
       wpsFeaturesMega: {
         aiFeaturesTitle: 'WPS AI 功能',
