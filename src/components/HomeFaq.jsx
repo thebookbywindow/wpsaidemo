@@ -38,15 +38,20 @@ export default function HomeFaq({ title, faqTopics = {} }) {
   }
 
   return (
-    <section className="home-faq-section px-6" id="home-faq">
-      <div className="home-section-inner mx-auto w-full max-w-[1160px]">
-        <h2 id={titleId} className="home-section-title text-center text-[#1a202c]">
+    <section className="home-faq-section" id="home-faq">
+      <div className="hv2-container home-section-inner">
+        <h2 id={titleId} className="hv2-section-title home-section-title">
           {title}
         </h2>
 
-        <div className="home-faq-layout mt-8">
-          <div className="home-faq-nav-wrap">
-            <nav className="home-faq-nav" role="tablist" aria-label={title} ref={navRef}>
+        <div className="home-faq-layout">
+          <div className="hv2-faq__topics-row home-faq-nav-wrap">
+            <nav
+              className="hv2-tabs hv2-faq__topics home-faq-nav"
+              role="tablist"
+              aria-label={title}
+              ref={navRef}
+            >
               {topics.map((topic) => {
                 const selected = topic.id === activeTopicId
                 return (
@@ -55,7 +60,7 @@ export default function HomeFaq({ title, faqTopics = {} }) {
                     type="button"
                     role="tab"
                     aria-selected={selected}
-                    className={`home-faq-nav-item${selected ? ' is-active' : ''}`}
+                    className={`hv2-tab home-faq-nav-item${selected ? ' is-active' : ''}`}
                     onClick={() => setActiveTopicId(topic.id)}
                   >
                     <span className="home-faq-nav-name">{topic.label}</span>
@@ -65,17 +70,17 @@ export default function HomeFaq({ title, faqTopics = {} }) {
             </nav>
           </div>
 
-          <div className="home-faq-panel" role="tabpanel" aria-labelledby={titleId}>
+          <div className="hv2-faq__list home-faq-panel" role="tabpanel" aria-labelledby={titleId}>
             {activeTopic.faqs.map((item, index) => {
               const isOpen = openIndex === index
               return (
-                <details key={item.question} className="home-faq-item" open={isOpen}>
+                <details key={item.question} className="hv2-faq__item home-faq-item" open={isOpen}>
                   <summary
-                    className="home-faq-summary"
+                    className="hv2-faq__summary home-faq-summary"
                     onClick={(event) => handleSummaryClick(index, event)}
                   >
-                    <span className="home-faq-question">{item.question}</span>
-                    <span className="home-faq-icon" aria-hidden="true">
+                    <span className="hv2-faq__question home-faq-question">{item.question}</span>
+                    <span className="hv2-faq__icon home-faq-icon" aria-hidden="true">
                       {isOpen ? (
                         <Minus size={18} strokeWidth={2.25} />
                       ) : (
@@ -83,7 +88,7 @@ export default function HomeFaq({ title, faqTopics = {} }) {
                       )}
                     </span>
                   </summary>
-                  <div className="home-faq-answer">
+                  <div className="hv2-faq__answer home-faq-answer">
                     <p>{renderFaqAnswer(item.answer)}</p>
                   </div>
                 </details>

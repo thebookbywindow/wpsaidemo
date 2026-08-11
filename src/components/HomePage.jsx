@@ -4,7 +4,6 @@ import { useHomeEntityCatalog } from '../hooks/useHomeEntityCatalog'
 import { useHomeIntentLinks } from '../hooks/useHomeIntentLinks'
 import { useHomePageSeo } from '../hooks/useHomePageSeo'
 import { useHomeScrollTopOnMount } from '../hooks/useHomeScrollTopOnMount'
-import HomeDownloadSection from './HomeDownloadSection'
 import HomeEntityCatalog from './HomeEntityCatalog'
 import HomePlatformDownloads from './HomePlatformDownloads'
 import { flattenHomeFaqs } from '../utils/homeFaq'
@@ -152,11 +151,11 @@ export default function HomePage({
             })}
           </ul>
 
-          <div className="hv2-cases__stats" aria-labelledby="home-diff-title">
-            <h3 id="home-diff-title" className="hv2-cases__stats-title home-diff-eyebrow">
+          <div className="hv2-stats hv2-cases__stats" aria-labelledby="home-diff-title">
+            <p id="home-diff-title" className="hv2-stats__eyebrow hv2-cases__stats-title home-diff-eyebrow">
               {home.keyFactsTitle}
-            </h3>
-            <div className="home-diff-stats">
+            </p>
+            <div className="hv2-stats__grid home-diff-stats">
               {(home.keyFacts ?? []).map((item) => {
                 const { value, label } = formatKeyFactStat(item.title)
                 const href = extractKeyFactHref(item.desc)
@@ -197,14 +196,12 @@ export default function HomePage({
         <HomeMediaProof title={home.mediaProofTitle} tabsCopy={home.mediaProofTabs} />
       </div>
 
-      <HomePlatformDownloads copy={home.platformDownloads} />
+      <div className="hv2-download hv2-section">
+        <HomePlatformDownloads copy={home.platformDownloads} />
+      </div>
 
       <div className="hv2-faq hv2-section">
         <HomeFaq title={home.faqTitle} faqTopics={home.faqTopics} />
-      </div>
-
-      <div className="hv2-cta">
-        <HomeDownloadSection copy={home.downloadSection} />
       </div>
     </div>
   )

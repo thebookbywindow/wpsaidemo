@@ -4,6 +4,7 @@ import { FaFacebookF, FaYoutube } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
 import DocsCenterPage from './components/DocsCenterPage'
 import HomePage from './components/HomePage'
+import HomeDownloadSection from './components/HomeDownloadSection'
 import AllProductsPage from './components/AllProductsPage'
 import IntlAiFeaturesPage from './components/IntlAiFeaturesPage'
 import LocalePage from './components/LocalePage'
@@ -5841,6 +5842,12 @@ function App() {
           <LocalePage contentLanguage={contentLanguage} navigateTo={navigateTo} />
         ) : null}
       </main>
+
+      {pageType === 'home' ? (
+        <section className="hv2-cta">
+          <HomeDownloadSection copy={uiText.home.downloadSection} />
+        </section>
+      ) : null}
 
       <footer className="site-footer hv2-footer hv2-chrome">
         <div className="hv2-container site-footer-shell">

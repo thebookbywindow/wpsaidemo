@@ -172,7 +172,7 @@ export default function HomeIntlAiFeatures({ copy, title, summary }) {
     >
       <div className="hv2-container home-section-inner home-ai-deck-align">
         <header className="home-ai-deck-head">
-          <h2 id="home-intl-ai-title" className="home-ai-deck-title">
+          <h2 id="home-intl-ai-title" className="hv2-section-title home-ai-deck-title">
             {copy?.titleLine1 && copy?.titleLine2 ? (
               <>
                 <span>{copy.titleLine1}</span>
@@ -183,12 +183,17 @@ export default function HomeIntlAiFeatures({ copy, title, summary }) {
               <span>{title}</span>
             )}
           </h2>
-          {summary ? <p className="home-ai-deck-summary">{summary}</p> : null}
+          {summary ? (
+            <p className="hv2-section-sub hv2-section-sub--sm home-ai-deck-summary">{summary}</p>
+          ) : null}
         </header>
 
         <div className="home-ai-deck-panel">
           <div className="home-ai-deck-tabs-wrap">
-            <nav className="home-ai-deck-tabs" aria-label={coreTabsLabel}>
+            <nav
+              className="hv2-tabs hv2-tabs--shell hv2-deck__tabs home-ai-deck-tabs"
+              aria-label={coreTabsLabel}
+            >
               {corePillars.map((pillar, index) => {
                 const selected = index === safeIndex
                 return (
@@ -197,7 +202,8 @@ export default function HomeIntlAiFeatures({ copy, title, summary }) {
                     type="button"
                     id={`home-intl-ai-tab-${pillar.id}`}
                     aria-current={selected ? 'true' : undefined}
-                    className={`home-ai-deck-tab${selected ? ' is-active' : ''}`}
+                    className={`hv2-tab home-ai-deck-tab${selected ? ' is-active' : ''}`}
+                    data-pillar={pillar.id}
                     onClick={() => selectById(pillar.id)}
                   >
                     <span className="home-ai-deck-tab-name">{pillar.label}</span>

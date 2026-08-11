@@ -63,7 +63,7 @@ export default function HomeHeroTitle({
     `${desktopParts.main}${desktopParts.join ? `${desktopParts.join} ` : ''}${HOME_HERO_TYPEWRITER_NAMES.join(', ')}${titleTail}`
 
   return (
-    <h1 className="home-hero-title mx-auto max-w-4xl">
+    <h1 className="hv2-hero__title home-hero-title">
       <span className="sr-only">{seoLabel}</span>
       <span className="home-hero-title-visual" aria-hidden="true">
         <span className={`home-hero-title-line1${isMobile ? ' is-mobile' : ''}`}>

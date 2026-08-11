@@ -24,7 +24,7 @@ function readPrefersReducedMotion() {
 }
 
 /**
- * Rotates hero product labels — full word per item; pill width slides in CSS (Notion-style).
+ * Rotates hero product labels — full word per item; vertical poll only (no L/R width slide).
  */
 export function useHomeHeroComponentCycle({
   items = HOME_HERO_TYPEWRITER_COMPONENTS,
