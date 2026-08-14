@@ -111,29 +111,28 @@ export default function HomePlatformDownloads({ copy }) {
   const menuCards = copy.cards.filter((card) => card.menu?.length)
 
   return (
-    <section
+    <div
       ref={rootRef}
       id="download"
-      className="home-pc-download"
+      className="hv2-container hv2-download__inner home-pc-download"
       aria-labelledby="home-platform-downloads-title"
     >
-      <div className="download-layout">
-        <div className="download-intro">
-          <h2 id="home-platform-downloads-title" className="is-split-title" dir="auto">
-            <span className="download-title-line download-title-line--prefix">{titlePrefix}</span>
-            {titleSuffix ? (
-              <>
-                <span className="download-title-space" aria-hidden="true">
-                  &nbsp;
-                </span>
-                <span className="download-title-line download-title-line--suffix">{titleSuffix}</span>
-              </>
-            ) : null}
-          </h2>
-          {copy.summary ? <p dir="auto">{copy.summary}</p> : null}
-        </div>
+      <div className="hv2-download__intro download-intro">
+        <h2 id="home-platform-downloads-title" className="hv2-section-title is-split-title" dir="auto">
+          <span className="download-title-line download-title-line--prefix">{titlePrefix}</span>
+          {titleSuffix ? (
+            <>
+              <span className="download-title-space" aria-hidden="true">
+                &nbsp;
+              </span>
+              <span className="download-title-line download-title-line--suffix">{titleSuffix}</span>
+            </>
+          ) : null}
+        </h2>
+        {copy.summary ? <p className="hv2-section-sub hv2-download__desc" dir="auto">{copy.summary}</p> : null}
+      </div>
 
-        <div ref={cardsRef} className="download-cards">
+      <div ref={cardsRef} className="hv2-download__cards download-cards">
           {copy.cards.map((card) => {
             const asset = PLATFORM_ASSETS[card.id] || { icons: [], cta: 'arrow' }
             const isMenu = asset.cta === 'menu'
@@ -141,8 +140,8 @@ export default function HomePlatformDownloads({ copy }) {
             const expanded = Boolean(menuId && openMenu === menuId)
 
             return (
-              <article key={card.id} className="download-card">
-                <div className="download-card__main">
+              <article key={card.id} className="hv2-download__card download-card">
+                <div className="hv2-download__main download-card__main">
                   <div className="platforms">
                     {asset.icons.map((icon) => (
                       <img key={icon.src} src={icon.src} alt={icon.alt} />
@@ -172,7 +171,7 @@ export default function HomePlatformDownloads({ copy }) {
 
                 <button
                   type="button"
-                  className={`btn blue${isMenu ? ' download-toggle' : ''}`}
+                  className={`hv2-download__btn btn blue${isMenu ? ' download-toggle' : ''}`}
                   aria-expanded={isMenu ? expanded : undefined}
                   aria-controls={isMenu ? menuId : undefined}
                   onClick={() => {
@@ -209,12 +208,13 @@ export default function HomePlatformDownloads({ copy }) {
               <div
                 key={menuId}
                 id={menuId}
-                className={`dropdown ${kind}${expanded ? ' is-open' : ''}`}
+                className={`hv2-download__menu dropdown ${kind}${expanded ? ' is-open' : ''}`}
               >
                 {card.menu.map((item) => (
-                  <div
+                  <button
                     key={item.id}
-                    className="drop-row"
+                    type="button"
+                    className="hv2-download__menu-item drop-row"
                     role="button"
                     tabIndex={expanded ? 0 : -1}
                     onClick={() => {
@@ -230,13 +230,12 @@ export default function HomePlatformDownloads({ copy }) {
                   >
                     <img src={item.iconSrc || '/images/platforms/download.svg'} alt="" />{' '}
                     {item.label}
-                  </div>
+                  </button>
                 ))}
               </div>
             )
           })}
         </div>
-      </div>
-    </section>
+    </div>
   )
 }

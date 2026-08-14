@@ -20,16 +20,15 @@ export function useCountUpOnView(count, { suffix = '', finalValue = '', duration
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduceMotion) {
-      setDisplay(resolvedFinal)
       return undefined
     }
 
-    setDisplay(`0${suffix}`)
     startedRef.current = false
 
     const animate = () => {
       if (startedRef.current) return
       startedRef.current = true
+      setDisplay(`0${suffix}`)
 
       const startedAt = performance.now()
       const target = count

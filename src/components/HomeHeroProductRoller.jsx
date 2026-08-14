@@ -91,27 +91,31 @@ export default function HomeHeroProductRoller({ items, index, prefersReducedMoti
 
   return (
     <span
-      className={`home-hero-product-roller${prefersReducedMotion ? ' is-static' : ''}`}
+      className={`hv2-roller home-hero-product-roller${prefersReducedMotion ? ' is-static' : ''}`}
       style={slotWidthPx != null ? { width: `${slotWidthPx}px` } : undefined}
     >
-      <span ref={measureRef} className="home-hero-product-roller-measure-set" aria-hidden="true">
+      <span
+        ref={measureRef}
+        className="hv2-roller__measures home-hero-product-roller-measure-set"
+        aria-hidden="true"
+      >
         {items.map((item) => (
           <span
             key={`measure-${item.id}`}
             data-roller-measure=""
-            className="home-hero-product-roller-item home-hero-product-roller-item--measure"
+            className="hv2-roller__item home-hero-product-roller-item home-hero-product-roller-item--measure"
             style={{ color: item.color }}
           >
-            <HomeHeroProductIcon item={item} className="home-hero-product-roller-icon" />
-            <span className="home-hero-product-roller-label">{item.name}</span>
+            <HomeHeroProductIcon item={item} className="hv2-roller__icon home-hero-product-roller-icon" />
+            <span className="hv2-roller__label home-hero-product-roller-label">{item.name}</span>
           </span>
         ))}
       </span>
 
-      <span className="home-hero-product-roller-viewport">
+      <span className="hv2-roller__viewport home-hero-product-roller-viewport">
         <span
           ref={trackRef}
-          className="home-hero-product-roller-track"
+          className="hv2-roller__track home-hero-product-roller-track"
           style={{
             transform: `translate3d(0, calc(${-slideIndex} * var(--roller-h)), 0)`,
             transition: slideTransition,
@@ -120,11 +124,11 @@ export default function HomeHeroProductRoller({ items, index, prefersReducedMoti
           {stripItems.map((item, itemIndex) => (
             <span
               key={`${item.id}-${itemIndex}`}
-              className="home-hero-product-roller-item"
+              className="hv2-roller__item home-hero-product-roller-item"
               style={{ color: item.color }}
             >
-              <HomeHeroProductIcon item={item} className="home-hero-product-roller-icon" />
-              <span className="home-hero-product-roller-label">{item.name}</span>
+              <HomeHeroProductIcon item={item} className="hv2-roller__icon home-hero-product-roller-icon" />
+              <span className="hv2-roller__label home-hero-product-roller-label">{item.name}</span>
             </span>
           ))}
         </span>

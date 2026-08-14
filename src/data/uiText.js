@@ -606,11 +606,11 @@ export const uiTextByLanguage = {
       keyFactsTitle: 'Trusted by teams. Proven in practice.',
       mediaProofTitle: 'Trusted by Experts & Proven by Users',
       mediaProofSummary:
-        'Experience the shift from manual labor to intelligent creation. WPS software is your co-pilot for every task.',
+        'Explore four real work moments. Each card starts with a familiar problem and shows the result WPS AI helps create.',
       mediaProofTabs: {
-        kol: { name: 'WPS Office', desc: 'What creators are saying' },
-        pr: { name: 'All Tools', desc: 'Tech press and industry reviews' },
-        g2: { name: 'QR code', desc: 'Real feedback from daily users' },
+        kol: { name: 'KOL Videos', desc: 'What creators are saying' },
+        pr: { name: 'PR&Media', desc: 'Tech press and industry reviews' },
+        g2: { name: 'G2 Users', desc: 'Real feedback from daily users' },
       },
       keyFacts: [
         {

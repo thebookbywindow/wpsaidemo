@@ -80,45 +80,32 @@ export default function HomeEntityCatalog({
     const platformItems = groups.flatMap((group) => group.items ?? [])
 
     return (
-      <div className="home-hero-platforms" aria-label={title || groupLabels?.platforms || 'Platforms'}>
-        <div className="home-entity-catalog-panel home-entity-catalog-panel--hero">
-          {ctaLabel ? (
-            <div className="home-hero-actions">
-              <button
-                className="home-hero-download-btn"
-                type="button"
-                aria-label="Free download WPS Office for your device"
-                onClick={() => {
-                  detectAndAlertPlatformDownload()
-                }}
-              >
-                <span>{ctaLabel}</span>
-                <img
-                  className="home-hero-download-btn-shield"
-                  src={HOME_V2_DOWNLOAD_SHIELD}
-                  alt=""
-                  width={24}
-                  height={24}
-                  aria-hidden="true"
-                  draggable={false}
-                />
-              </button>
-            </div>
-          ) : null}
-
-          <div className="home-hero-platform-row">
-            {title ? <span className="home-hero-platform-prefix">{title}</span> : null}
-            <ul className="home-hero-platform-list">
-              {platformItems.map((item) => (
-                <li key={item.id}>
-                  <span className="home-hero-platform-link home-hero-platform-link--static">
-                    <span className="home-hero-platform-label">{item.label}</span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+      <div className="hv2-hero__actions home-hero-actions">
+        {ctaLabel ? (
+          <button
+            className="hv2-hero__download home-hero-download-btn"
+            type="button"
+            aria-label="Free download WPS Office for your device"
+            onClick={() => {
+              detectAndAlertPlatformDownload()
+            }}
+          >
+            <span>{ctaLabel}</span>
+            <img
+              className="home-hero-download-btn-shield"
+              src={HOME_V2_DOWNLOAD_SHIELD}
+              alt=""
+              width={24}
+              height={24}
+              aria-hidden="true"
+              draggable={false}
+            />
+          </button>
+        ) : null}
+        <p className="hv2-hero__platforms">
+          {title ? `${title}: ` : ''}
+          {platformItems.map((item) => item.label).join(', ')}
+        </p>
       </div>
     )
   }

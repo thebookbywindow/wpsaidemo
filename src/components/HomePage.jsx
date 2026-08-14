@@ -14,7 +14,6 @@ import HomeHeroTitle from './HomeHeroTitle'
 import HomeIntlAiFeatures from './HomeIntlAiFeatures'
 import HomeMediaProof from './HomeMediaProof'
 import HomeTrustBar from './HomeTrustBar'
-import { renderFaqAnswer } from '../utils/renderFaqAnswer'
 
 /**
  * SEO/GEO homepage — visual shell aligned to official home-v2 (hv2-*).
@@ -22,8 +21,6 @@ import { renderFaqAnswer } from '../utils/renderFaqAnswer'
 export default function HomePage({
   uiText,
   localeDownloadPath,
-  localeAllProductsPath,
-  localeAiFeaturesPath,
   currentUrlLocale,
   navigateTo,
   contentLanguage,
@@ -43,20 +40,22 @@ export default function HomePage({
   })
 
   return (
-    <div className="home-v2-main">
-      <section className="hv2-hero home-hero-section text-center">
+    <>
+      <section className="hv2-hero">
         <div className="hv2-hero__backdrop" aria-hidden="true">
-          <img
-            className="hv2-hero__backdrop-img"
-            src={HOME_V2_HERO_BACKDROP}
-            alt=""
-            width={2222}
-            height={840}
-            fetchPriority="high"
-            decoding="async"
-          />
+          <picture>
+            <img
+              className="hv2-hero__backdrop-img"
+              src={HOME_V2_HERO_BACKDROP}
+              alt=""
+              width={2222}
+              height={840}
+              fetchPriority="high"
+              decoding="async"
+            />
+          </picture>
         </div>
-        <div className="hv2-container home-section-inner home-hero-inner">
+        <div className="hv2-hero__inner home-hero-inner">
           <HomeHeroTitle
             lead={home.heroTitleLead}
             join={home.heroTitleJoin}
@@ -69,40 +68,36 @@ export default function HomePage({
           <p className="hv2-hero__desc home-hero-desc mx-auto">
             {home.heroDesc}
           </p>
-          <div className="home-hero-download">
-            <HomeEntityCatalog
-              variant="hero"
-              title={home.catalogTitle}
-              groupLabels={home.catalogGroups}
-              groups={entityCatalogGroups}
-              navigateTo={navigateTo}
-              ctaLabel={home.downloadCta}
-            />
-          </div>
+          <HomeEntityCatalog
+            variant="hero"
+            title={home.catalogTitle}
+            groupLabels={home.catalogGroups}
+            groups={entityCatalogGroups}
+            navigateTo={navigateTo}
+            ctaLabel={home.downloadCta}
+          />
         </div>
         <div className="hv2-hero__trust">
           <HomeTrustBar label={home.trustBarLabel} copy={home.trustBar} />
         </div>
       </section>
 
-      <div className="hv2-deck hv2-section">
+      <section className="hv2-deck hv2-section">
         <HomeIntlAiFeatures
           title={home.intlAiFeatures?.title}
           summary={home.intlAiFeatures?.summary}
           copy={home.intlAiFeatures}
         />
-      </div>
+      </section>
 
       <section className="hv2-cases hv2-section" aria-labelledby="home-intent-title">
         <div className="hv2-container home-section-inner">
-          <div className="home-intent-header">
-            <h2 id="home-intent-title" className="hv2-section-title home-section-title">
-              {home.intentLinksTitle}
-            </h2>
-            {home.intentLinksSub ? (
-              <p className="hv2-section-sub home-intent-sub">{home.intentLinksSub}</p>
-            ) : null}
-          </div>
+          <h2 id="home-intent-title" className="hv2-section-title home-section-title">
+            {home.intentLinksTitle}
+          </h2>
+          {home.intentLinksSub ? (
+            <p className="hv2-section-sub home-intent-sub">{home.intentLinksSub}</p>
+          ) : null}
           <ul className="hv2-cases__grid home-intent-list">
             {intentLinks.map((item) => {
               const copy = home.intentLinks?.[item.id]
@@ -155,54 +150,58 @@ export default function HomePage({
             <p id="home-diff-title" className="hv2-stats__eyebrow hv2-cases__stats-title home-diff-eyebrow">
               {home.keyFactsTitle}
             </p>
-            <div className="hv2-stats__grid home-diff-stats">
+            <dl className="hv2-stats__grid home-diff-stats">
               {(home.keyFacts ?? []).map((item) => {
                 const { value, label } = formatKeyFactStat(item.title)
                 const href = extractKeyFactHref(item.desc)
-                const content = (
-                  <>
-                    <HomeDiffStatValue value={value} />
-                    <p className="home-diff-stat-label">{label || item.title}</p>
-                    <p className="sr-only">{renderFaqAnswer(item.desc)}</p>
-                  </>
+                const accessibleDescription = `${item.desc ?? ''}`.replace(
+                  /\[([^\]]+)\]\(https?:\/\/[^)\s]+\)/g,
+                  '$1',
                 )
-
-                if (href) {
-                  return (
-                    <a
-                      key={item.title}
-                      className="home-diff-stat home-diff-stat--link"
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {content}
-                    </a>
-                  )
-                }
-
                 return (
-                  <article key={item.title} className="home-diff-stat">
-                    {content}
-                  </article>
+                  <div key={item.title} className="hv2-stats__item home-diff-stat">
+                    <HomeDiffStatValue value={value} />
+                    <dd className="hv2-stats__label home-diff-stat-label">
+                      {href ? (
+                        <a
+                          className="hv2-stats__link"
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {label || item.title}
+                          <span className="hv2-sr-only sr-only">{accessibleDescription}</span>
+                        </a>
+                      ) : (
+                        <>
+                          {label || item.title}
+                          <span className="hv2-sr-only sr-only">{accessibleDescription}</span>
+                        </>
+                      )}
+                    </dd>
+                  </div>
                 )
               })}
-            </div>
+            </dl>
           </div>
         </div>
       </section>
 
-      <div className="hv2-proof hv2-section">
-        <HomeMediaProof title={home.mediaProofTitle} tabsCopy={home.mediaProofTabs} />
-      </div>
+      <section className="hv2-proof hv2-section">
+        <HomeMediaProof
+          title={home.mediaProofTitle}
+          summary={home.mediaProofSummary}
+          tabsCopy={home.mediaProofTabs}
+        />
+      </section>
 
-      <div className="hv2-download hv2-section">
+      <section className="hv2-download hv2-section">
         <HomePlatformDownloads copy={home.platformDownloads} />
-      </div>
+      </section>
 
-      <div className="hv2-faq hv2-section">
+      <section className="hv2-faq hv2-section">
         <HomeFaq title={home.faqTitle} faqTopics={home.faqTopics} />
-      </div>
-    </div>
+      </section>
+    </>
   )
 }

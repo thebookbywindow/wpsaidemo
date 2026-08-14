@@ -4276,7 +4276,7 @@ function App() {
         </div>
       )}
 
-      <main>
+      <main className={pageType === 'home' ? 'home-v2-main' : undefined}>
         {pageType === 'home' ? (
           <HomePage
             uiText={uiText}

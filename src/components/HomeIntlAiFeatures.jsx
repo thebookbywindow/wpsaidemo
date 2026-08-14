@@ -1,5 +1,5 @@
 import { useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { ArrowRight, ArrowUpRight } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { HOME_AI_CORE_PILLAR_IDS } from '../data/homeAiCapabilities'
 import { useHomeAiCapabilities } from '../hooks/useHomeAiCapabilities'
 import HomeAiSpotlightFeatureList from './HomeAiSpotlightFeatureList'
@@ -14,13 +14,14 @@ function HomeAiDeckCard({ pillar, isActive, learnMoreLabel = 'Learn More' }) {
 
   return (
     <article
-      className={`home-ai-deck-card${isActive ? ' is-active' : ''}`}
+      className={`hv2-deck__card home-ai-deck-card${isActive ? ' is-active' : ''}`}
       data-pillar={pillar.id}
       aria-hidden={!isActive}
+      role="tabpanel"
     >
-      <div className="home-ai-deck-card-inner">
-        <div className="home-ai-deck-col home-ai-deck-col--lead">
-          <header className="home-ai-deck-brand">
+      <div className="hv2-deck__card-inner home-ai-deck-card-inner">
+        <div className="hv2-deck__lead-col home-ai-deck-col home-ai-deck-col--lead">
+          <header className="hv2-deck__brand home-ai-deck-brand">
             {pillar.iconSrc ? (
               <img
                 className="home-ai-deck-brand-icon"
@@ -30,18 +31,22 @@ function HomeAiDeckCard({ pillar, isActive, learnMoreLabel = 'Learn More' }) {
                 decoding="async"
               />
             ) : null}
-            <h3 className="home-ai-deck-brand-name">
+            <span className="home-ai-deck-brand-name">
               {pillar.label?.startsWith('WPS') ? pillar.label : `WPS ${pillar.label}`}
-            </h3>
+            </span>
           </header>
 
           {pillar.spotlightLead ? (
-            <p className="home-ai-deck-lead">{faqAnswerLinkLabels(pillar.spotlightLead)}</p>
+            <div className="hv2-deck__lead-body">
+              <h3 className="hv2-deck__lead home-ai-deck-lead">
+                {faqAnswerLinkLabels(pillar.spotlightLead)}
+              </h3>
+            </div>
           ) : null}
 
           {productUrl ? (
             <a
-              className="home-ai-deck-cta"
+              className="hv2-deck__more home-ai-deck-cta"
               href={productUrl}
               target="_blank"
               rel="noopener noreferrer"
@@ -49,14 +54,16 @@ function HomeAiDeckCard({ pillar, isActive, learnMoreLabel = 'Learn More' }) {
               aria-label={`${learnMoreLabel}: ${productLabel}`}
             >
               <span className="home-ai-deck-cta-label">{learnMoreLabel}</span>
-              <ArrowUpRight size={16} strokeWidth={2.25} aria-hidden="true" />
+              <ArrowUpRight className="hv2-deck__more-arrow" size={24} strokeWidth={2.25} aria-hidden="true" />
             </a>
           ) : null}
         </div>
 
-        <div className="home-ai-deck-col home-ai-deck-col--features">
-          <HomeAiSpotlightFeatureList features={pillar.features} variant="deck" />
-        </div>
+        <HomeAiSpotlightFeatureList
+          features={pillar.features}
+          variant="deck"
+          className="home-ai-deck-col--features"
+        />
       </div>
     </article>
   )
@@ -162,68 +169,64 @@ export default function HomeIntlAiFeatures({ copy, title, summary }) {
   const nextLabel = copy?.nextSlideLabel ?? 'Next product'
   if (!cardCount) return null
 
-  const trackTransform = `translate3d(calc(-${safeIndex * 100}% + ${dragOffsetPx}px), 0, 0)`
+  const trackTransform = `translate3d(calc(-${safeIndex} * (100% + var(--hv2-deck-gap)) + ${dragOffsetPx}px), 0, 0)`
 
   return (
-    <section
-      id="home-intl-ai"
-      className="home-ai-capabilities-section home-ai-deck-section"
-      aria-labelledby="home-intl-ai-title"
-    >
-      <div className="hv2-container home-section-inner home-ai-deck-align">
-        <header className="home-ai-deck-head">
-          <h2 id="home-intl-ai-title" className="hv2-section-title home-ai-deck-title">
-            {copy?.titleLine1 && copy?.titleLine2 ? (
-              <>
-                <span>{copy.titleLine1}</span>
-                <br className="home-ai-deck-title-break" aria-hidden="true" />
-                <span>{copy.titleLine2}</span>
-              </>
-            ) : (
-              <span>{title}</span>
-            )}
-          </h2>
-          {summary ? (
-            <p className="hv2-section-sub hv2-section-sub--sm home-ai-deck-summary">{summary}</p>
-          ) : null}
-        </header>
+    <>
+      <div className="hv2-container home-section-inner">
+        <h2 id="home-intl-ai-title" className="hv2-section-title home-ai-deck-title">
+          {copy?.titleLine1 && copy?.titleLine2 ? (
+            <>
+              <span>{copy.titleLine1}</span>
+              <br className="hv2-deck__title-break home-ai-deck-title-break" aria-hidden="true" />
+              <span>{copy.titleLine2}</span>
+            </>
+          ) : (
+            <span>{title}</span>
+          )}
+        </h2>
+        {summary ? (
+          <p className="hv2-section-sub hv2-section-sub--sm home-ai-deck-summary">{summary}</p>
+        ) : null}
+      </div>
 
-        <div className="home-ai-deck-panel">
-          <div className="home-ai-deck-tabs-wrap">
-            <nav
-              className="hv2-tabs hv2-tabs--shell hv2-deck__tabs home-ai-deck-tabs"
-              aria-label={coreTabsLabel}
-            >
-              {corePillars.map((pillar, index) => {
-                const selected = index === safeIndex
-                return (
-                  <button
-                    key={pillar.id}
-                    type="button"
-                    id={`home-intl-ai-tab-${pillar.id}`}
-                    aria-current={selected ? 'true' : undefined}
-                    className={`hv2-tab home-ai-deck-tab${selected ? ' is-active' : ''}`}
-                    data-pillar={pillar.id}
-                    onClick={() => selectById(pillar.id)}
-                  >
-                    <span className="home-ai-deck-tab-name">{pillar.label}</span>
-                  </button>
-                )
-              })}
-            </nav>
+      <div className="hv2-deck__panel home-ai-deck-panel">
+        <div className="hv2-container hv2-deck__panel-inner home-ai-deck-align">
+          <div className="hv2-tabs hv2-tabs--shell hv2-deck__tabs home-ai-deck-tabs" role="tablist" aria-label={coreTabsLabel}>
+            {corePillars.map((pillar, index) => {
+              const selected = index === safeIndex
+              return (
+                <button
+                  key={pillar.id}
+                  type="button"
+                  role="tab"
+                  id={`home-intl-ai-tab-${pillar.id}`}
+                  aria-selected={selected}
+                  aria-current={selected ? 'true' : undefined}
+                  className={`hv2-tab home-ai-deck-tab${selected ? ' is-active' : ''}`}
+                  data-pillar={pillar.id}
+                  onClick={() => selectById(pillar.id)}
+                >
+                  <span className="home-ai-deck-tab-name">{pillar.label}</span>
+                </button>
+              )
+            })}
           </div>
 
-          <div className="home-ai-deck-carousel">
+          <div className="hv2-deck__carousel home-ai-deck-carousel">
             <div
               ref={viewportRef}
-              className={`home-ai-deck-viewport${isDragging ? ' is-dragging' : ''}`}
+              className={`hv2-deck__viewport home-ai-deck-viewport${isDragging ? ' is-dragging' : ''}`}
+              role="region"
+              aria-roledescription="carousel"
+              aria-label="WPS AI product cards"
               onPointerDown={onPointerDown}
               onPointerMove={onPointerMove}
               onPointerUp={endDrag}
               onPointerCancel={endDrag}
             >
               <div
-                className="home-ai-deck-track"
+                className="hv2-deck__rail home-ai-deck-track"
                 style={{ transform: trackTransform }}
                 aria-live="polite"
               >
@@ -238,10 +241,19 @@ export default function HomeIntlAiFeatures({ copy, title, summary }) {
               </div>
             </div>
 
+            <button
+              type="button"
+              className="hv2-deck__arrow hv2-deck__arrow--prev home-ai-deck-prev"
+              aria-label="Previous product"
+              disabled={safeIndex === 0}
+              onClick={goPrev}
+            >
+              <ArrowLeft size={24} strokeWidth={2} aria-hidden="true" />
+            </button>
             {safeIndex < cardCount - 1 ? (
               <button
                 type="button"
-                className="home-ai-deck-next"
+                className="hv2-deck__arrow hv2-deck__arrow--next home-ai-deck-next"
                 aria-label={nextLabel}
                 onClick={goNext}
               >
@@ -250,8 +262,11 @@ export default function HomeIntlAiFeatures({ copy, title, summary }) {
               </button>
             ) : null}
           </div>
+          <p className="hv2-sr-only" aria-live="polite">
+            {corePillars[safeIndex]?.label}
+          </p>
         </div>
       </div>
-    </section>
+    </>
   )
 }

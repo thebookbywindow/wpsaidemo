@@ -21,7 +21,7 @@ function StarRow({ rating = 0 }) {
   })
 
   return (
-    <div className="home-media-stars" aria-label={`${rating} out of 5 stars`}>
+    <div className="hv2-proof__stars home-media-stars" aria-label={`${rating} out of 5 stars`}>
       {stars.map((kind, index) => (
         <span key={index} className={`home-media-star is-${kind}`} aria-hidden="true" />
       ))}
@@ -67,7 +67,7 @@ function MediaCardContent({ item }) {
 /**
  * Social-proof media — pill tabs + fixed card grid.
  */
-export default function HomeMediaProof({ title, tabsCopy }) {
+export default function HomeMediaProof({ title, summary, tabsCopy }) {
   const titleId = useId()
   const [activeTab, setActiveTab] = useState(HOME_MEDIA_PROOF_TABS[0]?.id ?? 'kol')
   const [activeVideo, setActiveVideo] = useState(null)
@@ -94,21 +94,59 @@ export default function HomeMediaProof({ title, tabsCopy }) {
 
   if (!tabMeta) return null
 
+  const pages = Array.from({ length: Math.ceil(items.length / 2) }, (_, index) =>
+    items.slice(index * 2, index * 2 + 2),
+  )
+
+  const renderCard = (item) => {
+    const href = resolveMediaItemHref(item)
+    const isVideo = Boolean(item.youtubeId)
+    const linkLabel = isVideo
+      ? `Play video by ${item.author}`
+      : `Read review from ${item.author}`
+
+    const content = <MediaCardContent item={item} />
+    const link = isVideo ? (
+      <button
+        type="button"
+        className="hv2-proof__link home-media-card-link"
+        onClick={() => setActiveVideo(item)}
+        aria-label={linkLabel}
+      >
+        {content}
+      </button>
+    ) : href ? (
+      <a
+        className="hv2-proof__link home-media-card-link"
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={linkLabel}
+      >
+        {content}
+      </a>
+    ) : (
+      <div className="hv2-proof__link home-media-card-link">{content}</div>
+    )
+
+    return (
+      <div key={item.id} className="hv2-proof__card home-media-card">
+        {link}
+      </div>
+    )
+  }
+
   return (
-    <section
-      id="home-media-proof"
-      className="home-media-proof-section"
-      aria-labelledby={title ? titleId : undefined}
-      aria-label={title ? undefined : 'Media proof'}
-    >
+    <>
       <div className="hv2-container home-section-inner">
         {title ? (
           <h2 id={titleId} className="hv2-section-title home-section-title">
             {title}
           </h2>
         ) : null}
+        {summary ? <p className="hv2-section-sub home-media-summary">{summary}</p> : null}
 
-        <div className="home-media-content">
+        <div className="hv2-proof__tabs-row home-media-content">
           <nav className="hv2-tabs home-media-tabs" role="tablist" aria-label={title}>
             {HOME_MEDIA_PROOF_TABS.map((tab) => {
               const copy = tabsCopy?.[tab.id]
@@ -127,57 +165,21 @@ export default function HomeMediaProof({ title, tabsCopy }) {
               )
             })}
           </nav>
-
-          <div className="hv2-proof__grid home-media-grid" role="tabpanel">
-            {items.map((item) => {
-              const href = resolveMediaItemHref(item)
-              const isVideo = Boolean(item.youtubeId)
-              const linkLabel = isVideo
-                ? `Play video by ${item.author}`
-                : `Read review from ${item.author}`
-
-              if (isVideo) {
-                return (
-                  <button
-                    key={item.id}
-                    type="button"
-                    className="hv2-proof__card home-media-card home-media-card--interactive"
-                    onClick={() => setActiveVideo(item)}
-                    aria-label={linkLabel}
-                  >
-                    <MediaCardContent item={item} />
-                  </button>
-                )
-              }
-
-              if (href) {
-                return (
-                  <a
-                    key={item.id}
-                    className="hv2-proof__card home-media-card home-media-card--interactive"
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={linkLabel}
-                  >
-                    <MediaCardContent item={item} />
-                  </a>
-                )
-              }
-
-              return (
-                <article key={item.id} className="hv2-proof__card home-media-card">
-                  <MediaCardContent item={item} />
-                </article>
-              )
-            })}
-          </div>
         </div>
+
+        <ul className="hv2-proof__grid home-media-grid" role="tabpanel" aria-label={title}>
+          {pages.map((page, index) => (
+            <li key={`${tabMeta.id}-page-${index}`} className="hv2-proof__page">
+              {page.map(renderCard)}
+            </li>
+          ))}
+        </ul>
       </div>
 
       {activeVideo ? (
-        <div
-          className="home-media-video-modal"
+        <dialog
+          open
+          className="hv2-proof__modal home-media-video-modal"
           role="dialog"
           aria-modal="true"
           aria-label={activeVideo.author}
@@ -204,8 +206,8 @@ export default function HomeMediaProof({ title, tabsCopy }) {
               />
             </div>
           </div>
-        </div>
+        </dialog>
       ) : null}
-    </section>
+    </>
   )
 }

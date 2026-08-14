@@ -9234,6 +9234,288 @@ a.home-ai-pillar-link:focus-visible {
   color: #534ab7;
 }
 
+/* Locale page — screenshot parity with Figma AI-Web / Share HTML #ai-features */
+.home-figma-page:has(.locale-page) {
+  background: #fff;
+}
+
+.home-figma-page:has(.locale-page)::before {
+  content: none;
+  display: none;
+}
+
+.locale-page {
+  min-height: 100vh;
+  font-family: Gabarito, Arial, sans-serif;
+  background-color: #fff;
+  background-image: url('/images/home-v2/hero-backdrop.webp');
+  background-position: center top;
+  background-size: 2222px 840px;
+  background-repeat: no-repeat;
+}
+
+.locale-page-hero {
+  min-height: 363px;
+  padding: 68px 20px 58px;
+  text-align: center;
+  background: none;
+}
+
+.locale-page-hero h1 {
+  max-width: 1100px;
+  margin: 0 auto 28px;
+  font-family: Gabarito, Arial, sans-serif;
+  font-size: 80px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -3px;
+  color: #0d0d0d;
+}
+
+.locale-page-search {
+  position: relative;
+  width: min(900px, calc(100vw - 40px));
+  height: 60px;
+  margin: auto;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.52);
+  box-shadow: 0 14px 44px rgba(81, 0, 132, 0.1);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.locale-page-search:hover,
+.locale-page-search:focus-within {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.66);
+  box-shadow: 0 16px 48px rgba(105, 72, 178, 0.16);
+}
+
+.locale-page-search input {
+  width: 100%;
+  height: 100%;
+  padding: 0 120px 0 22px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font: 400 18px / 22px Gabarito, Arial, sans-serif;
+  color: #0d0d0d;
+}
+
+.locale-page-search input::placeholder {
+  color: rgba(13, 13, 13, 0.46);
+}
+
+.locale-page-search:hover input::placeholder,
+.locale-page-search input:focus::placeholder {
+  color: transparent;
+}
+
+.locale-page-search input[type='search']::-webkit-search-decoration,
+.locale-page-search input[type='search']::-webkit-search-cancel-button,
+.locale-page-search input[type='search']::-webkit-search-results-button,
+.locale-page-search input[type='search']::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+
+.locale-page-search button {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(93deg, #5f62fd, #f359ce);
+  cursor: pointer;
+}
+
+.locale-page-search button img {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.locale-page-search .locale-page-search-clear {
+  right: 62px;
+  top: 18px;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.locale-page-search .locale-page-search-clear::before,
+.locale-page-search .locale-page-search-clear::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 11px;
+  width: 14px;
+  height: 1.5px;
+  border-radius: 999px;
+  background: #0d0d0d;
+  transform: rotate(45deg);
+}
+
+.locale-page-search .locale-page-search-clear::after {
+  transform: rotate(-45deg);
+}
+
+.locale-page-search .locale-page-search-clear:hover {
+  background: rgba(13, 13, 13, 0.06);
+}
+
+.locale-page-search .locale-page-search-clear[hidden] {
+  display: none;
+}
+
+.locale-page-library {
+  width: min(1680px, 87.5vw);
+  max-width: none;
+  margin: 0 auto 80px;
+  padding: clamp(32px, 3.214vw, 54px);
+  border: 0;
+  border-radius: clamp(24px, 2.143vw, 36px);
+  background: #fff;
+  box-shadow: none;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.locale-page-group {
+  padding: 0 0 clamp(24px, 2.143vw, 36px);
+  margin-bottom: clamp(24px, 2.143vw, 36px);
+  border-bottom: 1px solid rgba(13, 13, 13, 0.06);
+}
+
+.locale-page-group:last-child {
+  border-bottom: 0;
+  margin-bottom: 0;
+}
+
+.locale-page-group h2 {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 0.952vw, 16px);
+  margin: 0 0 clamp(24px, 2.143vw, 36px);
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 700;
+  color: #0d0d0d;
+}
+
+.locale-page-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(252px, 1fr));
+  gap: clamp(16px, 1.429vw, 24px) clamp(24px, 3vw, 48px);
+}
+
+.locale-page-links a {
+  min-width: 0;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: left;
+  padding: 0;
+  border-radius: 0;
+  font-family: Gabarito, Arial, sans-serif;
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: #6b6b6b;
+  text-decoration: none;
+  white-space: nowrap;
+  word-break: normal;
+  overflow-wrap: normal;
+  transition: color 0.18s ease;
+}
+
+.locale-page-links a:hover,
+.locale-page-links a:focus {
+  padding-left: 0;
+  color: #9c75f0;
+  background: transparent;
+  transform: none;
+}
+
+.locale-page-link-mark {
+  padding: 0;
+  margin: 0;
+  border-radius: 2px;
+  background: rgba(243, 89, 206, 0.14);
+  color: #d946a8;
+  font: inherit;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.locale-page-links a:hover .locale-page-link-mark {
+  background: rgba(243, 89, 206, 0.22);
+  color: #c0268a;
+}
+
+.locale-page-empty {
+  margin: 0;
+  padding: 70px 20px;
+  text-align: center;
+  color: #b8c3d0;
+  font-size: clamp(16px, 1.31vw, 22px);
+  font-weight: 400;
+}
+
+@media (max-width: 900px) {
+  .locale-page-hero h1 {
+    font-size: 50px;
+  }
+
+  .locale-page-library {
+    margin: 0 20px 60px;
+    width: auto;
+    padding: 32px 24px;
+  }
+
+  .locale-page-links {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 20px;
+  }
+
+  .locale-page-links a {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 560px) {
+  .locale-page-hero h1 {
+    font-size: 42px;
+  }
+
+  .locale-page-library {
+    margin: 0 12px 40px;
+  }
+
+  .locale-page-search input {
+    font-size: 16px;
+  }
+
+  .locale-page-links {
+    grid-template-columns: 1fr;
+  }
+}
+
 .home-intl-ai-feature-nav {
   display: grid;
   place-items: center;

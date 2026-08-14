@@ -7,13 +7,19 @@ import { renderFaqAnswer } from '../utils/renderFaqAnswer'
  * variant="deck" → divider rows + trailing arrow for the colored stack cards.
  * Deck rows are already one link each — descriptions render as plain text (no nested <a>).
  */
-export default function HomeAiSpotlightFeatureList({ features = [], variant = 'default' }) {
+export default function HomeAiSpotlightFeatureList({
+  features = [],
+  variant = 'default',
+  className = '',
+}) {
   if (!features.length) return null
 
   const isDeck = variant === 'deck'
 
   return (
-    <ul className={isDeck ? 'home-ai-deck-features' : 'home-ai-spotlight-features'}>
+    <ul
+      className={`${isDeck ? 'hv2-deck__features home-ai-deck-features' : 'home-ai-spotlight-features'}${className ? ` ${className}` : ''}`}
+    >
       {features.map((feature) => {
         const key = feature.id ?? feature.label
 
@@ -33,10 +39,10 @@ export default function HomeAiSpotlightFeatureList({ features = [], variant = 'd
           )
 
           return (
-            <li key={key} className="home-ai-deck-feature">
+            <li key={key} className="hv2-deck__feature-row home-ai-deck-feature">
               {feature.url ? (
                 <a
-                  className="home-ai-deck-feature-link"
+                    className="hv2-deck__feature home-ai-deck-feature-link"
                   href={feature.url}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -44,7 +50,7 @@ export default function HomeAiSpotlightFeatureList({ features = [], variant = 'd
                   {body}
                 </a>
               ) : (
-                <span className="home-ai-deck-feature-link is-static">{body}</span>
+                <span className="hv2-deck__feature home-ai-deck-feature-link is-static">{body}</span>
               )}
             </li>
           )

@@ -13,6 +13,7 @@
     "scrape:intl-ai-meta": "node scripts/scrape-intl-ai-feature-meta.mjs",
     "retry:intl-ai-images": "node scripts/retry-intl-ai-feature-images.mjs",
     "validate:intl-ai": "node scripts/validate-intl-ai-features.mjs",
+    "validate:locale-page": "node scripts/validate-locale-page-parity.mjs",
     "validate:home-hero-cycle": "node scripts/validate-home-hero-cycle.mjs",
     "validate:home-trust-dock": "node scripts/validate-home-trust-dock.mjs",
     "validate:home-outbound-links": "node scripts/validate-home-outbound-links.mjs",

@@ -27,7 +27,7 @@ export function formatKeyFactStat(title = '') {
     const numeric = Number(raw)
     const value =
       Number.isFinite(numeric) && numeric >= 1000
-        ? `${Math.round(numeric / 1000)}k+`
+        ? `${Math.round(numeric / 1000)}K+`
         : `${match[1]}+`
     return { value, label: sentenceCase(match[2]) }
   }

@@ -9,8 +9,8 @@ export default function HomeDiffStatValue({ value }) {
   const { ref, display } = useCountUpOnView(count, { suffix, finalValue })
 
   return (
-    <p ref={ref} className="home-diff-stat-value" aria-label={finalValue || undefined}>
+    <dt ref={ref} className="hv2-stats__value home-diff-stat-value" aria-label={finalValue || undefined}>
       {display}
-    </p>
+    </dt>
   )
 }

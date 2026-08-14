@@ -22,7 +22,7 @@ export function renderFaqAnswer(answer = '') {
       <a
         key={`${href}-${index}`}
         href={href}
-        className="home-faq-link"
+        className="home-v2-faq__link home-faq-link"
         target="_blank"
         rel="noopener noreferrer"
       >
