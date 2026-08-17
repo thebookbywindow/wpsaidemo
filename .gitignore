@@ -25,3 +25,22 @@ dist-ssr
 *.sw?
 
 .vercel
+
+# Local Playwright snapshots / screenshots (verify only, not site code)
+.playwright-mcp/
+.playwright-cli/
+
+# Tracking / 埋点 spreadsheets
+*.xlsx
+*.xls
+
+# One-off temp pages, reports, and asset dumps
+temp-wps-*.html
+tmp-*
+tmp-*/
+*_report.txt
+
+# Tracking / kdocs / scratch helper scripts
+scripts/_tmp_*
+scripts/*kdocs*
+scripts/*tracking*
