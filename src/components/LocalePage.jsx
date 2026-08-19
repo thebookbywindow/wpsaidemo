@@ -5,6 +5,7 @@ import { useIntlAiFeaturesSearch } from '../hooks/useIntlAiFeaturesSearch'
 import { toUrlLocale } from '../utils/localeUrl'
 import { joinPath } from '../utils/pathUrl'
 import { splitIntlAiLabelByQuery } from '../utils/intlAiFeaturesSearch'
+import { withPublicAssetPath } from '../utils/publicAssetPath'
 
 const LOCALE_GROUP_ID_PREFIX = 'locale-group-'
 
@@ -102,7 +103,7 @@ export default function LocalePage({ contentLanguage, navigateTo }) {
           />
           <button type="submit" aria-label={copy.searchAriaLabel}>
             <img
-              src="/images/locale-search.svg"
+              src={withPublicAssetPath('/images/locale-search.svg')}
               width={24}
               height={24}
               alt=""

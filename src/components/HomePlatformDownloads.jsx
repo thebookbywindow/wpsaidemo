@@ -1,26 +1,48 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { startPlatformDownload } from '../utils/detectClientPlatform'
+import { withPublicAssetPath } from '../utils/publicAssetPath'
 
 const PLATFORM_ASSETS = {
   windows: {
-    icons: [{ src: '/images/platforms/windows.svg', alt: 'free download wps office for windows' }],
+    icons: [
+      {
+        src: withPublicAssetPath('/images/platforms/windows.svg'),
+        alt: 'free download wps office for windows',
+      },
+    ],
     cta: 'arrow',
     downloadId: 'windows',
   },
   linux: {
-    icons: [{ src: '/images/platforms/linux.svg', alt: 'free download wps office for linux' }],
+    icons: [
+      {
+        src: withPublicAssetPath('/images/platforms/linux.svg'),
+        alt: 'free download wps office for linux',
+      },
+    ],
     cta: 'menu',
     menuId: 'linux-download-menu',
   },
   mac: {
-    icons: [{ src: '/images/platforms/macos.svg', alt: 'free download wps office for mac' }],
+    icons: [
+      {
+        src: withPublicAssetPath('/images/platforms/macos.svg'),
+        alt: 'free download wps office for mac',
+      },
+    ],
     cta: 'arrow',
     downloadId: 'mac',
   },
   mobile: {
     icons: [
-      { src: '/images/platforms/android.svg', alt: 'free download wps office for android' },
-      { src: '/images/platforms/ios.svg', alt: 'free download wps office for ios' },
+      {
+        src: withPublicAssetPath('/images/platforms/android.svg'),
+        alt: 'free download wps office for android',
+      },
+      {
+        src: withPublicAssetPath('/images/platforms/ios.svg'),
+        alt: 'free download wps office for ios',
+      },
     ],
     cta: 'menu',
     menuId: 'mobile-download-menu',
@@ -36,8 +58,12 @@ function DownloadCtaIcon({ variant }) {
     return (
       <span className="btn-icon down-roll" aria-hidden="true">
         <span className="down-spin">
-          <img src="/images/platforms/down.svg" alt="" />
-          <img className="btn-icon-clone" src="/images/platforms/down.svg" alt="" />
+          <img src={withPublicAssetPath('/images/platforms/down.svg')} alt="" />
+          <img
+            className="btn-icon-clone"
+            src={withPublicAssetPath('/images/platforms/down.svg')}
+            alt=""
+          />
         </span>
       </span>
     )
@@ -45,8 +71,12 @@ function DownloadCtaIcon({ variant }) {
 
   return (
     <span className="btn-icon arrow-roll" aria-hidden="true">
-      <img src="/images/platforms/arrow-up-right.svg" alt="" />
-      <img className="btn-icon-clone" src="/images/platforms/arrow-up-right.svg" alt="" />
+      <img src={withPublicAssetPath('/images/platforms/arrow-up-right.svg')} alt="" />
+      <img
+        className="btn-icon-clone"
+        src={withPublicAssetPath('/images/platforms/arrow-up-right.svg')}
+        alt=""
+      />
     </span>
   )
 }
@@ -228,7 +258,10 @@ export default function HomePlatformDownloads({ copy }) {
                       triggerCardDownload(item.platform || item.id)
                     }}
                   >
-                    <img src={item.iconSrc || '/images/platforms/download.svg'} alt="" />{' '}
+                    <img
+                      src={item.iconSrc || withPublicAssetPath('/images/platforms/download.svg')}
+                      alt=""
+                    />{' '}
                     {item.label}
                   </button>
                 ))}

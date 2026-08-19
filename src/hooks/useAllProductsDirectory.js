@@ -1,13 +1,14 @@
 import { useMemo } from 'react'
+import { withPublicAssetPath } from '../utils/publicAssetPath'
 
 export const ALL_PRODUCTS_GROUP_ID_PREFIX = 'all-products-group-'
 
 const SECTION_ICON_BY_TITLE = Object.freeze({
-  'AI Tools': '/icons/wps/copilot.svg',
-  'AI Writing': '/icons/wps/docs.svg',
-  'AI Sheets': '/icons/wps/sheets.svg',
-  'AI Slides': '/icons/wps/slides.svg',
-  'PDF Tools': '/icons/wps/pdf.svg',
+  'AI Tools': withPublicAssetPath('/icons/wps/copilot.svg'),
+  'AI Writing': withPublicAssetPath('/icons/wps/docs.svg'),
+  'AI Sheets': withPublicAssetPath('/icons/wps/sheets.svg'),
+  'AI Slides': withPublicAssetPath('/icons/wps/slides.svg'),
+  'PDF Tools': withPublicAssetPath('/icons/wps/pdf.svg'),
 })
 
 export function toAllProductsGroupId(title) {

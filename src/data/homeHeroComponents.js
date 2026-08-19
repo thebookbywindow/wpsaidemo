@@ -2,66 +2,68 @@
  * WPS Office apps — names/icons from official wps.com homepage.
  * Icons saved under /icons/wps/*.svg (extracted from https://www.wps.com/).
  */
+import { withPublicAssetPath } from '../utils/publicAssetPath'
+
 export const HOME_HERO_COMPONENTS = Object.freeze([
   Object.freeze({
     id: 'copilot',
     name: 'Copilot',
     color: '#2052FC',
-    iconSrc: '/icons/wps/copilot.svg',
+    iconSrc: withPublicAssetPath('/icons/wps/copilot.svg'),
   }),
   Object.freeze({
     id: 'docs',
     name: 'Docs',
     color: '#1D70F5',
-    iconSrc: '/icons/wps/docs.svg',
+    iconSrc: withPublicAssetPath('/icons/wps/docs.svg'),
   }),
   Object.freeze({
     id: 'slides',
     name: 'Slides',
     color: '#F17C22',
-    iconSrc: '/icons/wps/slides.svg',
+    iconSrc: withPublicAssetPath('/icons/wps/slides.svg'),
   }),
   Object.freeze({
     id: 'sheets',
     name: 'Sheets',
     color: '#1FAF5B',
-    iconSrc: '/icons/wps/sheets.svg',
+    iconSrc: withPublicAssetPath('/icons/wps/sheets.svg'),
   }),
   Object.freeze({
     id: 'pdf',
     name: 'PDF',
     color: '#EB2F3B',
-    iconSrc: '/icons/wps/pdf.svg',
+    iconSrc: withPublicAssetPath('/icons/wps/pdf.svg'),
   }),
   Object.freeze({
     id: 'photos',
     name: 'Photos',
     color: '#6D5AFA',
-    iconSrc: '/icons/wps/photos.svg',
+    iconSrc: withPublicAssetPath('/icons/wps/photos.svg'),
   }),
   Object.freeze({
     id: 'airpage',
     name: 'AirPage',
     color: '#9152FF',
-    iconSrc: '/icons/wps/airpage.svg',
+    iconSrc: withPublicAssetPath('/icons/wps/airpage.svg'),
   }),
   Object.freeze({
     id: 'airsheet',
     name: 'AirSheet',
     color: '#1EA623',
-    iconSrc: '/icons/wps/airsheet.svg',
+    iconSrc: withPublicAssetPath('/icons/wps/airsheet.svg'),
   }),
   Object.freeze({
     id: 'forms',
     name: 'Forms',
     color: '#009BBA',
-    iconSrc: '/icons/wps/forms.svg',
+    iconSrc: withPublicAssetPath('/icons/wps/forms.svg'),
   }),
   Object.freeze({
     id: 'dbsheet',
     name: 'DBSheet',
     color: '#00A692',
-    iconSrc: '/icons/wps/dbsheet.svg',
+    iconSrc: withPublicAssetPath('/icons/wps/dbsheet.svg'),
   }),
 ])
 
@@ -70,7 +72,7 @@ const COPILOT_HERO_COMPONENT = HOME_HERO_COMPONENTS.find((item) => item.id === '
 export const HOME_HERO_COPILOT = COPILOT_HERO_COMPONENT
   ? Object.freeze({
       ...COPILOT_HERO_COMPONENT,
-      imageSrc: '/images/intl-ai-features/wps-ai-copilot-hub.jpg',
+      imageSrc: withPublicAssetPath('/images/intl-ai-features/wps-ai-copilot-hub.jpg'),
       imageWidth: 708,
       imageHeight: 600,
       sourceImageUrl:

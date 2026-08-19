@@ -1,5 +1,6 @@
 import { HOME_HERO_COMPONENTS } from './homeHeroComponents.js'
 import { INTL_AI_FEATURE_META } from './intlAiFeatureMeta.js'
+import { withPublicAssetPath } from '../utils/publicAssetPath'
 
 /**
  * Merge catalog item with scraped page meta (product screenshot + description).
@@ -12,7 +13,7 @@ export function resolveIntlAiFeatureItem(item, itemLabels = {}, itemDescriptions
     url: item.url,
     label: itemLabels[item.id] ?? item.id,
     description: itemDescriptions[item.id] || meta.description || '',
-    imageSrc: meta.imageSrc || null,
+    imageSrc: meta.imageSrc ? withPublicAssetPath(meta.imageSrc) : null,
   }
 }
 

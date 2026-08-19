@@ -8,6 +8,7 @@ import {
   getDirectoryItemLabel,
   splitIntlAiLabelByQuery,
 } from '../utils/intlAiFeaturesSearch'
+import { withPublicAssetPath } from '../utils/publicAssetPath'
 
 function AllProductsLinkLabel({ label, query }) {
   const parts = splitIntlAiLabelByQuery(label, query)
@@ -125,7 +126,7 @@ export default function AllProductsPage({
           />
           <button type="submit" aria-label={searchAriaLabel}>
             <img
-              src="/images/locale-search.svg"
+              src={withPublicAssetPath('/images/locale-search.svg')}
               width={24}
               height={24}
               alt=""

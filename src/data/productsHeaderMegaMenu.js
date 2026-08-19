@@ -2,6 +2,7 @@
  * Platforms header mega menu — all WPS Office platforms.
  * Visual / links aligned with wps.com Products → Platforms.
  */
+import { withPublicAssetPath } from '../utils/publicAssetPath'
 
 export const PRODUCTS_HEADER_MEGA_MENU = Object.freeze({
   groups: Object.freeze([
@@ -14,49 +15,49 @@ export const PRODUCTS_HEADER_MEGA_MENU = Object.freeze({
           labelKey: 'windows',
           eyebrowKey: 'officeFor',
           url: 'https://www.wps.com/office/windows/',
-          iconSrc: '/images/platforms/windows.svg',
+          iconSrc: withPublicAssetPath('/images/platforms/windows.svg'),
         },
         {
           id: 'mac',
           labelKey: 'mac',
           eyebrowKey: 'officeFor',
           url: 'https://www.wps.com/office/mac/',
-          iconSrc: '/images/platforms/appstore.svg',
+          iconSrc: withPublicAssetPath('/images/platforms/appstore.svg'),
         },
         {
           id: 'linux',
           labelKey: 'linux',
           eyebrowKey: 'officeFor',
           url: 'https://www.wps.com/office/linux/',
-          iconSrc: '/images/platforms/linux.svg',
+          iconSrc: withPublicAssetPath('/images/platforms/linux.svg'),
         },
         {
           id: 'android',
           labelKey: 'android',
           eyebrowKey: 'officeFor',
           url: 'https://www.wps.com/office/android/',
-          iconSrc: '/images/platforms/android.svg',
+          iconSrc: withPublicAssetPath('/images/platforms/android.svg'),
         },
         {
           id: 'ios',
           labelKey: 'ios',
           eyebrowKey: 'officeFor',
           url: 'https://www.wps.com/office/ios/',
-          iconSrc: '/images/platforms/apple.png',
+          iconSrc: withPublicAssetPath('/images/platforms/apple.png'),
         },
         {
           id: 'ipad',
           labelKey: 'ipad',
           eyebrowKey: 'officeFor',
           url: 'https://www.wps.com/office/ipad/',
-          iconSrc: '/images/platforms/apple.png',
+          iconSrc: withPublicAssetPath('/images/platforms/apple.png'),
         },
         {
           id: 'online',
           labelKey: 'online',
           eyebrowKey: 'office',
           url: 'https://www.wps.com/wpsdocs/',
-          iconSrc: '/images/platforms/online.png',
+          iconSrc: withPublicAssetPath('/images/platforms/online.png'),
         },
       ]),
     }),

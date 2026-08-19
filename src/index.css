@@ -1251,7 +1251,7 @@ body {
 .docs-center-bg-image {
   position: absolute;
   inset: 0;
-  background-image: url("/images/docs/bg.png");
+  background-image: var(--docs-center-bg-image);
   background-repeat: no-repeat;
   background-position: center top;
   background-size: 100% 100%;
@@ -4490,7 +4490,7 @@ body {
   }
 
   .docs-center-bg-image {
-    background-image: url("/images/docs/bg-mobile.png");
+    background-image: var(--docs-center-bg-mobile-image);
     background-size: 100% 100%;
   }
 
@@ -9346,7 +9346,7 @@ a.home-ai-pillar-link:focus-visible {
   min-height: 100vh;
   font-family: Gabarito, Arial, sans-serif;
   background-color: #fff;
-  background-image: url('/images/home-v2/hero-backdrop.webp');
+  background-image: var(--home-hero-backdrop-image);
   background-position: center top;
   background-size: 2222px 840px;
   background-repeat: no-repeat;

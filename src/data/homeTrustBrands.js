@@ -2,42 +2,43 @@
  * Trust strip brands — official home-v2 grayscale logos.
  * Order matches https://www.wps.ai/en-US/ `.hv2-hero__marquee-set`.
  */
+import { withPublicAssetPath } from '../utils/publicAssetPath'
 
 export const HOME_TRUST_BRANDS = Object.freeze([
   Object.freeze({
     id: 'unesco',
     name: 'UNESCO',
-    logoSrc: '/images/home-v2/trust-unesco.png',
+    logoSrc: withPublicAssetPath('/images/home-v2/trust-unesco.png'),
   }),
   Object.freeze({
     id: 'g2',
     name: 'G2',
-    logoSrc: '/images/home-v2/trust-g2.png',
+    logoSrc: withPublicAssetPath('/images/home-v2/trust-g2.png'),
   }),
   Object.freeze({
     id: 'aws',
     name: 'AWS',
-    logoSrc: '/images/home-v2/trust-aws.webp',
+    logoSrc: withPublicAssetPath('/images/home-v2/trust-aws.webp'),
   }),
   Object.freeze({
     id: 'cnet',
     name: 'CNET',
-    logoSrc: '/images/home-v2/trust-cnet.png',
+    logoSrc: withPublicAssetPath('/images/home-v2/trust-cnet.png'),
   }),
   Object.freeze({
     id: 'techradar',
     name: 'TechRadar',
-    logoSrc: '/images/home-v2/trust-techradar.webp',
+    logoSrc: withPublicAssetPath('/images/home-v2/trust-techradar.webp'),
   }),
   Object.freeze({
     id: 'forbes',
     name: 'Forbes',
-    logoSrc: '/images/home-v2/trust-forbes.webp',
+    logoSrc: withPublicAssetPath('/images/home-v2/trust-forbes.webp'),
   }),
   Object.freeze({
     id: 'trustpilot',
     name: 'Trustpilot',
-    logoSrc: '/images/home-v2/trust-trustpilot.webp',
+    logoSrc: withPublicAssetPath('/images/home-v2/trust-trustpilot.webp'),
   }),
 ])
 

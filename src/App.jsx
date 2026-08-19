@@ -46,6 +46,7 @@ import {
   SITE_FOOTER_SOCIAL_LINKS,
   SITE_FOOTER_SUPPORT_LINKS,
 } from './data/siteFooterLinks'
+import { stripPublicBasePath, withPublicAssetPath } from './utils/publicAssetPath'
 
 const FOOTER_SOCIAL_ICONS = {
   facebook: FaFacebookF,
@@ -1448,7 +1449,7 @@ function normalizeLocaleSegment(segment) {
 }
 
 function splitPath(pathname) {
-  const segments = pathname.split('/').filter(Boolean)
+  const segments = stripPublicBasePath(pathname).split('/').filter(Boolean)
   if (segments.length === 0) {
     return { locale: 'en-us', normalizedSegments: [] }
   }
@@ -1468,7 +1469,7 @@ function normalizeRouteSegments(segments) {
 }
 
 function getCanonicalLocalizedPath(pathname, fallbackLocale = 'en-us') {
-  const segments = pathname.split('/').filter(Boolean)
+  const segments = stripPublicBasePath(pathname).split('/').filter(Boolean)
   if (segments.length === 0) {
     return joinPath(toUrlLocale(fallbackLocale))
   }
@@ -3675,7 +3676,7 @@ function App() {
             >
               <img
                 className="home-page-header-logo hv2-nav__logo"
-                src="/images/home-v2/nav-logo-ai.svg"
+                src={withPublicAssetPath('/images/home-v2/nav-logo-ai.svg')}
                 alt=""
                 width={24}
                 height={24}
@@ -3685,7 +3686,7 @@ function App() {
               />
               <img
                 className="hv2-nav__wordmark"
-                src="/images/home-v2/nav-wordmark.svg"
+                src={withPublicAssetPath('/images/home-v2/nav-wordmark.svg')}
                 alt="WPS AI"
                 width={67}
                 height={24}
@@ -5720,7 +5721,7 @@ function App() {
             <div className="hv2-footer__brand site-footer-brand-col">
               <img
                 className="hv2-footer__logo site-footer-brand-logo"
-                src="/images/home-v2/footer-logo-wps.svg"
+                src={withPublicAssetPath('/images/home-v2/footer-logo-wps.svg')}
                 alt="WPS"
                 width={96}
                 height={24}

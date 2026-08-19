@@ -2,13 +2,14 @@
  * WPS AI Features header mega menu — Copilot + 4 core apps × 4 top AI capabilities.
  * Prefer canonical www.wps.com/feature/ URLs aligned with intlAiFeatures catalog.
  */
+import { withPublicAssetPath } from '../utils/publicAssetPath'
 
 export const WPS_FEATURES_HEADER_MEGA_MENU = Object.freeze({
   groups: Object.freeze([
     Object.freeze({
       id: 'copilot',
       titleKey: 'groupCopilot',
-      iconSrc: '/icons/wps/copilot.svg',
+      iconSrc: withPublicAssetPath('/icons/wps/copilot.svg'),
       items: Object.freeze([
         {
           id: 'wps-ai-copilot-hub',
@@ -25,7 +26,7 @@ export const WPS_FEATURES_HEADER_MEGA_MENU = Object.freeze({
     Object.freeze({
       id: 'writer',
       titleKey: 'groupWriter',
-      iconSrc: '/icons/wps/docs.svg',
+      iconSrc: withPublicAssetPath('/icons/wps/docs.svg'),
       items: Object.freeze([
         {
           id: 'ai-writer',
@@ -52,7 +53,7 @@ export const WPS_FEATURES_HEADER_MEGA_MENU = Object.freeze({
     Object.freeze({
       id: 'spreadsheet',
       titleKey: 'groupSpreadsheet',
-      iconSrc: '/icons/wps/sheets.svg',
+      iconSrc: withPublicAssetPath('/icons/wps/sheets.svg'),
       items: Object.freeze([
         {
           id: 'ai-in-excel-spreadsheets',
@@ -79,7 +80,7 @@ export const WPS_FEATURES_HEADER_MEGA_MENU = Object.freeze({
     Object.freeze({
       id: 'presentation',
       titleKey: 'groupPresentation',
-      iconSrc: '/icons/wps/slides.svg',
+      iconSrc: withPublicAssetPath('/icons/wps/slides.svg'),
       items: Object.freeze([
         {
           id: 'ai-ppt-maker',
@@ -106,7 +107,7 @@ export const WPS_FEATURES_HEADER_MEGA_MENU = Object.freeze({
     Object.freeze({
       id: 'pdf',
       titleKey: 'groupPdf',
-      iconSrc: '/icons/wps/pdf.svg',
+      iconSrc: withPublicAssetPath('/icons/wps/pdf.svg'),
       items: Object.freeze([
         {
           id: 'chat-pdf',

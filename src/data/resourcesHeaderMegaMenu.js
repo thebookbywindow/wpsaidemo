@@ -2,13 +2,14 @@
  * Resources header mega menu — aligned with https://www.wps.ai/ Resources panel.
  * Columns: WPS AI Guides + AI Word / Translation / PowerPoint / PDF / Photos.
  */
+import { withPublicAssetPath } from '../utils/publicAssetPath'
 
 export const RESOURCES_HEADER_MEGA_MENU = Object.freeze({
   groups: Object.freeze([
     Object.freeze({
       id: 'guides',
       titleKey: 'guides',
-      iconSrc: '/icons/wps/copilot.svg',
+      iconSrc: withPublicAssetPath('/icons/wps/copilot.svg'),
       items: Object.freeze([
         {
           id: 'beginners-guide',
@@ -35,7 +36,7 @@ export const RESOURCES_HEADER_MEGA_MENU = Object.freeze({
     Object.freeze({
       id: 'aiWord',
       titleKey: 'aiWord',
-      iconSrc: '/icons/wps/docs.svg',
+      iconSrc: withPublicAssetPath('/icons/wps/docs.svg'),
       items: Object.freeze([
         {
           id: 'ai-word-how-to',
@@ -64,7 +65,7 @@ export const RESOURCES_HEADER_MEGA_MENU = Object.freeze({
     Object.freeze({
       id: 'aiTranslation',
       titleKey: 'aiTranslation',
-      iconSrc: '/icons/wps/docs.svg',
+      iconSrc: withPublicAssetPath('/icons/wps/docs.svg'),
       iconKind: 'languages',
       items: Object.freeze([
         {
@@ -93,7 +94,7 @@ export const RESOURCES_HEADER_MEGA_MENU = Object.freeze({
     Object.freeze({
       id: 'aiPowerpoint',
       titleKey: 'aiPowerpoint',
-      iconSrc: '/icons/wps/slides.svg',
+      iconSrc: withPublicAssetPath('/icons/wps/slides.svg'),
       items: Object.freeze([
         {
           id: 'ai-ppt-how-to',
@@ -121,7 +122,7 @@ export const RESOURCES_HEADER_MEGA_MENU = Object.freeze({
     Object.freeze({
       id: 'aiPdf',
       titleKey: 'aiPdf',
-      iconSrc: '/icons/wps/pdf.svg',
+      iconSrc: withPublicAssetPath('/icons/wps/pdf.svg'),
       items: Object.freeze([
         {
           id: 'ai-pdf-how-to',
@@ -149,7 +150,7 @@ export const RESOURCES_HEADER_MEGA_MENU = Object.freeze({
     Object.freeze({
       id: 'aiPhotos',
       titleKey: 'aiPhotos',
-      iconSrc: '/icons/wps/photos.svg',
+      iconSrc: withPublicAssetPath('/icons/wps/photos.svg'),
       items: Object.freeze([
         {
           id: 'ai-photos-how-to',

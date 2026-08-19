@@ -1,3 +1,5 @@
+import { withPublicAssetPath } from '../utils/publicAssetPath'
+
 export const uiTextByLanguage = {
   en: {
     nav: {
@@ -162,13 +164,13 @@ export const uiTextByLanguage = {
                 id: 'deb',
                 label: 'Deb Package',
                 platform: 'deb',
-                iconSrc: '/images/platforms/download.svg',
+                iconSrc: withPublicAssetPath('/images/platforms/download.svg'),
               },
               {
                 id: 'rpm',
                 label: 'Rpm Package',
                 platform: 'rpm',
-                iconSrc: '/images/platforms/download.svg',
+                iconSrc: withPublicAssetPath('/images/platforms/download.svg'),
               },
             ],
           },
@@ -187,13 +189,13 @@ export const uiTextByLanguage = {
                 id: 'google-play',
                 label: 'Get it on Google Play',
                 platform: 'android',
-                iconSrc: '/images/platforms/google-play.svg',
+                iconSrc: withPublicAssetPath('/images/platforms/google-play.svg'),
               },
               {
                 id: 'app-store',
                 label: 'Download on the AppStore',
                 platform: 'ios',
-                iconSrc: '/images/platforms/appstore.svg',
+                iconSrc: withPublicAssetPath('/images/platforms/appstore.svg'),
               },
             ],
           },
@@ -1118,13 +1120,13 @@ export const uiTextByLanguage = {
                 id: 'deb',
                 label: 'Deb Package',
                 platform: 'deb',
-                iconSrc: '/images/platforms/download.svg',
+                iconSrc: withPublicAssetPath('/images/platforms/download.svg'),
               },
               {
                 id: 'rpm',
                 label: 'Rpm Package',
                 platform: 'rpm',
-                iconSrc: '/images/platforms/download.svg',
+                iconSrc: withPublicAssetPath('/images/platforms/download.svg'),
               },
             ],
           },
@@ -1143,13 +1145,13 @@ export const uiTextByLanguage = {
                 id: 'google-play',
                 label: 'Get it on Google Play',
                 platform: 'android',
-                iconSrc: '/images/platforms/google-play.svg',
+                iconSrc: withPublicAssetPath('/images/platforms/google-play.svg'),
               },
               {
                 id: 'app-store',
                 label: 'Download on the AppStore',
                 platform: 'ios',
-                iconSrc: '/images/platforms/appstore.svg',
+                iconSrc: withPublicAssetPath('/images/platforms/appstore.svg'),
               },
             ],
           },

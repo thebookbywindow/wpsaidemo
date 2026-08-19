@@ -2,6 +2,7 @@ import { useHomeIntlAiFeatures } from '../hooks/useHomeIntlAiFeatures'
 import { useIntlAiFeaturesSearch } from '../hooks/useIntlAiFeaturesSearch'
 import { useIntlAiFeaturesPageSeo } from '../hooks/useIntlAiFeaturesPageSeo'
 import { splitIntlAiLabelByQuery } from '../utils/intlAiFeaturesSearch'
+import { withPublicAssetPath } from '../utils/publicAssetPath'
 
 const INTL_AI_GROUP_ID_PREFIX = 'intl-ai-group-'
 
@@ -111,7 +112,7 @@ export default function IntlAiFeaturesPage({ copy, locale }) {
           />
           <button type="submit" aria-label={searchAriaLabel}>
             <img
-              src="/images/locale-search.svg"
+              src={withPublicAssetPath('/images/locale-search.svg')}
               width={24}
               height={24}
               alt=""
