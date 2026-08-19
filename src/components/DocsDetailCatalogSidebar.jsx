@@ -146,7 +146,6 @@ const DocsDetailCatalogSidebar = forwardRef(function DocsDetailCatalogSidebar(
   {
     sectionModels,
     staticMetaMap,
-    helpCenterMetaMap = {},
     activeDocPathKey = '',
     activeSectionTitle = '',
     activeBlockKey = '',

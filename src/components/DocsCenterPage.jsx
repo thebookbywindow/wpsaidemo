@@ -12,11 +12,9 @@ import helpCenterCatalogEntries from '../data/helpCenterCatalogEntries.json'
 import {
   buildHelpCenterMetaMap,
   buildHelpCenterSectionModels,
-  openHelpCenterDocument,
 } from '../utils/helpCenterCatalog'
 import {
   filterSectionsForLeafKeyword,
-  resolveHeroSearchScrollTarget,
 } from '../utils/docsCenterSearch'
 import {
   getLocaleDocsPath,
@@ -153,63 +151,6 @@ function escapeHtml(text) {
     .replaceAll('"', '&quot;')
 }
 
-function markdownToHtml(markdown, emptyText = 'No content available.') {
-  if (!markdown) {
-    return `<p class="docs-center-empty">${escapeHtml(emptyText)}</p>`
-  }
-
-  let html = escapeHtml(markdown)
-  html = html.replace(/```[\w]*\n?([\s\S]*?)```/g, (_, code) => `<pre><code>${code.trim()}</code></pre>`)
-  html = html.replace(/^# (.+)$/gm, (_, title) => `<h1>${title.replace(/\*\*.*?\*\*/g, '').trim()}</h1>`)
-  html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>')
-  html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>')
-  html = html.replace(/^---$/gm, '<hr>')
-  html = html.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
-  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-  html = html.replace(/\*(.+?)\*/g, '<em>$1</em>')
-  html = html.replace(/`([^`]+)`/g, '<code>$1</code>')
-  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
-  html = html.replace(/((?:^&gt; .+$\n?)+)/gm, (match) => {
-    const inner = match.replace(/^&gt; (.+)$/gm, '<p>$1</p>').trim()
-    return `<blockquote>${inner}</blockquote>\n`
-  })
-  html = html.replace(/^([-*•]) (.+)$/gm, (_, __, item) => `<li>${item}</li>`)
-  html = html.replace(/(<li>.*<\/li>\n?)+/g, (match) => `<ul>${match}</ul>`)
-  html = html.replace(/^\d+\. (.+)$/gm, (_, item) => `<oli>${item}</oli>`)
-  html = html.replace(/(<oli>.*<\/oli>\n?)+/g, (match) =>
-    `<ol>${match.replaceAll('<oli>', '<li>').replaceAll('</oli>', '</li>')}</ol>`,
-  )
-
-  const lines = html.split('\n')
-  const processedLines = []
-  for (const line of lines) {
-    const trimmed = line.trim()
-    if (!trimmed) {
-      continue
-    }
-    if (
-      trimmed.startsWith('<h')
-      || trimmed.startsWith('<ul>')
-      || trimmed.startsWith('<ol>')
-      || trimmed.startsWith('<pre>')
-      || trimmed.startsWith('<table')
-      || trimmed.startsWith('<blockquote')
-      || trimmed.startsWith('<hr>')
-      || trimmed.startsWith('</')
-    ) {
-      processedLines.push(trimmed)
-    } else {
-      processedLines.push(`<p>${trimmed}</p>`)
-    }
-  }
-
-  return processedLines.join('\n')
-}
-
-function includesKeyword(text, keyword) {
-  return `${text ?? ''}`.toLowerCase().includes(keyword)
-}
-
 function renderHighlightedText(text, keyword) {
   if (!keyword) {
     return text
@@ -275,12 +216,6 @@ export default function DocsCenterPage({
   navigateTo,
   docsUiText,
   activeSection,
-  sectionSlugMap: _sectionSlugMap,
-  catalogSections: _catalogSections,
-  sourceCatalogSections: _sourceCatalogSections,
-  sectionMarkersMap: _sectionMarkersMap,
-  sourceSectionMarkersMap: _sourceSectionMarkersMap,
-  getSectionBlocks: _getSectionBlocks,
 }) {
   const [heroFilterKeyword, setHeroFilterKeyword] = useState('')
   const preferredDocLanguage = getDocLanguageFromLocale(currentLocale)
@@ -344,7 +279,6 @@ export default function DocsCenterPage({
       if (!meta.helpContent || !meta.routeSlug) {
         return
       }
-      const displayParts = displayPathBySourceKey.get(meta.pathKey) ?? meta.pathParts
       const sectionSlug = resolveDocSectionSlug(meta, catalogSectionSlugMap, meta.pathParts, fallbackSlug)
       const blockSlug = resolveDocBlockSlug(meta, catalogBlockSlugMap, fallbackSlug)
       const routeKey = buildHelpDocRouteLookupKey(sectionSlug, blockSlug, meta.routeSlug)
@@ -354,7 +288,7 @@ export default function DocsCenterPage({
       nextMap.set(`${sectionSlug}/${meta.routeSlug}`, meta)
     })
     return nextMap
-  }, [catalogBlockSlugMap, displayPathBySourceKey, staticMetaMap])
+  }, [catalogBlockSlugMap, staticMetaMap])
 
   const parsedRoute = useMemo(() => parseDocsRouteFromPathname(currentPathname), [currentPathname])
 
@@ -489,14 +423,6 @@ export default function DocsCenterPage({
         )}</div>`
       : ''
 
-  const currentDocSectionSlug = currentDocMeta
-    ? resolveDocSectionSlug(
-        currentDocMeta,
-        catalogSectionSlugMap,
-        currentDocMeta.pathParts,
-        fallbackSlug,
-      )
-    : ''
   const currentDocRouteSlug = currentDocMeta
     ? resolveDocRouteSlug(
         currentDocMeta,
@@ -904,7 +830,6 @@ export default function DocsCenterPage({
       return
     }
 
-    const displayParts = displayPathBySourceKey.get(meta.pathKey) ?? meta.pathParts
     const docPathSlug = resolveDocRouteSlug(meta, catalogSectionSlugMap, meta.pathParts, fallbackSlug, catalogBlockSlugMap)
     navigatePreservingScroll(getLocaleDocsPath(currentLocale, docPathSlug))
   }
@@ -1004,11 +929,13 @@ export default function DocsCenterPage({
     })
   }, [isMobile])
 
-  useEffect(() => {
+  const [mobileCatalogSync, setMobileCatalogSync] = useState(isMobile)
+  if (mobileCatalogSync !== isMobile) {
+    setMobileCatalogSync(isMobile)
     if (!isMobile) {
       setCollapsedBlocks(new Set())
     }
-  }, [isMobile])
+  }
 
   const catalogSidebar = (
     <DocsDetailCatalogSidebar

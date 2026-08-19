@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 /**
  * Single-item carousel within the active intl AI group.
@@ -21,12 +21,13 @@ export function stepIntlAiFeatureIndex(index, count, delta) {
 
 export function useHomeIntlAiFeatureCarousel(items, activeGroupId) {
   const [index, setIndex] = useState(0)
+  const [groupId, setGroupId] = useState(activeGroupId)
+  if (groupId !== activeGroupId) {
+    setGroupId(activeGroupId)
+    setIndex(0)
+  }
   const list = Array.isArray(items) ? items : []
   const count = list.length
-
-  useEffect(() => {
-    setIndex(0)
-  }, [activeGroupId])
 
   const safeIndex = clampIntlAiFeatureIndex(index, count)
   const item = count > 0 ? list[safeIndex] : null

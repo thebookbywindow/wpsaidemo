@@ -1,131 +1,141 @@
 /**
- * Free AI Tools header mega menu — aligned with https://www.wps.ai/ Free AI Tools panel.
- * Columns: AI Writing Tools / AI Image Tools / Social Media Tools (toolsmart.ai).
+ * PDF Tools header mega menu — aligned with https://pdf.wps.com/en/.
+ * The trigger keeps its existing internal key so the shared desktop/mobile
+ * navigation state remains stable while the visible menu matches WPS PDF.
  */
 
 export const FREE_AI_TOOLS_HEADER_MEGA_MENU = Object.freeze({
   groups: Object.freeze([
     Object.freeze({
-      id: 'aiWriting',
-      titleKey: 'aiWriting',
-      iconSrc: '/icons/wps/docs.svg',
-      itemColumns: 2,
+      id: 'convertCompress',
+      titleKey: 'convertCompress',
       items: Object.freeze([
         {
-          id: 'paraphrasing-tool',
-          labelKey: 'paraphrasingTool',
-          url: 'https://www.toolsmart.ai/feature-free-paraphrasing-tool/',
+          id: 'compress-pdf',
+          labelKey: 'compressPdf',
+          iconKind: 'compress',
+          url: 'https://pdf.wps.com/en/pdf-tools/compress-pdf/',
         },
         {
-          id: 'ai-summarizer',
-          labelKey: 'aiSummarizer',
-          url: 'https://www.toolsmart.ai/feature-free-text-summarizer/',
-        },
-        {
-          id: 'humanize-ai',
-          labelKey: 'humanizeAi',
-          url: 'https://www.toolsmart.ai/feature-free-humanize-ai/',
-        },
-        {
-          id: 'undetectable-ai',
-          labelKey: 'undetectableAi',
-          url: 'https://www.toolsmart.ai/feature-free-undetectable-ai/',
-        },
-        {
-          id: 'story-generator',
-          labelKey: 'storyGenerator',
-          url: 'https://www.toolsmart.ai/feature-free-ai-story-generator/',
-        },
-        {
-          id: 'sentence-rewriter',
-          labelKey: 'sentenceRewriter',
-          url: 'https://www.toolsmart.ai/feature-free-sentence-rewriter/',
-        },
-        {
-          id: 'paragraph-rewriter',
-          labelKey: 'paragraphRewriter',
-          url: 'https://www.toolsmart.ai/feature-free-paragraph-rewriter/',
-        },
-        {
-          id: 'rewording-tool',
-          labelKey: 'rewordingTool',
-          url: 'https://www.toolsmart.ai/feature-free-rewording-tool/',
+          id: 'convert-pdf',
+          labelKey: 'convertPdf',
+          iconKind: 'convert',
+          url: 'https://pdf.wps.com/en/pdf-tools/convert-pdf/',
         },
       ]),
     }),
     Object.freeze({
-      id: 'aiImage',
-      titleKey: 'aiImage',
-      iconSrc: '/icons/wps/photos.svg',
-      itemColumns: 1,
+      id: 'splitMerge',
+      titleKey: 'splitMerge',
       items: Object.freeze([
         {
-          id: 'background-remover',
-          labelKey: 'backgroundRemover',
-          url: 'https://www.toolsmart.ai/feature-background-remover/',
+          id: 'split-pdf',
+          labelKey: 'splitPdf',
+          iconKind: 'split',
+          url: 'https://pdf.wps.com/en/pdf-tools/split-pdf/',
         },
         {
-          id: 'photo-restoration',
-          labelKey: 'photoRestoration',
-          url: 'https://www.toolsmart.ai/feature-free-photo-restoration/',
-        },
-        {
-          id: 'unblur-image',
-          labelKey: 'unblurImage',
-          url: 'https://www.toolsmart.ai/feature-unblur-image-for-free/',
-        },
-        {
-          id: 'watermark-remover',
-          labelKey: 'watermarkRemover',
-          url: 'https://www.toolsmart.ai/feature-free-watermark-remover/',
+          id: 'merge-pdf',
+          labelKey: 'mergePdf',
+          iconKind: 'merge',
+          url: 'https://pdf.wps.com/en/pdf-tools/merge-pdf/',
         },
       ]),
     }),
     Object.freeze({
-      id: 'socialMedia',
-      titleKey: 'socialMedia',
-      iconKind: 'users',
-      itemColumns: 2,
+      id: 'sign',
+      titleKey: 'sign',
       items: Object.freeze([
         {
-          id: 'youtube-to-mp3',
-          labelKey: 'youtubeToMp3',
-          url: 'https://www.toolsmart.ai/feature-youtube-to-mp3/',
+          id: 'signing-pdf',
+          labelKey: 'signingPdf',
+          iconKind: 'sign',
+          url: 'https://pdf.wps.com/en/pdf-tools/sign-pdf/',
+        },
+      ]),
+    }),
+    Object.freeze({
+      id: 'convertFromPdf',
+      titleKey: 'convertFromPdf',
+      items: Object.freeze([
+        {
+          id: 'pdf-to-word',
+          labelKey: 'pdfToWord',
+          iconKind: 'word',
+          url: 'https://pdf.wps.com/en/pdf-tools/pdf-to-word/',
         },
         {
-          id: 'youtube-video-downloader',
-          labelKey: 'youtubeVideoDownloader',
-          url: 'https://www.toolsmart.ai/feature-free-youtube-video-downloader/',
+          id: 'pdf-to-excel',
+          labelKey: 'pdfToExcel',
+          iconKind: 'excel',
+          url: 'https://pdf.wps.com/en/pdf-tools/pdf-to-excel/',
         },
         {
-          id: 'instagram-video-downloader',
-          labelKey: 'instagramVideoDownloader',
-          url: 'https://www.toolsmart.ai/feature-free-instagram-video-downloader/',
+          id: 'pdf-to-ppt',
+          labelKey: 'pdfToPpt',
+          iconKind: 'ppt',
+          url: 'https://pdf.wps.com/en/pdf-tools/pdf-to-ppt/',
         },
         {
-          id: 'facebook-video-downloader',
-          labelKey: 'facebookVideoDownloader',
-          url: 'https://www.toolsmart.ai/feature-free-facebook-video-downloader/',
+          id: 'pdf-to-jpg',
+          labelKey: 'pdfToJpg',
+          iconKind: 'jpg',
+          url: 'https://pdf.wps.com/en/pdf-tools/pdf-to-jpg/',
+        },
+      ]),
+    }),
+    Object.freeze({
+      id: 'convertToPdf',
+      titleKey: 'convertToPdf',
+      items: Object.freeze([
+        {
+          id: 'word-to-pdf',
+          labelKey: 'wordToPdf',
+          iconKind: 'word',
+          url: 'https://pdf.wps.com/en/pdf-tools/word-to-pdf/',
         },
         {
-          id: 'tiktok-video-downloader',
-          labelKey: 'tiktokVideoDownloader',
-          url: 'https://www.toolsmart.ai/feature-free-tiktok-video-downloader/',
+          id: 'excel-to-pdf',
+          labelKey: 'excelToPdf',
+          iconKind: 'excel',
+          url: 'https://pdf.wps.com/en/pdf-tools/excel-to-pdf/',
         },
         {
-          id: 'twitter-video-downloader',
-          labelKey: 'twitterVideoDownloader',
-          url: 'https://www.toolsmart.ai/feature-free-twitter-video-downloader/',
+          id: 'ppt-to-pdf',
+          labelKey: 'pptToPdf',
+          iconKind: 'ppt',
+          url: 'https://pdf.wps.com/en/pdf-tools/ppt-to-pdf/',
         },
         {
-          id: 'pinterest-video-downloader',
-          labelKey: 'pinterestVideoDownloader',
-          url: 'https://www.toolsmart.ai/feature-free-pinterest-video-downloader/',
+          id: 'jpg-to-pdf',
+          labelKey: 'jpgToPdf',
+          iconKind: 'jpg',
+          url: 'https://pdf.wps.com/en/pdf-tools/jpg-to-pdf/',
+        },
+      ]),
+    }),
+    Object.freeze({
+      id: 'otherConversion',
+      titleKey: 'otherConversion',
+      badgeKey: 'newBadge',
+      items: Object.freeze([
+        {
+          id: 'xml-to-pdf',
+          labelKey: 'xmlToPdf',
+          iconKind: 'xml',
+          url: 'https://pdf.wps.com/en/pdf-tools/xml-to-pdf/',
         },
         {
-          id: 'youtube-thumbnail-downloader',
-          labelKey: 'youtubeThumbnailDownloader',
-          url: 'https://www.toolsmart.ai/feature-free-youtube-thumbnail-downloader/',
+          id: 'word-to-jpg',
+          labelKey: 'wordToJpg',
+          iconKind: 'word',
+          url: 'https://pdf.wps.com/en/pdf-tools/word-to-jpg/',
+        },
+        {
+          id: 'jpg-to-word',
+          labelKey: 'jpgToWord',
+          iconKind: 'jpg',
+          url: 'https://pdf.wps.com/en/pdf-tools/jpg-to-word/',
         },
       ]),
     }),
@@ -140,9 +150,7 @@ export function resolveFreeAiToolsHeaderMegaMenu(copy = {}) {
     groups: FREE_AI_TOOLS_HEADER_MEGA_MENU.groups.map((group) => ({
       id: group.id,
       title: groupTitles[group.id] ?? group.titleKey,
-      iconSrc: group.iconSrc,
-      iconKind: group.iconKind ?? 'image',
-      itemColumns: group.itemColumns ?? 1,
+      badge: group.badgeKey ? copy[group.badgeKey] ?? group.badgeKey : '',
       items: group.items.map((item) => ({
         ...item,
         label: labels[item.labelKey] ?? item.labelKey,

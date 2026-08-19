@@ -38,7 +38,6 @@ export default function HomeHeroTitle({
   joinMobile,
   tail,
   prefix,
-  title,
 }) {
   const isMobile = useSyncExternalStore(
     subscribeHeroMobile,

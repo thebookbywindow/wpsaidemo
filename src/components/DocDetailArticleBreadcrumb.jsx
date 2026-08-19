@@ -1,27 +1,11 @@
 import { ChevronRight } from 'lucide-react'
 import { getDocDetailCatalogSectionColumnsForIds, getDocDetailUniversalSectionGroupLabel } from '../data/docDetailTocData'
 import { getDocDetailSectionLabel } from '../utils/docDetailSectionContent'
+import { getBreadcrumbDocParts } from '../utils/docDetailDisplayTitle'
 import { hasDocDetailIndexVideo } from '../utils/docDetailIndexVideo'
 import DocDetailIndexVideoPlaceholder from './DocDetailIndexVideoPlaceholder'
 import DocDetailCatalogUniversalCategory from './DocDetailCatalogUniversalCategory'
 import DocDetailCatalogPlatformTypeSection from './DocDetailCatalogPlatformTypeSection'
-
-function getBreadcrumbDocParts(docDisplayParts = []) {
-  if (docDisplayParts.length >= 3) {
-    return [docDisplayParts[docDisplayParts.length - 1]]
-  }
-
-  return docDisplayParts.slice(1)
-}
-
-export function getDocDetailDisplayTitle(docDisplayParts = []) {
-  const breadcrumbParts = getBreadcrumbDocParts(docDisplayParts)
-  if (breadcrumbParts.length > 0) {
-    return breadcrumbParts[breadcrumbParts.length - 1]
-  }
-
-  return docDisplayParts[docDisplayParts.length - 1] ?? ''
-}
 
 export function DocDetailDocCatalogIndex({
   docTitle = '',

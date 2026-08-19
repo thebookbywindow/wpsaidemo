@@ -3,9 +3,7 @@ import {
   HOME_HERO_TYPEWRITER_COMPONENTS,
   getHeroLabelMeasureText,
   getHeroTypewriterSlotCount,
-  getTypedHeroLabel,
   resolveHeroComponent,
-  shouldShowHeroIcon,
   stepHeroTypewriter,
 } from '../data/homeHeroComponents'
 
@@ -38,7 +36,6 @@ export function useHomeHeroComponentCycle({
   const measureText = useMemo(() => getHeroLabelMeasureText(items), [items])
   const active = resolveHeroComponent(items, index)
   const fullName = active?.name ?? ''
-  const typedName = getTypedHeroLabel(fullName, visibleCount)
 
   useEffect(() => {
     if (typeof window === 'undefined' || !window.matchMedia) return undefined

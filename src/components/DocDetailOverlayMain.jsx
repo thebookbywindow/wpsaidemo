@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { ListTree } from 'lucide-react'
 import DocDetailArticleBreadcrumb, {
   DocDetailDocCatalogIndex,
-  getDocDetailDisplayTitle,
 } from './DocDetailArticleBreadcrumb'
 import DocDetailArticlePager from './DocDetailArticlePager'
 import DocDetailMobileDrawer from './DocDetailMobileDrawer'
@@ -17,9 +16,8 @@ import {
   hasDocDetailUniversalSections,
   isDocDetailCommonScopeId,
   isDocDetailPlatformAllowed,
-  isDocDetailPlatformLess,
-  shouldDocDetailSectionUseCommonScope,
 } from '../data/docDetailTocData'
+import { getDocDetailDisplayTitle } from '../utils/docDetailDisplayTitle'
 import { useDocDetailArticleNav } from '../hooks/useDocDetailArticleNav'
 import { useDocDetailMobileDrawers } from '../hooks/useDocDetailMobileDrawers'
 import { useDocDetailMobileDrawerSwipe } from '../hooks/useDocDetailMobileDrawerSwipe'
@@ -89,8 +87,8 @@ function convertMarkdownListsToHtml(text) {
 
       const item = { content: currentTop[2], subs: [] }
       index += 1
-      while (index < lines.length && /^  [-*•] (.+)$/.test(lines[index])) {
-        const subMatch = lines[index].match(/^  [-*•] (.+)$/)
+      while (index < lines.length && /^ {2}[-*•] (.+)$/.test(lines[index])) {
+        const subMatch = lines[index].match(/^ {2}[-*•] (.+)$/)
         item.subs.push(subMatch[1])
         index += 1
       }

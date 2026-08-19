@@ -9,7 +9,6 @@ export default function DocDetailSectionArticle({
   fallbackNoticeHtml = '',
   isZhContent,
   updatedAt = '',
-  routeSlug = '',
   showIndexVideo = false,
 }) {
   const updatedLabel = getDocDetailUpdatedLabel(isZhContent)

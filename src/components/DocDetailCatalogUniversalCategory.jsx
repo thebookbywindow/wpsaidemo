@@ -1,8 +1,21 @@
-import { useEffect, useId, useState, useSyncExternalStore } from 'react'
+import { useId, useState, useSyncExternalStore } from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import DocDetailCatalogSectionGrid from './DocDetailCatalogSectionGrid'
 import { DOCS_CENTER_CATALOG_COMPACT_MEDIA_QUERY } from '../constants/docsCenterLayout'
-import { getDocDetailPlatformIcon } from '../utils/docDetailPlatformIcons'
+import { DOC_DETAIL_PLATFORM_ICON_MAP } from '../utils/docDetailPlatformIcons'
+
+function CatalogPlatformHeadingIcon({ platformId }) {
+  const Icon = DOC_DETAIL_PLATFORM_ICON_MAP[platformId]
+  if (!Icon) {
+    return null
+  }
+
+  return (
+    <span className="docs-detail-catalog-platform-icon" aria-hidden="true">
+      <Icon size={18} strokeWidth={1.75} />
+    </span>
+  )
+}
 
 function subscribeCatalogCompact(onStoreChange) {
   const mediaQuery = window.matchMedia(DOCS_CENTER_CATALOG_COMPACT_MEDIA_QUERY)
@@ -36,25 +49,21 @@ export default function DocDetailCatalogUniversalCategory({
   // 对齐官网：仅移动端可折叠；PC 始终展开
   const canCollapse = collapsible ?? isMobile
   const [isExpanded, setIsExpanded] = useState(defaultExpanded)
+  const [collapseSeen, setCollapseSeen] = useState(canCollapse)
+  if (collapseSeen !== canCollapse) {
+    setCollapseSeen(canCollapse)
+    if (!canCollapse) {
+      setIsExpanded(true)
+    }
+  }
   const showExpanded = !canCollapse || isExpanded
   const resolvedHeadingId =
     headingId
     ?? (platformId ? `doc-catalog-platform-${platformId}` : 'doc-catalog-platform-feature')
-  const PlatformIcon = platformId ? getDocDetailPlatformIcon(platformId) : null
-
-  useEffect(() => {
-    if (!canCollapse) {
-      setIsExpanded(true)
-    }
-  }, [canCollapse])
 
   const titleContent = (
     <span className="docs-detail-catalog-platform-heading-main">
-      {PlatformIcon ? (
-        <span className="docs-detail-catalog-platform-icon" aria-hidden="true">
-          <PlatformIcon size={18} strokeWidth={1.75} />
-        </span>
-      ) : null}
+      {platformId ? <CatalogPlatformHeadingIcon platformId={platformId} /> : null}
       <span id={resolvedHeadingId} className="docs-detail-catalog-platform-category-title">
         {groupLabel}
       </span>

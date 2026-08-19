@@ -15,15 +15,20 @@ export default function DocDetailIndexVideoModal({
 }) {
   const titleId = useId()
   const closeButtonRef = useRef(null)
-  const [hasLoadError, setHasLoadError] = useState(false)
   const labels = getDocDetailIndexVideoLabels(isZhContent)
+  const loadSession = isOpen ? videoSrc : ''
+  const [loadSessionSeen, setLoadSessionSeen] = useState(loadSession)
+  const [hasLoadError, setHasLoadError] = useState(false)
+  if (loadSessionSeen !== loadSession) {
+    setLoadSessionSeen(loadSession)
+    setHasLoadError(false)
+  }
 
   useEffect(() => {
     if (!isOpen) {
       return undefined
     }
 
-    setHasLoadError(false)
     closeButtonRef.current?.focus()
 
     return undefined

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useLayoutEffect, useRef } from 'react'
 import { getDocDetailTocSections } from '../data/docDetailTocData'
 import {
   getDocDetailScrollOffset,
@@ -17,7 +17,9 @@ export function useDocDetailSectionScrollSpy({
   const scrollSpyUnlockTimeoutRef = useRef(0)
 
   const onActiveSectionChangeRef = useRef(onActiveSectionChange)
-  onActiveSectionChangeRef.current = onActiveSectionChange
+  useLayoutEffect(() => {
+    onActiveSectionChangeRef.current = onActiveSectionChange
+  })
 
   useEffect(() => {
     if (!enabled || !bodyHtml) {

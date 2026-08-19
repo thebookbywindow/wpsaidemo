@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
+import { useCallback, useState, useSyncExternalStore } from 'react'
 import {
   DOCS_CENTER_CATALOG_COMPACT_MEDIA_QUERY,
   DOCS_CENTER_TOC_COMPACT_MEDIA_QUERY,
@@ -34,18 +34,20 @@ export function useDocDetailMobileDrawers() {
 
   const [leftOpen, setLeftOpen] = useState(false)
   const [rightOpen, setRightOpen] = useState(false)
-
-  useEffect(() => {
+  const [catalogCompactSeen, setCatalogCompactSeen] = useState(isCatalogCompact)
+  const [tocCompactSeen, setTocCompactSeen] = useState(isTocCompact)
+  if (catalogCompactSeen !== isCatalogCompact) {
+    setCatalogCompactSeen(isCatalogCompact)
     if (!isCatalogCompact) {
       setLeftOpen(false)
     }
-  }, [isCatalogCompact])
-
-  useEffect(() => {
+  }
+  if (tocCompactSeen !== isTocCompact) {
+    setTocCompactSeen(isTocCompact)
     if (!isTocCompact) {
       setRightOpen(false)
     }
-  }, [isTocCompact])
+  }
 
   const closeAll = useCallback(() => {
     setLeftOpen(false)

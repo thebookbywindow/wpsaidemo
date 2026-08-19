@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import {
   DOC_DETAIL_COMMON_SCOPE_SLUG,
   isDocDetailCommonScopeId,
@@ -48,25 +48,24 @@ export function useDocDetailToc({
   usesStructuredSections = false,
 } = {}) {
   const normalizedRoutePlatformId = normalizeDocDetailRoutePlatformId(routePlatformId)
-  const [expandedPlatformId, setExpandedPlatformId] = useState(
-    toSidebarScopeId(normalizedRoutePlatformId, hasFeatureScopeGroup),
-  )
-
-  useEffect(() => {
+  const routeSyncKey = `${normalizedRoutePlatformId}|${routeDetailSectionId}|${hasFeatureScopeGroup}`
+  const derivedExpandedPlatformId = normalizedRoutePlatformId
+    ? toSidebarScopeId(normalizedRoutePlatformId, hasFeatureScopeGroup)
+    : routeDetailSectionId && hasFeatureScopeGroup
+      ? DOC_DETAIL_COMMON_SCOPE_SLUG
+      : ''
+  const [expandedPlatformId, setExpandedPlatformId] = useState(derivedExpandedPlatformId)
+  const [syncedRouteKey, setSyncedRouteKey] = useState(routeSyncKey)
+  if (syncedRouteKey !== routeSyncKey) {
+    setSyncedRouteKey(routeSyncKey)
     if (normalizedRoutePlatformId) {
       setExpandedPlatformId(toSidebarScopeId(normalizedRoutePlatformId, hasFeatureScopeGroup))
-      return
-    }
-
-    if (routeDetailSectionId && hasFeatureScopeGroup) {
+    } else if (routeDetailSectionId && hasFeatureScopeGroup) {
       setExpandedPlatformId(DOC_DETAIL_COMMON_SCOPE_SLUG)
-      return
-    }
-
-    if (!routeDetailSectionId) {
+    } else if (!routeDetailSectionId) {
       setExpandedPlatformId('')
     }
-  }, [hasFeatureScopeGroup, normalizedRoutePlatformId, routeDetailSectionId])
+  }
 
   const contentViewMode = useMemo(
     () =>
@@ -103,18 +102,18 @@ export function useDocDetailToc({
       platformId: nextRoutePlatformId,
       detailSectionId: sectionId,
     })
-  }, [hasFeatureScopeGroup, hasPlatforms, onRouteChange, routeSlug])
+  }, [hasFeatureScopeGroup, hasPlatforms, onRouteChange, routeSlug, setExpandedPlatformId])
 
   const handleSidebarPlatformToggle = useCallback((platformId) => {
     setExpandedPlatformId((currentPlatformId) =>
       currentPlatformId === platformId ? '' : platformId,
     )
-  }, [])
+  }, [setExpandedPlatformId])
 
   const handleBreadcrumbDocClick = useCallback(() => {
     setExpandedPlatformId('')
     onRouteChange?.({ platformId: '', detailSectionId: '' })
-  }, [onRouteChange])
+  }, [onRouteChange, setExpandedPlatformId])
 
   return {
     expandedPlatformId,

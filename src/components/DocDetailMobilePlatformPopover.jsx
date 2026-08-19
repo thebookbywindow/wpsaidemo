@@ -68,7 +68,6 @@ export default function DocDetailMobilePlatformPopover({
 
   useLayoutEffect(() => {
     if (!isOpen) {
-      setPanelStyle(null)
       return undefined
     }
 

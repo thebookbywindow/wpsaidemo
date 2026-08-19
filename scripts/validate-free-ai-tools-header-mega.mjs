@@ -4,37 +4,39 @@ import {
 } from '../src/data/freeAiToolsHeaderMegaMenu.js'
 
 const expected = {
-  aiWriting: [
-    'https://www.toolsmart.ai/feature-free-paraphrasing-tool/',
-    'https://www.toolsmart.ai/feature-free-text-summarizer/',
-    'https://www.toolsmart.ai/feature-free-humanize-ai/',
-    'https://www.toolsmart.ai/feature-free-undetectable-ai/',
-    'https://www.toolsmart.ai/feature-free-ai-story-generator/',
-    'https://www.toolsmart.ai/feature-free-sentence-rewriter/',
-    'https://www.toolsmart.ai/feature-free-paragraph-rewriter/',
-    'https://www.toolsmart.ai/feature-free-rewording-tool/',
+  convertCompress: [
+    'https://pdf.wps.com/en/pdf-tools/compress-pdf/',
+    'https://pdf.wps.com/en/pdf-tools/convert-pdf/',
   ],
-  aiImage: [
-    'https://www.toolsmart.ai/feature-background-remover/',
-    'https://www.toolsmart.ai/feature-free-photo-restoration/',
-    'https://www.toolsmart.ai/feature-unblur-image-for-free/',
-    'https://www.toolsmart.ai/feature-free-watermark-remover/',
+  splitMerge: [
+    'https://pdf.wps.com/en/pdf-tools/split-pdf/',
+    'https://pdf.wps.com/en/pdf-tools/merge-pdf/',
   ],
-  socialMedia: [
-    'https://www.toolsmart.ai/feature-youtube-to-mp3/',
-    'https://www.toolsmart.ai/feature-free-youtube-video-downloader/',
-    'https://www.toolsmart.ai/feature-free-instagram-video-downloader/',
-    'https://www.toolsmart.ai/feature-free-facebook-video-downloader/',
-    'https://www.toolsmart.ai/feature-free-tiktok-video-downloader/',
-    'https://www.toolsmart.ai/feature-free-twitter-video-downloader/',
-    'https://www.toolsmart.ai/feature-free-pinterest-video-downloader/',
-    'https://www.toolsmart.ai/feature-free-youtube-thumbnail-downloader/',
+  sign: [
+    'https://pdf.wps.com/en/pdf-tools/sign-pdf/',
+  ],
+  convertFromPdf: [
+    'https://pdf.wps.com/en/pdf-tools/pdf-to-word/',
+    'https://pdf.wps.com/en/pdf-tools/pdf-to-excel/',
+    'https://pdf.wps.com/en/pdf-tools/pdf-to-ppt/',
+    'https://pdf.wps.com/en/pdf-tools/pdf-to-jpg/',
+  ],
+  convertToPdf: [
+    'https://pdf.wps.com/en/pdf-tools/word-to-pdf/',
+    'https://pdf.wps.com/en/pdf-tools/excel-to-pdf/',
+    'https://pdf.wps.com/en/pdf-tools/ppt-to-pdf/',
+    'https://pdf.wps.com/en/pdf-tools/jpg-to-pdf/',
+  ],
+  otherConversion: [
+    'https://pdf.wps.com/en/pdf-tools/xml-to-pdf/',
+    'https://pdf.wps.com/en/pdf-tools/word-to-jpg/',
+    'https://pdf.wps.com/en/pdf-tools/jpg-to-word/',
   ],
 }
 
-if (FREE_AI_TOOLS_HEADER_MEGA_MENU.groups.length !== 3) {
+if (FREE_AI_TOOLS_HEADER_MEGA_MENU.groups.length !== 6) {
   throw new Error(
-    `expected 3 groups, got ${FREE_AI_TOOLS_HEADER_MEGA_MENU.groups.length}`,
+    `expected 6 groups, got ${FREE_AI_TOOLS_HEADER_MEGA_MENU.groups.length}`,
   )
 }
 
@@ -49,24 +51,27 @@ for (const group of FREE_AI_TOOLS_HEADER_MEGA_MENU.groups) {
 
 const resolved = resolveFreeAiToolsHeaderMegaMenu({
   groups: {
-    aiWriting: 'AI Writing Tools',
-    aiImage: 'AI Image Tools',
-    socialMedia: 'Social Media Tools',
+    convertCompress: 'Convert & Compress',
+    splitMerge: 'Split & Merge',
+    sign: 'Sign',
+    convertFromPdf: 'Convert from PDF',
+    convertToPdf: 'Convert to PDF',
+    otherConversion: 'Other Conversion',
   },
   links: {
-    paraphrasingTool: 'Paraphrasing Tool',
-    aiSummarizer: 'AI Summarizer',
+    compressPdf: 'Compress PDF',
+    convertPdf: 'Convert PDF',
   },
 })
 
-if (resolved.groups[0].title !== 'AI Writing Tools') {
+if (resolved.groups[0].title !== 'Convert & Compress') {
   throw new Error('resolve title failed')
 }
-if (resolved.groups[0].items[0].label !== 'Paraphrasing Tool') {
+if (resolved.groups[0].items[0].label !== 'Compress PDF') {
   throw new Error('resolve label failed')
 }
-if (resolved.groups[0].itemColumns !== 2) {
-  throw new Error('expected writing tools to use 2 item columns')
+if (resolved.groups[5].badge !== 'newBadge') {
+  throw new Error('resolve badge fallback failed')
 }
 
-console.log('validate-free-ai-tools-header-mega: ok')
+console.log('validate-pdf-tools-header-mega: ok')

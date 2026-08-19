@@ -1,5 +1,5 @@
 import { Fragment, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { ChevronDown, Globe, Users } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 import { FaFacebookF, FaYoutube } from 'react-icons/fa'
 import { FaXTwitter } from 'react-icons/fa6'
 import DocsCenterPage from './components/DocsCenterPage'
@@ -9,7 +9,6 @@ import AllProductsPage from './components/AllProductsPage'
 import IntlAiFeaturesPage from './components/IntlAiFeaturesPage'
 import LocalePage from './components/LocalePage'
 import {
-  encyclopediaEntriesByLocale,
   encyclopediaUiTextByLocale,
   resolveEncyclopediaLocale,
   resolveEncyclopediaEntriesForLocale,
@@ -40,9 +39,6 @@ import {
 import {
   resolveWpsFeaturesHeaderMegaMenu,
 } from './data/wpsFeaturesHeaderMegaMenu.js'
-import {
-  resolveResourcesHeaderMegaMenu,
-} from './data/resourcesHeaderMegaMenu.js'
 import { uiTextByLanguage } from './data/uiText'
 import {
   SITE_FOOTER_COMPANY_LINKS,
@@ -55,6 +51,29 @@ const FOOTER_SOCIAL_ICONS = {
   facebook: FaFacebookF,
   twitter: FaXTwitter,
   youtube: FaYoutube,
+}
+
+const PDF_TOOL_ICON_MARKS = Object.freeze({
+  compress: '↓',
+  convert: '↔',
+  split: '↕',
+  merge: '▦',
+  sign: '✎',
+  word: 'W',
+  excel: 'S',
+  ppt: 'P',
+  jpg: '▧',
+  xml: '<>',
+})
+
+function PdfToolMenuIcon({ kind }) {
+  return (
+    <span
+      className={`home-nav-pdf-tool-icon home-nav-pdf-tool-icon--${kind}`}
+      data-mark={PDF_TOOL_ICON_MARKS[kind] ?? 'PDF'}
+      aria-hidden="true"
+    />
+  )
 }
 import {
   getLocaleDocsPath,
@@ -101,54 +120,6 @@ const templateMenuSections = [
     items: [
       { name: 'Excel Templates', path: 'ai-sheets/excel-templates/' },
     ],
-  },
-]
-
-const features = [
-  {
-    title: 'AI-Powered',
-    desc: 'Every tool enhanced with cutting-edge AI for smarter results.',
-    iconKey: 'ai',
-  },
-  {
-    title: '20 Languages',
-    desc: 'Fully localized in 20 languages for global teams.',
-    linkKey: 'worldwide',
-    iconKey: 'languages',
-  },
-  {
-    title: 'No Installation',
-    desc: 'Works entirely in your browser, nothing to download.',
-    iconKey: 'cloud',
-  },
-  {
-    title: '40+ Tools',
-    desc: 'One platform for all your document and productivity needs.',
-    iconKey: 'tools',
-  },
-]
-
-const featuresZh = [
-  {
-    title: 'AI 驱动',
-    desc: '每个工具都结合前沿 AI 能力，帮助你更高效地产出结果。',
-    iconKey: 'ai',
-  },
-  {
-    title: '20 种语言',
-    desc: '支持 20 种语言，满足全球团队协作需求。',
-    linkKey: 'worldwide',
-    iconKey: 'languages',
-  },
-  {
-    title: '免安装',
-    desc: '完全基于浏览器使用，无需下载安装。',
-    iconKey: 'cloud',
-  },
-  {
-    title: '40+ 工具',
-    desc: '一站式覆盖文档处理与办公效率场景。',
-    iconKey: 'tools',
   },
 ]
 
@@ -449,64 +420,6 @@ const guideCategoryStyleMap = {
   tools: 'bg-[#e8f6ff] text-[#2a7fa7]',
 }
 
-const docsSidebarGroups = [
-  {
-    title: '新手入门',
-    items: ['快速开始', '账号与权限', '常见问题 FAQ'],
-  },
-  {
-    title: '文档',
-    items: ['AI 文档', '格式与排版', '协作与评论'],
-  },
-  {
-    title: '演示',
-    items: ['AI 演示', '主题与母版', '动画与导出'],
-  },
-  {
-    title: '表格',
-    items: ['AI 表格', '公式与函数', '数据透视表'],
-  },
-  {
-    title: 'PDF',
-    items: ['格式转换', '页面编辑', '注释与签名', 'AI PDF'],
-  },
-  {
-    title: 'WPS AI 工具',
-    items: ['AI 写作', 'AI PPT', 'AI 图像工具', 'AI 论文'],
-  },
-  {
-    title: '使用场景',
-    items: ['学生学习', '职场办公', '内容创作'],
-  },
-  {
-    title: '帮助与支持',
-    items: ['更新日志', 'FAQ', '提交工单'],
-  },
-]
-
-const docsKeyTopics = [
-  {
-    title: '新手入门',
-    desc: '通过写文档、生成 PPT、制作表格或 PDF 编辑转化等场景任务，在几分钟内熟悉 WPS 文档中心的主要能力入口。',
-  },
-  {
-    title: '核心功能与 AI',
-    desc: '核心功能覆盖文字、表格、演示与 PDF 的非 AI 能力说明；WPS AI 工具区提供写作、翻译、PPT、图像等智能能力的独立文档索引。',
-  },
-  {
-    title: '在线工具与场景',
-    desc: '图片处理、格式转换与社交媒体类工具的使用说明集中呈现；使用场景帮助您按角色快速找到对应工作流。',
-  },
-  {
-    title: '帮助与支持',
-    desc: '更新日志、常见问题与工单/客服入口统一汇总，便于自助排查与反馈。',
-  },
-  {
-    title: '工具与资源',
-    desc: '图片工具、格式转换与社交媒体下载等在线工具文档独立成区，可按工具名称在左侧目录或顶部搜索中快速定位。',
-  },
-]
-
 const docsQuickTabs = [
   '新手入门',
   '文档',
@@ -528,14 +441,6 @@ const docsQuickTabs = [
   '拓展工具',
   '使用场景',
   '帮助与支持',
-]
-
-const docsJumpCards = [
-  { title: '产品介绍', sub: '产品定位与下载安装', section: '新手入门', linkKey: 'all-products' },
-  { title: '套餐与费用', sub: '套餐分类与功能对比表', section: '新手入门', linkKey: 'pricing' },
-  { title: '学习中心', sub: '典型场景视频教程', section: '文档', linkKey: 'guides' },
-  { title: '社区中心', sub: '用户社群交流讨论', section: 'PDF', linkKey: 'answers' },
-  { title: '模板中心', sub: '海量模板资源下载', section: '简历', linkKey: 'all-templates' },
 ]
 
 const docsSectionSlugMap = {
@@ -1487,19 +1392,21 @@ const allProductsSections = [
     title: 'PDF Tools',
     items: [
       { name: 'Compress PDF', path: 'pdf-tools/compress-pdf/' },
-      { name: 'Edit PDF', path: 'pdf-tools/edit-pdf/' },
-      { name: 'Excel to PDF', path: 'pdf-tools/excel-to-pdf/' },
-      { name: 'JPG to PDF', path: 'pdf-tools/jpg-to-pdf/' },
-      { name: 'Merge PDF', path: 'pdf-tools/merge-pdf/' },
-      { name: 'PDF to Excel', path: 'pdf-tools/pdf-to-excel/' },
-      { name: 'PDF to JPG', path: 'pdf-tools/pdf-to-jpg/' },
-      { name: 'PDF to PPT', path: 'pdf-tools/pdf-to-ppt/' },
-      { name: 'PDF to Word', path: 'pdf-tools/pdf-to-word/' },
-      { name: 'PPT to PDF', path: 'pdf-tools/ppt-to-pdf/' },
-      { name: 'Protect PDF', path: 'pdf-tools/protect-pdf/' },
-      { name: 'Sign PDF', path: 'pdf-tools/sign-pdf/' },
+      { name: 'Convert PDF', path: 'pdf-tools/convert-pdf/' },
       { name: 'Split PDF', path: 'pdf-tools/split-pdf/' },
+      { name: 'Merge PDF', path: 'pdf-tools/merge-pdf/' },
+      { name: 'Sign PDF', path: 'pdf-tools/sign-pdf/' },
+      { name: 'PDF to Word', path: 'pdf-tools/pdf-to-word/' },
+      { name: 'PDF to Excel', path: 'pdf-tools/pdf-to-excel/' },
+      { name: 'PDF to PPT', path: 'pdf-tools/pdf-to-ppt/' },
+      { name: 'PDF to JPG', path: 'pdf-tools/pdf-to-jpg/' },
       { name: 'Word to PDF', path: 'pdf-tools/word-to-pdf/' },
+      { name: 'Excel to PDF', path: 'pdf-tools/excel-to-pdf/' },
+      { name: 'PPT to PDF', path: 'pdf-tools/ppt-to-pdf/' },
+      { name: 'JPG to PDF', path: 'pdf-tools/jpg-to-pdf/' },
+      { name: 'XML to PDF', path: 'pdf-tools/xml-to-pdf/' },
+      { name: 'Word to JPG', path: 'pdf-tools/word-to-jpg/' },
+      { name: 'JPG to Word', path: 'pdf-tools/jpg-to-word/' },
     ],
   },
 ]
@@ -1528,7 +1435,7 @@ const contentRootSet = new Set([
   'blog',
   'pricing',
   'download',
-  'all-products',
+  'all-tools',
   'all-templates',
   'wps-ai-features',
   'worldwide',
@@ -1618,11 +1525,6 @@ function getTemplateRouteInfo(normalizedSegments) {
   return null
 }
 
-function getTemplateLibraryKey(normalizedSegments) {
-  const routeInfo = getTemplateRouteInfo(normalizedSegments)
-  return routeInfo?.key ?? null
-}
-
 function getGuideRouteInfo(normalizedSegments) {
   if (normalizedSegments[0] !== 'guides') {
     return null
@@ -1706,8 +1608,8 @@ function getPageType(pathname) {
   if (normalizedSegments[0] === 'pricing') {
     return 'pricing'
   }
-  if (normalizedSegments[0] === 'all-products') {
-    return 'all-products'
+  if (normalizedSegments[0] === 'all-tools') {
+    return 'all-tools'
   }
   if (normalizedSegments[0] === 'all-templates') {
     return 'all-templates'
@@ -1784,12 +1686,8 @@ function toTopicSlug(value) {
     .replace(/^-+|-+$/g, '')
 }
 
-function getLocaleAllProductsPath(locale) {
-  return joinPath(toUrlLocale(locale), 'all-products')
-}
-
-function getLocaleAllTemplatesPath(locale) {
-  return joinPath(toUrlLocale(locale), 'all-templates')
+function getLocaleAllToolsPath(locale) {
+  return joinPath(toUrlLocale(locale), 'all-tools')
 }
 
 function getLocaleAiFeaturesPath(locale) {
@@ -1800,29 +1698,8 @@ function getLocaleLocalePath(locale) {
   return joinPath(toUrlLocale(locale), 'locale')
 }
 
-function getLocaleWorldwidePath(locale) {
-  return getLocaleLocalePath(locale)
-}
-
 function getLocaleGuidesPath(locale) {
   return joinPath(toUrlLocale(locale), 'guides')
-}
-
-function getDocsJumpCardPath(locale, linkKey = '') {
-  switch (linkKey) {
-    case 'all-products':
-      return getLocaleAllProductsPath(locale)
-    case 'pricing':
-      return getLocalePricingPath(locale)
-    case 'guides':
-      return getLocaleGuidesPath(locale)
-    case 'answers':
-      return getLocaleAnswersPath(locale)
-    case 'all-templates':
-      return getLocaleAllTemplatesPath(locale)
-    default:
-      return ''
-  }
 }
 
 function formatBlogDate(dateString, locale = 'en-us') {
@@ -2246,16 +2123,6 @@ function App() {
       desc: localizeString(item.desc),
     }))
   }, [isZhCnContent, localizeString])
-  const localizedFeatures = useMemo(() => {
-    if (isZhCnContent) {
-      return featuresZh
-    }
-    return features.map((item) => ({
-      ...item,
-      title: localizeString(item.title),
-      desc: localizeString(item.desc),
-    }))
-  }, [isZhCnContent, localizeString])
   const localizedDesktopDownloadItems = useMemo(() => {
     if (isZhCnContent) {
       return desktopDownloadItemsZh
@@ -2527,22 +2394,6 @@ function App() {
       }))
   }, [currentLocale, localizedTemplateMenuSections])
 
-  const homeProductCards = useMemo(
-    () => {
-      const sectionMap = new Map(localizedAllProductsSections.map((section) => [section.title, section]))
-      return localizedProducts.map((productItem) => {
-        const matchedSection = sectionMap.get(productItem.name)
-        const firstToolPath = matchedSection?.items?.[0]?.path
-        return {
-          ...productItem,
-          targetPath: firstToolPath
-            ? joinPath(currentUrlLocale, firstToolPath)
-            : getLocaleAllProductsPath(currentLocale),
-        }
-      })
-    },
-    [currentLocale, localizedAllProductsSections, localizedProducts],
-  )
   const toolDemoByPath = useMemo(() => {
     const colorMap = new Map(localizedProducts.map((item) => [item.name, item.color]))
     const categoryIntroMap = {
@@ -2841,20 +2692,25 @@ function App() {
     )
   }, [currentTemplateRoute, templateLibraryData, localizeString])
 
-  useEffect(() => {
+  const templateLibrarySyncKey = `${currentTemplateRoute?.kind ?? ''}:${currentTemplateRoute?.key ?? ''}`
+  const [templateFilterSyncKey, setTemplateFilterSyncKey] = useState(templateLibrarySyncKey)
+  if (templateFilterSyncKey !== templateLibrarySyncKey) {
+    setTemplateFilterSyncKey(templateLibrarySyncKey)
     if (currentTemplateRoute?.kind === 'library') {
       setActiveTemplateFilter('All')
     }
-  }, [currentTemplateRoute?.kind, currentTemplateRoute?.key])
+  }
 
-  useEffect(() => {
-    if (currentBlogRoute?.kind === 'index') {
-      return
+  const blogKind = currentBlogRoute?.kind ?? ''
+  const [blogKindSync, setBlogKindSync] = useState(blogKind)
+  if (blogKindSync !== blogKind) {
+    setBlogKindSync(blogKind)
+    if (blogKind !== 'index') {
+      setActiveBlogCategory('all')
+      setActiveBlogAuthor('')
+      setBlogSearchQuery('')
     }
-    setActiveBlogCategory('all')
-    setActiveBlogAuthor('')
-    setBlogSearchQuery('')
-  }, [currentBlogRoute?.kind])
+  }
 
   useEffect(() => {
     if (!isBlogShareCopied) {
@@ -2946,8 +2802,7 @@ function App() {
   const localeBlogPath = getLocaleBlogPath(currentLocale)
   const localeEncyclopediaPath = getLocaleEncyclopediaPath(currentLocale)
   const localeAnswersPath = getLocaleAnswersPath(currentLocale)
-  const localeAllProductsPath = getLocaleAllProductsPath(currentLocale)
-  const localeAllTemplatesPath = getLocaleAllTemplatesPath(currentLocale)
+  const localeAllToolsPath = getLocaleAllToolsPath(currentLocale)
   const localeAiFeaturesPath = getLocaleAiFeaturesPath(currentLocale)
   const localeLocalePath = getLocaleLocalePath(currentLocale)
   const localeGuidesPath = getLocaleGuidesPath(currentLocale)
@@ -2991,14 +2846,6 @@ function App() {
   const desktopMainNavItems = useMemo(
     () => [
       {
-        key: 'products',
-        type: 'products',
-        label: uiText.nav.products,
-        // Platforms trigger opens platform cards panel; it is not a route.
-        path: '#platforms',
-        isCurrent: false,
-      },
-      {
         key: 'wps-features',
         type: 'wps-features',
         label: uiText.nav.wpsFeatures,
@@ -3009,9 +2856,9 @@ function App() {
         key: 'free-ai-tools',
         type: 'free-ai-tools',
         label: uiText.nav.freeAiTools,
-        // Matches wps.ai: Free AI Tools trigger opens the panel; it is not a route.
-        path: '#free-ai-tools',
-        isCurrent: false,
+        // Hover opens the PDF Tools panel; click navigates to the tools directory.
+        path: localeAllToolsPath,
+        isCurrent: pageType === 'all-tools',
       },
       {
         key: 'docs',
@@ -3031,12 +2878,12 @@ function App() {
     [
       isResourcesNavActive,
       localeAiFeaturesPath,
+      localeAllToolsPath,
       localeDocsPath,
       pageType,
       uiText.nav.blog,
       uiText.nav.docsCenter,
       uiText.nav.freeAiTools,
-      uiText.nav.products,
       uiText.nav.wpsFeatures,
     ],
   )
@@ -3113,18 +2960,20 @@ function App() {
     }
   }, [desktopMainNavItems])
 
-  useEffect(() => {
+  const [compactNavSync, setCompactNavSync] = useState(isCompactNav)
+  if (compactNavSync !== isCompactNav) {
+    setCompactNavSync(isCompactNav)
     if (isCompactNav) {
       setIsProductsMenuOpen(false)
       setIsFreeAiToolsMenuOpen(false)
       setIsWpsFeaturesMenuOpen(false)
       setIsTemplatesMenuOpen(false)
       setIsOverflowMenuOpen(false)
-      return
+    } else {
+      setIsMobileMenuOpen(false)
+      setMobileNavExpandedKey(null)
     }
-    setIsMobileMenuOpen(false)
-    setMobileNavExpandedKey(null)
-  }, [isCompactNav])
+  }
 
   const encyclopediaLocale = resolveEncyclopediaLocale(currentLocale)
   const encyclopediaUiBase =
@@ -3579,16 +3428,13 @@ function App() {
                   ? 'home-page-header-link--open'
                   : 'home-page-header-link--idle'
             }`}
-            href={item.path}
+            href={localeAllToolsPath}
             aria-haspopup="true"
             aria-expanded={isFreeAiToolsMenuOpen}
             onClick={(event) => {
               event.preventDefault()
-              if (isFreeAiToolsMenuOpen) {
-                setIsFreeAiToolsMenuOpen(false)
-                return
-              }
-              openDesktopMenu('free-ai-tools')
+              setIsFreeAiToolsMenuOpen(false)
+              navigateTo(localeAllToolsPath)
             }}
           >
             {item.label}
@@ -3616,56 +3462,53 @@ function App() {
 
           {isFreeAiToolsMenuOpen && (
             <div
-              className="fixed inset-x-0 top-[59px] z-[100] home-nav-mega-panel"
+              className="fixed inset-x-0 top-[59px] z-[100] home-nav-mega-panel home-nav-pdf-tools-panel"
               onMouseEnter={() => openDesktopMenu('free-ai-tools')}
               onMouseLeave={() => scheduleDesktopMenuClose('free-ai-tools')}
             >
               <div className="mx-auto w-full max-w-[1200px]">
-                <div className="home-nav-free-ai-tools-mega home-nav-mega-grid grid w-full">
+                <div className="home-nav-pdf-tools-mega grid w-full">
                   {freeAiToolsHeaderMegaMenu.groups.map((group) => (
                     <section
                       key={group.id}
-                      className="home-nav-free-ai-tools-mega-column home-nav-mega-card min-w-0"
+                      className="home-nav-pdf-tools-mega-column home-nav-mega-card min-w-0"
                     >
-                      <div className="flex items-center gap-2">
-                        {group.iconKind === 'users' ? (
-                          <Users
-                            className="h-4 w-4 shrink-0 text-[#534ab7]"
-                            aria-hidden="true"
-                          />
-                        ) : group.iconSrc ? (
-                          <img
-                            className="h-4 w-4 shrink-0"
-                            src={group.iconSrc}
-                            alt=""
-                            draggable={false}
-                            decoding="async"
-                          />
+                      <div className="home-nav-pdf-tools-mega-title">
+                        <h4>{group.title}</h4>
+                        {group.badge ? (
+                          <span className="home-nav-pdf-tools-mega-badge">{group.badge}</span>
                         ) : null}
-                        <h4 className="text-[13px] font-semibold text-[#261f38]">{group.title}</h4>
                       </div>
-                      <div
-                        className={`mt-2.5 gap-0.5${
-                          group.itemColumns === 2
-                            ? ' home-nav-free-ai-tools-mega-links--two-col grid'
-                            : ' flex flex-col'
-                        }`}
-                      >
+                      <div className="home-nav-pdf-tools-mega-links">
                         {group.items.map((linkItem) => (
                           <a
                             key={linkItem.id}
                             href={linkItem.url}
-                            className="home-nav-mega-link truncate text-[13px]"
+                            className="home-nav-mega-link home-nav-pdf-tools-mega-link truncate text-[13px]"
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={() => setIsFreeAiToolsMenuOpen(false)}
                           >
+                            <PdfToolMenuIcon kind={linkItem.iconKind} />
                             {linkItem.label}
                           </a>
                         ))}
                       </div>
                     </section>
                   ))}
+                </div>
+                <div className="home-nav-pdf-tools-mega-footer flex justify-end px-[18px] pb-4">
+                  <a
+                    href={localeAllToolsPath}
+                    className="home-nav-mega-cta home-nav-pdf-tools-mega-see-all inline-flex text-[12.5px] font-semibold"
+                    onClick={(event) => {
+                      event.preventDefault()
+                      setIsFreeAiToolsMenuOpen(false)
+                      navigateTo(localeAllToolsPath)
+                    }}
+                  >
+                    {uiText.nav.seeAllTools}
+                  </a>
                 </div>
               </div>
             </div>
@@ -3911,15 +3754,20 @@ function App() {
                             ? 'rounded-[12px] bg-[linear-gradient(135deg,rgba(255,255,255,0.96)_0%,rgba(244,236,255,0.96)_100%)] text-[#8f5bff] shadow-[inset_0_1px_0_rgba(255,255,255,0.92)]'
                             : 'home-nav-floating-item'
                         }`}
-                        href={item.path}
+                        href={item.type === 'free-ai-tools' ? localeAllToolsPath : item.path}
                         onClick={(event) => {
                           if (item.type === 'external') {
                             setIsOverflowMenuOpen(false)
                             return
                           }
                           event.preventDefault()
-                          if (item.type === 'products' || item.type === 'free-ai-tools') {
+                          if (item.type === 'products') {
                             openDesktopMenu(item.type)
+                            return
+                          }
+                          if (item.type === 'free-ai-tools') {
+                            setIsOverflowMenuOpen(false)
+                            navigateTo(localeAllToolsPath)
                             return
                           }
                           navigateTo(item.path)
@@ -4148,6 +3996,15 @@ function App() {
                         ? freeAiToolsHeaderMegaMenu.groups
                         : wpsFeaturesHeaderMegaMenu.groups
                   const hasDirectoryRoute = item.type === 'wps-features' && Boolean(item.path)
+                  const panelCtaHref =
+                    hasDirectoryRoute
+                      ? item.path
+                      : item.type === 'free-ai-tools'
+                        ? localeAllToolsPath
+                        : ''
+                  const panelCtaIsInternal = hasDirectoryRoute || item.type === 'free-ai-tools'
+                  const panelCtaLabel =
+                    hasDirectoryRoute ? uiText.nav.seeAllFeatures : uiText.nav.seeAllTools
 
                   return (
                     <div key={`mobile-${item.key}`} className="home-mobile-nav__section">
@@ -4191,17 +4048,23 @@ function App() {
                               })}
                             </div>
                           ))}
-                          {hasDirectoryRoute ? (
+                          {panelCtaHref ? (
                             <a
                               className="home-mobile-nav__link home-mobile-nav__link--panel-cta"
-                              href={item.path}
+                              href={panelCtaHref}
+                              target={panelCtaIsInternal ? undefined : '_blank'}
+                              rel={panelCtaIsInternal ? undefined : 'noopener noreferrer'}
                               onClick={(event) => {
-                                event.preventDefault()
+                                if (panelCtaIsInternal) {
+                                  event.preventDefault()
+                                }
                                 closeMobileNav()
-                                navigateTo(item.path)
+                                if (panelCtaIsInternal) {
+                                  navigateTo(panelCtaHref)
+                                }
                               }}
                             >
-                              {uiText.nav.seeAllFeatures}
+                              {panelCtaLabel}
                             </a>
                           ) : null}
                         </div>
@@ -4281,7 +4144,6 @@ function App() {
           <HomePage
             uiText={uiText}
             localeDownloadPath={localeDownloadPath}
-            localeAllProductsPath={localeAllProductsPath}
             localeAiFeaturesPath={localeAiFeaturesPath}
             localeEncyclopediaPath={localeEncyclopediaPath}
             currentUrlLocale={currentUrlLocale}
@@ -5433,7 +5295,7 @@ function App() {
                   <span>›</span>
                   <button
                     type="button"
-                    onClick={() => navigateTo(localeAllProductsPath)}
+                    onClick={() => navigateTo(localeAllToolsPath)}
                     className="hover:text-[#534ab7]"
                   >
                     {currentToolDemo.sectionDisplayTitle ?? currentToolDemo.sectionTitle}
@@ -5577,7 +5439,7 @@ function App() {
               </div>
             </section>
           </div>
-        ) : pageType === 'all-products' ? (
+        ) : pageType === 'all-tools' ? (
           <AllProductsPage
             copy={uiText.allProducts}
             sections={localizedAllProductsSections}
