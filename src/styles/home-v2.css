@@ -123,10 +123,10 @@
   align-items: center;
   gap: 24px;
   width: 100%;
-  max-width: calc(var(--hv2-container) + 2 * var(--hv2-gutter));
+  max-width: none;
   height: var(--hv2-nav-h) !important;
-  padding-left: var(--hv2-gutter) !important;
-  padding-right: var(--hv2-gutter) !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
   box-sizing: border-box;
 }
 
