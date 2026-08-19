@@ -9409,11 +9409,6 @@ a.home-ai-pillar-link:focus-visible {
   color: rgba(13, 13, 13, 0.46);
 }
 
-.locale-page-search:hover input::placeholder,
-.locale-page-search input:focus::placeholder {
-  color: transparent;
-}
-
 .locale-page-search input[type='search']::-webkit-search-decoration,
 .locale-page-search input[type='search']::-webkit-search-cancel-button,
 .locale-page-search input[type='search']::-webkit-search-results-button,

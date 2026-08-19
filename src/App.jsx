@@ -3696,7 +3696,7 @@ function App() {
             </a>
           </div>
           <nav
-            className="home-page-header-nav hidden h-full min-w-0 flex-1 flex-nowrap items-stretch justify-center gap-[2px] min-[720px]:flex"
+            className="home-page-header-nav hidden h-full min-w-0 flex-1 flex-nowrap items-stretch justify-start gap-[2px] min-[720px]:flex"
             ref={desktopNavRef}
           >
             {visibleDesktopNavItems.map((item) => renderDesktopMainNavItem(item))}

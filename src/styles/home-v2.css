@@ -159,7 +159,7 @@
 
 .home-v2 .home-page-header-nav {
   flex: 1 1 auto;
-  justify-content: center !important;
+  justify-content: flex-start !important;
   gap: 24px !important;
 }
 
