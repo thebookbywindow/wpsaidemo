@@ -189,6 +189,8 @@
 
 .home-v2 .home-page-header-actions {
   align-items: center;
+  flex: 0 0 auto;
+  margin-left: auto;
   gap: 16px !important;
 }
 
